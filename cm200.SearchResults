@@ -1,0 +1,17 @@
+---- cdv Matches (18 in 3 files) ----
+CallDlg.cpp:	ON_MESSAGE(WM_ATCDVRESULT, SetCallState)
+CallDlg.cpp:	const TCHAR CDV[]=_T("+CDV");//CDMA CM200
+CallDlg.cpp:	strDialNum+=CDV;
+CallDlg.cpp:		const TCHAR CDVE[] = _T("+CDVE=");
+CallDlg.cpp:		const TCHAR CDVEQuote[] = _T(",9\x0d\x00");
+CallDlg.cpp:		strDialNum += CDVE;
+CallDlg.cpp:		strDialNum += CDVEQuote;
+CallDlg.cpp:		pdlg->PostMessage(WM_ATCDVRESULT, 1, 0);
+CallDlg.cpp://	pDlg->PostMessage(WM_ATCDVRESULT,0,0);
+CallDlg.h:#define     WM_ATCDVRESULT        (WM_USER+31)
+HSDPADlg.cpp:		::PostMessage(pdlg->m_pCallDlg->GetSafeHwnd(),WM_ATCDVRESULT,0,0);
+HSDPADlg.cpp://	::PostMessage(pDlg->m_pCallDlg->GetSafeHwnd(),WM_ATCDVRESULT,0,0);		//wyw_0402 remove
+HSDPADlg.cpp://	::PostMessage(pDlg->m_pCallDlg->GetSafeHwnd(),WM_ATCDVRESULT,0,0);
+HSDPADlg.cpp:			::SendMessage(m_pCallDlg->GetSafeHwnd(), WM_ATCDVRESULT, lParam, 0);		//wyw_0402 modify
+HSDPADlg.cpp://        ::SendMessage(m_pCallDlg->GetSafeHwnd(), WM_ATCDVRESULT, lParam, 0);
+HSDPADlg.cpp:	        ::PostMessage(pDlg->m_pCallDlg->GetSafeHwnd(),WM_ATCDVRESULT,0,0);

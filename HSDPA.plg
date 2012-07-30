@@ -1,0 +1,629 @@
+<html>
+<body>
+<pre>
+<h1>Build Log</h1>
+<h3>
+--------------------Configuration: Common_DataCrad - Win32 Debug--------------------
+</h3>
+<h3>Command Lines</h3>
+Creating command line "rc.exe /l 0x804 /fo"Debug/Common_DataCrad.res" /d "_DEBUG" /d "_AFXDLL" "E:\pcmodem\PCApp\PCApp(wj)\Common_DataCrad\Common_DataCrad.rc"" 
+Creating temporary file "C:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\RSP3F.tmp" with contents
+[
+/nologo /MDd /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "Common_DataCrad_EXPORTS" /D "_WINDLL" /D "_AFXDLL" /Fp"Debug/Common_DataCrad.pch" /YX /Fo"Debug/" /Fd"Debug/" /FD /GZ /c 
+"E:\pcmodem\PCApp\PCApp(wj)\Common_DataCrad\Common_DataCrad.cpp"
+"E:\pcmodem\PCApp\PCApp(wj)\Common_DataCrad\StdAfx.cpp"
+]
+Creating command line "cl.exe @C:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\RSP3F.tmp" 
+Creating temporary file "C:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\RSP40.tmp" with contents
+[
+/nologo /dll /incremental:yes /pdb:"Debug/Common_DataCrad.pdb" /debug /machine:I386 /def:".\Common_DataCrad.def" /out:"../lang/Common_DataCrad.dll" /implib:"Debug/Common_DataCrad.lib" /pdbtype:sept 
+".\Debug\Common_DataCrad.obj"
+".\Debug\StdAfx.obj"
+".\Debug\Common_DataCrad.res"
+]
+Creating command line "link.exe @C:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\RSP40.tmp"
+<h3>Output Window</h3>
+Compiling resources...
+Compiling...
+Common_DataCrad.cpp
+StdAfx.cpp
+Linking...
+   Creating library Debug/Common_DataCrad.lib and object Debug/Common_DataCrad.exp
+<h3>
+--------------------Configuration: DataCrad_Arabic - Win32 Debug--------------------
+</h3>
+<h3>Command Lines</h3>
+Creating command line "rc.exe /l 0x401 /fo"Debug/DataCrad_Arabic.res" /d "_DEBUG" /d "_AFXDLL" "E:\pcmodem\PCApp\PCApp(wj)\DataCrad_Arabic\DataCrad_Arabic.rc"" 
+Creating temporary file "C:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\RSP44.tmp" with contents
+[
+/nologo /MDd /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "DataCrad_Arabic_EXPORTS" /D "_WINDLL" /D "_AFXDLL" /Fp"Debug/DataCrad_Arabic.pch" /YX /Fo"Debug/" /Fd"Debug/" /FD /GZ /c 
+"E:\pcmodem\PCApp\PCApp(wj)\DataCrad_Arabic\DataCrad_Arabic.cpp"
+"E:\pcmodem\PCApp\PCApp(wj)\DataCrad_Arabic\StdAfx.cpp"
+]
+Creating command line "cl.exe @C:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\RSP44.tmp" 
+Creating temporary file "C:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\RSP45.tmp" with contents
+[
+/nologo /dll /incremental:yes /pdb:"Debug/DataCrad_Arabic.pdb" /debug /machine:I386 /def:".\DataCrad_Arabic.def" /out:"../lang/DataCrad_Arabic.dll" /implib:"Debug/DataCrad_Arabic.lib" /pdbtype:sept 
+".\Debug\DataCrad_Arabic.obj"
+".\Debug\StdAfx.obj"
+".\Debug\DataCrad_Arabic.res"
+]
+Creating command line "link.exe @C:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\RSP45.tmp"
+<h3>Output Window</h3>
+Compiling resources...
+Compiling...
+DataCrad_Arabic.cpp
+StdAfx.cpp
+Linking...
+   Creating library Debug/DataCrad_Arabic.lib and object Debug/DataCrad_Arabic.exp
+<h3>
+--------------------Configuration: HSDPA - Win32 Debug--------------------
+</h3>
+<h3>Command Lines</h3>
+Creating temporary file "C:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\RSP49.bat" with contents
+[
+@echo off
+copy "hlp\HSDPA.cnt" .\Debug
+]
+Creating command line "C:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\RSP49.bat"
+Creating command line "rc.exe /l 0x409 /fo"Debug/PCCard.res" /d "_DEBUG" "E:\pcmodem\PCApp\PCApp(wj)\HSDPA.rc"" 
+Copying contents file...
+已复制         1 个文件。
+Creating temporary file "C:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\RSP4A.tmp" with contents
+[
+/nologo /MTd /W3 /Gm /GX /ZI /Od /I ".\\" /I ".\Core\ParsingAndLogic\\" /I ".\ConnectionManager\\" /I ".\Core\Communication\\" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_UNICODE" /D "UNICODE" /FR"Debug/" /Fp"Debug/HSDPA.pch" /Yu"StdAfx.h" /Fo"Debug/" /Fd"Debug/" /FD /GZ /Zm600 /c 
+"E:\pcmodem\PCApp\PCApp(wj)\DlgPbImport.cpp"
+"E:\pcmodem\PCApp\PCApp(wj)\GetOutlookPBDlg.cpp"
+"E:\pcmodem\PCApp\PCApp(wj)\MenuBar.cpp"
+"E:\pcmodem\PCApp\PCApp(wj)\MenuButtonST.cpp"
+"E:\pcmodem\PCApp\PCApp(wj)\msoutl.cpp"
+"E:\pcmodem\PCApp\PCApp(wj)\PwdConfirmDlg.cpp"
+"E:\pcmodem\PCApp\PCApp(wj)\PwdModifyDlg.cpp"
+"E:\pcmodem\PCApp\PCApp(wj)\ReadFalshSMS.cpp"
+"E:\pcmodem\PCApp\PCApp(wj)\SmsData.cpp"
+"E:\pcmodem\PCApp\PCApp(wj)\SmsDlg.cpp"
+"E:\pcmodem\PCApp\PCApp(wj)\SmsEdit.cpp"
+"E:\pcmodem\PCApp\PCApp(wj)\SmsExportSel.cpp"
+"E:\pcmodem\PCApp\PCApp(wj)\SmsExtractNumDlg.cpp"
+"E:\pcmodem\PCApp\PCApp(wj)\SmsListCtrl.cpp"
+"E:\pcmodem\PCApp\PCApp(wj)\SmsReadDlg.cpp"
+"E:\pcmodem\PCApp\PCApp(wj)\SmsSendDlg.cpp"
+"E:\pcmodem\PCApp\PCApp(wj)\SmsTemplateDlg.cpp"
+"E:\pcmodem\PCApp\PCApp(wj)\SmsTransferDlg.cpp"
+"E:\pcmodem\PCApp\PCApp(wj)\SmsWriteDlg.cpp"
+"E:\pcmodem\PCApp\PCApp(wj)\CallDlg.cpp"
+"E:\pcmodem\PCApp\PCApp(wj)\CallHistoryDlg.cpp"
+"E:\pcmodem\PCApp\PCApp(wj)\HistData.cpp"
+"E:\pcmodem\PCApp\PCApp(wj)\HistListCtrl.cpp"
+"E:\pcmodem\PCApp\PCApp(wj)\SliderCtrlEx.cpp"
+"E:\pcmodem\PCApp\PCApp(wj)\ContactDlg.cpp"
+"E:\pcmodem\PCApp\PCApp(wj)\DlgEditGPMember.cpp"
+"E:\pcmodem\PCApp\PCApp(wj)\mylistctrl.cpp"
+"E:\pcmodem\PCApp\PCApp(wj)\PbData.cpp"
+"E:\pcmodem\PCApp\PCApp(wj)\PBGroupDlg.cpp"
+"E:\pcmodem\PCApp\PCApp(wj)\PBNewGroupDlg.cpp"
+"E:\pcmodem\PCApp\PCApp(wj)\PbSelPositon.cpp"
+"E:\pcmodem\PCApp\PCApp(wj)\PhoneBookDlg.cpp"
+"E:\pcmodem\PCApp\PCApp(wj)\Picture.cpp"
+"E:\pcmodem\PCApp\PCApp(wj)\SearchContactDlg.cpp"
+"E:\pcmodem\PCApp\PCApp(wj)\SelContactDlg.cpp"
+"E:\pcmodem\PCApp\PCApp(wj)\SelDialDlg.cpp"
+"E:\pcmodem\PCApp\PCApp(wj)\SelPosition.cpp"
+"E:\pcmodem\PCApp\PCApp(wj)\TransferDlg.cpp"
+"E:\pcmodem\PCApp\PCApp(wj)\WaitDlg.cpp"
+"E:\pcmodem\PCApp\PCApp(wj)\CopsInitTip.cpp"
+"E:\pcmodem\PCApp\PCApp(wj)\DataServiceHistory.cpp"
+"E:\pcmodem\PCApp\PCApp(wj)\DlgConnect.cpp"
+"E:\pcmodem\PCApp\PCApp(wj)\DlgInternetNewConn.cpp"
+"E:\pcmodem\PCApp\PCApp(wj)\DlgNetProfile.cpp"
+"E:\pcmodem\PCApp\PCApp(wj)\DlgNetProfileCDMA.cpp"
+"E:\pcmodem\PCApp\PCApp(wj)\DlgNetProfileNewCDMA.cpp"
+"E:\pcmodem\PCApp\PCApp(wj)\InternetConnTip.cpp"
+"E:\pcmodem\PCApp\PCApp(wj)\InternetUsageLimitDlg.cpp"
+"E:\pcmodem\PCApp\PCApp(wj)\LogData.cpp"
+"E:\pcmodem\PCApp\PCApp(wj)\LogListCtrl.cpp"
+"E:\pcmodem\PCApp\PCApp(wj)\MFNetTraffic.cpp"
+"E:\pcmodem\PCApp\PCApp(wj)\mftrafficbutton.cpp"
+"E:\pcmodem\PCApp\PCApp(wj)\NetLog.cpp"
+"E:\pcmodem\PCApp\PCApp(wj)\NetStatistics.cpp"
+"E:\pcmodem\PCApp\PCApp(wj)\DiagnosticDlg.cpp"
+"E:\pcmodem\PCApp\PCApp(wj)\DlgMsg.cpp"
+"E:\pcmodem\PCApp\PCApp(wj)\DlgNetSettingCDMA.cpp"
+"E:\pcmodem\PCApp\PCApp(wj)\DlgSetupGeneral.cpp"
+"E:\pcmodem\PCApp\PCApp(wj)\DlgSetupNWSel.cpp"
+"E:\pcmodem\PCApp\PCApp(wj)\DlgSetupNWSelMode.cpp"
+"E:\pcmodem\PCApp\PCApp(wj)\DlgSetupNWSelSearch.cpp"
+"E:\pcmodem\PCApp\PCApp(wj)\DlgSetupPowerMng.cpp"
+"E:\pcmodem\PCApp\PCApp(wj)\DlgSetupSkin.cpp"
+"E:\pcmodem\PCApp\PCApp(wj)\ModifyPinDlg.cpp"
+"E:\pcmodem\PCApp\PCApp(wj)\NWListCtrl.cpp"
+"E:\pcmodem\PCApp\PCApp(wj)\NWListCtrlSearch.cpp"
+"E:\pcmodem\PCApp\PCApp(wj)\PinClckDlg.cpp"
+"E:\pcmodem\PCApp\PCApp(wj)\PinEx.cpp"
+"E:\pcmodem\PCApp\PCApp(wj)\SetupCallDlg.cpp"
+"E:\pcmodem\PCApp\PCApp(wj)\SetupData.cpp"
+"E:\pcmodem\PCApp\PCApp(wj)\SetupDlg.cpp"
+"E:\pcmodem\PCApp\PCApp(wj)\SetupPreferDlg.cpp"
+"E:\pcmodem\PCApp\PCApp(wj)\AboutDialog.cpp"
+"E:\pcmodem\PCApp\PCApp(wj)\BaseDialog.cpp"
+"E:\pcmodem\PCApp\PCApp(wj)\TabCtrl\BaseTabCtrl.cpp"
+"E:\pcmodem\PCApp\PCApp(wj)\BtnST.cpp"
+"E:\pcmodem\PCApp\PCApp(wj)\ConnProfile.cpp"
+"E:\pcmodem\PCApp\PCApp(wj)\Dev.cpp"
+"E:\pcmodem\PCApp\PCApp(wj)\DlgSignIn.cpp"
+"E:\pcmodem\PCApp\PCApp(wj)\DlgSubversion.cpp"
+"E:\pcmodem\PCApp\PCApp(wj)\Ds.cpp"
+"E:\pcmodem\PCApp\PCApp(wj)\SkinWin\EnBitmap.cpp"
+"E:\pcmodem\PCApp\PCApp(wj)\TabCtrl\EnTabCtrl.cpp"
+"E:\pcmodem\PCApp\PCApp(wj)\ExDataExch.cpp"
+"E:\pcmodem\PCApp\PCApp(wj)\HeaderCtrlEx.cpp"
+"E:\pcmodem\PCApp\PCApp(wj)\HSDPA.cpp"
+"E:\pcmodem\PCApp\PCApp(wj)\HSDPADlg.cpp"
+"E:\pcmodem\PCApp\PCApp(wj)\MAPHYPERLINK.CPP"
+"E:\pcmodem\PCApp\PCApp(wj)\MsgBox.cpp"
+"E:\pcmodem\PCApp\PCApp(wj)\MsgThread.cpp"
+"E:\pcmodem\PCApp\PCApp(wj)\SkinWin\MyBitmap.cpp"
+"E:\pcmodem\PCApp\PCApp(wj)\NumEdit.cpp"
+"E:\pcmodem\PCApp\PCApp(wj)\PopDlg.cpp"
+"E:\pcmodem\PCApp\PCApp(wj)\PreMsg.cpp"
+"E:\pcmodem\PCApp\PCApp(wj)\ProgressDlg.cpp"
+"E:\pcmodem\PCApp\PCApp(wj)\ProgressExDlg.cpp"
+"E:\pcmodem\PCApp\PCApp(wj)\ResDllMiss.cpp"
+"E:\pcmodem\PCApp\PCApp(wj)\ScreenStatic.cpp"
+"E:\pcmodem\PCApp\PCApp(wj)\ShadeButtonST.cpp"
+"E:\pcmodem\PCApp\PCApp(wj)\SkinWin\SkinButton.cpp"
+"E:\pcmodem\PCApp\PCApp(wj)\SkinWin\SkinResource.cpp"
+"E:\pcmodem\PCApp\PCApp(wj)\SkinWin\SkinWin.cpp"
+"E:\pcmodem\PCApp\PCApp(wj)\SplashScreenEx.cpp"
+"E:\pcmodem\PCApp\PCApp(wj)\SkinWin\Subclass.cpp"
+"E:\pcmodem\PCApp\PCApp(wj)\TabDialog.cpp"
+"E:\pcmodem\PCApp\PCApp(wj)\TabedDialog.cpp"
+"E:\pcmodem\PCApp\PCApp(wj)\TransparentStatic.cpp"
+"E:\pcmodem\PCApp\PCApp(wj)\SkinWin\UtilsSkin.cpp"
+"E:\pcmodem\PCApp\PCApp(wj)\VersionDlg.cpp"
+"E:\pcmodem\PCApp\PCApp(wj)\xDib.cpp"
+"E:\pcmodem\PCApp\PCApp(wj)\XInfoTip.cpp"
+"E:\pcmodem\PCApp\PCApp(wj)\SerialPort\SerialBuffer.cpp"
+"E:\pcmodem\PCApp\PCApp(wj)\SerialPort\SerialBufQueue.cpp"
+"E:\pcmodem\PCApp\PCApp(wj)\SerialPort\SerialProt.cpp"
+"E:\pcmodem\PCApp\PCApp(wj)\ConnectionManager\ConnectionManagerDlg.cpp"
+"E:\pcmodem\PCApp\PCApp(wj)\ConnectionManager\ConnectionPage.cpp"
+"E:\pcmodem\PCApp\PCApp(wj)\ConnectionManager\ProfileGeneralPage.cpp"
+"E:\pcmodem\PCApp\PCApp(wj)\ConnectionManager\ProfileGprsMinPage.cpp"
+"E:\pcmodem\PCApp\PCApp(wj)\ConnectionManager\ProfileGprsReqPage.cpp"
+"E:\pcmodem\PCApp\PCApp(wj)\ConnectionManager\ProfileSheet.cpp"
+"E:\pcmodem\PCApp\PCApp(wj)\ConnectionManager\ProfilesPage.cpp"
+"E:\pcmodem\PCApp\PCApp(wj)\ConnectionManager\ProfileUmtsMinPage.cpp"
+"E:\pcmodem\PCApp\PCApp(wj)\ConnectionManager\ProfileUmtsReqPage.cpp"
+"E:\pcmodem\PCApp\PCApp(wj)\ConnectionManager\StatisticsPage.cpp"
+"E:\pcmodem\PCApp\PCApp(wj)\ConnectionManager\StatusPage.cpp"
+"E:\pcmodem\PCApp\PCApp(wj)\ConnectionManager\TextProgressCtrl.cpp"
+"E:\pcmodem\PCApp\PCApp(wj)\Core\ParsingAndLogic\DeviceMonitor.cpp"
+"E:\pcmodem\PCApp\PCApp(wj)\Core\ParsingAndLogic\DMSGetDeviceCapMsg.cpp"
+"E:\pcmodem\PCApp\PCApp(wj)\Core\ParsingAndLogic\DMSGetDeviceMfrMsg.cpp"
+"E:\pcmodem\PCApp\PCApp(wj)\Core\ParsingAndLogic\DMSGetDeviceModelIdMsg.cpp"
+"E:\pcmodem\PCApp\PCApp(wj)\Core\ParsingAndLogic\DMSGetDeviceRevIdMsg.cpp"
+"E:\pcmodem\PCApp\PCApp(wj)\Core\ParsingAndLogic\DMSGetDeviceSerialNumbersMsg.cpp"
+"E:\pcmodem\PCApp\PCApp(wj)\Core\ParsingAndLogic\DMSGetMsisdnMsg.cpp"
+"E:\pcmodem\PCApp\PCApp(wj)\Core\ParsingAndLogic\DMSGetPowerStateMsg.cpp"
+"E:\pcmodem\PCApp\PCApp(wj)\Core\ParsingAndLogic\DMSSetEventReportMsg.cpp"
+"E:\pcmodem\PCApp\PCApp(wj)\Core\ParsingAndLogic\Message.cpp"
+"E:\pcmodem\PCApp\PCApp(wj)\Core\ParsingAndLogic\MessageFactory.cpp"
+"E:\pcmodem\PCApp\PCApp(wj)\Core\ParsingAndLogic\MessageManager.cpp"
+"E:\pcmodem\PCApp\PCApp(wj)\Core\ParsingAndLogic\MsgBuf.cpp"
+"E:\pcmodem\PCApp\PCApp(wj)\Core\ParsingAndLogic\NASGetServingSystemMsg.cpp"
+"E:\pcmodem\PCApp\PCApp(wj)\Core\ParsingAndLogic\NASGetSignalStrengthMsg.cpp"
+"E:\pcmodem\PCApp\PCApp(wj)\Core\ParsingAndLogic\NASSetEventReportMsg.cpp"
+"E:\pcmodem\PCApp\PCApp(wj)\Core\ParsingAndLogic\QMIService.cpp"
+"E:\pcmodem\PCApp\PCApp(wj)\Core\ParsingAndLogic\StringUtils.cpp"
+"E:\pcmodem\PCApp\PCApp(wj)\Core\ParsingAndLogic\WDSAbortMsg.cpp"
+"E:\pcmodem\PCApp\PCApp(wj)\Core\ParsingAndLogic\WDSCreateProfileMsg.cpp"
+"E:\pcmodem\PCApp\PCApp(wj)\Core\ParsingAndLogic\WDSDeleteProfileMsg.cpp"
+"E:\pcmodem\PCApp\PCApp(wj)\Core\ParsingAndLogic\WDSGetCurrentChannelRateMsg.cpp"
+"E:\pcmodem\PCApp\PCApp(wj)\Core\ParsingAndLogic\WDSGetDefaultSettingsMsg.cpp"
+"E:\pcmodem\PCApp\PCApp(wj)\Core\ParsingAndLogic\WDSGetPktSrvcStatusMsg.cpp"
+"E:\pcmodem\PCApp\PCApp(wj)\Core\ParsingAndLogic\WDSGetProfileListMsg.cpp"
+"E:\pcmodem\PCApp\PCApp(wj)\Core\ParsingAndLogic\WDSGetProfileSettingsMsg.cpp"
+"E:\pcmodem\PCApp\PCApp(wj)\Core\ParsingAndLogic\WDSModifyProfileSettingsMsg.cpp"
+"E:\pcmodem\PCApp\PCApp(wj)\Core\ParsingAndLogic\WDSResetMsg.cpp"
+"E:\pcmodem\PCApp\PCApp(wj)\Core\ParsingAndLogic\WDSSetEventReportMsg.cpp"
+"E:\pcmodem\PCApp\PCApp(wj)\Core\ParsingAndLogic\WDSStartNetworkInterfaceMsg.cpp"
+"E:\pcmodem\PCApp\PCApp(wj)\Core\ParsingAndLogic\WDSStopNetworkInterfaceMsg.cpp"
+"E:\pcmodem\PCApp\PCApp(wj)\Core\Communication\api.cpp"
+"E:\pcmodem\PCApp\PCApp(wj)\Core\Communication\reg.cpp"
+"E:\pcmodem\PCApp\PCApp(wj)\Core\Communication\utils.cpp"
+]
+Creating command line "cl.exe @C:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\RSP4A.tmp" 
+Creating temporary file "C:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\RSP4B.tmp" with contents
+[
+/nologo /MTd /W3 /Gm /GX /ZI /Od /I ".\\" /I ".\Core\ParsingAndLogic\\" /I ".\ConnectionManager\\" /I ".\Core\Communication\\" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_UNICODE" /D "UNICODE" /FR"Debug/" /Fp"Debug/HSDPA.pch" /Yc"stdafx.h" /Fo"Debug/" /Fd"Debug/" /FD /GZ /Zm600 /c 
+"E:\pcmodem\PCApp\PCApp(wj)\StdAfx.cpp"
+]
+Creating command line "cl.exe @C:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\RSP4B.tmp" 
+Creating temporary file "C:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\RSP4C.tmp" with contents
+[
+rasapi32.lib version.lib winmm.lib setupapi.lib /nologo /entry:"wWinMainCRTStartup" /subsystem:windows /incremental:yes /pdb:"Debug/CM200 USB Modem.pdb" /map:"Debug/CM200 USB Modem.map" /debug /machine:I386 /out:"Debug/CM200 USB Modem.exe" /pdbtype:sept 
+".\Debug\DlgPbImport.obj"
+".\Debug\GetOutlookPBDlg.obj"
+".\Debug\MenuBar.obj"
+".\Debug\MenuButtonST.obj"
+".\Debug\msoutl.obj"
+".\Debug\PwdConfirmDlg.obj"
+".\Debug\PwdModifyDlg.obj"
+".\Debug\ReadFalshSMS.obj"
+".\Debug\SmsData.obj"
+".\Debug\SmsDlg.obj"
+".\Debug\SmsEdit.obj"
+".\Debug\SmsExportSel.obj"
+".\Debug\SmsExtractNumDlg.obj"
+".\Debug\SmsListCtrl.obj"
+".\Debug\SmsReadDlg.obj"
+".\Debug\SmsSendDlg.obj"
+".\Debug\SmsTemplateDlg.obj"
+".\Debug\SmsTransferDlg.obj"
+".\Debug\SmsWriteDlg.obj"
+".\Debug\CallDlg.obj"
+".\Debug\CallHistoryDlg.obj"
+".\Debug\HistData.obj"
+".\Debug\HistListCtrl.obj"
+".\Debug\SliderCtrlEx.obj"
+".\Debug\ContactDlg.obj"
+".\Debug\DlgEditGPMember.obj"
+".\Debug\mylistctrl.obj"
+".\Debug\PbData.obj"
+".\Debug\PBGroupDlg.obj"
+".\Debug\PBNewGroupDlg.obj"
+".\Debug\PbSelPositon.obj"
+".\Debug\PhoneBookDlg.obj"
+".\Debug\Picture.obj"
+".\Debug\SearchContactDlg.obj"
+".\Debug\SelContactDlg.obj"
+".\Debug\SelDialDlg.obj"
+".\Debug\SelPosition.obj"
+".\Debug\TransferDlg.obj"
+".\Debug\WaitDlg.obj"
+".\Debug\CopsInitTip.obj"
+".\Debug\DataServiceHistory.obj"
+".\Debug\DlgConnect.obj"
+".\Debug\DlgInternetNewConn.obj"
+".\Debug\DlgNetProfile.obj"
+".\Debug\DlgNetProfileCDMA.obj"
+".\Debug\DlgNetProfileNewCDMA.obj"
+".\Debug\InternetConnTip.obj"
+".\Debug\InternetUsageLimitDlg.obj"
+".\Debug\LogData.obj"
+".\Debug\LogListCtrl.obj"
+".\Debug\MFNetTraffic.obj"
+".\Debug\mftrafficbutton.obj"
+".\Debug\NetLog.obj"
+".\Debug\NetStatistics.obj"
+".\Debug\DiagnosticDlg.obj"
+".\Debug\DlgMsg.obj"
+".\Debug\DlgNetSettingCDMA.obj"
+".\Debug\DlgSetupGeneral.obj"
+".\Debug\DlgSetupNWSel.obj"
+".\Debug\DlgSetupNWSelMode.obj"
+".\Debug\DlgSetupNWSelSearch.obj"
+".\Debug\DlgSetupPowerMng.obj"
+".\Debug\DlgSetupSkin.obj"
+".\Debug\ModifyPinDlg.obj"
+".\Debug\NWListCtrl.obj"
+".\Debug\NWListCtrlSearch.obj"
+".\Debug\PinClckDlg.obj"
+".\Debug\PinEx.obj"
+".\Debug\SetupCallDlg.obj"
+".\Debug\SetupData.obj"
+".\Debug\SetupDlg.obj"
+".\Debug\SetupPreferDlg.obj"
+".\Debug\AboutDialog.obj"
+".\Debug\BaseDialog.obj"
+".\Debug\BaseTabCtrl.obj"
+".\Debug\BtnST.obj"
+".\Debug\ConnProfile.obj"
+".\Debug\Dev.obj"
+".\Debug\DlgSignIn.obj"
+".\Debug\DlgSubversion.obj"
+".\Debug\Ds.obj"
+".\Debug\EnBitmap.obj"
+".\Debug\EnTabCtrl.obj"
+".\Debug\ExDataExch.obj"
+".\Debug\HeaderCtrlEx.obj"
+".\Debug\HSDPA.obj"
+".\Debug\HSDPADlg.obj"
+".\Debug\MAPHYPERLINK.OBJ"
+".\Debug\MsgBox.obj"
+".\Debug\MsgThread.obj"
+".\Debug\MyBitmap.obj"
+".\Debug\NumEdit.obj"
+".\Debug\PopDlg.obj"
+".\Debug\PreMsg.obj"
+".\Debug\ProgressDlg.obj"
+".\Debug\ProgressExDlg.obj"
+".\Debug\ResDllMiss.obj"
+".\Debug\ScreenStatic.obj"
+".\Debug\ShadeButtonST.obj"
+".\Debug\SkinButton.obj"
+".\Debug\SkinResource.obj"
+".\Debug\SkinWin.obj"
+".\Debug\SplashScreenEx.obj"
+".\Debug\StdAfx.obj"
+".\Debug\Subclass.obj"
+".\Debug\TabDialog.obj"
+".\Debug\TabedDialog.obj"
+".\Debug\TransparentStatic.obj"
+".\Debug\UtilsSkin.obj"
+".\Debug\VersionDlg.obj"
+".\Debug\xDib.obj"
+".\Debug\XInfoTip.obj"
+".\Debug\SerialBuffer.obj"
+".\Debug\SerialBufQueue.obj"
+".\Debug\SerialProt.obj"
+".\Debug\ConnectionManagerDlg.obj"
+".\Debug\ConnectionPage.obj"
+".\Debug\ProfileGeneralPage.obj"
+".\Debug\ProfileGprsMinPage.obj"
+".\Debug\ProfileGprsReqPage.obj"
+".\Debug\ProfileSheet.obj"
+".\Debug\ProfilesPage.obj"
+".\Debug\ProfileUmtsMinPage.obj"
+".\Debug\ProfileUmtsReqPage.obj"
+".\Debug\StatisticsPage.obj"
+".\Debug\StatusPage.obj"
+".\Debug\TextProgressCtrl.obj"
+".\Debug\DeviceMonitor.obj"
+".\Debug\DMSGetDeviceCapMsg.obj"
+".\Debug\DMSGetDeviceMfrMsg.obj"
+".\Debug\DMSGetDeviceModelIdMsg.obj"
+".\Debug\DMSGetDeviceRevIdMsg.obj"
+".\Debug\DMSGetDeviceSerialNumbersMsg.obj"
+".\Debug\DMSGetMsisdnMsg.obj"
+".\Debug\DMSGetPowerStateMsg.obj"
+".\Debug\DMSSetEventReportMsg.obj"
+".\Debug\Message.obj"
+".\Debug\MessageFactory.obj"
+".\Debug\MessageManager.obj"
+".\Debug\MsgBuf.obj"
+".\Debug\NASGetServingSystemMsg.obj"
+".\Debug\NASGetSignalStrengthMsg.obj"
+".\Debug\NASSetEventReportMsg.obj"
+".\Debug\QMIService.obj"
+".\Debug\StringUtils.obj"
+".\Debug\WDSAbortMsg.obj"
+".\Debug\WDSCreateProfileMsg.obj"
+".\Debug\WDSDeleteProfileMsg.obj"
+".\Debug\WDSGetCurrentChannelRateMsg.obj"
+".\Debug\WDSGetDefaultSettingsMsg.obj"
+".\Debug\WDSGetPktSrvcStatusMsg.obj"
+".\Debug\WDSGetProfileListMsg.obj"
+".\Debug\WDSGetProfileSettingsMsg.obj"
+".\Debug\WDSModifyProfileSettingsMsg.obj"
+".\Debug\WDSResetMsg.obj"
+".\Debug\WDSSetEventReportMsg.obj"
+".\Debug\WDSStartNetworkInterfaceMsg.obj"
+".\Debug\WDSStopNetworkInterfaceMsg.obj"
+".\Debug\api.obj"
+".\Debug\reg.obj"
+".\Debug\utils.obj"
+".\Debug\PCCard.res"
+".\Common_DataCrad\Debug\Common_DataCrad.lib"
+".\DataCrad_Arabic\Debug\DataCrad_Arabic.lib"
+]
+Creating command line "link.exe @C:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\RSP4C.tmp"
+<h3>Output Window</h3>
+Compiling resources...
+Compiling...
+StdAfx.cpp
+
+NOTE: WINVER has been defined as 0x0500 or greater which enables
+Windows NT 5.0 and Windows 98 features. When these headers were released,
+Windows NT 5.0 beta 1 and Windows 98 beta 2.1 were the current versions.
+
+For this release when WINVER is defined as 0x0500 or greater, you can only
+build beta or test applications.  To build a retail application,
+set WINVER to 0x0400 or visit http://www.microsoft.com/msdn/sdk
+to see if retail Windows NT 5.0 or Windows 98 headers are available.
+
+See the SDK release notes for more information.
+
+Compiling...
+DlgPbImport.cpp
+GetOutlookPBDlg.cpp
+MenuBar.cpp
+MenuButtonST.cpp
+msoutl.cpp
+PwdConfirmDlg.cpp
+PwdModifyDlg.cpp
+ReadFalshSMS.cpp
+SmsData.cpp
+SmsDlg.cpp
+SmsEdit.cpp
+SmsExportSel.cpp
+SmsExtractNumDlg.cpp
+SmsListCtrl.cpp
+SmsReadDlg.cpp
+SmsSendDlg.cpp
+SmsTemplateDlg.cpp
+SmsTransferDlg.cpp
+SmsWriteDlg.cpp
+CallDlg.cpp
+Generating Code...
+Compiling...
+CallHistoryDlg.cpp
+HistData.cpp
+HistListCtrl.cpp
+SliderCtrlEx.cpp
+ContactDlg.cpp
+DlgEditGPMember.cpp
+mylistctrl.cpp
+PbData.cpp
+PBGroupDlg.cpp
+PBNewGroupDlg.cpp
+PbSelPositon.cpp
+PhoneBookDlg.cpp
+Picture.cpp
+SearchContactDlg.cpp
+SelContactDlg.cpp
+SelDialDlg.cpp
+SelPosition.cpp
+TransferDlg.cpp
+WaitDlg.cpp
+CopsInitTip.cpp
+Generating Code...
+Compiling...
+DataServiceHistory.cpp
+DlgConnect.cpp
+DlgInternetNewConn.cpp
+DlgNetProfile.cpp
+DlgNetProfileCDMA.cpp
+DlgNetProfileNewCDMA.cpp
+InternetConnTip.cpp
+InternetUsageLimitDlg.cpp
+LogData.cpp
+LogListCtrl.cpp
+MFNetTraffic.cpp
+mftrafficbutton.cpp
+NetLog.cpp
+NetStatistics.cpp
+DiagnosticDlg.cpp
+DlgMsg.cpp
+DlgNetSettingCDMA.cpp
+DlgSetupGeneral.cpp
+DlgSetupNWSel.cpp
+DlgSetupNWSelMode.cpp
+Generating Code...
+Compiling...
+DlgSetupNWSelSearch.cpp
+DlgSetupPowerMng.cpp
+DlgSetupSkin.cpp
+ModifyPinDlg.cpp
+NWListCtrl.cpp
+NWListCtrlSearch.cpp
+PinClckDlg.cpp
+PinEx.cpp
+SetupCallDlg.cpp
+SetupData.cpp
+SetupDlg.cpp
+SetupPreferDlg.cpp
+AboutDialog.cpp
+BaseDialog.cpp
+BaseTabCtrl.cpp
+BtnST.cpp
+ConnProfile.cpp
+Dev.cpp
+DlgSignIn.cpp
+DlgSubversion.cpp
+Generating Code...
+Compiling...
+Ds.cpp
+EnBitmap.cpp
+EnTabCtrl.cpp
+ExDataExch.cpp
+HeaderCtrlEx.cpp
+HSDPA.cpp
+HSDPADlg.cpp
+MAPHYPERLINK.CPP
+MsgBox.cpp
+MsgThread.cpp
+MyBitmap.cpp
+NumEdit.cpp
+PopDlg.cpp
+PreMsg.cpp
+ProgressDlg.cpp
+ProgressExDlg.cpp
+ResDllMiss.cpp
+ScreenStatic.cpp
+ShadeButtonST.cpp
+SkinButton.cpp
+Generating Code...
+Compiling...
+SkinResource.cpp
+SkinWin.cpp
+SplashScreenEx.cpp
+Subclass.cpp
+TabDialog.cpp
+TabedDialog.cpp
+TransparentStatic.cpp
+UtilsSkin.cpp
+VersionDlg.cpp
+xDib.cpp
+XInfoTip.cpp
+SerialBuffer.cpp
+SerialBufQueue.cpp
+SerialProt.cpp
+ConnectionManagerDlg.cpp
+ConnectionPage.cpp
+ProfileGeneralPage.cpp
+ProfileGprsMinPage.cpp
+ProfileGprsReqPage.cpp
+ProfileSheet.cpp
+Generating Code...
+c:\program files\microsoft visual studio\vc98\mfc\include\afxtempl.h(63) : warning C4786: 'std::_Tree<std::basic_string<char,std::char_traits<char>,std::allocator<char> >,std::pair<std::basic_string<char,std::char_traits<char>,std::allocator<char> > const ,bool (__thiscall Message::*)(std::basic_string<char,std::char_traits<char>,std::allocator<char> > &)>,std::map<std::basic_string<char,std::char_traits<char>,std::allocator<char> >,bool (__thiscall Message::*)(std::basic_string<char,std::char_traits<char>,std::allocator<char> > &),std::less<std::basic_string<char,std::char_traits<char>,std::allocator<char> > >,std::allocator<bool (__thiscall Message::*)(std::basic_string<char,std::char_traits<char>,std::allocator<char> > &)> >::_Kfn,std::less<std::basic_string<char,std::char_traits<char>,std::allocator<char> > >,std::allocator<bool (__thiscall Message::*)(std::basic_string<char,std::char_traits<char>,std::allocator<char> > &)> >' : identifier was truncated to '255' characters in the debug information
+c:\program files\microsoft visual studio\vc98\mfc\include\afxtempl.h(63) : warning C4786: 'std::_Tree<std::basic_string<char,std::char_traits<char>,std::allocator<char> >,std::pair<std::basic_string<char,std::char_traits<char>,std::allocator<char> > const ,bool (__thiscall Message::*)(std::basic_string<char,std::char_traits<char>,std::allocator<char> > &)>,std::map<std::basic_string<char,std::char_traits<char>,std::allocator<char> >,bool (__thiscall Message::*)(std::basic_string<char,std::char_traits<char>,std::allocator<char> > &),std::less<std::basic_string<char,std::char_traits<char>,std::allocator<char> > >,std::allocator<bool (__thiscall Message::*)(std::basic_string<char,std::char_traits<char>,std::allocator<char> > &)> >::_Kfn,std::less<std::basic_string<char,std::char_traits<char>,std::allocator<char> > >,std::allocator<bool (__thiscall Message::*)(std::basic_string<char,std::char_traits<char>,std::allocator<char> > &)> >::const_iterator' : identifier was truncated to '255' characters in the debug information
+c:\program files\microsoft visual studio\vc98\mfc\include\afxtempl.h(63) : warning C4786: 'std::_Tree<std::basic_string<char,std::char_traits<char>,std::allocator<char> >,std::pair<std::basic_string<char,std::char_traits<char>,std::allocator<char> > const ,bool (__thiscall Message::*)(std::basic_string<char,std::char_traits<char>,std::allocator<char> > &)>,std::map<std::basic_string<char,std::char_traits<char>,std::allocator<char> >,bool (__thiscall Message::*)(std::basic_string<char,std::char_traits<char>,std::allocator<char> > &),std::less<std::basic_string<char,std::char_traits<char>,std::allocator<char> > >,std::allocator<bool (__thiscall Message::*)(std::basic_string<char,std::char_traits<char>,std::allocator<char> > &)> >::_Kfn,std::less<std::basic_string<char,std::char_traits<char>,std::allocator<char> > >,std::allocator<bool (__thiscall Message::*)(std::basic_string<char,std::char_traits<char>,std::allocator<char> > &)> >::_Redbl' : identifier was truncated to '255' characters in the debug information
+c:\program files\microsoft visual studio\vc98\mfc\include\afxtempl.h(63) : warning C4786: 'std::_Tree<std::basic_string<char,std::char_traits<char>,std::allocator<char> >,std::pair<std::basic_string<char,std::char_traits<char>,std::allocator<char> > const ,bool (__thiscall Message::*)(std::basic_string<char,std::char_traits<char>,std::allocator<char> > &)>,std::map<std::basic_string<char,std::char_traits<char>,std::allocator<char> >,bool (__thiscall Message::*)(std::basic_string<char,std::char_traits<char>,std::allocator<char> > &),std::less<std::basic_string<char,std::char_traits<char>,std::allocator<char> > >,std::allocator<bool (__thiscall Message::*)(std::basic_string<char,std::char_traits<char>,std::allocator<char> > &)> >::_Kfn,std::less<std::basic_string<char,std::char_traits<char>,std::allocator<char> > >,std::allocator<bool (__thiscall Message::*)(std::basic_string<char,std::char_traits<char>,std::allocator<char> > &)> >::iterator' : identifier was truncated to '255' characters in the debug information
+c:\program files\microsoft visual studio\vc98\mfc\include\afxtempl.h(63) : warning C4786: 'std::_Tree<std::basic_string<char,std::char_traits<char>,std::allocator<char> >,std::pair<std::basic_string<char,std::char_traits<char>,std::allocator<char> > const ,bool (__thiscall Message::*)(std::basic_string<char,std::char_traits<char>,std::allocator<char> > &)>,std::map<std::basic_string<char,std::char_traits<char>,std::allocator<char> >,bool (__thiscall Message::*)(std::basic_string<char,std::char_traits<char>,std::allocator<char> > &),std::less<std::basic_string<char,std::char_traits<char>,std::allocator<char> > >,std::allocator<bool (__thiscall Message::*)(std::basic_string<char,std::char_traits<char>,std::allocator<char> > &)> >::_Kfn,std::less<std::basic_string<char,std::char_traits<char>,std::allocator<char> > >,std::allocator<bool (__thiscall Message::*)(std::basic_string<char,std::char_traits<char>,std::allocator<char> > &)> >::_Node' : identifier was truncated to '255' characters in the debug information
+c:\program files\microsoft visual studio\vc98\mfc\include\afxtempl.h(63) : warning C4786: 'std::_Tree<unsigned char,std::pair<unsigned char const ,bool (__thiscall Message::*)(MsgBuf &)>,std::map<unsigned char,bool (__thiscall Message::*)(MsgBuf &),std::less<unsigned char>,std::allocator<bool (__thiscall Message::*)(MsgBuf &)> >::_Kfn,std::less<unsigned char>,std::allocator<bool (__thiscall Message::*)(MsgBuf &)> >' : identifier was truncated to '255' characters in the debug information
+c:\program files\microsoft visual studio\vc98\mfc\include\afxtempl.h(63) : warning C4786: 'std::_Tree<unsigned char,std::pair<unsigned char const ,bool (__thiscall Message::*)(MsgBuf &)>,std::map<unsigned char,bool (__thiscall Message::*)(MsgBuf &),std::less<unsigned char>,std::allocator<bool (__thiscall Message::*)(MsgBuf &)> >::_Kfn,std::less<unsigned char>,std::allocator<bool (__thiscall Message::*)(MsgBuf &)> >::const_iterator' : identifier was truncated to '255' characters in the debug information
+c:\program files\microsoft visual studio\vc98\mfc\include\afxtempl.h(63) : warning C4786: 'std::_Tree<unsigned char,std::pair<unsigned char const ,bool (__thiscall Message::*)(MsgBuf &)>,std::map<unsigned char,bool (__thiscall Message::*)(MsgBuf &),std::less<unsigned char>,std::allocator<bool (__thiscall Message::*)(MsgBuf &)> >::_Kfn,std::less<unsigned char>,std::allocator<bool (__thiscall Message::*)(MsgBuf &)> >::_Redbl' : identifier was truncated to '255' characters in the debug information
+c:\program files\microsoft visual studio\vc98\mfc\include\afxtempl.h(63) : warning C4786: 'std::_Tree<unsigned char,std::pair<unsigned char const ,bool (__thiscall Message::*)(MsgBuf &)>,std::map<unsigned char,bool (__thiscall Message::*)(MsgBuf &),std::less<unsigned char>,std::allocator<bool (__thiscall Message::*)(MsgBuf &)> >::_Kfn,std::less<unsigned char>,std::allocator<bool (__thiscall Message::*)(MsgBuf &)> >::iterator' : identifier was truncated to '255' characters in the debug information
+c:\program files\microsoft visual studio\vc98\mfc\include\afxtempl.h(63) : warning C4786: 'std::_Tree<unsigned char,std::pair<unsigned char const ,bool (__thiscall Message::*)(MsgBuf &)>,std::map<unsigned char,bool (__thiscall Message::*)(MsgBuf &),std::less<unsigned char>,std::allocator<bool (__thiscall Message::*)(MsgBuf &)> >::_Kfn,std::less<unsigned char>,std::allocator<bool (__thiscall Message::*)(MsgBuf &)> >::_Node' : identifier was truncated to '255' characters in the debug information
+c:\program files\microsoft visual studio\vc98\mfc\include\afxtempl.h(63) : warning C4786: 'std::unary_function<std::pair<std::basic_string<char,std::char_traits<char>,std::allocator<char> > const ,bool (__thiscall Message::*)(std::basic_string<char,std::char_traits<char>,std::allocator<char> > &)>,std::basic_string<char,std::char_traits<char>,std::allocator<char> > >' : identifier was truncated to '255' characters in the debug information
+c:\program files\microsoft visual studio\vc98\mfc\include\afxtempl.h(63) : warning C4786: 'std::binary_function<std::pair<std::basic_string<char,std::char_traits<char>,std::allocator<char> > const ,bool (__thiscall Message::*)(std::basic_string<char,std::char_traits<char>,std::allocator<char> > &)>,std::pair<std::basic_string<char,std::char_traits<char>,std::allocator<char> > const ,bool (__thiscall Message::*)(std::basic_string<char,std::char_traits<char>,std::allocator<char> > &)>,bool>' : identifier was truncated to '255' characters in the debug information
+c:\program files\microsoft visual studio\vc98\mfc\include\afxtempl.h(63) : warning C4786: 'std::map<std::basic_string<char,std::char_traits<char>,std::allocator<char> >,bool (__thiscall Message::*)(std::basic_string<char,std::char_traits<char>,std::allocator<char> > &),std::less<std::basic_string<char,std::char_traits<char>,std::allocator<char> > >,std::allocator<bool (__thiscall Message::*)(std::basic_string<char,std::char_traits<char>,std::allocator<char> > &)> >' : identifier was truncated to '255' characters in the debug information
+c:\program files\microsoft visual studio\vc98\mfc\include\afxtempl.h(63) : warning C4786: 'std::map<std::basic_string<char,std::char_traits<char>,std::allocator<char> >,bool (__thiscall Message::*)(std::basic_string<char,std::char_traits<char>,std::allocator<char> > &),std::less<std::basic_string<char,std::char_traits<char>,std::allocator<char> > >,std::allocator<bool (__thiscall Message::*)(std::basic_string<char,std::char_traits<char>,std::allocator<char> > &)> >::value_compare' : identifier was truncated to '255' characters in the debug information
+c:\program files\microsoft visual studio\vc98\mfc\include\afxtempl.h(63) : warning C4786: 'std::map<std::basic_string<char,std::char_traits<char>,std::allocator<char> >,bool (__thiscall Message::*)(std::basic_string<char,std::char_traits<char>,std::allocator<char> > &),std::less<std::basic_string<char,std::char_traits<char>,std::allocator<char> > >,std::allocator<bool (__thiscall Message::*)(std::basic_string<char,std::char_traits<char>,std::allocator<char> > &)> >::_Kfn' : identifier was truncated to '255' characters in the debug information
+Compiling...
+ProfilesPage.cpp
+ProfileUmtsMinPage.cpp
+ProfileUmtsReqPage.cpp
+StatisticsPage.cpp
+StatusPage.cpp
+TextProgressCtrl.cpp
+DeviceMonitor.cpp
+DMSGetDeviceCapMsg.cpp
+DMSGetDeviceMfrMsg.cpp
+DMSGetDeviceModelIdMsg.cpp
+DMSGetDeviceRevIdMsg.cpp
+DMSGetDeviceSerialNumbersMsg.cpp
+DMSGetMsisdnMsg.cpp
+DMSGetPowerStateMsg.cpp
+DMSSetEventReportMsg.cpp
+Message.cpp
+MessageFactory.cpp
+MessageManager.cpp
+MsgBuf.cpp
+NASGetServingSystemMsg.cpp
+Generating Code...
+Compiling...
+NASGetSignalStrengthMsg.cpp
+NASSetEventReportMsg.cpp
+QMIService.cpp
+StringUtils.cpp
+WDSAbortMsg.cpp
+WDSCreateProfileMsg.cpp
+WDSDeleteProfileMsg.cpp
+WDSGetCurrentChannelRateMsg.cpp
+WDSGetDefaultSettingsMsg.cpp
+WDSGetPktSrvcStatusMsg.cpp
+WDSGetProfileListMsg.cpp
+WDSGetProfileSettingsMsg.cpp
+WDSModifyProfileSettingsMsg.cpp
+WDSResetMsg.cpp
+WDSSetEventReportMsg.cpp
+WDSStartNetworkInterfaceMsg.cpp
+WDSStopNetworkInterfaceMsg.cpp
+api.cpp
+reg.cpp
+utils.cpp
+Generating Code...
+Linking...
+LINK : fatal error LNK1104: cannot open file "uafxcwd.lib"
+执行 link.exe 时出错.
+
+
+
+<h3>Results</h3>
+CM200 USB Modem.exe - 1 error(s), 0 warning(s)
+</pre>
+</body>
+</html>

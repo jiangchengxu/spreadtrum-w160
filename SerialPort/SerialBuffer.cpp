@@ -1,0 +1,22 @@
+// SerialBuffer.cpp: implementation of the CSerialBuffer class.
+//
+//////////////////////////////////////////////////////////////////////
+
+#include "stdafx.h"
+#include "SerialBuffer.h"
+
+//////////////////////////////////////////////////////////////////////
+// Construction/Destruction
+//////////////////////////////////////////////////////////////////////
+
+CSerialBuffer::CSerialBuffer()
+{
+    next = NULL;
+    m_dwBytes = 0;
+    memset(m_szBuffer, 0x00, sizeof(m_szBuffer));
+}
+
+CSerialBuffer::~CSerialBuffer()
+{
+
+}

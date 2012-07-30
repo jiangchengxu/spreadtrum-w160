@@ -1,0 +1,10 @@
+; Common_DataCrad.def : Declares the module parameters for the DLL.
+
+LIBRARY      "Common_DataCrad"
+DESCRIPTION  'Common_DataCrad Windows Dynamic Link Library'
+
+EXPORTS
+    ; Explicit exports can go here
+GetFuncCall @ 1
+GetLang	@ 2
+GetComp @ 3
