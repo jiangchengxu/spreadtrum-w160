@@ -74,5 +74,12 @@
 //”Ô“Ùº”√‹
 //#define FEATURE_CALL_PRIVACY
 
+//Haier   ≈‰
+#ifndef FEATURE_HAIER
+#define FEATURE_HAIER
+
+//µÁª∞±æ  ≈‰
+#define FEATURE_HAIER_PHONEBOOK
+#endif
 
 #endif //#ifndef _AFX_FEATURECUSTOM_H_

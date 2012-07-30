@@ -3457,7 +3457,11 @@ void CPhoneBookDlg::AtRespReadState(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL]
 				break;
             }			
             memset(szAtBuf,0,sizeof(char)*Len);
-            strcpy(szAtBuf,"AT+CPBR=1");            
+			#ifdef FEATURE_HAIER_PHONEBOOK
+			strcpy(szAtBuf,"AT^CPBR=1");
+			#else
+            strcpy(szAtBuf,"AT+CPBR=1");
+			#endif
             szAtBuf[strlen(szAtBuf)] = 0x0D;
             szAtBuf[strlen(szAtBuf)] = 0;
             pComm = ((CHSDPAApp*)AfxGetApp())->m_pSerialPort;
@@ -3549,13 +3553,28 @@ void CPhoneBookDlg::AtRespReadState(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL]
 					memcpy(pStDCPbRecord[nIndex - 1].strMobile, strNum, PB_NUM_MAX*2);
 
 					//»ñÈ¡ÐÕÃû
+					#ifdef FEATURE_HAIER_PHONEBOOK
+					CString numType = strTemp.Right(1);
+					numType.TrimLeft();
+					numType.TrimRight();
+					int nNumType = _wtoi(numType);
+
+					int nNameFrom = strTemp.Find('\"', nNumTo + 1);
+					int nNameTo = strTemp.ReverseFind('\"');
+					strTemp.Delete(nNameTo, strTemp.GetLength()-nNameTo - 1);
+					CString strName = strTemp.Mid(nNameFrom + 1, (nNameTo - nNameFrom - 1));
+					#else
 					strTemp.Delete(strTemp.GetLength() - 1, 1);
 					int nNameFrom = strTemp.ReverseFind('\"');
 					CString strName = strTemp.Mid(nNameFrom + 1, (strTemp.GetLength() - 1));
+					#endif
 					strName.TrimLeft();
                     strName.TrimRight();
 					if (_T("") != strName)
 					{
+						//#ifdef FEATURE_HAIER_PHONEBOOK
+						//if(nNumType == 1)		//unicode encoding
+						//#endif
 						strName = UCS2ToGB(strName);
 					}
 					else
@@ -3577,7 +3596,11 @@ void CPhoneBookDlg::AtRespReadState(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL]
 				pDlg->m_pWaitDlg->m_ProgressWait.StepIt();
 
 				memset(szAtBuf,0,sizeof(char)*Len);
+				#ifdef FEATURE_HAIER_PHONEBOOK
+                strcpy(szAtBuf,"AT^CPBR=");
+				#else
                 strcpy(szAtBuf,"AT+CPBR=");
+				#endif
                 strcat(szAtBuf, StrIndex);
                 szAtBuf[strlen(szAtBuf)] = 0x0D;
                 szAtBuf[strlen(szAtBuf)] = 0;
@@ -3751,14 +3774,22 @@ bool CPhoneBookDlg::AtWriteARecord(CString Name,CString Num, int index,int nflag
     CString strIndexTemp = (char*)cIndexTemp;
     strIndexTemp.TrimLeft();
     strIndexTemp.TrimRight();
+	#ifdef FEATURE_HAIER_PHONEBOOK
+	m_StrSource = _T("AT^CPBW=");
+	#else
     m_StrSource = _T("AT+CPBW=");
+	#endif
     m_StrSource.Insert(m_StrSource.GetLength(),strIndexTemp);
     
     if (_T("") != Num)
     {    
         m_StrSource.Insert(m_StrSource.GetLength(),_T(",\""));
         m_StrSource.Insert(m_StrSource.GetLength(),Num);
+		#ifdef FEATURE_HAIER_PHONEBOOK
+		m_StrSource.Insert(m_StrSource.GetLength(),_T("\",255,"));//modem will auto check the num type
+		#else
         m_StrSource.Insert(m_StrSource.GetLength(),_T("\",129,"));
+        #endif
     
         if (_T("") != Name)
         {
@@ -3771,6 +3802,10 @@ bool CPhoneBookDlg::AtWriteARecord(CString Name,CString Num, int index,int nflag
 			
             m_StrSource.Insert(m_StrSource.GetLength(),szTemp);
             m_StrSource.Insert(m_StrSource.GetLength(),_T("\""));
+
+			#ifdef FEATURE_HAIER_PHONEBOOK
+			m_StrSource.Insert(m_StrSource.GetLength(),_T(",1"));	//raw character encoding
+			#endif
         }
         else
         {
@@ -3886,22 +3921,43 @@ bool CPhoneBookDlg::AtWriteARecord2(CString Name,CString Num, int index,int nfla
     CString strIndexTemp = cIndexTemp;
     strIndexTemp.TrimLeft();
     strIndexTemp.TrimRight();
+	#ifdef FEATURE_HAIER_PHONEBOOK
+	m_StrSource = _T("AT^CPBW=");
+	#else
     m_StrSource = _T("AT+CPBW=");
+	#endif
     m_StrSource.Insert(m_StrSource.GetLength(),strIndexTemp);
     
     if (_T("") != Num)
     {    
         m_StrSource.Insert(m_StrSource.GetLength(),_T(",\""));
         m_StrSource.Insert(m_StrSource.GetLength(),Num);
+		#ifdef FEATURE_HAIER_PHONEBOOK
+		m_StrSource.Insert(m_StrSource.GetLength(),_T("\",255,"));//modem will auto check the num type
+		#else
         m_StrSource.Insert(m_StrSource.GetLength(),_T("\",129,"));
+        #endif
         if (_T("") != Name)
         {        
 			//Name.Insert(strlen(Name),"\"");
 			m_StrSource.Insert(m_StrSource.GetLength(),_T("\""));
+			#ifdef FEATURE_HAIER_PHONEBOOK
+			int iByte = 0;
+			bool bCheckRes = CheckNameUnicode(Name,&iByte);
+			if(!bCheckRes){
+			//add name charset check
+			#endif
 			CString CodeUnicode=BTToUCS2(Name);
 			UCS2ToUCS2(Name,CodeUnicode);
 			m_StrSource.Insert(m_StrSource.GetLength(),CodeUnicode);
+			#ifdef FEATURE_HAIER_PHONEBOOK
+			}else
+			m_StrSource.Insert(m_StrSource.GetLength(),Name);
+			#endif
 			m_StrSource.Insert(m_StrSource.GetLength(),_T("\""));
+			#ifdef FEATURE_HAIER_PHONEBOOK
+			m_StrSource.Insert(m_StrSource.GetLength(),(bCheckRes?_T(",2"):_T(",1")));	//raw character encoding
+			#endif
         }
         else
         {
