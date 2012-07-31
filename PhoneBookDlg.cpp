@@ -1304,7 +1304,11 @@ bool CPhoneBookDlg::WriteToUSIM(StPbRecord *PbBookPC,int Flag)
 	CString strNameLenTemp;	
 	strNameLenTemp.Format(PbBookPC->strName);
 
+#ifdef FEATURE_HAIER_PHONEBOOK
+if(1)
+#else
 if(Flag==1)
+#endif
 {
 #ifndef FEATURE_VERSION_NOSIM
 	if(strNameLenTemp.GetLength() > PB_NAME_PC_MAX)
@@ -1328,6 +1332,18 @@ if(Flag==1)
 		strTemp = strMaxName.Left(iByte);
 		memcpy(PbBookPC->strName,strTemp,PB_NAME_MAX);
 	}
+
+	#ifdef FEATURE_HAIER_PHONEBOOK
+	/*对保存到手机中的号码长度进行限制*/
+	CString strNumLenTemp;
+	strNumLenTemp.Format(PbBookPC->strMobile);
+	if(strNumLenTemp.GetLength() > PB_NUM_SIM_MAX)
+	{
+		memset(PbBookPC->strMobile, 0, (PB_NUM_MAX + 1)*sizeof(TCHAR));
+		CString numTemp = strNumLenTemp.Left(PB_NUM_SIM_MAX);
+		wcscat(PbBookPC->strMobile, numTemp);
+	}
+	#endif
 #endif
 }
 else  

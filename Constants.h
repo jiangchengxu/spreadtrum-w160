@@ -45,6 +45,9 @@ const int PB_NUM_MAX = 32;		//wyw_0423 mofify 原来是40
 const int PB_NAME_SIM_MAX = 14; //下位机ASICC码的NAME长度为14
 const int PB_NAME_PC_MAX = 16; //上位机Unicode码的NAME长度为16
 const int PB_NAME_UCS_MAX = 6; //下位机Unicode码的NAME长度为6
+#ifdef FEATURE_HAIER_PHONEBOOK
+const int PB_NUM_SIM_MAX = 20; //sim 卡号码的长度
+#endif
 
 
 //Sms Constants
