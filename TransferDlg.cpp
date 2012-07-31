@@ -1999,27 +1999,55 @@ bool CTransferDlg::AtWriteARecord(CString Name,CString Num, int index,int nflag)
     strIndexTemp.TrimLeft();
     strIndexTemp.TrimRight();
    
+#ifdef FEATURE_HAIER_PHONEBOOK
+	m_StrSource = _T("AT^CPBW=");
+#else
 	m_StrSource = _T("AT+CPBW=");
+#endif
     m_StrSource.Insert(m_StrSource.GetLength(),strIndexTemp);
     
     if (_T("") != Num)
     {    
+#ifdef FEATURE_HAIER_PHONEBOOK
+		bool bCheckRes = false;
+#endif
         m_StrSource.Insert(m_StrSource.GetLength(),_T(",\""));
         m_StrSource.Insert(m_StrSource.GetLength(),Num);
+#ifdef FEATURE_HAIER_PHONEBOOK
+		m_StrSource.Insert(m_StrSource.GetLength(),_T("\",255,"));
+#else
         m_StrSource.Insert(m_StrSource.GetLength(),_T("\",129,"));
+#endif
         if (_T("") != Name)
         {        
             //Name.Insert(strlen(Name),"\"");
 			m_StrSource.Insert(m_StrSource.GetLength(),_T("\""));
+#ifdef FEATURE_HAIER_PHONEBOOK
+			int iByte;
+			bCheckRes = CheckNameUnicode(Name, &iByte);
+			if(bCheckRes){//是中文
+#endif
 			CString CodeUnicode=BTToUCS2(Name);
 			UCS2ToUCS2(Name,CodeUnicode);
+#ifdef FEATURE_HAIER_PHONEBOOK
+			CodeUnicode.Insert(0, _T("80")); //add unicode character encoding identifier
+#endif
 			m_StrSource.Insert(m_StrSource.GetLength(),CodeUnicode);
-				m_StrSource.Insert(m_StrSource.GetLength(),_T("\""));
+#ifdef FEATURE_HAIER_PHONEBOOK
+			}else{
+			m_StrSource.Insert(m_StrSource.GetLength(),Name);
+			}
+#endif
+			m_StrSource.Insert(m_StrSource.GetLength(),_T("\""));
+			
         }
         else
         {
            m_StrSource.Insert(m_StrSource.GetLength(),_T("\"\""));
         }
+#ifdef FEATURE_HAIER_PHONEBOOK
+		m_StrSource.Insert(m_StrSource.GetLength(), bCheckRes ? _T(", 1") : _T(", 2"));
+#endif
     }
     
     TCHAR szAtBuf[512]={0};
@@ -3132,7 +3160,11 @@ bool CTransferDlg::PcToDataCradOrUsim(bool flag,int nItem,bool Cut,int Direction
 	CString strNameLenTemp;	
 	strNameLenTemp.Format(PbBookPC->strName);
 
+#ifdef FEATURE_HAIER_PHONEBOOK
+if(1)	//because via code will check cpbw paramter length
+#else
 if(flag==1) //PC to USIM
+#endif
 {
 #ifndef FEATURE_VERSION_NOSIM
 	if(strNameLenTemp.GetLength() > PB_NAME_SIM_MAX)
@@ -3156,6 +3188,7 @@ if(flag==1) //PC to USIM
 		strTemp = strMaxName.Left(PB_NAME_UCS_MAX);
 	//	memcpy(PbBookPC->strName,strTemp,PB_NAME_MAX);
 	}
+
 #endif
 }
 else  //PC to USB modem
@@ -3191,6 +3224,16 @@ else  //PC to USB modem
             }
         }
 
+#ifdef FEATURE_HAIER_PHONEBOOK
+		//对号码长度进行检查，如号码长度超过20，则截取前20个字符
+		CString strMaxNumber;
+		strMaxNumber.Format(PbBookPC->strMobile);
+		if(strMaxNumber.GetLength() > PB_NUM_SIM_MAX){
+			CString numTemp = strMaxNumber.Left(PB_NUM_SIM_MAX);
+			memset(PbBookPC->strMobile, 0, (PB_NUM_MAX + 1)*sizeof(TCHAR));
+			wcscat(PbBookPC->strMobile, numTemp);
+		}
+#endif
 		CString NameTemp;
 	//	NameTemp = PbBookPC->strName ;
 		NameTemp=strTemp;
