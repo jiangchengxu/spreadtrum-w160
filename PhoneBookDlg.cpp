@@ -63,7 +63,6 @@ static char THIS_FILE[] = __FILE__;
 #define VCARD_NUM_MAX     32
 //#define VCARD_EMAIL_MAX   32
 #define VCARD_NOTE_MAX    128
-
 /////////////////////////////////////////////////////////////////////////////
 
 CPhoneBookDlg::CPhoneBookDlg(CWnd* pParent /*=NULL*/)
@@ -1318,7 +1317,12 @@ if(Flag==1)
 	CString strMaxName;
 	int iByte = 0;
 	strMaxName.Format(PbBookPC->strName);
+#ifdef FEATURE_HAIER_PHONEBOOK
+	BOOL bCheckRes = IsAlphabetUnicode(strMaxName);	//GBK encoding in PC
+	iByte = PB_NAME_UCS_MAX;
+#else
 	bool bCheckRes = CheckNameUnicode(strMaxName,&iByte);
+#endif
 	if(!bCheckRes)
 	{
 		strTemp = strMaxName.Left(iByte);
@@ -3572,10 +3576,20 @@ void CPhoneBookDlg::AtRespReadState(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL]
                     strName.TrimRight();
 					if (_T("") != strName)
 					{
-						//#ifdef FEATURE_HAIER_PHONEBOOK
-						//if(nNumType == 1)		//unicode encoding
-						//#endif
+						#ifdef FEATURE_HAIER_PHONEBOOK
+						if(nNumType == 1)		//unicode encoding
+						{
+							CString nAlphaIdentifier = strName.Left(2);
+							if(!nAlphaIdentifier.Compare(_T("80")) || !nAlphaIdentifier.Compare(_T("81"))
+								|| !nAlphaIdentifier.Compare(_T("81")))
+							{
+								strName.Delete(0, 2);	//exclude unicode identifier
+							}
+							strName = UCS2ToGB(strName);
+						}
+						#else
 						strName = UCS2ToGB(strName);
+						#endif
 					}
 					else
 					{
@@ -3942,13 +3956,15 @@ bool CPhoneBookDlg::AtWriteARecord2(CString Name,CString Num, int index,int nfla
 			//Name.Insert(strlen(Name),"\"");
 			m_StrSource.Insert(m_StrSource.GetLength(),_T("\""));
 			#ifdef FEATURE_HAIER_PHONEBOOK
-			int iByte = 0;
-			bool bCheckRes = CheckNameUnicode(Name,&iByte);
+			BOOL bCheckRes = IsAlphabetUnicode(Name);
 			if(!bCheckRes){
 			//add name charset check
 			#endif
 			CString CodeUnicode=BTToUCS2(Name);
 			UCS2ToUCS2(Name,CodeUnicode);
+			#ifdef FEATURE_HAIER_PHONEBOOK
+			CodeUnicode.Insert(0, _T("80"));
+			#endif
 			m_StrSource.Insert(m_StrSource.GetLength(),CodeUnicode);
 			#ifdef FEATURE_HAIER_PHONEBOOK
 			}else
