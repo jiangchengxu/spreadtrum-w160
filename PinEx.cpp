@@ -166,7 +166,6 @@ void CPinEx::AtRespPinRemainTimes(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL], 
 	int nfrom = 0;
 	int nto = 0;
 	int originalLen = strRet.GetLength();
-	int offset = 0;
 	char temp[4];
 
 	nfrom = strRet.Find(':') + 1;
@@ -177,9 +176,8 @@ void CPinEx::AtRespPinRemainTimes(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL], 
 
 	strRet.Delete(0, nto + 1); //index count from 0
 	
-	offset = originalLen - strRet.GetLength();
-	nfrom = offset;
-	nto = strRet.Find(',') + offset ;
+	nfrom = originalLen - strRet.GetLength();
+	nto = strRet.Find(',') + nfrom ;
 	memcpy(temp,pbuf + nfrom,(nto - nfrom));
 	pHandle->m_nRemainTimes_puk = atoi(temp);
 

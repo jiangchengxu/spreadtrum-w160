@@ -149,11 +149,11 @@ void CPinClckDlg::AtRespCLCK(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL], WORD 
 		if (0 < pHandle->m_nRemainTimes)
 		{
 			pHandle->m_nRemainTimes--;
+		} 
+		
+		if(0 == pHandle->m_nRemainTimes){
+			pHandle->m_nSimStat = CPIN_SIM_PUK_REQUIRED;
 		}
-	}else if(-1 != strRet.Find(_T("SIM PUK"),0))
-	{
-		pHandle->m_nRemainTimes = 0;
-		pHandle->m_nSimStat = CPIN_SIM_PUK_REQUIRED;
 	}
 #endif
 	else if(-1 != strRet.Find(_T("SIM PUK required"),0))

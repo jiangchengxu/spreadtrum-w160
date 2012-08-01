@@ -318,11 +318,15 @@ void CModifyPinDlg::AtRespCPwd(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL], WOR
 #ifdef FEATURE_HAIER_PINMANAGE
 		else if(-1 != strRet.Find(_T("ERROR"),0))
 		{
-			pHandle->m_nRemainTimes--;
-		}else if(-1 != strRet.Find(_T("SIM PUK"),0))
-		{
-			pHandle->m_nRemainTimes = 0;
-			pHandle->m_nSimStat = CPIN_SIM_PUK_REQUIRED;
+			if(0 < pHandle->m_nRemainTimes)
+			{
+				pHandle->m_nRemainTimes--;
+			}
+
+			if(0 == pHandle->m_nRemainTimes)
+			{
+				pHandle->m_nSimStat = CPIN_SIM_PUK_REQUIRED;
+			}
 		}
 #endif
 		else if(-1 != strRet.Find(_T("SIM PUK required"),0))
@@ -347,7 +351,15 @@ void CModifyPinDlg::AtRespCPwd(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL], WOR
 #ifdef FEATURE_HAIER_PINMANAGE
 		else if(-1 != strRet.Find(_T("ERROR"),0))
 		{
-			pHandle->m_nRemainTimes_puk--;
+			if(0 > pHandle->m_nRemainTimes_puk)
+			{
+				pHandle->m_nRemainTimes_puk--;
+			}
+
+			if(0 == pHandle->m_nRemainTimes_puk)
+			{
+				pHandle->m_nSimStat = CPIN_SIM_DESTROYED;
+			}
 		}
 #endif
 		else if(-1 != strRet.Find(_T("SIM Destroyed"),0))

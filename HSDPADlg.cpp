@@ -2187,6 +2187,39 @@ void CHSDPADlg::AtRespCSDH(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL], WORD wS
 }
 
 /*AT$CPINS?的回调函数*/
+#ifdef FEATURE_HAIER_PINMANAGE
+void CHSDPADlg::AtRespCPINQS(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL], WORD wStrNum)
+{
+	//+CPINC:3,10,3,10
+	CHSDPADlg* pdlg= (CHSDPADlg*)pWnd;
+
+	CString strRet = strArr[0];
+	char* pbuf = (char *)strArr[0];
+	int nfrom = 0;
+	int nto = 0;
+	int originalLen = strRet.GetLength();
+	char temp[4];
+	
+	nfrom = strRet.Find(':') + 1;
+	nto = strRet.Find(',');
+	memcpy(temp,pbuf + nfrom,(nto - nfrom));
+
+    pdlg->m_cHandlePin.m_nRemainTimes = atoi(temp);
+
+	strRet.Delete(0, nto + 1);
+	//AfxMessageBox(strRet);  //debug	
+	nfrom = originalLen - strRet.GetLength();
+	nto = strRet.Find(',') + nfrom;
+	memcpy(temp,pbuf + nfrom,(nto - nfrom));
+    pdlg->m_cHandlePin.m_nRemainTimes_puk = atoi(temp);
+
+	if (0 >= pdlg->m_cHandlePin.m_nRemainTimes_puk)
+	{
+		pdlg->m_cHandlePin.m_nSimStat = CPIN_SIM_DESTROYED;
+	}
+	SetEvent(pdlg->m_hSyncInitEvt);
+}
+#else
 void CHSDPADlg::AtRespCPINQS(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL], WORD wStrNum)
 {
 	//$CPINS:1,0,10
@@ -2218,7 +2251,7 @@ void CHSDPADlg::AtRespCPINQS(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL], WORD 
 
 	SetEvent(pdlg->m_hSyncInitEvt);
 }
-
+#endif
 
 void CHSDPADlg::AtRespCPINQ(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL], WORD wStrNum)
 {
@@ -2869,7 +2902,11 @@ EnSyncInitFuncRetType CHSDPADlg::AtSndCPINQ()
 
 EnSyncInitFuncRetType CHSDPADlg::AtSndCPINQS()
 {
-    const char ATCPINA[]="AT$CPINS?\x0d\x00";
+#ifdef FEATURE_HAIER_PINMANAGE
+	const char ATCPINA[]="AT+CPINC?\x0d\x00";
+#else
+	const char ATCPINA[]="AT$CPINS?\x0d\x00";
+#endif
 	char szAtBuf[512] = {0};
 	strcpy(szAtBuf, ATCPINA);
 	ASSERT(m_pComm);
@@ -3121,7 +3158,6 @@ BOOL CHSDPADlg::SyncInitFunc(int nStatus)
 					res = FALSE;
 			}
 
-#if 0
 			if(res)
 			{
 				if(SYNCINITFUNCRET_DONE != (InitType =AtSndCPINQS()))
@@ -3135,7 +3171,6 @@ BOOL CHSDPADlg::SyncInitFunc(int nStatus)
 				}
 			}
 
-			#endif
 			//对SIM卡和PIN状态进行校验，
 			bool bSimStatus = false;  //用于SIM卡在PIN码锁的情况下直接进入PUK解锁状态。
 			if(res)
