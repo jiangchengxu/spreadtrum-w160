@@ -66,7 +66,11 @@ BOOL CPinEx::GetPinStat()
 
 BOOL CPinEx::GetPinRemainTimes()
 {
-	const char ATCLCKsc2[]="AT$CPINS?\x0d\x00";  
+#ifdef FEATURE_HAIER_PINMANAGE
+	const char ATCLCKsc2[]="AT+CPINC?\x0d\x00"; //get the reminding pin count of the connected sim card
+#else
+	const char ATCLCKsc2[]="AT$CPINS?\x0d\x00"; 
+#endif
 	char szAtBuf[512] = {0};
 	strcpy(szAtBuf, ATCLCKsc2);
 	
@@ -150,6 +154,38 @@ const stTXTCode CPinEx::cpin_table[] = {
 	CPIN_SIM_MAX,NULL
 };
 
+#ifdef FEATURE_HAIER_PINMANAGE
+/*AT+CPINC?的回调函数*/
+void CPinEx::AtRespPinRemainTimes(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL], WORD wStrNum)
+{
+	//+CPINC:3,10,3,10
+	//.......PIN1,PUK1,PIN2,PUK2
+	CPinEx * pHandle = (CPinEx*)pWnd;
+	CString strRet = strArr[0];
+	char* pbuf = (char *)strArr[0];
+	int nfrom = 0;
+	int nto = 0;
+	int originalLen = strRet.GetLength();
+	int offset = 0;
+	char temp[4];
+
+	nfrom = strRet.Find(':') + 1;
+	nto = strRet.Find(',');
+	memcpy(temp,pbuf + nfrom,(nto - nfrom));
+
+	pHandle->m_nRemainTimes = atoi(temp);
+
+	strRet.Delete(0, nto + 1); //index count from 0
+	
+	offset = originalLen - strRet.GetLength();
+	nfrom = offset;
+	nto = strRet.Find(',') + offset ;
+	memcpy(temp,pbuf + nfrom,(nto - nfrom));
+	pHandle->m_nRemainTimes_puk = atoi(temp);
+
+	::SetEvent(pHandle->m_GetPinStatEvent);
+} 
+#else
 /*AT$CPINS?的回调函数*/
 void CPinEx::AtRespPinRemainTimes(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL], WORD wStrNum)
 {
@@ -179,6 +215,7 @@ void CPinEx::AtRespPinRemainTimes(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL], 
 
 	::SetEvent(pHandle->m_GetPinStatEvent);
 }
+#endif
 
 /*AT+CPIN?命令的回调函数*/
 void CPinEx::AtRespPinHandler(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL], WORD wStrNum)
