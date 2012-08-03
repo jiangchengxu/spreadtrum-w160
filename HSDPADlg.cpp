@@ -1713,9 +1713,17 @@ void CHSDPADlg::AtRespCLIP(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL], WORD wS
 void CHSDPADlg::AtRespQCSMSS(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL], WORD wStrNum)
 {
     if(!strcmp((const char*)strArr[wStrNum-1], gc_dsatResCodeTbl[DSAT_OK][gc_dsatmode])
+#ifdef FEAUTURE_HAIER_SMS
+       && !memcmp((const char*)strArr[0], "+VSPST:", strlen("+VSPST:")))
+#else
        && !memcmp((const char*)strArr[0], "$CSMSS:", strlen("$CSMSS:")))
+#endif
     {
+#ifdef FEATURE_HAIER_SMS
+		char *ptr = (char*)strArr[0] + strlen("+VSPST:");
+#else
         char *ptr = (char*)strArr[0] + strlen("$CSMSS:");
+#endif
         ((CHSDPADlg*)pWnd)->m_bSMSS = (BOOL)atoi(ptr);
     }
     SetEvent(((CHSDPADlg*)pWnd)->m_hSyncSmsInitEvt);
@@ -1751,9 +1759,18 @@ void CHSDPADlg::AtRespQPCONLINE(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL], WO
 void CHSDPADlg::AtRespQCPBSS(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL], WORD wStrNum)
 {
     if(!strcmp((const char*)strArr[wStrNum-1], gc_dsatResCodeTbl[DSAT_OK][gc_dsatmode])
+#ifdef FEATURE_HAIER_SMS
+       && !memcmp((const char*)strArr[0], "+VSPST:", strlen("+VSPST:")))
+#else
        && !memcmp((const char*)strArr[0], "$CPBSS:", strlen("$CPBSS:")))
+#endif
     {
+#ifdef FEATURE_HAIER_SMS
+		char *ptr = (char*)strArr[0];
+		ptr += strlen(ptr) - 1;
+#else
         char *ptr = (char*)strArr[0] + strlen("$CPBSS:");
+#endif
         ((CHSDPADlg*)pWnd)->m_bPBSS = (BOOL)atoi(ptr);
     }
     SetEvent(((CHSDPADlg*)pWnd)->m_hSyncPbmInitEvt);
@@ -2426,7 +2443,11 @@ void CHSDPADlg::OnTimer(UINT nIDEvent)
 EnSyncInitFuncRetType CHSDPADlg::AtSndCSMSS()
 {
     char szAtBuf[20] = {0};
+#ifdef FEATURE_HAIER_SMS
+    strcpy(szAtBuf, "AT+VSPST?\r");
+#else
     strcpy(szAtBuf, "AT$CSMSS?\r");
+#endif
     if(m_pComm->WriteToPort(szAtBuf, strlen(szAtBuf)))
     {
         RegisterAtRespFunc(ATRESP_GENERAL_AT, AtRespQCSMSS, (LPVOID)this);
@@ -2502,7 +2523,11 @@ EnSyncInitFuncRetType CHSDPADlg::AtSndOPCONLINE()
 EnSyncInitFuncRetType CHSDPADlg::AtSndCPBSS()
 {
     char szAtBuf[20] = {0};
+#ifdef FEATURE_HAIER_SMS
+    strcpy(szAtBuf, "AT+VSPST?\r");
+#else
     strcpy(szAtBuf, "AT$CPBSS?\r");
+#endif
     if(m_pComm->WriteToPort(szAtBuf, strlen(szAtBuf)))
     {
         RegisterAtRespFunc(ATRESP_GENERAL_AT, AtRespQCPBSS, (LPVOID)this);

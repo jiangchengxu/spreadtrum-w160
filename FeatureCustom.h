@@ -83,6 +83,7 @@
 #define FEATURE_HAIER_PINMANAGE
 #define FEATURE_HAIER_DSI
 #define FEATURE_HAIER_ADAPTER
+#define FEATURE_HAIER_SMS
 #endif
 
 #endif //#ifndef _AFX_FEATURECUSTOM_H_
