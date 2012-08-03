@@ -241,13 +241,13 @@ const char gcstrAtSms[AT_SMS_MAX][15] = {
         "AT+CMGR=",
         "AT+CMGW=",
         "AT+CMGD=",
-        "AT+CMGS=",
+        "AT^HCMGS=",
         "AT+CSCA=",
         "AT+CMGF=",
         "AT+CNMI=",
         "AT+CSMP=",
-		"AT+HMSGL=",//add by liub for SMS CDMA2000
-		"AT+HMSGP=",//add by liub for SMS CDMA2000
+		"AT^HSMSSS=",//add by liub for SMS CDMA2000
+		"AT",//add by liub for SMS CDMA2000
 };
 
 const char gcstrResSms[AT_SMS_MAX][15] = {
@@ -255,7 +255,7 @@ const char gcstrResSms[AT_SMS_MAX][15] = {
         "+CMGR: ",
         "+CMGW: ",
         "+CMGD: ",
-        "+CMGS: ",
+        "^HCMGS: ",
         "+CSCA: ",
         "+CMGF: ",
         "+CNMI: ",

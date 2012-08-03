@@ -310,6 +310,7 @@ struct stSetData
     TCHAR Internet_szDefaultConnection[RAS_MaxEntryName];
 
     TCHAR Internet_szPCUIName[256]; 
+	TCHAR Internet_szPCVOICEName[256]; //wj test
 	TCHAR Main_szPrefixName[32];
 	TCHAR Main_szURL[256];
 	TCHAR Main_szEMail[256];

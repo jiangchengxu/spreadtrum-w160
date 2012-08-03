@@ -133,6 +133,74 @@ BOOL GetPCUIPortName(TCHAR* szDevName)
     return match;
 }
 
+
+
+BOOL GetPCVOICEName(TCHAR* szDevName_voice)
+{ 
+    int index = 0;
+    BOOL match = FALSE;
+    DWORD DataType, length;
+    HDEVINFO hDevInfo;
+    SP_DEVINFO_DATA devInfoElem;
+	TCHAR szDevDetail[SPDRP_MAXIMUM_PROPERTY][MAX__DESC];
+
+    hDevInfo = SetupDiGetClassDevs((LPGUID)&CLASS_GUID_PORT, NULL, NULL, DIGCF_PRESENT);  
+
+    if(INVALID_HANDLE_VALUE != hDevInfo)
+    {
+        devInfoElem.cbSize = sizeof(SP_DEVINFO_DATA);      
+        while(SetupDiEnumDeviceInfo(hDevInfo, index++, &devInfoElem)) 
+        {
+            memset(szDevDetail, 0x00, sizeof(szDevDetail));
+
+            SetupDiGetDeviceRegistryProperty(
+                hDevInfo,
+                &devInfoElem,
+                SPDRP_DEVICEDESC,
+                &DataType,
+                (unsigned char *)szDevDetail[SPDRP_DEVICEDESC],
+                MAX__DESC,
+                (LPDWORD)&length);
+            
+            strrrc(szDevDetail[SPDRP_DEVICEDESC], ' ');
+            
+            SetupDiGetDeviceRegistryProperty(
+                hDevInfo,
+                &devInfoElem,
+                SPDRP_HARDWAREID,
+                &DataType,
+                (unsigned char *)szDevDetail[SPDRP_HARDWAREID],
+                MAX__DESC,
+                (LPDWORD)&length);
+            
+    		wcslwr(szDevDetail[SPDRP_HARDWAREID]);
+			wcslwr(gszHardwareID);
+
+            if(!wcscmp(g_SetData.Internet_szPCVOICEName, szDevDetail[SPDRP_DEVICEDESC])
+                && ( (wcsstr(szDevDetail[SPDRP_HARDWAREID], g_SetData.Main_szPID)) || (wcsstr(szDevDetail[SPDRP_HARDWAREID], _T("1001"))) ))	//wyw_0421 modify
+
+            {                 
+                HKEY hKeyDev = SetupDiOpenDevRegKey(hDevInfo, &devInfoElem, DICS_FLAG_GLOBAL, 0, DIREG_DEV, KEY_READ); 
+                if(INVALID_HANDLE_VALUE != hKeyDev)
+                {
+                    WORD length = sizeof(szDevDetail[SPDRP_DEVICEDESC]); 
+                    if(ERROR_SUCCESS == RegQueryValueEx(hKeyDev, _T("PortName"), NULL, NULL,
+                        (unsigned char *)szDevDetail[SPDRP_DEVICEDESC], (LPDWORD)&length))
+                    {
+                        RegCloseKey(hKeyDev);
+                        wcscpy(szDevName_voice,_T("\\\\.\\"));
+                        wcscat(szDevName_voice,szDevDetail[SPDRP_DEVICEDESC]);       
+                    }
+                }
+                match = TRUE;
+                break;
+            }
+        } //while
+        SetupDiDestroyDeviceInfoList(hDevInfo);
+    }
+
+    return match;
+}
 //在USB Modem项目中启动时查找CdRom是否存在
 BOOL FindCdRom()
 {

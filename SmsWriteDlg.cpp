@@ -668,7 +668,8 @@ BOOL CSmsWriteDlg::SndAtSmsQHMSGL()
     }
 #endif
 	
-    sprintf(szAtBuf, "%s,%d\r", gcstrAtSms[AT_SMS_QHMSGL],para2);
+   // sprintf(szAtBuf, "%s,%d\r", gcstrAtSms[AT_SMS_QHMSGL],para2);
+sprintf(szAtBuf, "%s%d,%d,%d,%d\r", gcstrAtSms[AT_SMS_QHMSGL],0,1,1,0);
 	
     CSerialPort* pComm = ((CHSDPAApp*)AfxGetApp())->m_pSerialPort;
     ASSERT(pComm);
@@ -732,8 +733,8 @@ BOOL CSmsWriteDlg::SndAtSmsQHMSGP()
 			
 		}
 		else
-			sprintf(szAtBuf, "%s%d,,%d,%d\r", gcstrAtSms[AT_SMS_QHMSGP], g_SetData.Messages_nDeliReport,para1,g_SetData.Messages_nPriority);
-
+			//sprintf(szAtBuf, "%s%d,,%d,%d\r", gcstrAtSms[AT_SMS_QHMSGP], g_SetData.Messages_nDeliReport,para1,g_SetData.Messages_nPriority);
+                      sprintf(szAtBuf, "%s\r", gcstrAtSms[AT_SMS_QHMSGP]);
 
 #else
 		sprintf(szAtBuf, "%s%d,,%d,%d\r", gcstrAtSms[AT_SMS_QHMSGP], g_SetData.Messages_nDeliReport,para1,g_SetData.Messages_nPriority);
@@ -951,7 +952,7 @@ BOOL CSmsWriteDlg::SndAtSmsQCMGS(int nStep)
         else
 #endif
         {
-           CString strUC = BTToUCS2((CString)m_strSmsDetails);
+           CString strUC = ((CString)m_strSmsDetails);//BTToUCS2((CString)m_strSmsDetails);//wj test
         
       	int len= WCharToUnicode(strUC, szAtAscBuf);
 
@@ -1038,10 +1039,10 @@ void CSmsWriteDlg::RspAtSmsQCMGS(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL], W
     {
         pDlg->PostMessage(WM_SMS_SEND_PROC, (WPARAM)AT_SMS_QCMGW, (LPARAM)TRUE);        
     }
-    //Write Ok
-    else if(wStrNum == 2 
+    //Write Ok   wj test
+    else if(1/*wStrNum == 2 
         && strcmp((const char*)strArr[1], gc_dsatResCodeTbl[DSAT_OK][gc_dsatmode]) == 0
-        && memcmp((const char*)strArr[0], gcstrResSms[AT_SMS_QCMGS], strlen(gcstrResSms[AT_SMS_QCMGS])) == 0)
+        && memcmp((const char*)strArr[0], gcstrResSms[AT_SMS_QCMGS], strlen(gcstrResSms[AT_SMS_QCMGS])) == 0*/)
     {
 		if (TRUE == pDlg->thelastone)
 		{
@@ -1053,7 +1054,7 @@ void CSmsWriteDlg::RspAtSmsQCMGS(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL], W
     }
     else
 	{
-		if(IDOK == pDlg->MessageBox(_T("Send fail,continue?"),NULL,MB_OKCANCEL))
+		if(0/*IDOK == pDlg->MessageBox(_T("Send fail,continue?"),NULL,MB_OKCANCEL)*/)
 		{
 		   	pDlg->bSaveSendSms = FALSE;
 

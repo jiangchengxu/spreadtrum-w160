@@ -591,6 +591,77 @@ EnOpenPortRet CHSDPAApp::OpenPort(BOOL bFirstTime, BYTE nRunTimes, USHORT nMilli
     return ret;
 }
 
+
+EnOpenPortRet CHSDPAApp::OpenPort_Voice(BOOL bFirstTime, BYTE nRunTimes, USHORT nMilliSecond)	//wyw_0115 modify
+{
+    BYTE cnt = 0;
+    EnOpenPortRet ret = OPENPORT_RET_NOTFOUND;
+    
+    memset(m_szDevName_Voice, 0, sizeof(m_szDevName_Voice));
+   
+    for(cnt = 0; cnt < nRunTimes; cnt++)
+    {
+		int i = 0;
+		while (i<10)
+		{
+			MSG msg;
+			while (::PeekMessage(&msg, NULL, WM_PAINT, WM_PAINT, PM_NOREMOVE))
+			{
+				if (!GetMessage(&msg, NULL, WM_PAINT, WM_PAINT))
+					break;
+				DispatchMessage(&msg);
+			}
+
+			Sleep(nMilliSecond/10);
+
+			if(GetPCVOICEName(m_szDevName_Voice))
+			{
+				ret = OPENPORT_RET_FAIL;
+				Sleep(5000);
+				break;
+			}
+			i++;
+		}
+		if(ret == OPENPORT_RET_FAIL)
+		{
+			break;
+		}
+    }
+    
+    if(ret == OPENPORT_RET_FAIL)
+    {
+        for(cnt = 0; cnt < nRunTimes; cnt++)
+        {
+			int i = 0;
+			while (i<10)
+			{
+				MSG msg;
+				while (::PeekMessage(&msg, NULL, WM_PAINT, WM_PAINT, PM_NOREMOVE))
+				{
+					if (!GetMessage(&msg, NULL, WM_PAINT, WM_PAINT))
+						break;
+					DispatchMessage(&msg);
+				}
+
+				Sleep(nMilliSecond/10);
+				
+				if(m_pSerialPort->StartPort(m_szDevName_Voice, !bFirstTime))
+				{
+					ret = OPENPORT_RET_SUCC;
+					break;
+				}
+				i++;
+			}          
+            if (ret == OPENPORT_RET_SUCC)
+            {
+                break;
+            }
+        }
+    }
+    
+    return ret;
+}
+
 CString CHSDPAApp::GetOpenPortTip(EnOpenPortRet ret)
 {
     CString strTip;

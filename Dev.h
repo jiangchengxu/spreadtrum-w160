@@ -33,6 +33,8 @@ extern BOOL FindUSBModem();
 //启动时查找PCUI口并获得其串口号
 extern BOOL GetPCUIPortName(TCHAR* szDevName);
 
+extern BOOL GetPCVOICEName(TCHAR* szDevName_voice);
+
 //在9508 USB Modem项目中启动时查找CdRom是否存在
 extern BOOL FindCdRom();
 

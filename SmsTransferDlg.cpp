@@ -121,10 +121,12 @@ BOOL CSmsTransferDlg::OnInitDialog()
 
 	//SetSkin(g_SetData.Setup_nSkinStyle);
 	//added by lijiali
+	#if 0  //wj test
 	if(!SndAtSmsQHMSGP())
 	{
 		bSetHmsgp =false;
 	}
+	#endif
 	if(!bSetHmsgp)
 	{
 		OnCancel();

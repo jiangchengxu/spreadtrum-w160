@@ -76,7 +76,9 @@ public:
 	BOOL SndResetCmd();
 	CString GetOpenPortTip(EnOpenPortRet ret);
 	EnOpenPortRet OpenPort(BOOL bFirstTime, BYTE nRunTimes, USHORT nMilliSecond);
+	EnOpenPortRet OpenPort_Voice(BOOL bFirstTime, BYTE nRunTimes, USHORT nMilliSecond);//wj add test
     TCHAR m_szDevName[50];
+    TCHAR m_szDevName_Voice[50];//wj add test
     BYTE m_CardState; //0:ÎÞ¿¨ 1:ÓÐ¿¨
     CSerialPort* m_pSerialPort;
     CWinThread* m_pDsThread;

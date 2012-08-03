@@ -36,8 +36,9 @@ stStringType IniStringTable[]=
     _T("Internet"), _T("Internet_szPassword"), _T(""), PWLEN,
     _T("Main"), _T("General_szSkinFile"), _T("skin\\neostyle\\theme.ini"), 256,
     _T("Internet"), _T("Internet_szDefaultConnection"), _T("Default Connection"), RAS_MaxEntryName,
-
+//wj test
     _T("Internet"), _T("Internet_szPCUIName"), _T("PCUI Device Interface"), 256,
+    _T("Internet"), _T("Internet_szPCVOICEName"), _T("PCUI Voice Interface"), 256,
 	//程序前缀名称
 	_T("Main"), _T("Main_szPrefixName"), _T(""), 32,
 	//URL
@@ -172,6 +173,7 @@ TCHAR* ValueStringTable[] =
     g_SetData.Internet_szDefaultConnection,    //默认的连接名称
     //Added by lgz 2006-06-22
     g_SetData.Internet_szPCUIName,  //PCUI口名称
+    g_SetData.Internet_szPCVOICEName,  //PCUI口名称wj test
 	g_SetData.Main_szPrefixName,	//程序前缀名称
 	g_SetData.Main_szURL,			//URL
 	g_SetData.Main_szEMail,			//Email

@@ -164,6 +164,118 @@ private:
     volatile EnSerialState m_SerialState;    //串口状态
 };
 
+//串口类Voice
+class CSerialPort_Voice
+{
+public:
+    //关闭串口，结束串口线程
+    BOOL StopPort_Voice();    
+    
+    //打开串口，启动串口线程    
+    BOOL StartPort_Voice(LPCTSTR lpszCommName, BOOL bCreateThread = TRUE, BOOL bOverlapped = TRUE);
+
+#ifdef FEATURE_SERIAL_ASYNWRITE
+    //串口写线程函数
+    static UINT CommWriteThreadProc_Voice(LPVOID pParam);
+#endif
+
+    //串口读线程函数
+    static UINT CommReadThreadProc_Voice(LPVOID pParam);
+
+    //串口断线检测函数
+    static UINT CommDetectThreadProc_Voice(LPVOID pParam);
+
+    //直接向串口写数据
+    DWORD Write_Voice(LPCVOID lpBuffer, DWORD dwToWrite, DWORD dwTimeout = INFINITE);
+
+    //直接从串口读数据
+    DWORD Read_Voice(LPVOID lpBuffer, DWORD dwToRead, DWORD dwTimeout = INFINITE);
+    
+    //直接向串口发送控制命令
+    BOOL IoControl_Voice(DWORD dwIoControlCode, LPVOID lpInBuffer, DWORD nInBufferSize, LPVOID lpOutBuffer, DWORD nOutBufferSize, LPDWORD lpBytesReturned, DWORD dwTimeout = INFINITE);
+
+    //等待串口读事件
+    BOOL WaitEvent_Voice(DWORD dwTimeout = INFINITE);
+
+    //填充写缓冲，通知写线程向串口写数据
+    BOOL WriteToPort_Voice(const char *pBuf, WORD wLen, BOOL bReportError = TRUE);
+
+    //清除串口缓冲区
+    BOOL Purge_Voice(DWORD dwFlags);
+
+    //是否连接到串口
+    BOOL IsConnect_Voice() const;
+
+    //打印缓冲区字节数(DEBUG)
+    DWORD PrintBufBytes_Voice(int type);
+
+    //构造函数，主要完成各个成员的初始化，将状态变量赋值，创建事件。
+    CSerialPort_Voice();
+
+    //析构函数，关闭串口，关闭句柄，释放空间
+    virtual ~CSerialPort_Voice();
+
+protected:
+    //关闭串口
+    void Close_Voice();
+    
+    //打开串口
+    BOOL Open_Voice(LPCTSTR lpCommName, BOOL bOverlapped = FALSE);
+
+    //配置串口
+    BOOL Config_Voice();
+    
+    //获得上次错误码
+    DWORD GetLastError_Voice() const;
+    
+    //获得串口句柄
+    HANDLE GetCommHandle_Voice() const;
+
+    //串口是否打开
+    BOOL IsOpen_Voice() const;
+
+public:
+	BOOL CommIsReady_Voice();
+    EnSerialState SetSerialState_Voice(const EnSerialState state);
+    EnSerialState GetSerialState_Voice() const;
+
+#ifdef FEATURE_SERIAL_ASYNWRITE
+    HANDLE m_hCloseWriteEvent_Voice;    //串口关闭事件
+    HANDLE m_hIoCtrlEvent_Voice;        //串口控制事件
+    HANDLE m_hWriteEvent_Voice;        //串口写事件
+    HANDLE m_hEventArray_Voice[SERAIL_EVENTARRAYNUM]; //事件数组
+#endif
+
+    CWinThread* m_WriteThread_Voice;            //写线程指针
+    CWinThread* m_ReadThread_Voice;             //读线程指针
+    CWinThread* m_DetectThread_Voice;           //掉线检测线程指针
+
+#ifdef FEATURE_SERIAL_QUEUE    
+    CSerialBufQueue m_ReadBufQueue_Voice;        //读缓冲队列
+    CSerialBufQueue m_WriteBufQueue_Voice;    //写缓冲队列
+#else
+    StRxQueueCtrl m_RxQueueCtrl_Voice;
+    CRITICAL_SECTION m_csRxQueue_Voice;
+#ifdef FEATURE_SERIAL_ASYNWRITE
+    BYTE m_TxBuff_Voice[SERIAL_TXBUFFERSIZE];
+    WORD m_wTxCount_Voice;
+    CRITICAL_SECTION m_csTxBuff_Voice;
+#endif
+#endif
+
+private:
+	OVERLAPPED m_ReadOvlp_Voice;
+	OVERLAPPED m_WriteOvlp_Voice;
+	OVERLAPPED m_WaitOvlp_Voice;
+	OVERLAPPED m_IoCtrlOvlp_Voice;
+    volatile BOOL m_bIsConnect_Voice;        //串口是否打开标志
+    HANDLE m_hComm_Voice;            /* 串行端口句柄 */
+    BOOL   m_bOverlapped_Voice;    /* I/0 操作方式 (FALSE:同步 TRUE:异步) */
+    DWORD  m_dwEvtMask_Voice;        /* 串口事件掩码 */
+    DWORD  m_dwLastError_Voice;    /* 上次错误值 */
+    volatile EnSerialState m_SerialState_Voice;    //串口状态
+};
+
 #endif // !defined(AFX_COMM_H__ADB4E48C_B7D8_4F13_A96A_FAC528226512__INCLUDED_)
 
 
