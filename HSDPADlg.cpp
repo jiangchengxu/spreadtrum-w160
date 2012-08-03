@@ -1676,7 +1676,28 @@ void CHSDPADlg::AtRespCLIP(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL], WORD wS
 	{
 		return;
 	}
+#ifdef FEATURE_HAIER_CM
+	CString sRet = strArr[0];
+	TCHAR strv[128]={0};
+    TCHAR number[50] = {0};
+	TCHAR typestr[5]={0};
+	TCHAR *pnum,*ptype;
+	int	 type;
+	int  numlen;
+	int  typelen;
+	
+    ASSERT(sRet.GetLength()<=128);
+	
+    wcscpy(strv,sRet);
+	pnum = wcschr(strv,':')+1;
+	numlen = wcschr(pnum,',')-pnum;
+	wcsncpy(number,pnum,numlen);
+	ptype = pnum+numlen+1;
+	typelen = wcschr(ptype,',')-ptype;
+	wcsncpy(typestr,ptype,typelen);
+	type = _wtoi(typestr);
 
+#else
 	CString sRet = strArr[0];
 	TCHAR strv[128]={0};
     TCHAR number[50] = {0};
@@ -1696,6 +1717,7 @@ void CHSDPADlg::AtRespCLIP(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL], WORD wS
 	typelen = wcschr(ptype,',')-ptype;
 	wcsncpy(typestr,ptype,typelen);
 	type = _wtoi(typestr);
+#endif
 
 	if(type==145 || type==129)
     {
@@ -4307,6 +4329,9 @@ EnSyncInitFuncRetType CHSDPADlg::AtSndCSCS()
     char szAtBuf[30] = {0};
     char szChSet[10] = {0};
 
+#ifdef FEATURE_HAIER_ADAPTER
+	return SYNCINITFUNCRET_DONE;
+#endif
     strncpy(szChSet, "UCS2", sizeof(szChSet));
 
     sprintf(szAtBuf, "AT+CSCS=\"%s\"\r", szChSet);

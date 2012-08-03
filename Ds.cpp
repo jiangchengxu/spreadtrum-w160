@@ -28,7 +28,11 @@ const char gc_dsatResCodeTbl[DSAT_MAX][DSAT_MODE_MAX][30] =
     "+RSSI: ", "+RSSI: ",
     "+CSMSS:", "+CSMSS:", 
     "+CPBSS:", "+CPBSS:", 
+#ifdef FEATURE_HAIER_CM
+    "+CLIP:", "+CLIP:",
+#else
     "+CLIP: ", "+CLIP: ",
+#endif
     "Network status: ", "Network status: ",
     "Network Service: ", "Network Service: ",
     "Roaming status: ", "Roaming status: ",
