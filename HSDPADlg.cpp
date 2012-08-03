@@ -2441,6 +2441,10 @@ EnSyncInitFuncRetType CHSDPADlg::AtSndCSMSS()
 
 EnSyncInitFuncRetType CHSDPADlg::AtSndSICLOCK()
 {
+#ifdef FEATURE_HAIER_ADAPTER
+	m_nSimLock = 1;
+	return SYNCINITFUNCRET_DONE;
+#endif
     char szAtBuf[20] = {0};
     strcpy(szAtBuf, "AT$SIDLOCK?\r");
     if(m_pComm->WriteToPort(szAtBuf, strlen(szAtBuf)))
@@ -2458,6 +2462,9 @@ EnSyncInitFuncRetType CHSDPADlg::AtSndSICLOCK()
 //AtSndPCONLINE
 EnSyncInitFuncRetType CHSDPADlg::AtSndPCONLINE()
 {
+#ifdef FEATURE_HAIER_ADAPTER
+	return SYNCINITFUNCRET_DONE;
+#endif
     char szAtBuf[20] = {0};
     strcpy(szAtBuf, "AT$PCONLINE=1\r");
     if(m_pComm->WriteToPort(szAtBuf, strlen(szAtBuf)))
@@ -2475,6 +2482,9 @@ EnSyncInitFuncRetType CHSDPADlg::AtSndPCONLINE()
 //AtSndOPCONLINE
 EnSyncInitFuncRetType CHSDPADlg::AtSndOPCONLINE()
 {
+#ifdef FEATURE_HAIER_ADAPTER
+	return SYNCINITFUNCRET_DONE;
+#endif
     char szAtBuf[20] = {0};
     strcpy(szAtBuf, "AT$PCONLINE=0\r");
     if(m_pComm->WriteToPort(szAtBuf, strlen(szAtBuf)))
@@ -2604,6 +2614,9 @@ EnSyncInitFuncRetType CHSDPADlg::AtSndCSQ()
 
 EnSyncInitFuncRetType CHSDPADlg::AtSndHANDSET()
 {
+#ifdef FEATURE_HAIER_ADAPTER
+	return SYNCINITFUNCRET_DONE;
+#endif
     char szAtBuf[20] = {0};
     strcpy(szAtBuf, "AT$HANDSET?\r");
     if(m_pComm->WriteToPort(szAtBuf, strlen(szAtBuf)))
@@ -3302,7 +3315,7 @@ BOOL CHSDPADlg::SyncInitFunc(int nStatus)
 			m_bSimReady = TRUE;
 		}	
 	}
-#if 0
+
 	if(res && g_SetData.Main_nSimLock)
     {		
         AtSndSICLOCK();
@@ -3358,7 +3371,7 @@ BOOL CHSDPADlg::SyncInitFunc(int nStatus)
 			}
 		}
 	}
-#endif
+
 #endif //NOSIM
 
     //等待SMS初始化完成

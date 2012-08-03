@@ -81,6 +81,8 @@
 //µÁª∞±æ  ≈‰
 #define FEATURE_HAIER_PHONEBOOK
 #define FEATURE_HAIER_PINMANAGE
+#define FEATURE_HAIER_DSI
+#define FEATURE_HAIER_ADAPTER
 #endif
 
 #endif //#ifndef _AFX_FEATURECUSTOM_H_
