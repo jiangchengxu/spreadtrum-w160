@@ -4596,7 +4596,11 @@ BOOL CHSDPADlg::AtSndBeforeClose()
 
     char szAtCmdArr[][20] = {
         /*"+CHUP",*/
+#ifdef FEATURE_HAIER_CM
+		"+CHV",
+#else
 		"+CHV0",
+#endif
 #ifdef FEATURE_AUTOSETRF
 //        "+PHMOD=4",
 #endif

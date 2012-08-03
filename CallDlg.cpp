@@ -759,7 +759,11 @@ void CCallDlg::OnButtonHungup()
 	}
 	
 /*	const char ATCHUP[]="AT+CHUP\x0d\x00";//9508*/
+#ifdef FEATURE_HAIER_CM
+	const char ATCHUP[]="AT+CHV\x0d\x00";//CDMA CM200
+#else
 	const char ATCHUP[]="AT+CHV0\x0d\x00";//CDMA CM200
+#endif
 	char szAtBuf[512] = {0};
 	strcpy(szAtBuf, ATCHUP);
 

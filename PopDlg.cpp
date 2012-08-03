@@ -191,7 +191,11 @@ void CPopDlg::OnButtonReject()
 {
     char szAtBuf[512] = {0};
 //	const char ATCHUP[]="AT+CHUP\x0d\x00";//9508 Reject
+#ifdef FEATURE_HAIER_CM
+	const char ATCHUP[]="AT+CHV\x0d\x00";//CDMA CM200 Reject
+#else
 	const char ATCHUP[]="AT+CHV0\x0d\x00";//CDMA CM200 Reject
+#endif
     strcpy(szAtBuf, ATCHUP);
 	
     CSerialPort* pComm = ((CHSDPAApp*)AfxGetApp())->m_pSerialPort;
