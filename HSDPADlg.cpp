@@ -4636,13 +4636,34 @@ void CHSDPADlg::AtRespCGMR(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL], WORD wS
     }
     else
     {
+#ifdef FEATURE_HAIER_DSI
+	char *ptr = p;
+	int cnt = 0;
+	while(*p){
+		if(*p == '\"'){
+			if(cnt == 0){
+				ptr = ++p;
+				cnt++;
+			}else{
+				*p = 0;
+				break;
+			}
+			
+		}else{
+			p++;
+		}
+	}
+	CString strTemp = (char *)ptr;
+#else
 		//success
 		while (*p != ' ')
 		{
 			p++;
 		}
 		*p = '\0';
+
 		      CString strTemp = (char *)strArr;
+#endif
 	
           pDlg->m_strFWVersion.Format(_T("%s"),strTemp);
 	} 
@@ -4680,8 +4701,28 @@ void CHSDPADlg::AtRespCGSN(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL], WORD wS
     }
     else
     {
+#ifdef FEATURE_HAIER_DSI
+		char *p = (char*)strArr[0] + strlen("+GSN: ");
+		char *ptr = p;
+		int cnt = 0;
+		while(*p){
+			if(*p == '\"'){
+				if(cnt == 0){
+					ptr = ++p;
+					cnt++;
+				}else{
+					*p = 0;
+					break;
+				}
+			}else{
+				p++;
+			}
+		}
+		CString strTemp = ptr;
+#else
 		//success
 			      CString strTemp = (char *)strArr[0];
+#endif
 		pDlg->m_strIMEI.Format(_T("%s"), strTemp);
 		//convert IMEI
 		if((wcscmp(g_SetData.Setup_sz3GType,_T("WCDMA"))==0)||
