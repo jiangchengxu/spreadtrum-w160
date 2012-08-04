@@ -17,11 +17,7 @@ const char gc_dsatResCodeTbl[DSAT_MAX][DSAT_MODE_MAX][30] =
     "4", "ERROR",
     "2", "RING",
     "3", "NO CARRIER",
-#ifdef FEATURE_HAIER_CM
-	"+CEND:", "+CEND:",
-#else
     "6", "NO DIALTONE",
-#endif
     "+CME ERROR:", "+CME ERROR:",
     "+CMS ERROR:", "+CMS ERROR:",
 	"+CMS ERROR: 500", "+CMS ERROR: 500",
