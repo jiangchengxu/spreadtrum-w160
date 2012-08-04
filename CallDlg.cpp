@@ -727,7 +727,7 @@ void CCallDlg::OnButtonCall()
 	WCharToChar(szAtBuf, szAtAscBuf);
 	//WCharToChar(szAtBuf1, szAtAscBuf1);
 	WCharToChar(szAtBuf2, szAtAscBuf2);
-	pComm1->WriteToPort(szAtAscBuf2, wcslen(szAtBuf2), FALSE);
+	//pComm1->WriteToPort(szAtAscBuf2, wcslen(szAtBuf2), FALSE);
 	Sleep(80);
 	
 	if(pComm->WriteToPort(szAtAscBuf, wcslen(szAtBuf), FALSE))
@@ -1202,8 +1202,11 @@ void CCallDlg::AtRespHangup(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL], WORD w
 {
     CCallDlg *pDlg = (CCallDlg*)pWnd;
 	pDlg->KillTimer(IDT_CHV0_TIMEOUT);
-
+#ifdef FEATURE_HAIER_CM
+	pDlg->PostMessage(WM_ATCDVRESULT,0,0);
+#else
 //	pDlg->PostMessage(WM_ATCDVRESULT,0,0);
+#endif
 }
 
 void CCallDlg::OnTimer(UINT nIDEvent) 

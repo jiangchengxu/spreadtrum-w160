@@ -17,7 +17,11 @@ const char gc_dsatResCodeTbl[DSAT_MAX][DSAT_MODE_MAX][30] =
     "4", "ERROR",
     "2", "RING",
     "3", "NO CARRIER",
+#ifdef FEATURE_HAIER_CM
+	"+CEND:", "+CEND:",
+#else
     "6", "NO DIALTONE",
+#endif
     "+CME ERROR:", "+CME ERROR:",
     "+CMS ERROR:", "+CMS ERROR:",
 	"+CMS ERROR: 500", "+CMS ERROR: 500",
@@ -74,6 +78,9 @@ const char gc_dsatResCodeTbl[DSAT_MAX][DSAT_MODE_MAX][30] =
 #endif
 	"+HVPRIV", "+HVPRIV", 
 	"+SIDLOCK: ", "+SIDLOCK: ", 
+#ifdef FEATURE_HAIER_CM
+	"+CEND:", "+CEND:",
+#endif
 };
 
 static StAtResp g_AtRespArr[ATRESP_MAX];
@@ -595,7 +602,11 @@ static void AtRespParse(CSerialPort *pComm)
             {
                 CallAtRespFunc(ATRESP_NO_CARRIER);
             }
-            else if(g_DsatResCode == DSAT_DIALTONE)
+            else if(g_DsatResCode == DSAT_DIALTONE
+#ifdef FEATURE_HAIER_CM
+					|| g_DsatResCode == DSAT_CEND
+#endif
+				)
             {
                 if(g_SetData.Main_nCall)
                     CallAtRespFunc(ATRESP_DIALTONE);

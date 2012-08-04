@@ -77,6 +77,9 @@ typedef enum
 #endif
 	DSAT_HVPRIV,
 	DSAT_SIDLOCK,
+#ifdef FEATURE_HAIER_CM
+	DSAT_CEND,
+#endif
     DSAT_MAX
 } EnDsatResCode;
 

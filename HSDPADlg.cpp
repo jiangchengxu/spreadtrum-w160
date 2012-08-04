@@ -810,7 +810,21 @@ void CHSDPADlg::AtRespDialTone(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL], WOR
         pDlg->m_nRingTimes = 0;
         ::PostMessage(pDlg->m_pCallPopDlg->GetSafeHwnd(),WM_POPDLG_DESTROY,0,0);  
     }
-//	::PostMessage(pDlg->m_pCallDlg->GetSafeHwnd(),WM_ATCDVRESULT,0,0);
+#ifdef FEATURE_HAIER_CM
+	char endRes[3] = {0};
+	char *ptr = (char *)strArr[0];
+	char *pEndCode = strchr(ptr, ':') + 1;
+	int codeLen = strlen(pEndCode);
+	strncpy(endRes, pEndCode, codeLen);
+	int codeType = atoi(pEndCode);
+
+	if(codeType == 6)
+	{//ÍøÂç²àÖ÷¶¯¹Ò¶Ï£¬·µ»Ø+CEND:6
+		::PostMessage(pDlg->m_pCallDlg->GetSafeHwnd(),WM_ATCDVRESULT,0,0);
+	}
+#else
+	//::PostMessage(pDlg->m_pCallDlg->GetSafeHwnd(),WM_ATCDVRESULT,0,0);
+#endif
 }
 
 void CHSDPADlg::AtRespCMTI(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL], WORD wStrNum)
@@ -1609,7 +1623,11 @@ LRESULT CHSDPADlg::SwitchTo(WPARAM wParam, LPARAM lParam)
 
 			::SendMessage(m_pCallDlg->GetSafeHwnd(), WM_ATCDVRESULT, lParam, 0);		//wyw_0402 modify
         }
+#ifdef FEATURE_HAIER_CM
+		::SendMessage(m_pCallDlg->GetSafeHwnd(), WM_ATCDVRESULT, lParam, 0);
+#else
 //        ::SendMessage(m_pCallDlg->GetSafeHwnd(), WM_ATCDVRESULT, lParam, 0);
+#endif
     }
     else //Sms
     {

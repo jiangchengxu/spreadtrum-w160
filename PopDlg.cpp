@@ -166,8 +166,11 @@ void CPopDlg::OnButtonAnswer()
 {
 	//$QCCAV
     char szAtBuf[512] = {0};
-//	const char ATA[]="ATA\x0d\x00";//9508 Answer
+#ifdef FEATURE_HAIER_CM
+	const char ATA[]="ATA\x0d\x00";//9508 Answer
+#else
 	const char ATA[]="AT$QCCAV\x0d\x00";//CDMA CM200 Answer
+#endif
     strcpy(szAtBuf, ATA);
 
     CSerialPort* pComm = ((CHSDPAApp*)AfxGetApp())->m_pSerialPort;
