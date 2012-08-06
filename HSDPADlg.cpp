@@ -1244,10 +1244,18 @@ void CHSDPADlg::AtRespRSSI(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL], WORD wS
 	int len,valRssi;
 	BYTE strRssi[5];
 	BYTE *p=strArr[0];
+#ifdef FEATURE_HAIER_CM
+	int respLen = strlen((char *)p);
+	p = (unsigned char *)strchr((char *)p,':') + 1;
+	memset(strRssi,0,5);
+	len = respLen-strlen((char *)p);
+	strncpy((char *)strRssi,(char *)p,len);
+#else
 	p = (unsigned char *)strchr((char *)p,' ');
 	memset(strRssi,0,5);
 	len = strchr((char *)p,',')-(char *)p;
 	strncpy((char *)strRssi,(char *)p,len);
+#endif
 #if 0
 	valRssi = atoi((char *)strRssi)/6;
     if (valRssi>6) {
@@ -2076,10 +2084,19 @@ void CHSDPADlg::AtRespCOPS(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL], WORD wS
 void CHSDPADlg::AtRespCOPSEx(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL], WORD wStrNum)
 { 
     if(!strcmp((const char*)strArr[wStrNum-1], gc_dsatResCodeTbl[DSAT_OK][gc_dsatmode])
+	#ifdef FEATURE_HAIER_DSI
+       && !memcmp((const char*)strArr[0], "+CSPN:", strlen("+CSPN:")))
+	#else
        && !memcmp((const char*)strArr[0], "+COPS: ", strlen("+COPS: ")))
+    #endif
+    
     {
         int cnt = 0;
+		#ifdef FEATURE_HAIER_DSI
+        char *ptr = (char*)strArr[0] + strlen("+CSPN:");
+		#else
         char *ptr = (char*)strArr[0] + strlen("+COPS: ");
+		#endif
         char *p = ptr;
         while(*p)
         {
@@ -2108,12 +2125,14 @@ void CHSDPADlg::AtRespCOPSEx(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL], WORD 
 			{
 				strPLMN = _T(" ");
 			}
+			#ifndef FEATURE_HAIER_DSI
 			else
 			{
 				TCHAR szWchar[1024] = { 0 };
 				ASCHEXToWchar(ptr, szWchar);
 				strPLMN = UCS2ToGB(szWchar);
 			}
+			#endif
 		}
 		
         if(cnt == 0)
@@ -2192,7 +2211,11 @@ void CHSDPADlg::AtRespCSQ(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL], WORD wSt
 	BYTE *p=strArr[0];
 
 	memset(strRssi,0,5);
+#ifdef FEATURE_HAIER_CM
+	p = (unsigned char *)strchr((char *)p,':') + 1;
+#else
 	p = (unsigned char *)strchr((char *)p,' ');
+#endif
 	len = strchr((char *)p,',')-(char *)p;
 	strncpy((char *)strRssi,(char *)p,len);
 	valRssi = atoi((char *)strRssi)/6;
@@ -2598,7 +2621,11 @@ EnSyncInitFuncRetType CHSDPADlg::AtSndCOPSFormat()
 EnSyncInitFuncRetType CHSDPADlg::AtSndCOPS()
 {
     char szAtBuf[20] = {0};
+	#ifdef FEATURE_HAIER_DSI
+    strcpy(szAtBuf, "AT+CSPN?\r");
+	#else
     strcpy(szAtBuf, "AT+COPS?\r");
+	#endif
 	BOOL bResponse = ((CHSDPAApp*)AfxGetApp())->m_pSerialPort->CommIsReady();
 	if (!bResponse)
 	{

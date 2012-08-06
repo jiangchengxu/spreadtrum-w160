@@ -25,7 +25,11 @@ const char gc_dsatResCodeTbl[DSAT_MAX][DSAT_MODE_MAX][30] =
     "+CMT: ", "+CMT: ", 
 	"+RVMFB: ","+RVMFB: ",//add by liub
 	"+RVMFBUPDATE: ","+RVMFBUPDATE: ",//TATA
+#ifdef FEATURE_HAIER_CM
+	"^HRSSILVL:", "^HRSSILVL:",
+#else
     "+RSSI: ", "+RSSI: ",
+#endif
     "+CSMSS:", "+CSMSS:", 
     "+CPBSS:", "+CPBSS:", 
 #ifdef FEATURE_HAIER_CM
@@ -76,6 +80,9 @@ const char gc_dsatResCodeTbl[DSAT_MAX][DSAT_MODE_MAX][30] =
 	"+SIDLOCK: ", "+SIDLOCK: ", 
 #ifdef FEATURE_HAIER_CM
 	"+CEND:", "+CEND:",
+	"^CEND:", "^CEND",
+	"+CFNM:", "+CFNM:",
+	"^MODE:", "^MODE:",
 #endif
 };
 
@@ -688,6 +695,16 @@ static void AtRespParse(CSerialPort *pComm)
             {
                 CallAtRespFunc(ATRESP_SIDLOCK);
             }
+#ifdef FEATURE_HAIER_CM
+			else if(g_DsatResCode == DSAT_CFNM)
+            {
+                //don't process +CFNM unsolicted command now
+            }else if(g_DsatResCode == DSAT_HCEND){
+				//don't process ^CEND unsolicted command now
+			}else if(g_DsatResCode == DSAT_MODE){
+				//don't process ^MODE unsolicted command now
+			}
+#endif
 #ifdef FEATURE_ATAMOI
             else if(g_DsatResCode == DSAT_ATAMOI)
             {

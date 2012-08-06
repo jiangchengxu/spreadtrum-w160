@@ -409,12 +409,12 @@ void CDlgConnect::OnClickConnectButton()
 	m_pDlgUsage=pDlg->m_pUsageDlg;
 
 
-	/*if (wcslen(pDlg->m_szPLMN) == 0)
+	if (wcslen(pDlg->m_szPLMN) == 0)
 	{
 		AfxBeginThread(WaitThread, this);
 
 		return;
-	}*/
+	}
 
 	if (pDlg->m_pCallDlg->m_blIsInCalling)		//wyw_0408 add
 	{
