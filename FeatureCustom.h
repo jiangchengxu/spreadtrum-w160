@@ -85,6 +85,7 @@
 #define FEATURE_HAIER_ADAPTER
 #define FEATURE_HAIER_SMS
 #define FEATURE_HAIER_CM
+#define FEATURE_HAIER_INTERNET
 #endif
 
 #endif //#ifndef _AFX_FEATURECUSTOM_H_

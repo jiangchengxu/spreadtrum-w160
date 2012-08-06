@@ -194,6 +194,7 @@ void CDlgConnect::OnRadioRas()
 		m_pConnProf->AddConnProfile(profile);
 	} 
 	nConnNum = m_pConnProf->GetConnNum();
+#ifndef FEATURE_HAIER_INTERNET
 /*modified by lijl begin 2008.12.19*/
 //#if 0
 	/*add by GL on 2008-03-24 begin*/
@@ -230,6 +231,7 @@ void CDlgConnect::OnRadioRas()
 	} 
 //#endif
 /*modified by lijl end 2008.12.19*/
+#endif
 	m_cmbConnectionName.ResetContent();
 
 	WORD cnt = 0;
@@ -407,12 +409,12 @@ void CDlgConnect::OnClickConnectButton()
 	m_pDlgUsage=pDlg->m_pUsageDlg;
 
 
-	if (wcslen(pDlg->m_szPLMN) == 0)
+	/*if (wcslen(pDlg->m_szPLMN) == 0)
 	{
 		AfxBeginThread(WaitThread, this);
 
 		return;
-	}
+	}*/
 
 	if (pDlg->m_pCallDlg->m_blIsInCalling)		//wyw_0408 add
 	{
