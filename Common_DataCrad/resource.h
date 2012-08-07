@@ -523,8 +523,10 @@
 #define IDI_ICON_CALL_NUM01             374
 #define IDD_DIALOG_SETUP_CALL           374
 #define IDI_ICON_VOICEMAIL              374
+#define IDB_ICON_NWT_CDMA               374
 #define IDS_NWSTAT_FORBIDDEN            375
 #define IDI_ICON_CALL_NUM002            375
+#define IDB_ICON_NWT_HDR                375
 #define IDS_SETUP_NWAUTOSETERROR        376
 #define IDI_ICON_CALL_NUM02             376
 #define IDD_DIALOG_READ_CFTSMS          376
@@ -535,6 +537,7 @@
 #define IDI_ICON_CALL_NUM03             378
 #define IDS_DATACARD_NOT_INSERT         379
 #define IDI_ICON_CALL_NUM004            379
+#define IDB_ICON_NWT_CDMA_HDR           379
 #define IDS_SIM_NOT_INSERT              380
 #define IDI_ICON_CALL_NUM04             380
 #define IDD_DIALOG_COPS_TIP             380
@@ -1403,7 +1406,7 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        374
+#define _APS_NEXT_RESOURCE_VALUE        380
 #define _APS_NEXT_COMMAND_VALUE         32780
 #define _APS_NEXT_CONTROL_VALUE         1264
 #define _APS_NEXT_SYMED_VALUE           101

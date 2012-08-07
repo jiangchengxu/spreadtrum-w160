@@ -3543,7 +3543,7 @@ BOOL CHSDPADlg::SyncInitFunc(int nStatus)
     PreMsgDlg->SetText(str);
 #endif  
     //发送网络,信号查询和短消息,字符集配置的AT命令
-    #if 0
+    #if 1
     cnt = SYNCINITFUNCID_HANDSET;
     while(InitType == SYNCINITFUNCRET_DONE 
             && m_pSyncFuncTbl[cnt] != NULL && cnt < SYNCINITFUNCID_MAX)
@@ -4010,6 +4010,11 @@ LRESULT CHSDPADlg::UpdateIcon(WPARAM wParam, LPARAM lParam)
 		IDB_ICON_NWT_GSM,
 		IDB_ICON_NWT_WCDMA, 
 		IDB_ICON_NWT_HSUPA, 
+#ifdef FEATURE_HAIER_CM
+		IDB_ICON_NWT_CDMA,	//7
+		IDB_ICON_NWT_HDR,
+		IDB_ICON_NWT_CDMA_HDR,
+#endif
     };
 #endif
 
@@ -4041,6 +4046,16 @@ LRESULT CHSDPADlg::UpdateIcon(WPARAM wParam, LPARAM lParam)
 				m_cNWSrvType.SetBitmap(nw_srv[0]);
 				m_cRoam.SetBitmap(roam_v[0]);
 				break;
+			#ifdef FEATURE_HAIER_CM
+			case 2:
+				m_cNWSrvType.SetBitmap(nw_srv[7]);
+				break;
+			case 4:
+				m_cNWSrvType.SetBitmap(nw_srv[8]);
+				break;
+			case 8:
+				m_cNWSrvType.SetBitmap(nw_srv[9]);
+			#else
 			case 1:
 				m_cNWSrvType.SetBitmap(nw_srv[4]);
 				break;
@@ -4050,6 +4065,7 @@ LRESULT CHSDPADlg::UpdateIcon(WPARAM wParam, LPARAM lParam)
 			case 3:
 				m_cNWSrvType.SetBitmap(nw_srv[2]);
 				break;
+			#endif
 			default:
 				m_cNWSrvType.SetBitmap(nw_srv[0]);
 				m_cRoam.SetBitmap(roam_v[0]);

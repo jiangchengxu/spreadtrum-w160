@@ -81,7 +81,6 @@ typedef enum
 	DSAT_CEND,
 	DSAT_HCEND,
 	DSAT_CFNM,
-	DSAT_MODE,
 #endif
     DSAT_MAX
 } EnDsatResCode;

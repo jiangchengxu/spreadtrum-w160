@@ -34,10 +34,11 @@ const char gc_dsatResCodeTbl[DSAT_MAX][DSAT_MODE_MAX][30] =
     "+CPBSS:", "+CPBSS:", 
 #ifdef FEATURE_HAIER_CM
     "+CLIP:", "+CLIP:",
+	"^MODE:", "^MODE:",
 #else
     "+CLIP: ", "+CLIP: ",
-#endif
     "Network status: ", "Network status: ",
+#endif
     "Network Service: ", "Network Service: ",
     "Roaming status: ", "Roaming status: ",
     "HANDSET_NOTIFY: ", "HANDSET_NOTIFY: ",
@@ -82,7 +83,6 @@ const char gc_dsatResCodeTbl[DSAT_MAX][DSAT_MODE_MAX][30] =
 	"+CEND:", "+CEND:",
 	"^CEND:", "^CEND",
 	"+CFNM:", "+CFNM:",
-	"^MODE:", "^MODE:",
 #endif
 };
 
@@ -701,8 +701,6 @@ static void AtRespParse(CSerialPort *pComm)
                 //don't process +CFNM unsolicted command now
             }else if(g_DsatResCode == DSAT_HCEND){
 				//don't process ^CEND unsolicted command now
-			}else if(g_DsatResCode == DSAT_MODE){
-				//don't process ^MODE unsolicted command now
 			}
 #endif
 #ifdef FEATURE_ATAMOI

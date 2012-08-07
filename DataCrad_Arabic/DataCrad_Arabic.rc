@@ -13,151 +13,12 @@
 #undef APSTUDIO_READONLY_SYMBOLS
 
 /////////////////////////////////////////////////////////////////////////////
-// Chinese (P.R.C.) resources
-
-#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHS)
-#ifdef _WIN32
-LANGUAGE LANG_CHINESE, SUBLANG_CHINESE_SIMPLIFIED
-#pragma code_page(936)
-#endif //_WIN32
-
-/////////////////////////////////////////////////////////////////////////////
-//
-// Icon
-//
-
-// Icon with lowest ID value placed first to ensure application icon
-// remains consistent on all systems.
-IDI_ICON_TRANSFER       ICON    DISCARDABLE     "..\\res\\Icon_01.ico"
-IDI_ICON_DOWNLOAD       ICON    DISCARDABLE     "..\\res\\icon_dow.ico"
-IDI_ICON_NODE           ICON    DISCARDABLE     "..\\res\\Icon_09.ico"
-IDI_ICON_YEARLY         ICON    DISCARDABLE     "..\\res\\Icon_05.ico"
-IDI_ICON_UPLOAD         ICON    DISCARDABLE     "..\\res\\Icon_02.ico"
-#endif    // Chinese (P.R.C.) resources
-/////////////////////////////////////////////////////////////////////////////
-
-
-/////////////////////////////////////////////////////////////////////////////
-// English (U.S.) resources
-
-#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
-#ifdef _WIN32
-LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
-#pragma code_page(1252)
-#endif //_WIN32
-
-/////////////////////////////////////////////////////////////////////////////
-//
-// Icon
-//
-
-// Icon with lowest ID value placed first to ensure application icon
-// remains consistent on all systems.
-IDR_MAINFRAME           ICON    DISCARDABLE     "..\\res\\MAINFRAME.ICO"
-IDI_ICON_SET            ICON    DISCARDABLE     "..\\res\\setup01.ico"
-IDI_ICON_SET_HV         ICON    DISCARDABLE     "..\\res\\setup001.ico"
-IDI_ICON_INFO           ICON    DISCARDABLE     "..\\res\\icon1.ico"
-IDI_ICON_WARNING        ICON    DISCARDABLE     "..\\res\\icon2.ico"
-IDI_ICON_SMILE          ICON    DISCARDABLE     "..\\res\\icon3.ico"
-IDI_ICON_NET            ICON    DISCARDABLE     "..\\res\\connect01.ico"
-IDI_ICON_CALL_HV        ICON    DISCARDABLE     "..\\res\\call001.ico"
-IDI_ICON_CALL           ICON    DISCARDABLE     "..\\res\\call01.ico"
-IDI_ICON_SMS_HV         ICON    DISCARDABLE     "..\\res\\message001.ico"
-IDI_ICON_SMS            ICON    DISCARDABLE     "..\\res\\message01.ico"
-IDI_ICON_PHBK_HV        ICON    DISCARDABLE     "..\\res\\phonebook001.ico"
-IDI_ICON_PHBK           ICON    DISCARDABLE     "..\\res\\phonebook01.ico"
-IDI_ICON_NET_HV         ICON    DISCARDABLE     "..\\res\\connect001.ico"
-IDI_ICON_XSMS           ICON    DISCARDABLE     "..\\res\\xsms.ico"
-IDI_ICON_PADHANGUP      ICON    DISCARDABLE     "..\\res\\padhangup.ico"
-IDI_ICON_PADCALL        ICON    DISCARDABLE     "..\\res\\padcall.ico"
-IDI_ICON_HELP_HV        ICON    DISCARDABLE     "..\\res\\HELP.ico"
-IDI_ICON_HELP           ICON    DISCARDABLE     "..\\res\\HELP2.ico"
-IDI_ICON_BROWSE         ICON    DISCARDABLE     "..\\res\\browser2.ico"
-IDI_ICON_BROWSE_HV      ICON    DISCARDABLE     "..\\res\\browser1.ico"
-IDI_ICON_STATISTICS     ICON    DISCARDABLE     "..\\res\\Icon_04.ico"
-IDI_ICON_DAILY          ICON    DISCARDABLE     "..\\res\\Icon_06.ico"
-IDI_ICON_MONTHLY        ICON    DISCARDABLE     "..\\res\\Icon_07.ico"
-IDI_ICON_USAGE_HV       ICON    DISCARDABLE     "..\\res\\usage01.ico"
-IDI_ICON_USAGE          ICON    DISCARDABLE     "..\\res\\usage001.ico"
-IDI_ICON_SMS_PRESS      ICON    DISCARDABLE     "..\\res\\message03.ico"
-IDI_ICON_NET_PRESS      ICON    DISCARDABLE     "..\\res\\connect03.ico"
-IDI_ICON_BROWSE_PRESS   ICON    DISCARDABLE     "..\\res\\browser3.ico"
-IDI_ICON_USAGE_PRESS    ICON    DISCARDABLE     "..\\res\\usage03.ico"
-IDI_ICON_CALL_PRESS     ICON    DISCARDABLE     "..\\res\\call03.ico"
-IDI_ICON_PHONEBOOK_PRESS ICON    DISCARDABLE     "..\\res\\phonebook03.ico"
-IDI_ICON_SETUP_PRESS    ICON    DISCARDABLE     "..\\res\\setup03.ico"
-IDI_ICON_SMSNEW         ICON    DISCARDABLE     "..\\res\\new.ico"
-IDI_ICON_SMSREPLY       ICON    DISCARDABLE     "..\\res\\reply.ico"
-IDI_ICON_SMSFORWARD     ICON    DISCARDABLE     "..\\res\\forward.ico"
-IDI_ICON_SMSDELEDT      ICON    DISCARDABLE     "..\\res\\delete.ico"
-IDI_ICON_SMSEXTRACT     ICON    DISCARDABLE     "..\\res\\extract.ico"
-IDI_ICON_SMSSEARCH      ICON    DISCARDABLE     "..\\res\\search.ico"
-IDI_ICON_SMSDAIL        ICON    DISCARDABLE     "..\\res\\dial.ico"
-IDI_ICON_SMS_FILE       ICON    DISCARDABLE     "..\\res\\file.ico"
-IDI_ICON_SMS_INBOX      ICON    DISCARDABLE     "..\\res\\inbox.ico"
-IDI_ICON_SMS_OUTBOX     ICON    DISCARDABLE     "..\\res\\outbox.ico"
-IDI_ICON_SMS_DRAFT      ICON    DISCARDABLE     "..\\res\\draft.ico"
-IDI_ICON_SMS_EDIT       ICON    DISCARDABLE     "..\\res\\edit.ico"
-IDI_ICON_PB_SMS         ICON    DISCARDABLE     "..\\res\\sms.ico"
-IDI_ICON_PB_TRANSFER    ICON    DISCARDABLE     "..\\res\\Transfer.ico"
-IDI_ICON_PB_GROUP       ICON    DISCARDABLE     "..\\res\\group.ico"
-IDI_ICON_SMS_ARCHIVE    ICON    DISCARDABLE     "..\\res\\archive.ico"
-IDI_ICON_SMS_RESUME     ICON    DISCARDABLE     "..\\res\\resume.ico"
-
-/////////////////////////////////////////////////////////////////////////////
-//
-// Bitmap
-//
-
-IDB_BITMAP_SMSMENU      BITMAP  DISCARDABLE     "..\\res\\smsmenu.bmp"
-
-#ifdef APSTUDIO_INVOKED
-/////////////////////////////////////////////////////////////////////////////
-//
-// TEXTINCLUDE
-//
-
-1 TEXTINCLUDE MOVEABLE PURE 
-BEGIN
-    "resource.h\0"
-END
-
-2 TEXTINCLUDE MOVEABLE PURE 
-BEGIN
-    "#include ""afxres.h""\r\n"
-    "\0"
-END
-
-3 TEXTINCLUDE MOVEABLE PURE 
-BEGIN
-    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
-    "#define _AFX_NO_OLE_RESOURCES\r\n"
-    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
-    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
-    "\r\n"
-    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)\r\n"
-    "#ifdef _WIN32\r\n"
-    "LANGUAGE 9, 1\r\n"
-    "#pragma code_page(1252)\r\n"
-    "#endif //_WIN32\r\n"
-    "#include ""afxres.rc""         // Standard components\r\n"
-    "#endif\r\n"
-    "\0"
-END
-
-#endif    // APSTUDIO_INVOKED
-
-#endif    // English (U.S.) resources
-/////////////////////////////////////////////////////////////////////////////
-
-
-/////////////////////////////////////////////////////////////////////////////
 // Neutral (Sys. Default) resources
 
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_NEUSD)
 #ifdef _WIN32
 LANGUAGE LANG_NEUTRAL, SUBLANG_SYS_DEFAULT
-#pragma code_page(1256)
+#pragma code_page(936)
 #endif //_WIN32
 
 /////////////////////////////////////////////////////////////////////////////
@@ -222,6 +83,9 @@ IDB_BITMAP_STATUSICONBK BITMAP  DISCARDABLE     "..\\res\\middle02.bmp"
 IDB_ICON_LONGNULL_SPEED BITMAP  DISCARDABLE     "..\\res\\longiconnul_speed.bmp"
 IDB_BITMAP_UPSPEEDICON  BITMAP  DISCARDABLE     "..\\res\\upspeedicon.bmp"
 IDB_BITMAP_DOWNSPEEDICON BITMAP  DISCARDABLE     "..\\res\\downspeedicon.bmp"
+IDB_ICON_NWT_CDMA       BITMAP  DISCARDABLE     "..\\res\\cdma_icon.bmp"
+IDB_ICON_NWT_CDMA_HDR   BITMAP  DISCARDABLE     "..\\res\\cdma_hdr_icon.bmp"
+IDB_ICON_NWT_HDR        BITMAP  DISCARDABLE     "..\\res\\hdr_icon.bmp"
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -257,19 +121,19 @@ END
 
 IDD_DIALOG_INTERNET_PWDCONFIRM DIALOG DISCARDABLE  0, 0, 144, 65
 STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION " √ﬂÌœ ﬂ·„… «·„—Ê—"
+CAPTION "????? ???? ??????"
 FONT 9, "Tahoma"
 BEGIN
     EDITTEXT        IDC_EDIT_PWDCONFIRM,25,17,95,14,ES_PASSWORD | 
                     ES_AUTOHSCROLL
-    DEFPUSHBUTTON   "„Ê«›ﬁ",IDOK,12,44,50,14
-    PUSHBUTTON      "«·€«¡",IDCANCEL,80,44,50,14
-    GROUPBOX        "«œŒ«· ﬂ·„… «·„—Ê—",IDC_STATIC,8,5,128,35
+    DEFPUSHBUTTON   "?????",IDOK,12,44,50,14
+    PUSHBUTTON      "?????",IDCANCEL,80,44,50,14
+    GROUPBOX        "????? ???? ??????",IDC_STATIC,8,5,128,35
 END
 
 IDD_DIALOG_INTERNET_PWDMODIFY DIALOG DISCARDABLE  0, 0, 159, 80
 STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION " ⁄œÌ· ﬂ·„… «·„—Ê—"
+CAPTION "????? ???? ??????"
 FONT 10, "Tahoma"
 BEGIN
     EDITTEXT        IDC_EDIT_MPWD_CURR,80,6,63,12,ES_PASSWORD | 
@@ -278,37 +142,37 @@ BEGIN
                     ES_AUTOHSCROLL
     EDITTEXT        IDC_EDIT_MPWD_CONF,80,36,63,12,ES_PASSWORD | 
                     ES_AUTOHSCROLL
-    DEFPUSHBUTTON   "„Ê«›ﬁ",IDOK,22,59,50,14
-    PUSHBUTTON      "«·€«¡",IDCANCEL,86,58,50,14
-    RTEXT           "ﬂ·„… «·„—Ê— «·Õ«·Ì…",IDC_STATIC1,3,7,65,8
-    RTEXT           "ﬂ·„… «·„—Ê— «·ÃœÌœ…",IDC_STATIC,3,22,65,8
-    RTEXT           "«· Õﬁﬁ „‰ ﬂ·„… «·„—Ê—",IDC_STATIC,3,37,65,8
+    DEFPUSHBUTTON   "?????",IDOK,22,59,50,14
+    PUSHBUTTON      "?????",IDCANCEL,86,58,50,14
+    RTEXT           "???? ?????? ???????",IDC_STATIC1,3,7,65,8
+    RTEXT           "???? ?????? ???????",IDC_STATIC,3,22,65,8
+    RTEXT           "?????? ?? ???? ??????",IDC_STATIC,3,37,65,8
 END
 
 IDD_DIALOG_PBIMPORT DIALOG DISCARDABLE  0, 0, 169, 90
 STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION "«” Ì—«œ œ› — «·⁄‰«ÊÌ‰"
+CAPTION "??????? ???? ????????"
 FONT 10, "Tahoma"
 BEGIN
-    CONTROL         "«” Ì—«œ „‰ „·› „Õ·Ì",IDC_RADIO1,"Button",
+    CONTROL         "??????? ?? ??? ????",IDC_RADIO1,"Button",
                     BS_AUTORADIOBUTTON | WS_GROUP,15,24,126,10
-    CONTROL         "«” Ì—«œ œ› — «·⁄‰«ÊÌ‰ „‰ «·√Ê ·Êﬂ",IDC_RADIO2,"Button",
+    CONTROL         "??????? ???? ???????? ?? ????????",IDC_RADIO2,"Button",
                     BS_AUTORADIOBUTTON,15,39,130,10
-    DEFPUSHBUTTON   "„Ê«›ﬁ",IDOK,16,69,50,14
-    PUSHBUTTON      "«·€«¡",IDCANCEL,103,68,50,14
-    GROUPBOX        "«·—Ã«¡ «Œ Ì«— ‰„Ê–Ã «” Ì—«œ",IDC_STATIC,10,9,149,50
+    DEFPUSHBUTTON   "?????",IDOK,16,69,50,14
+    PUSHBUTTON      "?????",IDCANCEL,103,68,50,14
+    GROUPBOX        "?????? ?????? ????? ???????",IDC_STATIC,10,9,149,50
 END
 
 IDD_DIALOG_PBGETOUTLOOK DIALOG DISCARDABLE  0, 0, 194, 88
 STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION "«” Ì—«œ ⁄‰Ê«‰ „‰ «·√Ê ·Êﬂ"
+CAPTION "??????? ????? ?? ????????"
 FONT 10, "Tahoma"
 BEGIN
-    DEFPUSHBUTTON   "„Ê«›ﬁ",IDOK,23,66,50,14
-    PUSHBUTTON      "«·€«¡",IDCANCEL,100,66,50,14
-    GROUPBOX        "«·—Ã«¡ «Œ Ì«— „Ã·œ «·⁄‰«ÊÌ‰ ··«” Ì—«œ",IDC_STATIC,9,8,
+    DEFPUSHBUTTON   "?????",IDOK,23,66,50,14
+    PUSHBUTTON      "?????",IDCANCEL,100,66,50,14
+    GROUPBOX        "?????? ?????? ???? ???????? ?????????",IDC_STATIC,9,8,
                     173,53
-    PUSHBUTTON      " ’›Õ...",IDC_BUTTON_BROWSE,126,28,50,14
+    PUSHBUTTON      "????...",IDC_BUTTON_BROWSE,126,28,50,14
     EDITTEXT        IDC_EDIT_FOLDER,21,28,89,14,ES_AUTOHSCROLL | ES_READONLY
 END
 
@@ -322,21 +186,21 @@ BEGIN
     PUSHBUTTON      "",IDC_BUTTON_TRAFFIC_TOTAL,164,12,293,83
     PUSHBUTTON      "",IDC_BUTTON_TRAFFIC_REC,164,109,144,80
     PUSHBUTTON      "",IDC_BUTTON_TRAFFIC_SEND,314,109,143,80
-    LTEXT           "«Ã„«·Ì Õ—ﬂ… «·‘»ﬂ…",IDC_STATIC,162,1,52,8
-    LTEXT           "«” ﬁ»«·:",IDC_STATIC,165,99,38,8
-    LTEXT           "«—”«·:",IDC_STATIC,314,98,38,8
-    PUSHBUTTON      " Ê”Ì⁄ «·ﬂ·",IDC_BUTTON_EXPANDALL,213,99,38,8,NOT 
+    LTEXT           "?????? ???? ??????",IDC_STATIC,162,1,52,8
+    LTEXT           "???????:",IDC_STATIC,165,99,38,8
+    LTEXT           "?????:",IDC_STATIC,314,98,38,8
+    PUSHBUTTON      "????? ????",IDC_BUTTON_EXPANDALL,213,99,38,8,NOT 
                     WS_VISIBLE
-    PUSHBUTTON      "ÿÌ «·ﬂ·",IDC_BUTTON_COLLAPSEALL,356,98,38,8,NOT 
+    PUSHBUTTON      "?? ????",IDC_BUTTON_COLLAPSEALL,356,98,38,8,NOT 
                     WS_VISIBLE
-    PUSHBUTTON      "≈⁄«œ…  «·«Õ’«¡« ",IDC_BUTTON_RESETSTATISTICS,400,97,61,
+    PUSHBUTTON      "?????  ?????????",IDC_BUTTON_RESETSTATISTICS,400,97,61,
                     8,NOT WS_VISIBLE
-    PUSHBUTTON      "”Ã· «·‰ ",IDC_BUTTON_NETLOG,263,97,39,10,NOT WS_VISIBLE
+    PUSHBUTTON      "??? ????",IDC_BUTTON_NETLOG,263,97,39,10,NOT WS_VISIBLE
 END
 
 IDD_DIALOG_PROFILE DIALOGEX 0, 0, 182, 177
 STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION "«⁄œ«œ«  «·‰„ÿ"
+CAPTION "??????? ?????"
 FONT 10, "Tahoma", 0, 0, 0x1
 BEGIN
     COMBOBOX        IDC_COMBO_CONNECT_NAME,81,38,76,78,CBS_DROPDOWNLIST | 
@@ -345,62 +209,62 @@ BEGIN
     EDITTEXT        IDC_EDIT_USER_NAME,81,68,76,12,ES_AUTOHSCROLL
     EDITTEXT        IDC_EDIT_PASSWORD,81,83,76,12,ES_PASSWORD | 
                     ES_AUTOHSCROLL
-    PUSHBUTTON      "ÃœÌœ",IDC_BUTTON_NEWCONN,26,150,32,12
-    PUSHBUTTON      " Œ“Ì‰",IDC_BUTTON_SAVECONN,75,150,32,12
-    PUSHBUTTON      "Õ–›",IDC_BUTTON_DELETECONN,124,150,32,12
-    LTEXT           "«”„ «·„” Œœ„:",IDC_STATIC_USER,24,70,38,8,0,
+    PUSHBUTTON      "????",IDC_BUTTON_NEWCONN,26,150,32,12
+    PUSHBUTTON      "?????",IDC_BUTTON_SAVECONN,75,150,32,12
+    PUSHBUTTON      "???",IDC_BUTTON_DELETECONN,124,150,32,12
+    LTEXT           "??? ????????:",IDC_STATIC_USER,24,70,38,8,0,
                     WS_EX_TRANSPARENT
-    LTEXT           "ﬂ·„… «·„—Ê—:",IDC_STATIC_PASSWORD,24,85,39,8,0,
+    LTEXT           "???? ??????:",IDC_STATIC_PASSWORD,24,85,39,8,0,
                     WS_EX_TRANSPARENT
-    LTEXT           "—ﬁ„ «·Â« ›:",IDC_STATIC_NUMBER,24,55,48,8,0,
+    LTEXT           "??? ??????:",IDC_STATIC_NUMBER,24,55,48,8,0,
                     WS_EX_TRANSPARENT
-    LTEXT           "«”„ «·‰„ÿ:",IDC_STATIC_NUMBER3,24,39,48,8,0,
+    LTEXT           "??? ?????:",IDC_STATIC_NUMBER3,24,39,48,8,0,
                     WS_EX_TRANSPARENT
-    LTEXT           "«”„ ‰ﬁÿ… Ê’Ê· (APN)",IDC_STATIC,15,100,63,8
+    LTEXT           "??? ???? ???? (APN)",IDC_STATIC,15,100,63,8
     EDITTEXT        IDC_EDIT_APN,81,98,76,12,ES_AUTOHSCROLL
-    CONTROL         "÷»ÿ ﬂ«› —«÷Ì",IDC_CHECK_SETDEFAULT,"Button",
+    CONTROL         "??? ????????",IDC_CHECK_SETDEFAULT,"Button",
                     BS_AUTOCHECKBOX | BS_LEFTTEXT | WS_TABSTOP,23,131,59,10
     CONTROL         "CHAP",IDC_RADIO_CHAP,"Button",BS_AUTORADIOBUTTON | 
                     WS_GROUP,75,113,30,10
     CONTROL         "PAP",IDC_RADIO_PAP,"Button",BS_AUTORADIOBUTTON,125,113,
                     26,10
-    LTEXT           " ÊÀÌﬁ:",IDC_STATIC,24,113,44,8
+    LTEXT           "?????:",IDC_STATIC,24,113,44,8
     CONTROL         "NDIS",IDC_RADIO_NDIS,"Button",BS_AUTORADIOBUTTON | NOT 
                     WS_VISIBLE | WS_GROUP,47,9,32,10
     CONTROL         "RAS",IDC_RADIO_RAS,"Button",BS_AUTORADIOBUTTON | NOT 
                     WS_VISIBLE,107,9,30,10
-    GROUPBOX        "„Ê«’›«  ‰Ê⁄ «·—»ÿ",IDC_STATIC,9,2,158,23,NOT WS_VISIBLE
-    GROUPBOX        "«·«⁄œ«œ«  · ’›Õ «·√‰ —‰ ",IDC_STATIC,12,28,156,142
+    GROUPBOX        "??????? ??? ?????",IDC_STATIC,9,2,158,23,NOT WS_VISIBLE
+    GROUPBOX        "????????? ????? ????????",IDC_STATIC,12,28,156,142
 END
 
 IDD_DIALOG_NETWORKSETTING_CDMA DIALOGEX 0, 0, 179, 98
 STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION "«⁄œ«œ«  «·‘»ﬂ…"
+CAPTION "??????? ??????"
 FONT 10, "Tahoma", 0, 0, 0x1
 BEGIN
-    GROUPBOX        " ‘€Ì· Œœ„…  ÃÊ«· CDMA",IDC_STATIC,22,7,135,60
-    CONTROL         "«Ìﬁ«› Œœ„… «· ÃÊ«· ",IDC_RADIO_MANUAL,"Button",
+    GROUPBOX        "????? ???? ????? CDMA",IDC_STATIC,22,7,135,60
+    CONTROL         "????? ???? ??????? ",IDC_RADIO_MANUAL,"Button",
                     BS_AUTORADIOBUTTON,59,26,55,10,WS_EX_TRANSPARENT
-    CONTROL         " ‘€Ì· Œœ„… «· ÃÊ«·  ·ﬁ«∆Ì«¯",IDC_RADIO_AUTOMATIC,"Button",
+    CONTROL         "????? ???? ??????? ????????",IDC_RADIO_AUTOMATIC,"Button",
                     BS_AUTORADIOBUTTON | WS_GROUP,59,45,59,8,
                     WS_EX_TRANSPARENT
-    PUSHBUTTON      "„Ê«›ﬁ",IDC_BUTTON2,63,69,46,15
+    PUSHBUTTON      "?????",IDC_BUTTON2,63,69,46,15
 END
 
 IDD_DIALOG_SETUP_NW_MODE DIALOG DISCARDABLE  0, 0, 150, 126
 STYLE WS_CHILD
 FONT 10, "Tahoma"
 BEGIN
-    GROUPBOX        "«·Ê÷⁄ «·„›÷·",IDC_STATIC_MODEPRE_MODE,24,10,111,106
-    CONTROL         "›ﬁÿ GPRS/EDGE",IDC_RADIO_SETUP_NWSEL_GEONLY_MODE,"Button",
+    GROUPBOX        "????? ??????",IDC_STATIC_MODEPRE_MODE,24,10,111,106
+    CONTROL         "??? GPRS/EDGE",IDC_RADIO_SETUP_NWSEL_GEONLY_MODE,"Button",
                     BS_AUTORADIOBUTTON | WS_GROUP,35,26,90,10
-    CONTROL         "›ﬁÿ UMTS/HSDPA",IDC_RADIO_SETUP_NWSEL_UMTSONLY_MODE,
+    CONTROL         "??? UMTS/HSDPA",IDC_RADIO_SETUP_NWSEL_UMTSONLY_MODE,
                     "Button",BS_AUTORADIOBUTTON,35,43,90,10
-    CONTROL         " ›÷Ì· GPRS/EDGE",IDC_RADIO_SETUP_NWSEL_GEPRE_MODE,
+    CONTROL         "????? GPRS/EDGE",IDC_RADIO_SETUP_NWSEL_GEPRE_MODE,
                     "Button",BS_AUTORADIOBUTTON,35,60,90,10
-    CONTROL         " ›÷Ì· UMTS/HSDPA",IDC_RADIO_SETUP_NWSEL_UMTSPRE_MODE,
+    CONTROL         "????? UMTS/HSDPA",IDC_RADIO_SETUP_NWSEL_UMTSPRE_MODE,
                     "Button",BS_AUTORADIOBUTTON,35,77,90,10
-    PUSHBUTTON      "⁄œ·",IDC_BUTTON_NWSET,61,97,35,11
+    PUSHBUTTON      "???",IDC_BUTTON_NWSET,61,97,35,11
 END
 
 IDD_DIALOG_MESSAGE DIALOG DISCARDABLE  0, 0, 160, 40
@@ -425,12 +289,12 @@ FONT 10, "Tahoma"
 BEGIN
     CONTROL         "Progress1",IDC_PROGRESS1,"msctls_progress32",PBS_SMOOTH | 
                     WS_BORDER,9,25,185,14
-    LTEXT           "«‰ Ÿ«—",IDC_STATIC_SMS,9,9,185,8
+    LTEXT           "??????",IDC_STATIC_SMS,9,9,185,8
 END
 
 IDD_DIALOG_PROGRESSEX DIALOG DISCARDABLE  0, 0, 140, 39
 STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION
-CAPTION "ÌÃ—Ì «·«—”«·"
+CAPTION "???? ???????"
 FONT 10, "Tahoma"
 BEGIN
     CONTROL         "Progress1",IDC_PROGRESS1,"msctls_progress32",WS_BORDER,
@@ -440,19 +304,19 @@ END
 
 IDD_DIALOG_SMS_EXPORT DIALOG DISCARDABLE  0, 0, 99, 118
 STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION " ’œÌ— —”«∆· ‰’Ì… ﬁ’Ì—…"
+CAPTION "????? ????? ???? ?????"
 FONT 10, "Tahoma"
 BEGIN
-    DEFPUSHBUTTON   "„Ê«›ﬁ",IDOK,11,93,26,12,NOT WS_TABSTOP
-    PUSHBUTTON      "«·€«¡",IDCANCEL,62,93,26,12,NOT WS_TABSTOP
-    GROUPBOX        "«Œ Ì«—",IDC_STATIC,7,7,85,104
-    CONTROL         "«·»—Ìœ «·Ê«—œ",IDC_RADIO1,"Button",BS_AUTORADIOBUTTON | 
+    DEFPUSHBUTTON   "?????",IDOK,11,93,26,12,NOT WS_TABSTOP
+    PUSHBUTTON      "?????",IDCANCEL,62,93,26,12,NOT WS_TABSTOP
+    GROUPBOX        "??????",IDC_STATIC,7,7,85,104
+    CONTROL         "?????? ??????",IDC_RADIO1,"Button",BS_AUTORADIOBUTTON | 
                     WS_GROUP | WS_TABSTOP,27,27,45,10
-    CONTROL         "«·»—Ìœ «·Œ«—Ã",IDC_RADIO2,"Button",BS_AUTORADIOBUTTON | 
+    CONTROL         "?????? ??????",IDC_RADIO2,"Button",BS_AUTORADIOBUTTON | 
                     WS_TABSTOP,27,43,45,10
-    CONTROL         "«·„”Êœ« ",IDC_RADIO3,"Button",BS_AUTORADIOBUTTON | 
+    CONTROL         "????????",IDC_RADIO3,"Button",BS_AUTORADIOBUTTON | 
                     WS_TABSTOP,27,59,45,10
-    CONTROL         "Ã„Ì⁄ «·—”«∆·",IDC_RADIO4,"Button",BS_AUTORADIOBUTTON | 
+    CONTROL         "???? ???????",IDC_RADIO4,"Button",BS_AUTORADIOBUTTON | 
                     WS_TABSTOP,27,75,45,10
 END
 
@@ -467,7 +331,7 @@ END
 
 IDD_DIALOG_PROFILE_NEWCDMA2000 DIALOG DISCARDABLE  0, 0, 195, 152
 STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION "‰„ÿ ÃœÌœ"
+CAPTION "??? ????"
 FONT 10, "Tahoma"
 BEGIN
     EDITTEXT        IDC_EDIT_INTERNET_NEWCONN_CONNNAME,85,7,88,12,
@@ -478,18 +342,18 @@ BEGIN
                     ES_AUTOHSCROLL
     EDITTEXT        IDC_EDIT_INTERNET_NEWCONN_PASSWORD,85,69,88,12,
                     ES_PASSWORD | ES_AUTOHSCROLL
-    CONTROL         "Õœœ ﬂ‰„ÿ «› —«÷Ì",IDC_CHECK_INTERNET_NEWCONN_SETDFT,
+    CONTROL         "??? ???? ???????",IDC_CHECK_INTERNET_NEWCONN_SETDFT,
                     "Button",BS_AUTOCHECKBOX | BS_LEFTTEXT | WS_TABSTOP,17,
                     110,75,10
-    DEFPUSHBUTTON   "„Ê«›ﬁ",IDOK,18,129,50,12
-    PUSHBUTTON      "«·€«¡",IDCANCEL,124,129,50,12
-    LTEXT           "«”„ «·‰„ÿ:",IDC_STATIC,18,8,60,8
-    LTEXT           "—ﬁ„ «·Â« ›:",IDC_STATIC,18,32,60,8
-    LTEXT           "«”„ «·„” Œœ„:",IDC_STATIC,18,51,60,8
-    LTEXT           "ﬂ·„… «·„—Ê—:",IDC_STATIC,18,72,60,8
+    DEFPUSHBUTTON   "?????",IDOK,18,129,50,12
+    PUSHBUTTON      "?????",IDCANCEL,124,129,50,12
+    LTEXT           "??? ?????:",IDC_STATIC,18,8,60,8
+    LTEXT           "??? ??????:",IDC_STATIC,18,32,60,8
+    LTEXT           "??? ????????:",IDC_STATIC,18,51,60,8
+    LTEXT           "???? ??????:",IDC_STATIC,18,72,60,8
     LTEXT           "*",IDC_STATIC,181,11,8,8
     LTEXT           "*",IDC_STATIC,181,32,8,8
-    LTEXT           " ÊÀÌﬁ:",IDC_STATIC,18,93,52,8,NOT WS_VISIBLE
+    LTEXT           "?????:",IDC_STATIC,18,93,52,8,NOT WS_VISIBLE
     CONTROL         "CHAP",IDC_RADIO_CHAP,"Button",BS_AUTORADIOBUTTON | NOT 
                     WS_VISIBLE | WS_GROUP,84,92,30,10
     CONTROL         "PAP",IDC_RADIO_PAP,"Button",BS_AUTORADIOBUTTON | NOT 
@@ -503,8 +367,8 @@ FONT 10, "Tahoma", 0, 0, 0x1
 BEGIN
     CONTROL         "Slider1",IDC_SLIDER_VOLUME,"msctls_trackbar32",TBS_BOTH | 
                     TBS_NOTICKS | WS_TABSTOP,29,70,87,13
-    GROUPBOX        "”Ã· «·„ﬂ«·„« ",IDC_STATIC,148,0,308,169
-    PUSHBUTTON      "”Ã· «·„ﬂ«·„« ",IDC_BUTTON_CALLHISTORY,447,116,23,12,NOT 
+    GROUPBOX        "??? ?????????",IDC_STATIC,148,0,308,169
+    PUSHBUTTON      "??? ?????????",IDC_BUTTON_CALLHISTORY,447,116,23,12,NOT 
                     WS_VISIBLE
     EDITTEXT        IDC_EDIT_NUMBER,138,148,41,12,ES_UPPERCASE | 
                     ES_AUTOHSCROLL | NOT WS_VISIBLE
@@ -520,29 +384,29 @@ BEGIN
     PUSHBUTTON      "*",IDC_BUTTON_NUM_STAR,10,149,25,12
     PUSHBUTTON      "0/+",IDC_BUTTON_NUM_0,37,149,25,12
     PUSHBUTTON      "#",IDC_BUTTON_NUM_HASH,64,149,25,12
-    PUSHBUTTON      "«‰Â«¡",IDC_BUTTON_HUNGUP,98,130,37,12
-    PUSHBUTTON      "„”Õ",IDC_BUTTON_CLEAR,98,149,37,12
-    PUSHBUTTON      "« ’«·",IDC_BUTTON_CALL,98,111,37,12
+    PUSHBUTTON      "?????",IDC_BUTTON_HUNGUP,98,130,37,12
+    PUSHBUTTON      "???",IDC_BUTTON_CLEAR,98,149,37,12
+    PUSHBUTTON      "?????",IDC_BUTTON_CALL,98,111,37,12
     LTEXT           "Status",IDC_STATIC_STATUS,438,1,32,19,NOT WS_VISIBLE | 
                     WS_BORDER,WS_EX_TRANSPARENT
-    PUSHBUTTON      "«—”«· —”«·…",IDC_BUTTON_SMS,321,11,54,11
+    PUSHBUTTON      "????? ?????",IDC_BUTTON_SMS,321,11,54,11
     LTEXT           "Level_0",IDC_STATIC,327,66,29,8,NOT WS_VISIBLE
     LTEXT           "Level_3",IDC_STATIC,327,36,30,8,NOT WS_VISIBLE
     LTEXT           "Level_2",IDC_STATIC,327,47,30,8,NOT WS_VISIBLE
     LTEXT           "Level_1",IDC_STATIC,327,57,29,8,NOT WS_VISIBLE,
                     WS_EX_TRANSPARENT
-    PUSHBUTTON      "œ› — «·⁄‰«ÊÌ‰",IDC_BUTTON_GETPHBITEM,98,92,37,12
+    PUSHBUTTON      "???? ????????",IDC_BUTTON_GETPHBITEM,98,92,37,12
     LTEXT           "",IDC_STATIC_SCREENINFO,8,17,132,47,SS_SUNKEN
     CONTROL         300,IDC_STATIC,"Static",SS_BITMAP | NOT WS_VISIBLE,271,
                     123,85,17
-    GROUPBOX        "« ’«·",IDC_STATIC,0,0,146,169
+    GROUPBOX        "?????",IDC_STATIC,0,0,146,169
     CONTROL         "Tab1",IDC_TAB_CALLHISTORY_CALL,"SysTabControl32",0x0,
                     151,11,301,154
     CONTROL         "List3",IDC_LIST_CALLHISTORY_CALL,"SysListView32",
                     LVS_REPORT | WS_BORDER | WS_TABSTOP,152,22,299,138
-    PUSHBUTTON      "« ’«·",IDC_BUTTON_CALL2,381,11,27,11
-    PUSHBUTTON      "Õ›Ÿ",IDC_BUTTON_PB_SAVE,291,11,27,11
-    PUSHBUTTON      "Õ–›",IDC_BUTTON_PB_DELETE,411,11,27,11
+    PUSHBUTTON      "?????",IDC_BUTTON_CALL2,381,11,27,11
+    PUSHBUTTON      "???",IDC_BUTTON_PB_SAVE,291,11,27,11
+    PUSHBUTTON      "???",IDC_BUTTON_PB_DELETE,411,11,27,11
 END
 
 IDD_DIALOG_SMS DIALOGEX 0, 0, 479, 196
@@ -611,25 +475,25 @@ END
 IDD_DIALOG_SETUP DIALOGEX 0, 0, 458, 165
 STYLE WS_CHILD
 EXSTYLE WS_EX_TRANSPARENT
-FONT 10, "Tahoma"
+FONT 10, "Tahoma", 0, 0, 0x1
 BEGIN
     PUSHBUTTON      "Reset",IDC_BUTTON_SET_RESET,399,93,9,7,NOT WS_VISIBLE
     PUSHBUTTON      "OK",IDC_BUTTON_SET_OK,438,92,20,7,NOT WS_VISIBLE
     CONTROL         "Tab1",IDC_TAB_SETUP,"SysTabControl32",NOT WS_VISIBLE,
                     319,93,84,6
-    GROUPBOX        "«·—„“ «·”—Ì",IDC_STATIC_OPPIN,28,6,276,69
-    GROUPBOX        "÷»ÿ",IDC_STATIC_OPSETTING,28,84,276,58
+    GROUPBOX        "????? ?????",IDC_STATIC_OPPIN,28,6,276,69
+    GROUPBOX        "???",IDC_STATIC_OPSETTING,28,84,276,58
     LTEXT           "PIN code settings helps to protect  USIM card against  unauthorized  use:",
                     IDC_STATIC_PINSTR,46,18,131,16
-    PUSHBUTTON      "‰’",IDC_BUTTON_BTNTEXT,55,107,46,14
-    PUSHBUTTON      "«Ìﬁ«›",IDC_BTN_PINDISABLE,112,44,46,14
-    PUSHBUTTON      " ⁄œÌ·",IDC_BTN_PINMODIFY,169,44,46,14
-    PUSHBUTTON      "«“«·… «·ﬁ›·",IDC_BTN_PINUNLOCK,226,44,46,14
-    PUSHBUTTON      "‘»ﬂ…",IDC_BUTTON_BTNNETWORK,111,121,46,14,NOT 
+    PUSHBUTTON      "??",IDC_BUTTON_BTNTEXT,55,107,46,14
+    PUSHBUTTON      "?????",IDC_BTN_PINDISABLE,112,44,46,14
+    PUSHBUTTON      "?????",IDC_BTN_PINMODIFY,169,44,46,14
+    PUSHBUTTON      "????? ?????",IDC_BTN_PINUNLOCK,226,44,46,14
+    PUSHBUTTON      "????",IDC_BUTTON_BTNNETWORK,111,121,46,14,NOT 
                     WS_VISIBLE | WS_DISABLED
-    PUSHBUTTON      "√‰„«ÿ",IDC_BUTTON_BTNPROFILES,140,107,46,14
-    PUSHBUTTON      " ‘€Ì·",IDC_BTN_PINENABLE,55,44,46,14
-    PUSHBUTTON      " ›÷Ì·",IDC_BUTTON_BTNPREFERENCE,225,107,46,14
+    PUSHBUTTON      "?????",IDC_BUTTON_BTNPROFILES,140,107,46,14
+    PUSHBUTTON      "?????",IDC_BTN_PINENABLE,55,44,46,14
+    PUSHBUTTON      "?????",IDC_BUTTON_BTNPREFERENCE,225,107,46,14
 END
 
 IDD_TABDLG_MAIN DIALOGEX 0, 0, 483, 157
@@ -639,19 +503,19 @@ BEGIN
     CONTROL         3326,IDC_STATIC_TABBKGROUD,"Static",SS_BITMAP,0,91,460,
                     16
     LTEXT           "Static",IDC_STATIC_INSTRUCTION,55,24,36,21
-    PUSHBUTTON      " ’›Õ",IDC_BUTTON_BROWSE,39,74,28,11,NOT WS_TABSTOP
-    PUSHBUTTON      "ŒÌ«—« ",IDC_BUTTON_SETUP,3,76,28,12,NOT WS_TABSTOP
-    PUSHBUTTON      "œ› — «·⁄‰«ÊÌ‰",IDC_BUTTON_PHONEBOOK,6,47,44,23,NOT 
+    PUSHBUTTON      "????",IDC_BUTTON_BROWSE,39,74,28,11,NOT WS_TABSTOP
+    PUSHBUTTON      "??????",IDC_BUTTON_SETUP,3,76,28,12,NOT WS_TABSTOP
+    PUSHBUTTON      "???? ????????",IDC_BUTTON_PHONEBOOK,6,47,44,23,NOT 
                     WS_TABSTOP
-    PUSHBUTTON      "„ﬂ«·„…",IDC_BUTTON_CALL,3,34,41,10,NOT WS_VISIBLE | NOT 
+    PUSHBUTTON      "??????",IDC_BUTTON_CALL,3,34,41,10,NOT WS_VISIBLE | NOT 
                     WS_TABSTOP
-    PUSHBUTTON      "—”«∆·",IDC_BUTTON_SMS,3,21,41,10,NOT WS_TABSTOP
-    PUSHBUTTON      "—»ÿ",IDC_BUTTON_INTERNET,77,72,42,12,NOT WS_TABSTOP
+    PUSHBUTTON      "?????",IDC_BUTTON_SMS,3,21,41,10,NOT WS_TABSTOP
+    PUSHBUTTON      "???",IDC_BUTTON_INTERNET,77,72,42,12,NOT WS_TABSTOP
     PUSHBUTTON      "USSD",IDC_BUTTON_USSD,65,50,30,14,NOT WS_VISIBLE | NOT 
                     WS_TABSTOP
     PUSHBUTTON      "Help",IDC_BUTTON_HELP,3,143,30,14,NOT WS_VISIBLE | NOT 
                     WS_TABSTOP
-    PUSHBUTTON      "«” Œœ«„",IDC_BUTTON_USAGE,38,142,39,15
+    PUSHBUTTON      "???????",IDC_BUTTON_USAGE,38,142,39,15
     LTEXT           "",IDC_STATIC_DLGCONTAINER,179,0,280,34,NOT WS_VISIBLE | 
                     NOT WS_GROUP,WS_EX_TRANSPARENT
     PUSHBUTTON      "File",IDC_BUTTON_FILE,0,0,18,11
@@ -662,7 +526,7 @@ END
 
 IDD_DIALOG_CALL_HISTORY DIALOGEX 0, 0, 302, 156
 STYLE DS_MODALFRAME | DS_3DLOOK | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION "”Ã· «·„ﬂ«·„« "
+CAPTION "??? ?????????"
 FONT 10, "Tahoma", 0, 0, 0x1
 BEGIN
     CONTROL         "Tab1",IDC_TAB_CALLHISTORY,"SysTabControl32",0x0,10,7,
@@ -670,28 +534,28 @@ BEGIN
     CONTROL         "List2",IDC_LIST_CALLHISTORY,"SysListView32",LVS_REPORT | 
                     LVS_SHOWSELALWAYS | WS_BORDER | WS_TABSTOP,10,19,277,110,
                     WS_EX_TRANSPARENT
-    PUSHBUTTON      "« ’«·",IDC_BUTTON_REPLY,10,135,46,13
-    PUSHBUTTON      "«—”«· —”«·…",IDC_BUTTON_SENDSMS,68,135,46,13
-    PUSHBUTTON      "«Œ ’«—",IDC_BUTTON_ABSTRACT,126,135,46,13
-    PUSHBUTTON      "Õ–›",IDC_BUTTON_DELETE,184,135,46,13
-    PUSHBUTTON      "Õ–› «·ﬂ·",IDC_BUTTON_DELETEALL,242,135,46,13
+    PUSHBUTTON      "?????",IDC_BUTTON_REPLY,10,135,46,13
+    PUSHBUTTON      "????? ?????",IDC_BUTTON_SENDSMS,68,135,46,13
+    PUSHBUTTON      "??????",IDC_BUTTON_ABSTRACT,126,135,46,13
+    PUSHBUTTON      "???",IDC_BUTTON_DELETE,184,135,46,13
+    PUSHBUTTON      "??? ????",IDC_BUTTON_DELETEALL,242,135,46,13
 END
 
 IDD_DIALOG_WRITESMS DIALOG DISCARDABLE  0, 0, 198, 164
 STYLE DS_MODALFRAME | DS_3DLOOK | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION "ﬂ «»… —”«·…"
+CAPTION "????? ?????"
 FONT 10, "Tahoma"
 BEGIN
     EDITTEXT        IDC_EDIT_NUMBER,50,15,142,12,ES_AUTOHSCROLL
     EDITTEXT        IDC_EDIT_SMSDETAILS,6,47,186,93,ES_MULTILINE | 
                     ES_AUTOVSCROLL | ES_WANTRETURN | WS_VSCROLL
-    PUSHBUTTON      "—ﬁ„ «·Â« ›",IDC_BUTTON_SMS_PB,6,14,42,13
-    PUSHBUTTON      "«—”·",ID_BUTTON_SMS_SEND,6,146,30,12
-    PUSHBUTTON      "Õ›Ÿ",ID_BUTTON_SMS_SAVE,58,146,30,12
-    PUSHBUTTON      "„”Õ",IDC_BUTTON_SMS_CLEAR,110,146,30,12
-    PUSHBUTTON      "«€·«ﬁ",IDCANCEL,162,146,30,12
-    LTEXT           "«·—ﬁ„:",IDC_STATIC_NUMBER,6,2,29,8,NOT WS_VISIBLE
-    LTEXT           "«·„Õ ÊÏ:",IDC_STATIC_CONTENT,6,36,33,8
+    PUSHBUTTON      "??? ??????",IDC_BUTTON_SMS_PB,6,14,42,13
+    PUSHBUTTON      "????",ID_BUTTON_SMS_SEND,6,146,30,12
+    PUSHBUTTON      "???",ID_BUTTON_SMS_SAVE,58,146,30,12
+    PUSHBUTTON      "???",IDC_BUTTON_SMS_CLEAR,110,146,30,12
+    PUSHBUTTON      "?????",IDCANCEL,162,146,30,12
+    LTEXT           "?????:",IDC_STATIC_NUMBER,6,2,29,8,NOT WS_VISIBLE
+    LTEXT           "???????:",IDC_STATIC_CONTENT,6,36,33,8
     LTEXT           "Static",IDC_STATIC_STATISTIC,65,36,34,8
     LTEXT           "Static",IDC_STATIC_SEGE,40,36,19,8
     PUSHBUTTON      "Phone",IDC_BUTTON_SMS_PB2,163,143,30,12,NOT WS_VISIBLE
@@ -701,7 +565,7 @@ END
 
 IDD_DIALOG_CONTACT DIALOG DISCARDABLE  0, 0, 195, 224
 STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION "⁄‰Ê«‰"
+CAPTION "?????"
 FONT 10, "Tahoma"
 BEGIN
     EDITTEXT        IDC_EDIT_NAME,64,10,70,12,ES_AUTOHSCROLL
@@ -713,26 +577,26 @@ BEGIN
     EDITTEXT        IDC_EDIT_EMAIL,64,121,113,12,ES_AUTOHSCROLL
     EDITTEXT        IDC_EDIT_MARK,14,153,158,29,ES_MULTILINE | 
                     ES_AUTOVSCROLL
-    DEFPUSHBUTTON   "„Ê«›ﬁ",IDOK,33,201,38,12
-    PUSHBUTTON      "«·€«¡",IDCANCEL,112,201,38,12
-    LTEXT           "«·«”„:",IDC_STATIC_NAME,13,11,33,12
-    LTEXT           "—ﬁ„ «·ÃÊ«·:",IDC_STATIC_MOBILE,13,33,43,12
-    LTEXT           "—ﬁ„ «·„‰“·:",IDC_STATIC_HOME,14,75,43,11
-    LTEXT           "—ﬁ„ «·⁄„·:",IDC_STATIC_COMPANY,13,53,45,11
-    LTEXT           "»—Ìœ Email:",IDC_STATIC_EMAIL,13,122,46,10
-    LTEXT           "„·«ÕŸ…:",IDC_STATIC_MARK,13,139,45,11
-    PUSHBUTTON      "’Ê—…:",IDC_LOADPIC,142,61,41,18
+    DEFPUSHBUTTON   "?????",IDOK,33,201,38,12
+    PUSHBUTTON      "?????",IDCANCEL,112,201,38,12
+    LTEXT           "?????:",IDC_STATIC_NAME,13,11,33,12
+    LTEXT           "??? ??????:",IDC_STATIC_MOBILE,13,33,43,12
+    LTEXT           "??? ??????:",IDC_STATIC_HOME,14,75,43,11
+    LTEXT           "??? ?????:",IDC_STATIC_COMPANY,13,53,45,11
+    LTEXT           "???? Email:",IDC_STATIC_EMAIL,13,122,46,10
+    LTEXT           "??????:",IDC_STATIC_MARK,13,139,45,11
+    PUSHBUTTON      "????:",IDC_LOADPIC,142,61,41,18
     LTEXT           "",IDC_CONTACT_PICS,139,11,45,42,SS_NOTIFY | SS_SUNKEN | 
                     WS_BORDER
-    LTEXT           "„Ã„Ê⁄…:",IDC_STATIC,14,99,36,8
+    LTEXT           "??????:",IDC_STATIC,14,99,36,8
 END
 
 IDD_DIALOG_DATASERVICEHISTORY DIALOG DISCARDABLE  0, 0, 266, 145
 STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION "”Ã· Œœ„… «·»Ì«‰« "
+CAPTION "??? ???? ????????"
 FONT 10, "Tahoma"
 BEGIN
-    DEFPUSHBUTTON   "«€·«ﬁ",IDOK,209,124,50,15
+    DEFPUSHBUTTON   "?????",IDOK,209,124,50,15
     CONTROL         "List1",IDC_LIST_HISTORY,"SysListView32",LVS_REPORT | 
                     LVS_SINGLESEL | LVS_SHOWSELALWAYS | WS_BORDER | 
                     WS_TABSTOP,7,7,252,114
@@ -740,21 +604,21 @@ END
 
 IDD_DIALOG_PINCLCK DIALOGEX 0, 0, 131, 60
 STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION " ‘€Ì·"
+CAPTION "?????"
 FONT 10, "Tahoma", 0, 0, 0x1
 BEGIN
     EDITTEXT        IDC_EDIT_PIN_INPUT,76,5,40,12,ES_PASSWORD | ES_NUMBER
-    DEFPUSHBUTTON   "„Ê«›ﬁ",IDC_BUTTON_SUBMIT,6,39,50,12
-    PUSHBUTTON      "«·€«¡",IDCANCEL,70,39,50,12
-    LTEXT           "«œŒ· «·—„“ «·”—Ì:",IDC_STATIC,6,7,63,8,0,
+    DEFPUSHBUTTON   "?????",IDC_BUTTON_SUBMIT,6,39,50,12
+    PUSHBUTTON      "?????",IDCANCEL,70,39,50,12
+    LTEXT           "???? ????? ?????:",IDC_STATIC,6,7,63,8,0,
                     WS_EX_TRANSPARENT
-    LTEXT           "Êﬁ  «·Œ—ÊÃ:",IDC_STATIC,6,23,63,8,0,WS_EX_TRANSPARENT
+    LTEXT           "??? ??????:",IDC_STATIC,6,23,63,8,0,WS_EX_TRANSPARENT
     LTEXT           "Static",IDC_STATIC_PIN_REMAIN,76,23,29,8
 END
 
 IDD_DIALOG_MODIFY_PIN DIALOG DISCARDABLE  0, 0, 143, 90
 STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION " €ÌÌ— «·—ﬁ„ «·”—Ì"
+CAPTION "????? ????? ?????"
 FONT 10, "Tahoma"
 BEGIN
     EDITTEXT        IDC_EDIT_MPIN_CURR,76,6,54,12,ES_PASSWORD | 
@@ -763,24 +627,24 @@ BEGIN
                     ES_AUTOHSCROLL | ES_NUMBER
     EDITTEXT        IDC_EDIT_MPIN_CONF,76,36,54,12,ES_PASSWORD | 
                     ES_AUTOHSCROLL | ES_NUMBER
-    DEFPUSHBUTTON   "„Ê«›ﬁ",IDC_BUTTON_MPIN_OK,8,70,50,12
-    PUSHBUTTON      "«·€«¡",IDCANCEL,83,70,50,12
+    DEFPUSHBUTTON   "?????",IDC_BUTTON_MPIN_OK,8,70,50,12
+    PUSHBUTTON      "?????",IDCANCEL,83,70,50,12
     RTEXT           "",IDC_STATIC_PINPUK_TITLE,6,8,63,8
-    LTEXT           "«·—„“ «·”—Ì «·ÃœÌœ:",IDC_STATIC,6,22,63,8
-    LTEXT           " √ﬂÌœ «·—„“ «·”—Ì:",IDC_STATIC,6,37,34,8
-    LTEXT           "Êﬁ  «·Œ—ÊÃ:",IDC_STATIC,6,53,41,8
+    LTEXT           "????? ????? ??????:",IDC_STATIC,6,22,63,8
+    LTEXT           "????? ????? ?????:",IDC_STATIC,6,37,34,8
+    LTEXT           "??? ??????:",IDC_STATIC,6,53,41,8
     LTEXT           "static",IDC_STATIC_MPIN_REMAIN,76,53,21,8
 END
 
 IDD_DIALOG_READSMS DIALOG DISCARDABLE  0, 0, 239, 247
 STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION "⁄—÷ «·—”«·…"
+CAPTION "??? ???????"
 FONT 10, "Tahoma"
 BEGIN
     GROUPBOX        "Static",IDC_STATIC_TYPE,7,7,223,227
-    LTEXT           "«·«”„:",IDC_STATIC_NAME,12,22,46,8
-    LTEXT           "«·—ﬁ„:",IDC_STATIC_NUMBER,12,39,46,8
-    LTEXT           "«·„Õ ÊÏ:",IDC_STATIC_CONTENT,12,72,46,8
+    LTEXT           "?????:",IDC_STATIC_NAME,12,22,46,8
+    LTEXT           "?????:",IDC_STATIC_NUMBER,12,39,46,8
+    LTEXT           "???????:",IDC_STATIC_CONTENT,12,72,46,8
     LTEXT           "Static",IDC_STATIC_SMS_BYTECOUNT,64,72,74,8
     EDITTEXT        IDC_EDIT_SMS_NAME,64,20,119,12,ES_AUTOHSCROLL | 
                     ES_READONLY
@@ -788,22 +652,22 @@ BEGIN
                     ES_READONLY
     EDITTEXT        IDC_EDIT_SMS_CONTENT,32,83,174,121,ES_MULTILINE | 
                     ES_AUTOVSCROLL | ES_WANTRETURN | WS_VSCROLL
-    LTEXT           "«· «—ÌŒ/«·Êﬁ :",IDC_STATIC_TIME,12,56,46,8
+    LTEXT           "???????/?????:",IDC_STATIC_TIME,12,56,46,8
     EDITTEXT        IDC_EDIT_SMS_DATETIME,64,54,119,12,ES_AUTOHSCROLL | 
                     ES_READONLY
-    PUSHBUTTON      "√Ê· —”«·…",IDC_BUTTON_FIRST,10,214,51,11
-    PUSHBUTTON      "¬Œ— —”«·…",IDC_BUTTON_LAST,172,214,51,11
-    PUSHBUTTON      "«·—”«·… «· «·Ì…",IDC_BUTTON_NEXT,118,214,51,11
-    PUSHBUTTON      "«·—”«·… «·”«»ﬁ…",IDC_BUTTON_PREV,64,214,51,11
+    PUSHBUTTON      "??? ?????",IDC_BUTTON_FIRST,10,214,51,11
+    PUSHBUTTON      "??? ?????",IDC_BUTTON_LAST,172,214,51,11
+    PUSHBUTTON      "??????? ???????",IDC_BUTTON_NEXT,118,214,51,11
+    PUSHBUTTON      "??????? ???????",IDC_BUTTON_PREV,64,214,51,11
 END
 
 IDD_DIALOG_SELCONTACT DIALOG DISCARDABLE  210, 0, 114, 152
 STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION "«Œ — ⁄‰Ê«‰"
+CAPTION "???? ?????"
 FONT 10, "Tahoma"
 BEGIN
-    DEFPUSHBUTTON   "„Ê«›ﬁ",IDOK,14,127,34,12
-    PUSHBUTTON      "«·€«¡",IDCANCEL,64,127,34,12
+    DEFPUSHBUTTON   "?????",IDOK,14,127,34,12
+    PUSHBUTTON      "?????",IDCANCEL,64,127,34,12
     CONTROL         "List1",IDC_LIST_SELCONTACT,"SysListView32",LVS_REPORT | 
                     WS_BORDER | WS_TABSTOP,0,0,114,114
 END
@@ -816,44 +680,44 @@ END
 
 IDD_DIALOG_SEARCH DIALOG DISCARDABLE  300, 0, 144, 105
 STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION "»ÕÀ ⁄‰ «”„"
+CAPTION "??? ?? ???"
 FONT 10, "Tahoma"
 BEGIN
     EDITTEXT        IDC_EDIT_NAME,50,14,67,12,ES_AUTOHSCROLL
     EDITTEXT        IDC_EDIT_MOBILE,50,31,67,12,ES_AUTOHSCROLL
-    DEFPUSHBUTTON   "»ÕÀ",IDC_BUTTON_SEARCH,26,62,36,12
-    PUSHBUTTON      "«€·«ﬁ",IDOK,70,62,36,12
-    PUSHBUTTON      "<<ﬁ»·",IDC_BUTTON_AHEAD,7,78,40,12
-    PUSHBUTTON      "»⁄œ>>",IDC_BUTTON_NEXT,94,78,40,12
-    LTEXT           "«·«”„:",IDC_STATIC_NAME,16,16,22,8
+    DEFPUSHBUTTON   "???",IDC_BUTTON_SEARCH,26,62,36,12
+    PUSHBUTTON      "?????",IDOK,70,62,36,12
+    PUSHBUTTON      "<<???",IDC_BUTTON_AHEAD,7,78,40,12
+    PUSHBUTTON      "???>>",IDC_BUTTON_NEXT,94,78,40,12
+    LTEXT           "?????:",IDC_STATIC_NAME,16,16,22,8
     CTEXT           "0 / 0",IDC_STATIC_NUM,51,80,40,8
-    LTEXT           "«·—ﬁ„:",IDC_STATIC_MOBILE,16,33,19,8
+    LTEXT           "?????:",IDC_STATIC_MOBILE,16,33,19,8
 END
 
 IDD_DIALOG_TRANSFER DIALOGEX 0, 0, 330, 240
 STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION "‘«‘… «·‰ﬁ·"
+CAPTION "???? ?????"
 FONT 10, "Tahoma", 0, 0, 0x1
 BEGIN
     CONTROL         228,IDC_PIC_DOWN,"Static",SS_BITMAP,186,96,13,11,
                     WS_EX_TRANSPARENT
     COMBOBOX        IDC_COMBO_SELUP,5,7,48,59,CBS_DROPDOWNLIST | WS_VSCROLL | 
                     WS_TABSTOP
-    PUSHBUTTON      "‰”Œ »⁄÷",IDC_BUTTON_COPY_SOME,71,94,50,16
-    PUSHBUTTON      "‰ﬁ· »⁄÷",IDC_BUTTON_CUT_SOME,130,94,50,16
-    PUSHBUTTON      "‰”Œ «·ﬂ·",IDC_BUTTON_COPY_ALL,206,94,50,16
-    PUSHBUTTON      "‰ﬁ· «·ﬂ·",IDC_BUTTON_CUT_ALL,266,94,50,16
+    PUSHBUTTON      "??? ???",IDC_BUTTON_COPY_SOME,71,94,50,16
+    PUSHBUTTON      "??? ???",IDC_BUTTON_CUT_SOME,130,94,50,16
+    PUSHBUTTON      "??? ????",IDC_BUTTON_COPY_ALL,206,94,50,16
+    PUSHBUTTON      "??? ????",IDC_BUTTON_CUT_ALL,266,94,50,16
     COMBOBOX        IDC_COMBO_SELDOWN,5,117,48,52,CBS_DROPDOWNLIST | 
                     WS_VSCROLL | WS_TABSTOP
-    PUSHBUTTON      "«€·«ﬁ",IDCANCEL,143,215,53,16
+    PUSHBUTTON      "?????",IDCANCEL,143,215,53,16
     CONTROL         "List1",IDC_LIST_PC,"SysListView32",LVS_REPORT | 
                     WS_BORDER | WS_TABSTOP,56,7,266,80,WS_EX_TRANSPARENT
     CONTROL         "List2",IDC_LIST_CARD,"SysListView32",LVS_REPORT | 
                     WS_BORDER | WS_TABSTOP,55,117,268,80,WS_EX_TRANSPARENT
-    PUSHBUTTON      "‰”Œ »⁄÷",IDC_BUTTON_COPY_SOME_UP,72,94,50,16
-    PUSHBUTTON      "‰ﬁ· »⁄÷",IDC_BUTTON_CUT_SOME_UP,130,94,50,16
-    PUSHBUTTON      "‰”Œ «·ﬂ·",IDC_BUTTON_COPY_ALL_UP,206,94,50,16
-    PUSHBUTTON      "‰ﬁ· «·ﬂ·",IDC_BUTTON_CUT_ALL_UP,266,94,50,16
+    PUSHBUTTON      "??? ???",IDC_BUTTON_COPY_SOME_UP,72,94,50,16
+    PUSHBUTTON      "??? ???",IDC_BUTTON_CUT_SOME_UP,130,94,50,16
+    PUSHBUTTON      "??? ????",IDC_BUTTON_COPY_ALL_UP,206,94,50,16
+    PUSHBUTTON      "??? ????",IDC_BUTTON_CUT_ALL_UP,266,94,50,16
     CONTROL         226,IDC_PIC_UP,"Static",SS_BITMAP,186,96,13,11,
                     WS_EX_TRANSPARENT
     CONTROL         "Progress1",IDC_PROGRESS1,"msctls_progress32",PBS_SMOOTH | 
@@ -864,57 +728,57 @@ END
 
 IDD_DIALOG_SELPOSITION DIALOG DISCARDABLE  0, 0, 136, 104
 STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION "«Œ Ì«— „Êﬁ⁄"
+CAPTION "?????? ????"
 FONT 10, "Tahoma"
 BEGIN
-    DEFPUSHBUTTON   "„Ê«›ﬁ",IDOK,22,78,34,12,NOT WS_TABSTOP
-    PUSHBUTTON      "«€·«ﬁ",IDCANCEL,78,78,34,12,NOT WS_TABSTOP
-    CTEXT           "«Œ — „Êﬁ⁄ —Ã«¡«¯",IDC_STATIC_TITLE,15,13,106,8
-    CONTROL         "ÃÊ«·",IDC_RADIO_MOBILE,"Button",BS_AUTORADIOBUTTON | 
+    DEFPUSHBUTTON   "?????",IDOK,22,78,34,12,NOT WS_TABSTOP
+    PUSHBUTTON      "?????",IDCANCEL,78,78,34,12,NOT WS_TABSTOP
+    CTEXT           "???? ???? ??????",IDC_STATIC_TITLE,15,13,106,8
+    CONTROL         "????",IDC_RADIO_MOBILE,"Button",BS_AUTORADIOBUTTON | 
                     WS_GROUP,48,26,38,8
-    CONTROL         "„‰“·",IDC_RADIO_HOME,"Button",BS_AUTORADIOBUTTON,48,43,
+    CONTROL         "????",IDC_RADIO_HOME,"Button",BS_AUTORADIOBUTTON,48,43,
                     36,8
-    CONTROL         "⁄„·",IDC_RADIO_COMPANY,"Button",BS_AUTORADIOBUTTON,48,
+    CONTROL         "???",IDC_RADIO_COMPANY,"Button",BS_AUTORADIOBUTTON,48,
                     60,40,8
 END
 
 IDD_DIALOG_CALL_LOG DIALOGEX 0, 0, 290, 241
 STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION "«·„ﬂ«·„« "
+CAPTION "?????????"
 FONT 10, "Tahoma", 0, 0, 0x1
 BEGIN
     CONTROL         "List1",IDC_LIST_CALLLOG,"SysListView32",LVS_REPORT | 
                     LVS_SHOWSELALWAYS | WS_BORDER | WS_TABSTOP,9,7,271,102,
                     WS_EX_TRANSPARENT
     PUSHBUTTON      "Reset",IDC_BUTTON_DELALL,82,218,50,12
-    PUSHBUTTON      "«·€«¡",IDC_BUTTON_DELETE,158,218,50,12
+    PUSHBUTTON      "?????",IDC_BUTTON_DELETE,158,218,50,12
     PUSHBUTTON      "Export",IDC_BUTTON_EXPORT,24,218,50,12,NOT WS_VISIBLE | 
                     WS_DISABLED
     EDITTEXT        IDC_EDIT_CALLLOG_DATAOUT,235,220,44,12,ES_READONLY | NOT 
                     WS_VISIBLE | WS_DISABLED | NOT WS_BORDER
     EDITTEXT        IDC_EDIT_CALLLOG_DATAIN,235,220,43,12,ES_READONLY | NOT 
                     WS_VISIBLE | WS_DISABLED | NOT WS_BORDER
-    GROUPBOX        "„Ã„Ê⁄ «·„ﬂ«·„« ",IDC_STATIC,16,179,259,29
-    LTEXT           "«·„œ…:",IDC_STATIC,25,191,20,8
+    GROUPBOX        "????? ?????????",IDC_STATIC,16,179,259,29
+    LTEXT           "?????:",IDC_STATIC,25,191,20,8
     LTEXT           "KbyteIn:",IDC_STATIC,250,220,28,8,NOT WS_VISIBLE | 
                     WS_DISABLED
     LTEXT           "KbyteOut:",IDC_STATIC,250,220,33,8,NOT WS_VISIBLE | 
                     WS_DISABLED
-    LTEXT           "Kbyte «·„—”·… Ê «·„” ﬁ»·…:",IDC_STATIC,105,191,90,8
+    LTEXT           "Kbyte ??????? ? ?????????:",IDC_STATIC,105,191,90,8
     EDITTEXT        IDC_EDIT_CALLLOG_DURATION,63,191,53,12,ES_READONLY | NOT 
                     WS_BORDER
     EDITTEXT        IDC_EDIT_CALLLOG_DATAINOUT,211,191,50,12,ES_READONLY | 
                     NOT WS_BORDER
     GROUPBOX        "2G",IDC_STATIC,16,112,259,29
-    LTEXT           "«·„œ…:",IDC_STATIC,25,124,20,8
-    LTEXT           "Kbyte «·„—”·… Ê «·„” ﬁ»·…:",IDC_STATIC,105,124,90,8
+    LTEXT           "?????:",IDC_STATIC,25,124,20,8
+    LTEXT           "Kbyte ??????? ? ?????????:",IDC_STATIC,105,124,90,8
     EDITTEXT        IDC_EDIT_CALLLOG_GPRSDURATION,63,124,53,12,ES_READONLY | 
                     NOT WS_BORDER
     EDITTEXT        IDC_EDIT_CALLLOG_GPRSDATAINOUT,211,124,50,12,ES_READONLY | 
                     NOT WS_BORDER
     GROUPBOX        "3G",IDC_STATIC,16,143,259,29
-    LTEXT           "«·„œ…:",IDC_STATIC,25,155,20,8
-    LTEXT           "Kbyte «·„—”·… Ê «·„” ﬁ»·…:",IDC_STATIC,105,155,90,8
+    LTEXT           "?????:",IDC_STATIC,25,155,20,8
+    LTEXT           "Kbyte ??????? ? ?????????:",IDC_STATIC,105,155,90,8
     EDITTEXT        IDC_EDIT_CALLLOG_UMTSDURATION,63,155,53,12,ES_READONLY | 
                     NOT WS_BORDER
     EDITTEXT        IDC_EDIT_CALLLOG_UMTSDATAINOUT,211,155,50,12,ES_READONLY | 
@@ -925,16 +789,16 @@ IDD_DIALOG_POP_TIP DIALOG DISCARDABLE  0, 0, 126, 63
 STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION
 FONT 10, "Tahoma"
 BEGIN
-    PUSHBUTTON      "—›÷",IDC_BUTTON_REJECT,71,43,39,13
-    PUSHBUTTON      "«Ã«»…",IDC_BUTTON_ANSWER,14,43,39,13
+    PUSHBUTTON      "???",IDC_BUTTON_REJECT,71,43,39,13
+    PUSHBUTTON      "?????",IDC_BUTTON_ANSWER,14,43,39,13
     LTEXT           "",IDC_STATIC_TIPINFO,15,7,94,23
-    PUSHBUTTON      "⁄—÷",IDC_BUTTON_PVIEW,14,43,39,13
-    PUSHBUTTON      "«·€«¡",IDC_BUTTON_PCANCEL,71,43,39,13
+    PUSHBUTTON      "???",IDC_BUTTON_PVIEW,14,43,39,13
+    PUSHBUTTON      "?????",IDC_BUTTON_PCANCEL,71,43,39,13
 END
 
 IDD_DIALOG_SENDSMS DIALOG DISCARDABLE  0, 0, 166, 82
 STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION "Ã«—Ì «·«—”«·"
+CAPTION "???? ???????"
 FONT 10, "Tahoma"
 BEGIN
     CONTROL         "Progress1",IDC_PROGRESS_SEND,"msctls_progress32",
@@ -945,48 +809,48 @@ END
 
 IDD_DIALOG_SEL_NUMBER DIALOG DISCARDABLE  0, 0, 179, 118
 STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION "«Œ — «·—ﬁ„"
+CAPTION "???? ?????"
 FONT 10, "Tahoma"
 BEGIN
-    DEFPUSHBUTTON   "„Ê«›ﬁ",IDOK,30,94,35,12
-    PUSHBUTTON      "«·€«¡",IDCANCEL,113,94,35,12
-    LTEXT           "„« ÂÊ «·—ﬁ„ «·–Ì  —€» »«Œ Ì«—Âø",IDC_STATIC_SELDIAL,25,
+    DEFPUSHBUTTON   "?????",IDOK,30,94,35,12
+    PUSHBUTTON      "?????",IDCANCEL,113,94,35,12
+    LTEXT           "?? ?? ????? ???? ???? ?????????",IDC_STATIC_SELDIAL,25,
                     12,130,10
     COMBOBOX        IDC_COMBO1,46,34,87,58,CBS_DROPDOWNLIST | WS_VSCROLL | 
                     WS_TABSTOP
-    LTEXT           "«·«”„:",IDC_STATIC,25,58,23,8
-    LTEXT           "«·—ﬁ„:",IDC_STATIC,25,73,19,8
+    LTEXT           "?????:",IDC_STATIC,25,58,23,8
+    LTEXT           "?????:",IDC_STATIC,25,73,19,8
     LTEXT           "Static",IDC_STATIC_NAME,58,58,90,8
     LTEXT           "Static",IDC_STATIC_NUMBER,59,73,90,8
 END
 
 IDD_DIALOG_PBSELPOSITION DIALOG DISCARDABLE  0, 0, 214, 120
 STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION "«Œ — «·„Êﬁ⁄"
+CAPTION "???? ??????"
 FONT 10, "Tahoma"
 BEGIN
-    CONTROL         "ÃÊ«·",IDC_RADIO_MOBILE,"Button",BS_AUTORADIOBUTTON,33,
+    CONTROL         "????",IDC_RADIO_MOBILE,"Button",BS_AUTORADIOBUTTON,33,
                     24,62,8
-    CONTROL         "„‰“·",IDC_RADIO_HOME,"Button",BS_AUTORADIOBUTTON,33,39,
+    CONTROL         "????",IDC_RADIO_HOME,"Button",BS_AUTORADIOBUTTON,33,39,
                     62,8
-    CONTROL         "⁄„·",IDC_RADIO_COMPANY,"Button",BS_AUTORADIOBUTTON,33,
+    CONTROL         "???",IDC_RADIO_COMPANY,"Button",BS_AUTORADIOBUTTON,33,
                     54,62,8
-    DEFPUSHBUTTON   "„Ê«›ﬁ",IDOK,156,20,37,11
-    PUSHBUTTON      "«·€«¡",IDCANCEL,156,48,37,12
-    CONTROL         "÷»ÿ ﬂ«› —«÷Ì",IDC_CHECK_SET,"Button",BS_AUTOCHECKBOX,7,
+    DEFPUSHBUTTON   "?????",IDOK,156,20,37,11
+    PUSHBUTTON      "?????",IDCANCEL,156,48,37,12
+    CONTROL         "??? ????????",IDC_CHECK_SET,"Button",BS_AUTOCHECKBOX,7,
                     101,86,8
-    LTEXT           "«·«”„",IDC_STATIC_NAME,7,72,28,8
-    LTEXT           "«·—ﬁ„",IDC_STATIC_NUM,7,84,28,8
+    LTEXT           "?????",IDC_STATIC_NAME,7,72,28,8
+    LTEXT           "?????",IDC_STATIC_NUM,7,84,28,8
     LTEXT           "Num",IDC_STATIC_NUMIN,45,84,117,8,NOT WS_GROUP
-    LTEXT           "«Œ — „Êﬁ⁄ —Ã«¡«¯",IDC_STATIC_Set,7,7,88,8,NOT WS_GROUP
-    LTEXT           "«·«”„",IDC_STATIC_NAMEIN,45,72,117,8,NOT WS_GROUP
+    LTEXT           "???? ???? ??????",IDC_STATIC_Set,7,7,88,8,NOT WS_GROUP
+    LTEXT           "?????",IDC_STATIC_NAMEIN,45,72,117,8,NOT WS_GROUP
 END
 
 IDD_DIALOG_WAITING DIALOG DISCARDABLE  0, 0, 207, 60
 STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION
 FONT 10, "Tahoma"
 BEGIN
-    DEFPUSHBUTTON   "„Ê«›ﬁ",IDOK,67,52,50,7,NOT WS_VISIBLE
+    DEFPUSHBUTTON   "?????",IDOK,67,52,50,7,NOT WS_VISIBLE
     CONTROL         "Progress1",IDC_PROGRESS_WAIT,"msctls_progress32",
                     PBS_SMOOTH,9,25,185,14
     LTEXT           "",IDC_STATIC_PROMPT,9,9,185,8
@@ -995,26 +859,26 @@ END
 
 IDD_DIALOG_TRANSMS DIALOG DISCARDABLE  0, 0, 286, 207
 STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION " ÕÊÌ·"
+CAPTION "?????"
 FONT 10, "Tahoma"
 BEGIN
-    PUSHBUTTON      "«€·«ﬁ",IDCANCEL,234,191,36,13,NOT WS_TABSTOP
+    PUSHBUTTON      "?????",IDCANCEL,234,191,36,13,NOT WS_TABSTOP
     CONTROL         "List2",IDC_LIST_LEFT,"SysListView32",LVS_REPORT | 
                     LVS_SHOWSELALWAYS | WS_BORDER,91,4,180,79
     CONTROL         "List3",IDC_LIST_RIGHT,"SysListView32",LVS_REPORT | 
                     LVS_SHOWSELALWAYS | WS_BORDER,91,104,180,79
-    CONTROL         "‰”Œ",IDC_RADIO1,"Button",BS_AUTORADIOBUTTON | WS_GROUP,
+    CONTROL         "???",IDC_RADIO1,"Button",BS_AUTORADIOBUTTON | WS_GROUP,
                     92,90,32,8
-    CONTROL         "‰ﬁ· —”«·…",IDC_RADIO2,"Button",BS_AUTORADIOBUTTON,132,
+    CONTROL         "??? ?????",IDC_RADIO2,"Button",BS_AUTORADIOBUTTON,132,
                     90,41,8
     PUSHBUTTON      "",IDC_BUTTON_LR,220,89,29,10,NOT WS_TABSTOP
     PUSHBUTTON      "",IDC_BUTTON_RL,182,89,29,10,NOT WS_TABSTOP
-    LTEXT           "„Êﬁ⁄",IDC_STATIC,7,7,16,8
-    LTEXT           "„Êﬁ⁄",IDC_STATIC,7,103,28,8
-    LTEXT           "‰Ê⁄",IDC_STATIC,7,22,30,10
+    LTEXT           "????",IDC_STATIC,7,7,16,8
+    LTEXT           "????",IDC_STATIC,7,103,28,8
+    LTEXT           "???",IDC_STATIC,7,22,30,10
     COMBOBOX        IDC_COMBO_LEFT_LOC,40,4,42,30,CBS_DROPDOWNLIST | 
                     WS_VSCROLL
-    LTEXT           "‰Ê⁄",IDC_STATIC,7,118,30,10
+    LTEXT           "???",IDC_STATIC,7,118,30,10
     COMBOBOX        IDC_COMBO_LEFT_TYPE,40,23,42,30,CBS_DROPDOWNLIST | 
                     WS_VSCROLL
     COMBOBOX        IDC_COMBO_RIGHT_TYPE,40,123,42,30,CBS_DROPDOWNLIST | 
@@ -1046,23 +910,23 @@ END
 
 IDD_ABOUTBOX DIALOGEX 0, 0, 231, 97
 STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION "‰»–… "
+CAPTION "???? "
 FONT 10, "Tahoma", 0, 0, 0x1
 BEGIN
-    DEFPUSHBUTTON   "Œ—ÊÃ",IDOK,195,35,11,12,NOT WS_VISIBLE | WS_GROUP
-    PUSHBUTTON      "’›Õ ‰« «·—∆Ì”…",IDC_BUTTON_HOMEPAGE,168,74,46,12
-    PUSHBUTTON      "« ’· »‰«",IDC_BUTTON_MAILTO,168,59,46,12
-    LTEXT           "’›Õ ‰« «·—∆Ì”…",IDC_STATIC_URL,194,35,12,8,NOT 
+    DEFPUSHBUTTON   "????",IDOK,195,35,11,12,NOT WS_VISIBLE | WS_GROUP
+    PUSHBUTTON      "?????? ???????",IDC_BUTTON_HOMEPAGE,168,74,46,12
+    PUSHBUTTON      "???? ???",IDC_BUTTON_MAILTO,168,59,46,12
+    LTEXT           "?????? ???????",IDC_STATIC_URL,194,35,12,8,NOT 
                     WS_VISIBLE
-    LTEXT           "« ’· »‰«",IDC_STATIC_EMAIL,185,50,25,8,NOT WS_VISIBLE,
+    LTEXT           "???? ???",IDC_STATIC_EMAIL,185,50,25,8,NOT WS_VISIBLE,
                     WS_EX_TRANSPARENT
     LTEXT           "<APPName>",IDC_STA_APPNAME,10,13,120,8,SS_NOPREFIX,
                     WS_EX_TRANSPARENT
-    LTEXT           "‰”Œ… «·”Ê› ÊÌ—",IDC_STATIC,10,27,64,8,SS_NOPREFIX,
+    LTEXT           "???? ?????????",IDC_STATIC,10,27,64,8,SS_NOPREFIX,
                     WS_EX_TRANSPARENT
     LTEXT           "<SWVersion>",IDC_SWVERSION,80,27,137,8,SS_NOPREFIX,
                     WS_EX_TRANSPARENT
-    LTEXT           "‰”Œ… ›Ì—„ ÊÌ—",IDC_STATIC,10,41,64,8,SS_NOPREFIX,
+    LTEXT           "???? ???? ???",IDC_STATIC,10,41,64,8,SS_NOPREFIX,
                     WS_EX_TRANSPARENT
     LTEXT           "<FWVersion>",IDC_FWVERSION,80,41,137,19,SS_NOPREFIX,
                     WS_EX_TRANSPARENT
@@ -1073,7 +937,7 @@ BEGIN
                     77,122,8
     LTEXT           "<IMEI>",IDC_IMEI,52,62,111,8,SS_NOPREFIX,
                     WS_EX_TRANSPARENT
-    LTEXT           "2008-2009ÕﬁÊﬁ «·Õ›Ÿ",IDC_STATIC,136,13,78,8,0,
+    LTEXT           "2008-2009???? ?????",IDC_STATIC,136,13,78,8,0,
                     WS_EX_TRANSPARENT
 END
 
@@ -1081,9 +945,9 @@ IDD_DIALOG_SETUP_SKIN DIALOG DISCARDABLE  0, 0, 300, 130
 STYLE WS_CHILD
 FONT 10, "Tahoma"
 BEGIN
-    CONTROL         "«·‰„ÿ «·«› —«÷Ì",IDC_RADIO_SETUP_SKIN_DEFAULT,"Button",
+    CONTROL         "????? ?????????",IDC_RADIO_SETUP_SKIN_DEFAULT,"Button",
                     BS_AUTORADIOBUTTON | WS_GROUP,14,21,58,10
-    CONTROL         "‰„ÿ XP",IDC_RADIO_SETUP_SKIN_XP,"Button",
+    CONTROL         "??? XP",IDC_RADIO_SETUP_SKIN_XP,"Button",
                     BS_AUTORADIOBUTTON,14,36,44,10
     GROUPBOX        "",IDC_STATIC,7,7,84,47
 END
@@ -1092,19 +956,19 @@ IDD_DIALOG_SETUP_GENERAL DIALOG DISCARDABLE  0, 0, 300, 130
 STYLE WS_CHILD
 FONT 10, "Tahoma"
 BEGIN
-    GROUPBOX        "Õ„«Ì…",IDC_STATIC,7,7,141,116,NOT WS_VISIBLE | 
+    GROUPBOX        "?????",IDC_STATIC,7,7,141,116,NOT WS_VISIBLE | 
                     WS_DISABLED
-    LTEXT           "«⁄œ«œ«  «·—„“ «·”—Ì  ”«⁄œ ⁄·Ï Õ„«Ì… «·”Ì„ ﬂ«—  „‰ «·«” Œœ«„ €Ì— «·„ŒÊ·",
+    LTEXT           "??????? ????? ????? ????? ??? ????? ????? ???? ?? ????????? ??? ??????",
                     IDC_STATIC,13,9,129,32
     GROUPBOX        "Power",IDC_STATIC,152,7,141,116,NOT WS_VISIBLE | 
                     WS_DISABLED
     LTEXT           "Power settings allows to switch On and Off PC-Card radio power:",
                     IDC_STATIC,158,24,129,25,NOT WS_VISIBLE | WS_DISABLED | 
                     NOT WS_GROUP
-    PUSHBUTTON      " „ﬂÌ‰ «·—„“ «·”—Ì",IDC_BUTTON_ENABLEPIN,22,59,50,12
-    PUSHBUTTON      "«Ìﬁ«› «·—„“ «·”—Ì",IDC_BUTTON_DISABLE_PIN,164,59,50,12
-    PUSHBUTTON      " €ÌÌ— «·—ﬁ„ «·”—Ì",IDC_BUTTON_MODIFYPIN,85,59,50,12
-    PUSHBUTTON      "«·€«¡ «·—„“ «·”—Ì",IDC_BUTTON_UNLOCKPIN,227,59,50,12
+    PUSHBUTTON      "????? ????? ?????",IDC_BUTTON_ENABLEPIN,22,59,50,12
+    PUSHBUTTON      "????? ????? ?????",IDC_BUTTON_DISABLE_PIN,164,59,50,12
+    PUSHBUTTON      "????? ????? ?????",IDC_BUTTON_MODIFYPIN,85,59,50,12
+    PUSHBUTTON      "????? ????? ?????",IDC_BUTTON_UNLOCKPIN,227,59,50,12
     PUSHBUTTON      "ON",IDC_BUTTON_SETUP_POWERMNG_POWERON,165,61,50,12,NOT 
                     WS_VISIBLE | WS_DISABLED
     PUSHBUTTON      "OFF",IDC_BUTTON_SETUP_POWERMNG_POWEROFF,228,61,50,12,
@@ -1113,14 +977,14 @@ END
 
 IDD_DIALOG_SETUP_MESSAGES DIALOG DISCARDABLE  0, 0, 239, 188
 STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION "÷»ÿ «·—”«·…"
+CAPTION "??? ???????"
 FONT 10, "Tahoma"
 BEGIN
-    GROUPBOX        "÷»ÿ «·—”«·…",IDC_STATIC,6,0,227,183
-    LTEXT           "„—ﬂ“ «·Œœ„…",IDC_STATIC_SMS_CENTER,22,25,61,8
-    LTEXT           "«›÷·Ì… «· Œ“Ì‰",IDC_STATIC,187,11,20,8,NOT WS_VISIBLE
-    LTEXT           "› —… «·’·«ÕÌ…",IDC_STATIC,22,46,61,8
-    LTEXT           "«Œÿ«— »«· ”·Ì„",IDC_STATIC,22,62,61,8
+    GROUPBOX        "??? ???????",IDC_STATIC,6,0,227,183
+    LTEXT           "???? ??????",IDC_STATIC_SMS_CENTER,22,25,61,8
+    LTEXT           "?????? ???????",IDC_STATIC,187,11,20,8,NOT WS_VISIBLE
+    LTEXT           "???? ????????",IDC_STATIC,22,46,61,8
+    LTEXT           "????? ????????",IDC_STATIC,22,62,61,8
     EDITTEXT        IDC_EDIT_SETUP_SCA,95,25,83,12,ES_AUTOHSCROLL
     COMBOBOX        IDC_COMBO_PREFSTOR,209,7,16,38,CBS_DROPDOWNLIST | NOT 
                     WS_VISIBLE | WS_VSCROLL | WS_TABSTOP
@@ -1128,45 +992,45 @@ BEGIN
                     WS_VSCROLL | WS_TABSTOP
     COMBOBOX        IDC_COMBO_DELIREPORT,95,60,83,30,CBS_DROPDOWNLIST | 
                     WS_VSCROLL | WS_TABSTOP
-    PUSHBUTTON      "Õ›Ÿ",IDC_BUTTON_SETUP_MSGSET,52,168,50,12
-    CONTROL         "«⁄—÷  ‰»Ì… ⁄‰œ Ê’Ê· —”«·… ÃœÌœ…",
+    PUSHBUTTON      "???",IDC_BUTTON_SETUP_MSGSET,52,168,50,12
+    CONTROL         "???? ????? ??? ???? ????? ?????",
                     IDC_CHECK_PREFER_ALERTWINDOWS_SMSSET,"Button",
                     BS_AUTOCHECKBOX | WS_TABSTOP,22,96,195,10
-    CONTROL         "‘€· ’Ê  ⁄‰œ Ê’Ê· —”«·… ÃœÌœ…",
+    CONTROL         "??? ??? ??? ???? ????? ?????",
                     IDC_CHECK_PREFER_ALERTTONE_SMSSET,"Button",
                     BS_AUTOCHECKBOX | WS_TABSTOP,22,115,195,10
-    LTEXT           "«”„ „·› «·’Ê ",IDC_STATIC,22,134,195,8
+    LTEXT           "??? ??? ?????",IDC_STATIC,22,134,195,8
     EDITTEXT        IDC_EDIT_PREFER_SMSSOUND_FILE_SMSSET,22,149,195,14,
                     ES_AUTOHSCROLL | WS_DISABLED
-    PUSHBUTTON      " ’›Õ",IDC_BUTTON_PREFER_SMSSOUND_BROWSE_SMSSET,144,168,
+    PUSHBUTTON      "????",IDC_BUTTON_PREFER_SMSSOUND_BROWSE_SMSSET,144,168,
                     50,12
-    PUSHBUTTON      " ‘€Ì·",IDC_BUTTON_PREFER_SMSSOUND_PLAY_SMSSET,209,34,18,
+    PUSHBUTTON      "?????",IDC_BUTTON_PREFER_SMSSOUND_PLAY_SMSSET,209,34,18,
                     14,NOT WS_VISIBLE
-    LTEXT           "√Ê·ÊÌ…",IDC_STATIC_PRIORITY,22,25,33,10
+    LTEXT           "??????",IDC_STATIC_PRIORITY,22,25,33,10
     COMBOBOX        IDC_COMBO_SMS_PRIORITY,95,25,83,45,CBS_DROPDOWNLIST | 
                     WS_VSCROLL | WS_TABSTOP
     COMBOBOX        IDC_COMBO_DEFDELIVERY,95,79,83,69,CBS_DROPDOWNLIST | 
                     WS_VSCROLL | WS_TABSTOP
-    LTEXT           " √ÃÌ· «· ”·Ì„",IDC_STATIC_DEFDELIVERY,21,80,53,8
+    LTEXT           "????? ???????",IDC_STATIC_DEFDELIVERY,21,80,53,8
 END
 
 IDD_DIALOG_SIGNIN DIALOG DISCARDABLE  0, 0, 136, 80
 STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION "‘«‘… «·œŒÊ·"
+CAPTION "???? ??????"
 FONT 10, "Tahoma"
 BEGIN
     EDITTEXT        IDC_EDIT_SIGNIN_KEY,30,18,60,14,ES_PASSWORD | 
                     ES_AUTOHSCROLL | ES_NUMBER
-    DEFPUSHBUTTON   "„Ê«›ﬁ",IDC_BUTTON_SIGNIN,4,59,50,14
-    PUSHBUTTON      "«·€«¡",IDCANCEL,71,59,50,14
-    LTEXT           "«œŒ«· «·—„“ «·”—Ì",IDC_STATIC_SIGNIN_TIP,6,4,127,9
-    LTEXT           "Êﬁ  «·Œ—ÊÃ",IDC_STATIC,8,40,42,8
+    DEFPUSHBUTTON   "?????",IDC_BUTTON_SIGNIN,4,59,50,14
+    PUSHBUTTON      "?????",IDCANCEL,71,59,50,14
+    LTEXT           "????? ????? ?????",IDC_STATIC_SIGNIN_TIP,6,4,127,9
+    LTEXT           "??? ??????",IDC_STATIC,8,40,42,8
     LTEXT           "Static",IDC_STATIC_LEAVETIME,61,40,19,8
 END
 
 IDD_DIALOG_SETUP_NWSEL DIALOG DISCARDABLE  0, 0, 171, 155
 STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION "«⁄œ«œ«  «·‘»ﬂ…"
+CAPTION "??????? ??????"
 FONT 10, "Tahoma"
 BEGIN
     CONTROL         "Tab1",IDC_TAB_NETWORK_SETTINGS,"SysTabControl32",0x0,7,
@@ -1175,54 +1039,54 @@ END
 
 IDD_DIALOG_SMS_EXTRACTNUM DIALOG DISCARDABLE  0, 0, 85, 127
 STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION "«” Œ·«’"
+CAPTION "???????"
 FONT 10, "Tahoma"
 BEGIN
-    DEFPUSHBUTTON   "„Ê«›ﬁ",IDOK,6,108,27,12
-    PUSHBUTTON      "«·€«¡",IDCANCEL,52,108,27,12
+    DEFPUSHBUTTON   "?????",IDOK,6,108,27,12
+    PUSHBUTTON      "?????",IDCANCEL,52,108,27,12
     CONTROL         "List2",IDC_LIST_EXTRACT_NUM,"SysListView32",LVS_REPORT | 
                     LVS_SINGLESEL | WS_BORDER | WS_TABSTOP,0,0,85,101
 END
 
 IDD_DIALOG_SETUP_PREFER DIALOG DISCARDABLE  0, 0, 207, 130
 STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION " ›÷Ì·«  "
+CAPTION "??????? "
 FONT 10, "Tahoma"
 BEGIN
-    DEFPUSHBUTTON   "„Ê«›ﬁ",IDOK,71,112,37,12
-    GROUPBOX        "«⁄œ«œ«  «· ‘€Ì·",IDC_STATIC,15,6,176,40
-    GROUPBOX        "«⁄œ«œ«  Ê÷⁄ «·”ﬂÊ‰",IDC_STATIC,15,49,176,45
+    DEFPUSHBUTTON   "?????",IDOK,71,112,37,12
+    GROUPBOX        "??????? ???????",IDC_STATIC,15,6,176,40
+    GROUPBOX        "??????? ??? ??????",IDC_STATIC,15,49,176,45
     CONTROL         "Launch program when Windows starts up",
                     IDC_CHECK_PREFER_LAUNCHAPP,"Button",BS_AUTOCHECKBOX | 
                     NOT WS_VISIBLE | WS_DISABLED | WS_TABSTOP,23,16,14,10
-    CONTROL         "«—»ÿ ⁄·Ï «·«‰ —‰  ›Ê— «· ‘€Ì·",IDC_CHECK_PREFER_CONNNET,
+    CONTROL         "???? ??? ???????? ??? ???????",IDC_CHECK_PREFER_CONNNET,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,22,18,111,10
-    CONTROL         " ’€Ì— ‘«‘… «·»œ«Ì… «·—∆Ì”Ì…",IDC_CHECK_PREFER_STARTMINI,
+    CONTROL         "????? ???? ??????? ????????",IDC_CHECK_PREFER_STARTMINI,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,23,31,107,10
-    CONTROL         "«„‰⁄ Ê÷⁄ «·”ﬂÊ‰",IDC_RADIO_PREFER_SLEEP_PREVENT,"Button",
+    CONTROL         "???? ??? ??????",IDC_RADIO_PREFER_SLEEP_PREVENT,"Button",
                     BS_AUTORADIOBUTTON | WS_GROUP,23,60,119,11
-    CONTROL         "«”„Õ Ê÷⁄ «·”ﬂÊ‰",IDC_RADIO_PREFER_SLEEP_ALLOW,"Button",
+    CONTROL         "???? ??? ??????",IDC_RADIO_PREFER_SLEEP_ALLOW,"Button",
                     BS_AUTORADIOBUTTON,23,76,77,10
-    PUSHBUTTON      "Õœ «·«” Œœ«„",IDC_BUTTON_PREFER_USAGELIMIT,16,112,53,12,
+    PUSHBUTTON      "?? ?????????",IDC_BUTTON_PREFER_USAGELIMIT,16,112,53,12,
                     NOT WS_VISIBLE
-    PUSHBUTTON      " ‘ŒÌ’",IDC_BUTTON_PREFER_DIAGNOSTICS,110,112,47,12,NOT 
+    PUSHBUTTON      "?????",IDC_BUTTON_PREFER_DIAGNOSTICS,110,112,47,12,NOT 
                     WS_VISIBLE
-    PUSHBUTTON      "«› —«÷Ì",IDC_BUTTON_PREFER_DEFAULT,71,93,50,12,NOT 
+    PUSHBUTTON      "???????",IDC_BUTTON_PREFER_DEFAULT,71,93,50,12,NOT 
                     WS_VISIBLE
-    PUSHBUTTON      "«·€«¡",IDC_BUTTON_PREFER_CANCEL,159,112,37,12
+    PUSHBUTTON      "?????",IDC_BUTTON_PREFER_CANCEL,159,112,37,12
 END
 
 IDD_DIALOG_DIAGNOSTICS DIALOGEX 0, 0, 247, 145
 STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION " ‘ŒÌ’"
+CAPTION "?????"
 FONT 10, "Tahoma", 0, 0, 0x1
 BEGIN
-    DEFPUSHBUTTON   "„Ê«›ﬁ",IDOK,106,119,34,14
-    LTEXT           "—”«∆· ⁄·Ï –«ﬂ—… «·„Êœ„",IDC_TEXT_MESSAGE,16,22,78,8
-    LTEXT           "√—ﬁ«„/⁄‰«ÊÌ‰ ⁄·Ï –«ﬂ—… «·„Êœ„",IDC_TEXT_CONTACTS,16,39,
+    DEFPUSHBUTTON   "?????",IDOK,106,119,34,14
+    LTEXT           "????? ??? ????? ??????",IDC_TEXT_MESSAGE,16,22,78,8
+    LTEXT           "?????/?????? ??? ????? ??????",IDC_TEXT_CONTACTS,16,39,
                     99,8
-    LTEXT           "‰”Œ… «·”Ê› ÊÌ—",IDC_STATIC,17,76,52,8
-    LTEXT           "‰”Œ… ›Ì—„ ÊÌ—",IDC_STATIC,17,95,46,8
+    LTEXT           "???? ?????????",IDC_STATIC,17,76,52,8
+    LTEXT           "???? ???? ???",IDC_STATIC,17,95,46,8
     LTEXT           "",IDC_STATIC_DIAG_SMS_NUM,121,22,93,8
     LTEXT           "",IDC_STATIC_DIAG_PBM_NUM,121,39,93,8
     LTEXT           "",IDC_STATIC_DIAG_IMEI_NUM,220,10,14,8,NOT WS_VISIBLE
@@ -1230,7 +1094,7 @@ BEGIN
     LTEXT           "",IDC_STATIC_DIAG_FIRM_VER,121,95,111,16,SS_NOPREFIX,
                     WS_EX_TRANSPARENT
     LTEXT           "ESN/MEID",IDC_TEXT_ESN,17,58,82,10
-    LTEXT           "‰Ê⁄ «· Œ“Ì‰:",IDC_STORAGETYPE,16,4,55,12
+    LTEXT           "??? ???????:",IDC_STORAGETYPE,16,4,55,12
     COMBOBOX        IDC_COMBO_STORAGETYPE,121,4,81,37,CBS_DROPDOWNLIST | 
                     CBS_SORT | WS_VSCROLL | WS_TABSTOP
     LTEXT           "",IDC_STATIC_IMEI,121,58,94,11
@@ -1238,47 +1102,47 @@ END
 
 IDD_DIALOG_INTERNET_USAGELIMIT DIALOG DISCARDABLE  0, 0, 223, 161
 STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION "Õœ «·«” Œœ«„"
+CAPTION "?? ?????????"
 FONT 10, "Tahoma"
 BEGIN
     CONTROL         "DateTimePicker1",IDC_DATETIMEPICKER_USAGE,
                     "SysDateTimePick32",DTS_RIGHTALIGN | WS_TABSTOP,108,23,
                     75,12
-    CONTROL         "«·ﬂ„ «·„” Œœ„",IDC_RADIO1,"Button",BS_AUTORADIOBUTTON | 
+    CONTROL         "???? ????????",IDC_RADIO1,"Button",BS_AUTORADIOBUTTON | 
                     WS_GROUP | WS_TABSTOP,22,44,65,10
-    CONTROL         "«·„œ…",IDC_RADIO2,"Button",BS_AUTORADIOBUTTON | 
+    CONTROL         "?????",IDC_RADIO2,"Button",BS_AUTORADIOBUTTON | 
                     WS_TABSTOP,107,45,32,10
     EDITTEXT        IDC_EDIT_INT_USAGE_FLUX,23,63,44,12,ES_AUTOHSCROLL | 
                     ES_NUMBER | NOT WS_TABSTOP
     EDITTEXT        IDC_EDIT_INT_USAGE_DURA_H,104,63,23,12,ES_AUTOHSCROLL | 
                     ES_NUMBER | NOT WS_TABSTOP
-    LTEXT           "œﬁÌﬁ…",IDC_STATIC,182,65,20,8
-    CONTROL         "«⁄—÷  ‰»Ì… ⁄‰œ «·Ê’Ê· «·Ï «·ﬁÌ„… «·„⁄œ…",
+    LTEXT           "?????",IDC_STATIC,182,65,20,8
+    CONTROL         "???? ????? ??? ?????? ??? ?????? ??????",
                     IDC_CHECK_INT_USAGE_PROMPT,"Button",BS_AUTOCHECKBOX,24,
                     87,145,10
-    CONTROL         "«›’· «·—»ÿ ⁄‰œ «·Ê’Ê· «·Ï «·ﬁÌ„… «·„⁄œ…",
+    CONTROL         "???? ????? ??? ?????? ??? ?????? ??????",
                     IDC_CHECK_INT_USAGE_DISCONN,"Button",BS_AUTOCHECKBOX,24,
                     101,142,10
-    CONTROL         " √ﬂÌœ ﬂ·„… «·„—Ê— ﬁ»· «·—»ÿ „Ãœœ«¯",
+    CONTROL         "????? ???? ?????? ??? ????? ??????",
                     IDC_CHECK_INT_USAGE_PWD,"Button",BS_AUTOCHECKBOX,24,116,
                     118,10
-    PUSHBUTTON      " €ÌÌ— ﬂ·„… «·„—Ê—",IDC_BUTTON_MODIFYPWD,84,138,52,14
-    PUSHBUTTON      "„Ê«›ﬁ",IDOK,24,139,39,13,NOT WS_TABSTOP
-    PUSHBUTTON      "«·€«¡",IDCANCEL,157,139,39,13,NOT WS_TABSTOP
-    LTEXT           " «—ÌŒ/Êﬁ  «·«» œ«¡",IDC_STATIC,24,24,54,8
-    LTEXT           "„Ì€«»«Ì ",IDC_STATIC,69,65,27,8
-    LTEXT           "”«⁄…",IDC_STATIC,133,65,19,8
+    PUSHBUTTON      "????? ???? ??????",IDC_BUTTON_MODIFYPWD,84,138,52,14
+    PUSHBUTTON      "?????",IDOK,24,139,39,13,NOT WS_TABSTOP
+    PUSHBUTTON      "?????",IDCANCEL,157,139,39,13,NOT WS_TABSTOP
+    LTEXT           "?????/??? ????????",IDC_STATIC,24,24,54,8
+    LTEXT           "????????",IDC_STATIC,69,65,27,8
+    LTEXT           "????",IDC_STATIC,133,65,19,8
     EDITTEXT        IDC_EDIT_INT_USAGE_DURA_M,159,63,20,12,ES_AUTOHSCROLL | 
                     ES_NUMBER | NOT WS_TABSTOP
-    GROUPBOX        "«⁄œ«œ«  «·√Ê«„—",IDC_STATIC,11,7,202,125
+    GROUPBOX        "??????? ???????",IDC_STATIC,11,7,202,125
 END
 
 IDD_DIALOG_INTERNET_TIP DIALOG DISCARDABLE  100, 123, 158, 54
 STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION "Ã«—Ì «·—»ÿ"
+CAPTION "???? ?????"
 FONT 10, "Tahoma"
 BEGIN
-    DEFPUSHBUTTON   "«·€«¡",IDOK,120,35,31,12
+    DEFPUSHBUTTON   "?????",IDOK,120,35,31,12
     LTEXT           "",IDC_STATIC_INT_TIP,51,16,99,12
     ICON            IDI_ICON_NET_HV,IDC_STATIC,14,14,20,20,SS_REALSIZEIMAGE
 END
@@ -1667,30 +1531,30 @@ STYLE WS_CHILD
 EXSTYLE WS_EX_TRANSPARENT
 FONT 10, "Tahoma", 0, 0, 0x1
 BEGIN
-    LTEXT           "„Ê«’›«  ‰Ê⁄ «·—»ÿ",IDC_STATIC,55,28,112,12,NOT 
+    LTEXT           "??????? ??? ?????",IDC_STATIC,55,28,112,12,NOT 
                     WS_VISIBLE,WS_EX_TRANSPARENT
     CONTROL         "NDIS",IDC_RADIO_NDIS,"Button",BS_AUTORADIOBUTTON | NOT 
                     WS_VISIBLE | WS_GROUP,174,26,48,14,WS_EX_TRANSPARENT
     CONTROL         "RAS",IDC_RADIO_RAS,"Button",BS_AUTORADIOBUTTON | NOT 
                     WS_VISIBLE,243,26,48,14,WS_EX_TRANSPARENT
-    LTEXT           "«”„ «·‰„ÿ",IDC_STATIC,57,55,56,12
-    PUSHBUTTON      "—»ÿ",IDC_BUTTON_CONNECT,239,54,50,13
+    LTEXT           "??? ?????",IDC_STATIC,57,55,56,12
+    PUSHBUTTON      "???",IDC_BUTTON_CONNECT,239,54,50,13
     COMBOBOX        IDC_COMBO_CONNECT_PROFILE,115,55,105,75,CBS_DROPDOWNLIST | 
                     WS_VSCROLL | WS_TABSTOP,WS_EX_TRANSPARENT
 END
 
 IDD_DIALOG_GPMEMBER DIALOG DISCARDABLE  0, 0, 210, 215
 STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION "„Ã„Ê⁄…"
+CAPTION "??????"
 FONT 10, "Tahoma"
 BEGIN
-    PUSHBUTTON      "⁄—÷",ID_BUTTON_MEMBERVIEW,89,194,33,14,NOT WS_VISIBLE
-    PUSHBUTTON      "«·€«¡",IDCANCEL,142,194,33,14
-    PUSHBUTTON      "„Ê«›ﬁ",ID_BUTTON_MEMBEROK,34,194,33,14
+    PUSHBUTTON      "???",ID_BUTTON_MEMBERVIEW,89,194,33,14,NOT WS_VISIBLE
+    PUSHBUTTON      "?????",IDCANCEL,142,194,33,14
+    PUSHBUTTON      "?????",ID_BUTTON_MEMBEROK,34,194,33,14
     PUSHBUTTON      ">>",IDC_BUTTON_TORIGHT,94,79,20,9
     PUSHBUTTON      "<<",IDC_BUTTON_TOLEFT,93,102,20,9
-    LTEXT           "œ› — «·⁄‰«ÊÌ‰",IDC_STATIC,12,11,61,9
-    LTEXT           "√⁄÷«¡ «·„Ã„Ê⁄…",IDC_STATIC,123,10,65,9
+    LTEXT           "???? ????????",IDC_STATIC,12,11,61,9
+    LTEXT           "????? ????????",IDC_STATIC,123,10,65,9
     CONTROL         "List1",IDC_LIST_PHONEBOOK,"SysListView32",LVS_LIST | 
                     LVS_SHOWSELALWAYS | WS_BORDER | WS_TABSTOP,13,22,75,169
     CONTROL         "List1",IDC_LIST_GPMEMBER,"SysListView32",LVS_LIST | 
@@ -1699,71 +1563,71 @@ END
 
 IDD_DIALOG_PBGROUP_NEW DIALOG DISCARDABLE  0, 0, 187, 161
 STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION "„Ã„Ê⁄… ÃœÌœ…"
+CAPTION "?????? ?????"
 FONT 10, "Tahoma"
 BEGIN
-    DEFPUSHBUTTON   "„Ê«›ﬁ",ID_BUTTON_GROUP_OK,21,140,33,14,NOT WS_TABSTOP
-    PUSHBUTTON      "«·€«¡",IDCANCEL,132,140,33,14
+    DEFPUSHBUTTON   "?????",ID_BUTTON_GROUP_OK,21,140,33,14,NOT WS_TABSTOP
+    PUSHBUTTON      "?????",IDCANCEL,132,140,33,14
     LISTBOX         IDC_LIST_GROUPMEMBERS,21,43,142,87,LBS_SORT | 
                     LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_HSCROLL | 
                     WS_TABSTOP
-    PUSHBUTTON      " ⁄œÌ· —ﬁ„",ID_BUTTON_EDITMEMBER,68,140,48,14
-    LTEXT           "«”„ «·„Ã„Ê⁄…",IDC_STATIC,14,15,61,8
+    PUSHBUTTON      "????? ???",ID_BUTTON_EDITMEMBER,68,140,48,14
+    LTEXT           "??? ????????",IDC_STATIC,14,15,61,8
     EDITTEXT        IDC_EDIT_GROUPNAME,80,14,70,12,ES_AUTOHSCROLL
-    LTEXT           "·«∆Õ… «·√⁄÷«¡",IDC_STATIC,23,32,60,8
+    LTEXT           "????? ???????",IDC_STATIC,23,32,60,8
 END
 
 IDD_DIALOG_PBGROUP DIALOG DISCARDABLE  0, 0, 195, 142
 STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION "„Ã„Ê⁄…"
+CAPTION "??????"
 FONT 10, "Tahoma"
 BEGIN
-    PUSHBUTTON      "ÃœÌœ",ID_BUTTON_NEWGP,21,115,33,14
-    PUSHBUTTON      "«€·«ﬁ",IDCANCEL,143,115,33,14
+    PUSHBUTTON      "????",ID_BUTTON_NEWGP,21,115,33,14
+    PUSHBUTTON      "?????",IDCANCEL,143,115,33,14
     LISTBOX         IDC_LIST_PBGROUP,21,18,155,90,LBS_SORT | 
                     LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_HSCROLL | 
                     WS_TABSTOP
-    PUSHBUTTON      " ⁄œÌ·",ID_BUTTON_EDITGP,61,115,33,14
-    PUSHBUTTON      "Õ–›",ID_BUTTON_DELETEGP,102,115,33,14
-    LTEXT           "·«∆Õ… «·„Ã„Ê⁄« ",IDC_STATIC,21,5,45,8
+    PUSHBUTTON      "?????",ID_BUTTON_EDITGP,61,115,33,14
+    PUSHBUTTON      "???",ID_BUTTON_DELETEGP,102,115,33,14
+    LTEXT           "????? ?????????",IDC_STATIC,21,5,45,8
 END
 
 IDD_DIALOG_PROFILE_CDMA2000 DIALOGEX 0, 0, 195, 169
 STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION "«⁄œ«œ«  «·‰„ÿ"
+CAPTION "??????? ?????"
 FONT 10, "Tahoma", 0, 0, 0x1
 BEGIN
     CONTROL         "NDIS",IDC_RADIO_NDIS,"Button",BS_AUTORADIOBUTTON | NOT 
                     WS_VISIBLE | WS_GROUP,43,11,32,10
     CONTROL         "RAS",IDC_RADIO_RAS,"Button",BS_AUTORADIOBUTTON | NOT 
                     WS_VISIBLE,126,11,30,10
-    GROUPBOX        "«·«⁄œ«œ«  · ’›Õ «·√‰ —‰ ",IDC_STATIC,12,10,172,121
+    GROUPBOX        "????????? ????? ????????",IDC_STATIC,12,10,172,121
     COMBOBOX        IDC_COMBO_CONNECT_NAME,81,25,86,78,CBS_DROPDOWNLIST | 
                     WS_VSCROLL | WS_TABSTOP
     EDITTEXT        IDC_EDIT_PHONE_NUMBER,81,44,86,12,ES_AUTOHSCROLL
     EDITTEXT        IDC_EDIT_USER_NAME,81,66,86,12,ES_AUTOHSCROLL
     EDITTEXT        IDC_EDIT_PASSWORD,81,88,86,12,ES_PASSWORD | 
                     ES_AUTOHSCROLL
-    PUSHBUTTON      "ÃœÌœ",IDC_BUTTON_NEWCONN,23,141,36,12
-    PUSHBUTTON      "Õ›Ÿ",IDC_BUTTON_SAVECONN,133,141,36,12
-    GROUPBOX        "„Ê«’›«  ‰Ê⁄ «·—»ÿ",IDC_STATIC,11,0,173,23,NOT 
+    PUSHBUTTON      "????",IDC_BUTTON_NEWCONN,23,141,36,12
+    PUSHBUTTON      "???",IDC_BUTTON_SAVECONN,133,141,36,12
+    GROUPBOX        "??????? ??? ?????",IDC_STATIC,11,0,173,23,NOT 
                     WS_VISIBLE
-    PUSHBUTTON      "Õ–›",IDC_BUTTON_DELETECONN,78,141,36,12
-    LTEXT           "«”„ «·„” Œœ„:",IDC_STATIC_USER,22,68,43,8,0,
+    PUSHBUTTON      "???",IDC_BUTTON_DELETECONN,78,141,36,12
+    LTEXT           "??? ????????:",IDC_STATIC_USER,22,68,43,8,0,
                     WS_EX_TRANSPARENT
-    LTEXT           "ﬂ·„… «·„—Ê—:",IDC_STATIC_PASSWORD,22,90,44,8,0,
+    LTEXT           "???? ??????:",IDC_STATIC_PASSWORD,22,90,44,8,0,
                     WS_EX_TRANSPARENT
-    LTEXT           "—ﬁ„ «·Â« ›:",IDC_STATIC_NUMBER,22,46,54,8,0,
+    LTEXT           "??? ??????:",IDC_STATIC_NUMBER,22,46,54,8,0,
                     WS_EX_TRANSPARENT
-    LTEXT           "«”„ «·‰„ÿ:",IDC_STATIC_NUMBER3,22,23,55,8,0,
+    LTEXT           "??? ?????:",IDC_STATIC_NUMBER3,22,23,55,8,0,
                     WS_EX_TRANSPARENT
-    CONTROL         "÷»ÿ ﬂ«› —«÷Ì",IDC_CHECK_SETDEFAULT,"Button",
+    CONTROL         "??? ????????",IDC_CHECK_SETDEFAULT,"Button",
                     BS_AUTOCHECKBOX | BS_LEFTTEXT | WS_TABSTOP,25,114,67,10
     CONTROL         "CHAP",IDC_RADIO_CHAP,"Button",BS_AUTORADIOBUTTON | NOT 
                     WS_VISIBLE | WS_GROUP,83,143,34,10
     CONTROL         "PAP",IDC_RADIO_PAP,"Button",BS_AUTORADIOBUTTON | NOT 
                     WS_VISIBLE,137,143,29,10
-    LTEXT           " ÊÀÌﬁ",IDC_STATIC,125,114,19,8,NOT WS_VISIBLE
+    LTEXT           "?????",IDC_STATIC,125,114,19,8,NOT WS_VISIBLE
 END
 
 IDD_DIALOG_SETUP_NW_SEARCH DIALOG DISCARDABLE  0, 0, 137, 139
@@ -1771,13 +1635,13 @@ STYLE WS_CHILD
 FONT 10, "Tahoma"
 BEGIN
     GROUPBOX        "Static",IDC_STATIC,9,7,118,37,NOT WS_VISIBLE
-    CONTROL         " ”ÃÌ· Ê»ÕÀ √Ê «„ ÌﬂÌ",IDC_RADIO_NWSEL_SEARCH_AUTOSEL,
+    CONTROL         "????? ???? ?????????",IDC_RADIO_NWSEL_SEARCH_AUTOSEL,
                     "Button",BS_AUTORADIOBUTTON | WS_GROUP,18,15,91,10
-    CONTROL         " ”ÃÌ· Ê»ÕÀ ÌœÊÌ",IDC_RADIO_NWSEL_SEARCH_MANSEL,"Button",
+    CONTROL         "????? ???? ????",IDC_RADIO_NWSEL_SEARCH_MANSEL,"Button",
                     BS_AUTORADIOBUTTON,18,29,97,10
-    PUSHBUTTON      "«‰⁄«‘",IDC_BUTTON_NWSEL_SEARCH_REFRESH,27,114,43,13,
+    PUSHBUTTON      "?????",IDC_BUTTON_NWSEL_SEARCH_REFRESH,27,114,43,13,
                     WS_DISABLED | NOT WS_TABSTOP
-    PUSHBUTTON      "«Œ —",IDC_BUTTON_NWSEL_SEARCH_SELECT,74,114,43,13,NOT 
+    PUSHBUTTON      "????",IDC_BUTTON_NWSEL_SEARCH_SELECT,74,114,43,13,NOT 
                     WS_TABSTOP
     CONTROL         "List1",IDC_LIST_NWSEL_SEARCH_NWLIST,"SysListView32",
                     LVS_REPORT | WS_DISABLED | WS_BORDER,7,50,121,56
@@ -1785,7 +1649,7 @@ END
 
 IDD_DIALOG_INTERNET_NEWCONN DIALOG DISCARDABLE  0, 0, 195, 152
 STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION "‰„ÿ ÃœÌœ"
+CAPTION "??? ????"
 FONT 10, "Tahoma"
 BEGIN
     EDITTEXT        IDC_EDIT_INTERNET_NEWCONN_CONNNAME,85,7,88,12,
@@ -1796,19 +1660,19 @@ BEGIN
                     ES_AUTOHSCROLL
     EDITTEXT        IDC_EDIT_INTERNET_NEWCONN_PASSWORD,85,56,88,12,
                     ES_PASSWORD | ES_AUTOHSCROLL
-    CONTROL         "÷»ÿ ﬂ«› —«÷Ì",IDC_CHECK_INTERNET_NEWCONN_SETDFT,"Button",
+    CONTROL         "??? ????????",IDC_CHECK_INTERNET_NEWCONN_SETDFT,"Button",
                     BS_AUTOCHECKBOX | BS_LEFTTEXT | WS_TABSTOP,17,110,75,10
-    DEFPUSHBUTTON   "„Ê«›ﬁ",IDOK,18,129,50,12
-    PUSHBUTTON      "«·€«¡",IDCANCEL,124,129,50,12
-    LTEXT           "«”„ «·‰„ÿ:",IDC_STATIC,18,8,60,8
-    LTEXT           "—ﬁ„ «·Â« ›:",IDC_STATIC,18,25,60,8
-    LTEXT           "«”„ «·„” Œœ„:",IDC_STATIC,18,42,60,8
-    LTEXT           "ﬂ·„… «·„—Ê—:",IDC_STATIC,18,59,60,8
+    DEFPUSHBUTTON   "?????",IDOK,18,129,50,12
+    PUSHBUTTON      "?????",IDCANCEL,124,129,50,12
+    LTEXT           "??? ?????:",IDC_STATIC,18,8,60,8
+    LTEXT           "??? ??????:",IDC_STATIC,18,25,60,8
+    LTEXT           "??? ????????:",IDC_STATIC,18,42,60,8
+    LTEXT           "???? ??????:",IDC_STATIC,18,59,60,8
     LTEXT           "*",IDC_STATIC,181,8,8,8
     LTEXT           "*",IDC_STATIC,181,26,8,8
     EDITTEXT        IDC_EDIT_INTERNET_NEWCONN_APN,85,73,88,12,ES_AUTOHSCROLL
     LTEXT           "APN:",IDC_STATIC,18,76,60,8
-    LTEXT           " ÊÀÌﬁ",IDC_STATIC,18,93,52,8
+    LTEXT           "?????",IDC_STATIC,18,93,52,8
     CONTROL         "CHAP",IDC_RADIO_CHAP,"Button",BS_AUTORADIOBUTTON | 
                     WS_GROUP,84,92,30,10
     CONTROL         "PAP",IDC_RADIO_PAP,"Button",BS_AUTORADIOBUTTON,143,92,
@@ -2173,10 +2037,10 @@ IDR_MENU_HIST_RCLICK MENU DISCARDABLE
 BEGIN
     POPUP "_HIST_RCLICK_"
     BEGIN
-        MENUITEM "« ’«·",                       ID_MHIST_RECALL
-        MENUITEM "—”«∆·",                       ID_MHIST_SENDSMS
-        MENUITEM "Õ›Ÿ",                         ID_MHIST_ABSTRACT
-        MENUITEM "Õ–›",                         ID_MHIST_DELETE
+        MENUITEM "?????",                       ID_MHIST_RECALL
+        MENUITEM "?????",                       ID_MHIST_SENDSMS
+        MENUITEM "???",                         ID_MHIST_ABSTRACT
+        MENUITEM "???",                         ID_MHIST_DELETE
     END
 END
 
@@ -2206,10 +2070,10 @@ IDR_MENU_TRAY MENU DISCARDABLE
 BEGIN
     POPUP "Tray"
     BEGIN
-        MENUITEM " ﬂ»Ì— ",                      ID_APP_TRAY_MAXI
-        MENUITEM "‰»–… ⁄‰....",                 ID_APP_ABOUT
+        MENUITEM "????? ",                      ID_APP_TRAY_MAXI
+        MENUITEM "???? ??....",                 ID_APP_ABOUT
         MENUITEM SEPARATOR
-        MENUITEM "Œ—ÊÃ",                        ID_APP_EXIT
+        MENUITEM "????",                        ID_APP_EXIT
     END
 END
 
@@ -2217,9 +2081,9 @@ IDR_MENU_LOG_RCLICK MENU DISCARDABLE
 BEGIN
     POPUP "_LOG_RCLICK_"
     BEGIN
-        MENUITEM " ’œÌ—",                       ID_MLOG_EXPORT
-        MENUITEM "«⁄«œ…",                       ID_MLOG_DELETEALL
-        MENUITEM "Œ—ÊÃ",                        ID_MLOG_DELETE
+        MENUITEM "?????",                       ID_MLOG_EXPORT
+        MENUITEM "?????",                       ID_MLOG_DELETEALL
+        MENUITEM "????",                        ID_MLOG_DELETE
     END
 END
 
@@ -2331,309 +2195,309 @@ END
 
 STRINGTABLE DISCARDABLE 
 BEGIN
-    IDS_ABOUTBOX            "‰»–… ⁄‰ „Êœ„ «· CM200 USB ..."
+    IDS_ABOUTBOX            "???? ?? ???? ?? CM200 USB ..."
     IDS_STRING102           "IDS_HOME"
-    IDP_SOCKETS_INIT_FAILED "›‘· «» œ«¡  ‘€Ì· Ê«ÃÂ… —»ÿ «·ÊÌ‰œÊ“ »«·«‰ —‰  (Windows Sockets)"
-    IDS_SMS                 "—”«·… ‰’Ì… ﬁ’Ì—…"
-    IDS_CALL                "« ’«·"
-    IDS_PHONEBOOK           "œ› — «·⁄‰«ÊÌ‰"
-    IDS_SETUP               "ŒÌ«—« "
-    IDS_INTERNET            "«‰ —‰ "
-    IDS_INCALLING           "ÌÊÃœ „ﬂ«·„…, ·« Ì„ﬂ‰ﬂ ›⁄· √‘Ì«¡ √Œ—Ï"
-    IDS_SMS_INBOX           "«·»—Ìœ «·Ê«—œ"
-    IDS_SMS_OUTBOX          "«·»—Ìœ «·Œ«—Ã"
+    IDP_SOCKETS_INIT_FAILED "??? ?????? ????? ????? ??? ???????? ????????? (Windows Sockets)"
+    IDS_SMS                 "????? ???? ?????"
+    IDS_CALL                "?????"
+    IDS_PHONEBOOK           "???? ????????"
+    IDS_SETUP               "??????"
+    IDS_INTERNET            "??????"
+    IDS_INCALLING           "???? ??????, ?? ????? ??? ????? ????"
+    IDS_SMS_INBOX           "?????? ??????"
+    IDS_SMS_OUTBOX          "?????? ??????"
 END
 
 STRINGTABLE DISCARDABLE 
 BEGIN
-    IDS_SMS_SENDER          "«·„—”·"
-    IDS_MOBILE              "ÃÊ«·"
-    IDS_SMS_DATETIME        "«· «—ÌŒ/«·Êﬁ "
-    IDS_DETAILS             " ›«’Ì·"
-    IDS_NAME                "«”„/—ﬁ„ Â« ›"
-    IDS_SMS_SENDER_NAME     "«·«”„"
-    IDS_SMS_CONTENT         "„Õ ÊÏ"
-    IDS_DATASERVICING       "√‰  ›Ì Ê÷⁄ Œœ„… —»ÿ «·»Ì«‰« "
-    IDS_CALL_STATUS_CALLING "ÌÃ—Ì «·« ’«·..."
-    IDS_DELETECONFIRM       "Â· √‰  „ √ﬂœ „‰ «·Õ–›ø"
-    IDS_DELALLCONFIRM       "Â· √‰  „ √ﬂœ „‰ Õ–› «·ﬂ·ø"
-    IDS_PB_ID               "ÂÊÌ…"
-    IDS_HOME                "„‰“·"
-    IDS_COMPANY             "⁄„·"
+    IDS_SMS_SENDER          "??????"
+    IDS_MOBILE              "????"
+    IDS_SMS_DATETIME        "???????/?????"
+    IDS_DETAILS             "??????"
+    IDS_NAME                "???/??? ????"
+    IDS_SMS_SENDER_NAME     "?????"
+    IDS_SMS_CONTENT         "?????"
+    IDS_DATASERVICING       "??? ?? ??? ???? ??? ????????"
+    IDS_CALL_STATUS_CALLING "???? ???????..."
+    IDS_DELETECONFIRM       "?? ??? ????? ?? ??????"
+    IDS_DELALLCONFIRM       "?? ??? ????? ?? ??? ?????"
+    IDS_PB_ID               "????"
+    IDS_HOME                "????"
+    IDS_COMPANY             "???"
     IDS_EMAIL               "Email"
-    IDS_REMARK              "„·«ÕŸ…"
+    IDS_REMARK              "??????"
 END
 
 STRINGTABLE DISCARDABLE 
 BEGIN
-    IDS_ID                  "ÂÊÌ…"
-    IDS_SMS_DRAFT           "«·„”Êœ« "
-    IDS_CALLHIST_RECEIVED   "Ê«—œ"
-    IDS_CALLHIST_DIALED     "Œ«—Ã"
-    IDS_CALLHIST_MISSED     "›«∆ …"
-    IDS_CALLHIST_DURATION   "«·„œ…"
-    IDS_DATACARD            "„Êœ„ USB"
-    IDS_SMS_READ            "⁄—÷ «·—”«·…"
-    IDS_SMS_NEW             "ÃœÌœ"
-    IDS_SMS_REPLY           "«Ã«»…"
-    IDS_SMS_EDIT            " ⁄œÌ· "
-    IDS_SMS_FORWARD         " ÕÊÌ·"
-    IDS_SMS_DELETE          "Õ–›"
-    IDS_SMS_DELALL          "Õ–› «·ﬂ·"
-    IDS_SMS_DIAL            "« ’«·"
-    IDS_SMS_ABSTRACT        "«” Œ·«’"
+    IDS_ID                  "????"
+    IDS_SMS_DRAFT           "????????"
+    IDS_CALLHIST_RECEIVED   "????"
+    IDS_CALLHIST_DIALED     "????"
+    IDS_CALLHIST_MISSED     "?????"
+    IDS_CALLHIST_DURATION   "?????"
+    IDS_DATACARD            "???? USB"
+    IDS_SMS_READ            "??? ???????"
+    IDS_SMS_NEW             "????"
+    IDS_SMS_REPLY           "?????"
+    IDS_SMS_EDIT            "????? "
+    IDS_SMS_FORWARD         "?????"
+    IDS_SMS_DELETE          "???"
+    IDS_SMS_DELALL          "??? ????"
+    IDS_SMS_DIAL            "?????"
+    IDS_SMS_ABSTRACT        "???????"
 END
 
 STRINGTABLE DISCARDABLE 
 BEGIN
-    IDS_SMS_SEARCH          "»ÕÀ"
-    IDS_TREE_TRANSFER       "‰ﬁ·"
-    IDS_TREE_TRANSFERTIME   "Êﬁ  «·‰ﬁ·"
-    IDS_TREE_UPLOAD         " Õ„Ì·"
-    IDS_TREE_DOWNLOAD       " ‰“Ì·"
-    IDS_TREE_DATA           "»Ì«‰« "
-    IDS_TREE_SPEED          "”—⁄…"
-    IDS_TREE_UPLOADED_DATA  " „ «· Õ„Ì·"
-    IDS_TREE_DOWNLOADED_DATA " „ «· ‰“Ì·"
+    IDS_SMS_SEARCH          "???"
+    IDS_TREE_TRANSFER       "???"
+    IDS_TREE_TRANSFERTIME   "??? ?????"
+    IDS_TREE_UPLOAD         "?????"
+    IDS_TREE_DOWNLOAD       "?????"
+    IDS_TREE_DATA           "??????"
+    IDS_TREE_SPEED          "????"
+    IDS_TREE_UPLOADED_DATA  "?? ???????"
+    IDS_TREE_DOWNLOADED_DATA "?? ???????"
 END
 
 STRINGTABLE DISCARDABLE 
 BEGIN
-    IDS_WARNING_INPUTNUM    "«·—Ã«¡ «œŒ«· —ﬁ„!"
-    IDS_WARNING_INPUTSMS    "«·—Ã«¡ «œŒ«· „Õ ÊÏ «·—”«·…!"
-    IDS_SMS_SAVESUCC        " „ Õ›Ÿ «·—”«·… !"
-    IDS_SMS_SAVEFAIL        "›‘· Õ›Ÿ «·—”«·…!"
-    IDS_UNKNOWN             "„ÃÂÊ·"
-    IDS_SMS_TRANSFER        " ÕÊÌ· «·—”«·…"
-    IDS_SMS_EXPORT          " ’œÌ— —”«∆·"
-    IDS_NOITEMSEL           "«·—Ã«¡ «Œ Ì«— ⁄‰’— √Ê·«¯"
-    IDS_CALLHIST_FREQUENCY  "⁄œ"
-    IDS_HELPDOC             "„”«⁄œ…"
-    IDS_HELPINFO            "„·› «·„”«⁄œ… €Ì— „ÊÃÊœ"
-    IDS_LOG_NTYPE           "‰Ê⁄ «·—»ÿ"
+    IDS_WARNING_INPUTNUM    "?????? ????? ???!"
+    IDS_WARNING_INPUTSMS    "?????? ????? ????? ???????!"
+    IDS_SMS_SAVESUCC        "?? ??? ??????? !"
+    IDS_SMS_SAVEFAIL        "??? ??? ???????!"
+    IDS_UNKNOWN             "?????"
+    IDS_SMS_TRANSFER        "????? ???????"
+    IDS_SMS_EXPORT          "????? ?????"
+    IDS_NOITEMSEL           "?????? ?????? ???? ?????"
+    IDS_CALLHIST_FREQUENCY  "??"
+    IDS_HELPDOC             "??????"
+    IDS_HELPINFO            "??? ???????? ??? ?????"
+    IDS_LOG_NTYPE           "??? ?????"
     IDS_LOG_TIMESTAMP       "TimeStamp"
-    IDS_LOG_DURATION        "«·„œ…"
-    IDS_LOG_BYTEIN          " Kbyte   «·„” ·„…:"
-    IDS_LOG_BYTEOUT         " Kbyte «·„—”·…:"
+    IDS_LOG_DURATION        "?????"
+    IDS_LOG_BYTEIN          " Kbyte   ????????:"
+    IDS_LOG_BYTEOUT         " Kbyte ???????:"
 END
 
 STRINGTABLE DISCARDABLE 
 BEGIN
-    IDS_SMS_STATE_SENT      "«·„—”·…"
-    IDS_SMS_STATE_NOT_READ  "€Ì— „ﬁ—Ê¡…"
-    IDS_SMS_STATE_READ      "ﬁ—«¡…"
-    IDS_SMS_STATE_NOT_SENT  "€Ì— „—”·…"
-    IDS_FILE_EXIST          "„ÊÃÊœ „”»ﬁ«¯, «· Œ“Ì‰ ›ÊﬁÂø"
-    IDS_USB_NOTFIND         "·« Ì„ﬂ‰ «·⁄ÀÊ— ⁄·Ï ÃÂ«“ USB"
-    IDS_USB_START_SUCC      " „  ‘€Ì· Ê«ÃÂ… USB »‰Ã«Õ"
-    IDS_USB_START_FAIL      "›‘·  ‘€Ì· Ê«ÃÂ… USB"
-    IDS_USB_PORT_WAIT       "„Êœ„ USB „‘€Ê·"
-    IDS_USB_PORT_INI        "·« Ì„ﬂ‰ «·⁄ÀÊ— ⁄·Ï „Êœ„ USB"
-    IDS_USB_PORT_EXCEPTION  "„Êœ„ USB €Ì— «⁄ Ì«œÌ"
-    IDS_USB_PORT_TIMEOUT    "Êﬁ  „” ﬁÿ⁄ ·„Êœ„ USB "
-    IDS_USB_PORT_DATA       "„Êœ„ USB „” Œœ„ ··—»ÿ »«·«‰ —‰ "
-    IDS_USB_PORT_CALL       "„Êœ„ USB „” Œœ„ ·«Ã—«¡ „ﬂ«·„… ’Ê Ì…"
+    IDS_SMS_STATE_SENT      "???????"
+    IDS_SMS_STATE_NOT_READ  "??? ??????"
+    IDS_SMS_STATE_READ      "?????"
+    IDS_SMS_STATE_NOT_SENT  "??? ?????"
+    IDS_FILE_EXIST          "????? ??????, ??????? ?????"
+    IDS_USB_NOTFIND         "?? ???? ?????? ??? ???? USB"
+    IDS_USB_START_SUCC      "?? ????? ????? USB ?????"
+    IDS_USB_START_FAIL      "??? ????? ????? USB"
+    IDS_USB_PORT_WAIT       "???? USB ?????"
+    IDS_USB_PORT_INI        "?? ???? ?????? ??? ???? USB"
+    IDS_USB_PORT_EXCEPTION  "???? USB ??? ???????"
+    IDS_USB_PORT_TIMEOUT    "??? ?????? ????? USB "
+    IDS_USB_PORT_DATA       "???? USB ?????? ????? ?????????"
+    IDS_USB_PORT_CALL       "???? USB ?????? ?????? ?????? ?????"
     IDS_PC                  "PC"
     IDS_USIM                "USIM"
 END
 
 STRINGTABLE DISCARDABLE 
 BEGIN
-    IDS_ME                  "„Êœ„ USB "
-    IDS_SMS_FULL            "»—Ìœ «·—”«∆· „„ ·∆"
-    IDS_USB_PORT_DISC       "ÃÂ«“USB  €Ì— „—»Êÿ"
-    IDS_UNKNOWN_NAME        "„ÃÂÊ·"
-    IDS_SMS_SEND_SUCC       " „ «·«—”«·!"
-    IDS_SMS_SEND_FAIL       "›‘· «·«—”«·"
-    IDS_PBMENU_ADDPB        "ÃœÌœ"
-    IDS_PBMENU_DELETE       "Õ–›"
-    IDS_PBMENU_MODIFY       " ⁄œÌ· "
-    IDS_PBMENU_DELETEALL    "Õ–› «·ﬂ·"
-    IDS_PBMENU_CALL         "« ’«·"
-    IDS_PB_SENDSMS          "«—”«· —”«·…"
-    IDS_PBMENU_SEARCHPB     "»ÕÀ"
-    IDS_PBMENU_TRANSFER     "‰ﬁ·"
-    IDS_PBMENU_IMPORTPB     "«” Ì—«œ œ› — «·⁄‰«ÊÌ‰"
-    IDS_PBMENU_EXPORTPB     " ’œÌ— œ› — «·⁄‰«ÊÌ‰"
+    IDS_ME                  "???? USB "
+    IDS_SMS_FULL            "???? ??????? ?????"
+    IDS_USB_PORT_DISC       "????USB  ??? ?????"
+    IDS_UNKNOWN_NAME        "?????"
+    IDS_SMS_SEND_SUCC       "?? ???????!"
+    IDS_SMS_SEND_FAIL       "??? ???????"
+    IDS_PBMENU_ADDPB        "????"
+    IDS_PBMENU_DELETE       "???"
+    IDS_PBMENU_MODIFY       "????? "
+    IDS_PBMENU_DELETEALL    "??? ????"
+    IDS_PBMENU_CALL         "?????"
+    IDS_PB_SENDSMS          "????? ?????"
+    IDS_PBMENU_SEARCHPB     "???"
+    IDS_PBMENU_TRANSFER     "???"
+    IDS_PBMENU_IMPORTPB     "??????? ???? ????????"
+    IDS_PBMENU_EXPORTPB     "????? ???? ????????"
 END
 
 STRINGTABLE DISCARDABLE 
 BEGIN
-    IDS_INTERNET_MODIFYPWDSUCC " „  ⁄œÌ· ﬂ·„… «·„—Ê—"
-    IDS_SIMLOCK             "·« Ì„ﬂ‰ «· ⁄—› ⁄·Ï ‘—ÌÕ… USIM"
-    IDS_INTERNET_REACHLIMIT "·ﬁœ Ê’·  «·Ï «·Õœ «·«⁄·Ï ··«” Œœ«„, «·—Ã«¡ «· Õﬁﬁ „‰ «⁄œ«œ«  «·Õœ «·√⁄·Ï ··«” Œœ«„"
-    IDS_NOTOUTLOOK          "«·√Ê ·Êﬂ €Ì— „ÊÃÊœ"
-    IDS_PC_SMS_FULL         "”⁄…  Œ“Ì‰ «·—”«∆· ›Ì «·Õ«”Ê» „„ ·∆…"
-    IDS_INTERNET_DELERR     "·« Ì„ﬂ‰ﬂ Õ–› «·‰„ÿ «·«› —«÷Ì"
-    IDS_INTERNET_EDITERR    "·« Ì„ﬂ‰ﬂ  ⁄œÌ· «·‰„ÿ «·«› —«÷Ì"
-    IDS_SETUP_COPS_SETSUCC  " „  ‰›Ì– «·⁄„·Ì… »‰Ã«Õ!"
-    IDS_USER_GUIDE          "œ·Ì· „” Œœ„ HSPACM"
-    IDS_NETCARD_NOT_FOUND   "·« Ì„ﬂ‰ «·—»ÿ „⁄ „ÕÊ· «·‘»ﬂ…,  √ﬂœ √‰ «”„ «·ÃÂ«“ ’ÕÌÕ Ê√‰Â „—»Êÿ »ÿ—Ìﬁ… ’ÕÌÕ…"
-    IDS_WAIT_READ_SMS       "«·—Ã«¡ «·«‰ Ÿ«—,  Ã—Ì ﬁ—«¡… «·—”«∆·..."
-    IDS_WAIT_DELETE_SMS     "«·—Ã«¡ «·«‰ Ÿ«—, ÌÃ—Ì Õ–› «·—”«∆·..."
-    IDS_WAIT_TRANSFER_SMS   "«·—Ã«¡ «·«‰ Ÿ«—, ÌÃ—Ì ‰ﬁ· «·—”«∆·..."
-    IDS_PBGROUP             "„Ã„Ê⁄…"
-    IDS_GROUP_FULL          "«·„Ã„Ê⁄… „„ ·∆…"
-    IDS_STRING431           "‰Ÿ«„ ﬂ‘› «· ”··"
+    IDS_INTERNET_MODIFYPWDSUCC "?? ????? ???? ??????"
+    IDS_SIMLOCK             "?? ???? ?????? ??? ????? USIM"
+    IDS_INTERNET_REACHLIMIT "??? ???? ??? ???? ?????? ?????????, ?????? ?????? ?? ??????? ???? ?????? ?????????"
+    IDS_NOTOUTLOOK          "???????? ??? ?????"
+    IDS_PC_SMS_FULL         "??? ????? ??????? ?? ??????? ??????"
+    IDS_INTERNET_DELERR     "?? ????? ??? ????? ?????????"
+    IDS_INTERNET_EDITERR    "?? ????? ????? ????? ?????????"
+    IDS_SETUP_COPS_SETSUCC  "?? ????? ??????? ?????!"
+    IDS_USER_GUIDE          "???? ?????? HSPACM"
+    IDS_NETCARD_NOT_FOUND   "?? ???? ????? ?? ???? ??????, ???? ?? ??? ?????? ???? ???? ????? ?????? ?????"
+    IDS_WAIT_READ_SMS       "?????? ????????, ???? ????? ???????..."
+    IDS_WAIT_DELETE_SMS     "?????? ????????, ???? ??? ???????..."
+    IDS_WAIT_TRANSFER_SMS   "?????? ????????, ???? ??? ???????..."
+    IDS_PBGROUP             "??????"
+    IDS_GROUP_FULL          "???????? ??????"
+    IDS_STRING431           "???? ??? ??????"
 END
 
 STRINGTABLE DISCARDABLE 
 BEGIN
-    IDS_PB_SAVEFAILED       "›‘·  Œ“Ì‰ »Ì«‰«  œ› — «·⁄‰«ÊÌ‰"
-    IDS_SMS_NULL            "»—Ìœ «·—”«∆· ›«—€"
-    IDS_PB_FULL             "œ› — «·⁄‰«ÊÌ‰ „„ ·∆"
-    IDS_PB_IMPORTTIP        "«·√—ﬁ«„ Ì„ﬂ‰ √‰  ﬂÊ‰: """"0 ~ 9,*,#,+"
-    IDS_PBTRANSFER_FAILED   "›‘· «·‰ﬁ·"
-    IDS_PBTRANSFER_CARDCOLUMN "«·—ﬁ„"
-    IDS_TIPINFO_SMS         "—”«·… ÃœÌœ… \r\n „‰:"
-    IDS_SELCONNECT_NULLNUM  "«·—ﬁ„ ›«—€ √Ê „ÃÂÊ·!"
-    IDS_MENU_LANGUAGE       "«··€…"
-    IDS_LANG_ENG            "«·√‰Ã·Ì“Ì…"
+    IDS_PB_SAVEFAILED       "??? ????? ?????? ???? ????????"
+    IDS_SMS_NULL            "???? ??????? ????"
+    IDS_PB_FULL             "???? ???????? ?????"
+    IDS_PB_IMPORTTIP        "??????? ???? ?? ????: """"0 ~ 9,*,#,+"
+    IDS_PBTRANSFER_FAILED   "??? ?????"
+    IDS_PBTRANSFER_CARDCOLUMN "?????"
+    IDS_TIPINFO_SMS         "????? ????? \r\n ??:"
+    IDS_SELCONNECT_NULLNUM  "????? ???? ?? ?????!"
+    IDS_MENU_LANGUAGE       "?????"
+    IDS_LANG_ENG            "??????????"
     IDS_PBTRANSFER_INITCARDINFO 
-                            "ﬁ—«¡… „⁄·Ê„«  œ› — «·⁄‰«ÊÌ‰ „‰ ‘—ÌÕ… «·–«ﬂ—…..."
-    IDS_PBTRANSFER_INITUSIMINFO "ﬁ—«¡… „⁄·Ê„«  œ› — «·⁄‰«ÊÌ‰ „‰ ‘—ÌÕ…"
-    IDS_PBTRANSFER_CARDFULL "”⁄… ‘—ÌÕ… «·–«ﬂ—… „„ ·∆…!"
-    IDS_PBTRANSFER_USIMFULL "”⁄… ‘—ÌÕ… usim „„ ·∆…!"
-    IDS_TIPINFO_CALL        "„ﬂ«·„… Ê«—œ…  \r\n„‰:"
+                            "????? ??????? ???? ???????? ?? ????? ???????..."
+    IDS_PBTRANSFER_INITUSIMINFO "????? ??????? ???? ???????? ?? ?????"
+    IDS_PBTRANSFER_CARDFULL "??? ????? ??????? ??????!"
+    IDS_PBTRANSFER_USIMFULL "??? ????? usim ??????!"
+    IDS_TIPINFO_CALL        "?????? ?????  \r\n??:"
     IDS_LANG_ITA            "Ita"
 END
 
 STRINGTABLE DISCARDABLE 
 BEGIN
     IDS_APPNAME             "USB Modem"
-    IDS_PB_NULLPB           "”Ã· œ› — «·⁄‰«ÊÌ‰ ·«€Ì"
-    IDS_PB_READERR          "Õ’· Œÿ√ ›Ì ﬁ—«¡… «·»Ì«‰« "
-    IDS_FILEERR             "„·› €Ì— ’ÕÌÕ"
-    IDS_PB_INPORTERR        "«·ÊÀÌﬁ…  Õ ÊÌ ⁄·Ï ”Ã· €Ì— ’ÕÌÕ,  „ —›÷ «·ÊÀÌﬁ…!"
-    IDS_PB_NAMEMAX          "«·«”„ ÿÊÌ· Ãœ«¯!"
-    IDS_CONFIG_CGMR         "ÌÃ—Ì «·Õ’Ê· ⁄·Ï ‰”Œ… ›Ì—„ ÊÌ—"
-    IDS_PB_IMPORTFILEERR    "Œÿ√ ›Ì › Õ «·„·›!"
-    IDS_CALL_SIMSTATEWRONG  "Õ«·… ‘—ÌÕ… €Ì— ’ÕÌÕ…. ·« Ì„ﬂ‰ﬂ «·ﬁÌ«„ »√Ì ›⁄«·Ì… √Œ—Ï"
-    IDS_CONTACT_NAMETOOLONG "«·«”„ ÿÊÌ· Ãœ«¯!"
-    IDS_CONTACT_NOPLUSONLY  "·« Ì„ﬂ‰ ··—ﬁ„ «‰ ÌﬂÊ‰ —„“ „ÊÃ» ›ﬁÿ"
-    IDS_INTERNET_RASENUMERROR "›‘· RasEnumConnections"
-    IDS_PIN_PROTIP          "«·—Ã«¡ «œŒ«· «·—„“ «·”—Ì:"
-    IDS_PIN_LOCK            "«·—„“ «·”—Ì „ﬁ›·,  Õ «Ã «·Ï PUK ·›ﬂ «·ﬁ›·"
-    IDS_PIN_MODIFY          "Ì„ﬂ‰ﬂ  ⁄œÌ· «·—„“ «·”—Ì:"
-    IDS_PUK_LOCK            " PUK „ﬁ›Ê· , ‘—ÌÕ…  SIM ⁄«ÿ·… «·¬‰"
+    IDS_PB_NULLPB           "??? ???? ???????? ????"
+    IDS_PB_READERR          "??? ??? ?? ????? ????????"
+    IDS_FILEERR             "??? ??? ????"
+    IDS_PB_INPORTERR        "??????? ????? ??? ??? ??? ????, ?? ??? ???????!"
+    IDS_PB_NAMEMAX          "????? ???? ????!"
+    IDS_CONFIG_CGMR         "???? ?????? ??? ???? ???? ???"
+    IDS_PB_IMPORTFILEERR    "??? ?? ??? ?????!"
+    IDS_CALL_SIMSTATEWRONG  "???? ????? ??? ?????. ?? ????? ?????? ??? ?????? ????"
+    IDS_CONTACT_NAMETOOLONG "????? ???? ????!"
+    IDS_CONTACT_NOPLUSONLY  "?? ???? ????? ?? ???? ??? ???? ???"
+    IDS_INTERNET_RASENUMERROR "??? RasEnumConnections"
+    IDS_PIN_PROTIP          "?????? ????? ????? ?????:"
+    IDS_PIN_LOCK            "????? ????? ????, ????? ??? PUK ??? ?????"
+    IDS_PIN_MODIFY          "????? ????? ????? ?????:"
+    IDS_PUK_LOCK            " PUK ????? , ?????  SIM ????? ????"
 END
 
 STRINGTABLE DISCARDABLE 
 BEGIN
-    IDS_PB_ADDPICERR        "Œÿ√ ›Ì  Õ„Ì· «·’Ê—…!"
-    IDS_PB_NAMELENMAX       "«·⁄‰Ê«‰ «·–Ì  —€» »Õ›Ÿ… „ﬂÊ‰ „‰ √ﬂÀ— „‰ 14 Œ«‰…. ”Ì „ ﬁÿ⁄ «·Œ«‰«  «·“«∆œ… ⁄‰œ «·‰ﬁ· «·Ï ‘—ÌÕ… USIM, Â·  —€» »«·«” „—«—ø"
-    IDS_PB_DELPCERR         "Œÿ√ ›Ì „”Õ –«ﬂ—… «·Õ«”Ê»"
-    IDS_PB_DELPCCARDERR     "Œÿ√ ›Ì „”Õ –«ﬂ—… „Êœ„ «·USB"
-    IDS_TRAY_TOTRAY         "«·Ì ‘—Ìÿ «·√ÌﬁÊ‰« "
-    IDS_TRAY_OPENDLG        "‘€· „Êœ„ «·USB"
-    IDS_CARD_DISCONN        "„Êœ„ «·USB €Ì— „—»Êÿ"
-    IDS_RF_SETERROR         "Œÿ√ ›Ì «⁄œ«œ  —œœ«  «·—«œÌÊ"
-    IDS_INTERNET_TOOMANYENTRY "ÌÊÃœ «·⁄œÌœ „‰ «·Ê’·« "
-    IDS_ERROR_NOT_ENOUGH_MEMORY "«·–«ﬂ—… €Ì— ﬂ«›Ì…"
-    IDS_ERR_SMS_GROUPNUMBEROVER "«—”«· «·Ï —ﬁ„ Œ«—Ã ‰ÿ«ﬁ «·„Ã„Ê⁄…"
-    IDS_SMS_ME_FULL         "–«ﬂ—… «·„Êœ„ „„ ·∆…!\n «·—Ã«¡ ‰ﬁ· »⁄÷ „‰ «·—”«∆· «·Ï «·Õ«”Ê» ⁄‰ ÿ—Ìﬁ ŒÌ«— ‰ﬁ· «·—”«∆·"
-    IDS_SMS_USIM_FULL       "–«ﬂ—… ‘—ÌÕ…USIM „„ ·∆…! \n«·—Ã«¡ ‰ﬁ· »⁄÷ „‰ «·—”«∆· «·Ï «·Õ«”Ê» ⁄‰ ÿ—Ìﬁ ŒÌ«— ‰ﬁ· «·—”«∆·"
-    IDS_SMS_MEUSIM_FULL     "–«ﬂ—… «·„Êœ„ Ê  USIM „„ ·∆…!\n «·—Ã«¡ ‰ﬁ· »⁄÷ „‰ «·—”«∆· «·Ï «·Õ«”Ê» ⁄‰ ÿ—Ìﬁ ŒÌ«— ‰ﬁ· «·—”«∆·"
-    IDS_INT_ERR_INPUTNULL   "«·«”„ Ê «·—ﬁ„ „ÿ·Ê»«‰"
-    IDS_INT_ERR_SAMENAME    "«·—»ÿ „ÊÃÊœ „”»ﬁ«¯"
+    IDS_PB_ADDPICERR        "??? ?? ????? ??????!"
+    IDS_PB_NAMELENMAX       "??????? ???? ???? ????? ???? ?? ???? ?? 14 ????. ???? ??? ??????? ??????? ??? ????? ??? ????? USIM, ?? ???? ???????????"
+    IDS_PB_DELPCERR         "??? ?? ??? ????? ???????"
+    IDS_PB_DELPCCARDERR     "??? ?? ??? ????? ???? ??USB"
+    IDS_TRAY_TOTRAY         "??? ???? ?????????"
+    IDS_TRAY_OPENDLG        "??? ???? ??USB"
+    IDS_CARD_DISCONN        "???? ??USB ??? ?????"
+    IDS_RF_SETERROR         "??? ?? ????? ?????? ???????"
+    IDS_INTERNET_TOOMANYENTRY "???? ?????? ?? ???????"
+    IDS_ERROR_NOT_ENOUGH_MEMORY "??????? ??? ?????"
+    IDS_ERR_SMS_GROUPNUMBEROVER "????? ??? ??? ???? ???? ????????"
+    IDS_SMS_ME_FULL         "????? ?????? ??????!\n ?????? ??? ??? ?? ??????? ??? ??????? ?? ???? ???? ??? ???????"
+    IDS_SMS_USIM_FULL       "????? ?????USIM ??????! \n?????? ??? ??? ?? ??????? ??? ??????? ?? ???? ???? ??? ???????"
+    IDS_SMS_MEUSIM_FULL     "????? ?????? ?  USIM ??????!\n ?????? ??? ??? ?? ??????? ??? ??????? ?? ???? ???? ??? ???????"
+    IDS_INT_ERR_INPUTNULL   "????? ? ????? ???????"
+    IDS_INT_ERR_SAMENAME    "????? ????? ??????"
 END
 
 STRINGTABLE DISCARDABLE 
 BEGIN
-    IDS_INT_ERR_INPUTLONG   "«·„œŒ· ÿÊÌ· Ãœ«¯"
-    IDS_CALL_ERR_CALLFAIL   "›‘· «·« ’«·"
-    IDS_QUIT_TIP            "Â· √‰  „ √ﬂœ „‰ «·Œ—ÊÃø"
-    IDS_QUIT_INTERNET       "√‰    ’›Õ «·«‰ —‰ ! «·—Ã«¡ ›’· «·—»ÿ √Ê·«¯!"
-    IDS_INT_ERR_DELACTCON   "«·—»ÿ ›⁄«·"
-    IDS_SETUP_CONNPOINTERROR "Œÿ√ ›Ì «⁄œ«œ APN"
-    IDS_SETUP_CONNPOINTOK   "«⁄œ«œ APN  „ »‰Ã«Õ"
-    IDS_READ_SMS_DATA       " Ã—Ì ﬁ—«¡… »Ì«‰«  «·—”«∆·..."
-    IDS_READ_PBM_DATA       " Ã—Ì ﬁ—«¡… »Ì«‰«  œ› — «·⁄‰«ÊÌ‰..."
-    IDS_READ_CALL_DATA      " Ã—Ì ﬁ—«¡… »Ì«‰«  «·« ’«·..."
-    IDS_READ_NW_DATA        " Ã—Ì ﬁ—«¡… »Ì«‰«  «·‘»ﬂ…..."
-    IDS_CHECK_SIM_STATUS    "ÌÃ—Ì «· Õﬁﬁ „‰ Õ«·… «·SIM..."
-    IDS_CHECK_SMS_STATUS    "ÌÃ—Ì «· Õﬁﬁ „‰ Õ«·…   ‘€Ì· «·SIM..."
-    IDS_CHECK_PBM_STATUS    "ÌÃ—Ì «· Õﬁﬁ „‰ Õ«·…   ‘€Ì· œ› — «·⁄‰«ÊÌ‰..."
-    IDS_CHECK_DATACARD_STATUS "ÌÃ—Ì «· Õﬁﬁ „‰ Õ«·…   ‘€Ì· »ÿ«ﬁ… «·–«ﬂ—…..."
-    IDS_TIMEOUT_SIM_INIT    "‰›«– «·Êﬁ  «··«“„ · ‘€Ì· ‘—ÌÕ… SIM"
+    IDS_INT_ERR_INPUTLONG   "?????? ???? ????"
+    IDS_CALL_ERR_CALLFAIL   "??? ???????"
+    IDS_QUIT_TIP            "?? ??? ????? ?? ???????"
+    IDS_QUIT_INTERNET       "??? ????? ????????! ?????? ??? ????? ?????!"
+    IDS_INT_ERR_DELACTCON   "????? ????"
+    IDS_SETUP_CONNPOINTERROR "??? ?? ????? APN"
+    IDS_SETUP_CONNPOINTOK   "????? APN ?? ?????"
+    IDS_READ_SMS_DATA       "???? ????? ?????? ???????..."
+    IDS_READ_PBM_DATA       "???? ????? ?????? ???? ????????..."
+    IDS_READ_CALL_DATA      "???? ????? ?????? ???????..."
+    IDS_READ_NW_DATA        "???? ????? ?????? ??????..."
+    IDS_CHECK_SIM_STATUS    "???? ?????? ?? ???? ??SIM..."
+    IDS_CHECK_SMS_STATUS    "???? ?????? ?? ????  ????? ??SIM..."
+    IDS_CHECK_PBM_STATUS    "???? ?????? ?? ????  ????? ???? ????????..."
+    IDS_CHECK_DATACARD_STATUS "???? ?????? ?? ????  ????? ????? ???????..."
+    IDS_TIMEOUT_SIM_INIT    "???? ????? ?????? ?????? ????? SIM"
 END
 
 STRINGTABLE DISCARDABLE 
 BEGIN
-    IDS_TIMEOUT_SMS_INIT    "‰›«– «·Êﬁ  «··«“„ · ‘€Ì· «·—”«∆·"
-    IDS_TIMEOUT_PBM_INIT    "‰›«– «·Êﬁ  «··«“„ · ‘€Ì· œ› — «·⁄‰«ÊÌ‰"
-    IDS_CHECK_HANDSET_STATUS "ÌÃ—Ì «· Õﬁﬁ „‰ Õ«·… «·ÃÂ«“..."
-    IDS_CHECK_RFPOWER_STATUS "ÌÃ—Ì «· Õﬁﬁ „‰ Õ«·… ÿ«ﬁ…  —œœ«  «·—«œÌÊ..."
-    IDS_READ_PLMN_DATA      " Ã—Ì ﬁ—«¡… PLMN..."
-    IDS_READ_NWTYPE_DATA    " Ã—Ì ﬁ—«¡… ‰Ê⁄ «·—»ÿ..."
-    IDS_CHECK_ROAM_STATUS   "ÌÃ—Ì «· Õﬁﬁ „‰ Õ«·… «· ÃÊ«·..."
-    IDS_READ_RSSI_DATA      " Ã—Ì ﬁ—«¡… RSSI..."
-    IDS_CONFIG_SMS_MODE     "÷»ÿ Ê÷⁄ «·—”«∆·..."
-    IDS_CONFIG_SMS_ROUTE    "÷»ÿ ÊÃÂ… «·—”«∆·..."
-    IDS_READ_SMS_STORAGE    " Ã—Ì ﬁ—«¡… –«ﬂ—… Œ“‰ «·—”«∆·..."
-    IDS_CONFIG_INCOMING_CALL "÷»ÿ «·„ﬂ«·„«  «·Ê«—œ…..."
-    IDS_CONFIG_CHSET        "÷»ÿ „Ã„Ê⁄… Œ«‰«  «·«œŒ«·..."
-    IDS_CONFIG              "ÌÃ—Ì «·÷»ÿ..."
-    IDS_TIMEOUT_HANDSET_INIT "‰›«– «·Êﬁ  «··«“„ ·· Õﬁﬁ „‰ Õ«·… «·ÃÂ«“"
+    IDS_TIMEOUT_SMS_INIT    "???? ????? ?????? ?????? ???????"
+    IDS_TIMEOUT_PBM_INIT    "???? ????? ?????? ?????? ???? ????????"
+    IDS_CHECK_HANDSET_STATUS "???? ?????? ?? ???? ??????..."
+    IDS_CHECK_RFPOWER_STATUS "???? ?????? ?? ???? ???? ?????? ???????..."
+    IDS_READ_PLMN_DATA      "???? ????? PLMN..."
+    IDS_READ_NWTYPE_DATA    "???? ????? ??? ?????..."
+    IDS_CHECK_ROAM_STATUS   "???? ?????? ?? ???? ???????..."
+    IDS_READ_RSSI_DATA      "???? ????? RSSI..."
+    IDS_CONFIG_SMS_MODE     "??? ??? ???????..."
+    IDS_CONFIG_SMS_ROUTE    "??? ???? ???????..."
+    IDS_READ_SMS_STORAGE    "???? ????? ????? ??? ???????..."
+    IDS_CONFIG_INCOMING_CALL "??? ????????? ???????..."
+    IDS_CONFIG_CHSET        "??? ?????? ????? ???????..."
+    IDS_CONFIG              "???? ?????..."
+    IDS_TIMEOUT_HANDSET_INIT "???? ????? ?????? ?????? ?? ???? ??????"
     IDS_TIMEOUT_RF_POWER_INIT 
-                            "‰›«– «·Êﬁ  «··«“„ ·· Õﬁﬁ „‰ Õ«·… ÿ«ﬁ…  —œœ«  «·—«œÌÊ"
+                            "???? ????? ?????? ?????? ?? ???? ???? ?????? ???????"
 END
 
 STRINGTABLE DISCARDABLE 
 BEGIN
-    IDS_TIMEOUT_PLMN_INIT   "‰›«– «·Êﬁ  «··«“„ ·ﬁ—«¡… PLMN"
-    IDS_TIMEOUT_NWTYPE_INIT "‰›«– «·Êﬁ  «··«“„ ·ﬁ—«¡… ‰Ê⁄ «·—»ÿ"
-    IDS_TIMEOUT_ROAM_INIT   "‰›«– «·Êﬁ  «··«“„ ·· Õﬁﬁ „‰ Õ«·… «· ÃÊ«·"
-    IDS_TIMEOUT_RSSI_INIT   "‰›«– «·Êﬁ  «··«“„  ·ﬁ—«¡… RSSI"
-    IDS_TIMEOUT_SMSMODE_INIT "‰›«– «·Êﬁ  «··«“„ ·÷»ÿ Ê÷⁄ «·—”«∆·"
-    IDS_TIMEOUT_SMSROUTE_INIT "‰›«– «·Êﬁ  «··«“„ ·÷»ÿ ÊÃÂ… «·—”«∆·"
-    IDS_TIMEOUT_SMSSTORAGE_INIT "‰›«– «·Êﬁ  «··«“„ ·ﬁ—«¡… –«ﬂ—… Œ“‰ «·—”«∆·"
-    IDS_TIMEOUT_INCOMCALL_INIT "‰›«– «·Êﬁ  «··«“„ ·÷»ÿ «·„ﬂ«·„«  «·Ê«—œ…"
-    IDS_TIMEOUT_CHSET_INIT  "‰›«– «·Êﬁ  «··«“„ ·÷»ÿ „Ã„Ê⁄… Œ«‰«  «·«œŒ«·"
-    IDS_TIMEOUT_CONFIG_INIT "‰›«– «·Êﬁ  «··«“„ ··÷»ÿ"
-    IDS_PB_SELNULL          "«·—Ã«¡ «Œ Ì«— ⁄‰Ê«‰"
-    IDS_PB_SMSSELMAX        " „  Ã«Ê“ «·Õœ «·√⁄·Ï ··„” ﬁ»·Ì‰"
-    IDS_PB_SAVEERR          "Œÿ√ ›Ì «Œ Ì«— «·„Ã„Ê⁄…"
-    IDS_PB_ADDPBFAIL        "›‘· «·⁄„·Ì…"
-    IDS_PB_UPDATAERR        "Œÿ√ ›Ì  ÕœÌÀ «·„·›"
-    IDS_PB_DELERR           "Œÿ√ ›Ì Õ–› «·„·›"
+    IDS_TIMEOUT_PLMN_INIT   "???? ????? ?????? ?????? PLMN"
+    IDS_TIMEOUT_NWTYPE_INIT "???? ????? ?????? ?????? ??? ?????"
+    IDS_TIMEOUT_ROAM_INIT   "???? ????? ?????? ?????? ?? ???? ???????"
+    IDS_TIMEOUT_RSSI_INIT   "???? ????? ??????  ?????? RSSI"
+    IDS_TIMEOUT_SMSMODE_INIT "???? ????? ?????? ???? ??? ???????"
+    IDS_TIMEOUT_SMSROUTE_INIT "???? ????? ?????? ???? ???? ???????"
+    IDS_TIMEOUT_SMSSTORAGE_INIT "???? ????? ?????? ?????? ????? ??? ???????"
+    IDS_TIMEOUT_INCOMCALL_INIT "???? ????? ?????? ???? ????????? ???????"
+    IDS_TIMEOUT_CHSET_INIT  "???? ????? ?????? ???? ?????? ????? ???????"
+    IDS_TIMEOUT_CONFIG_INIT "???? ????? ?????? ?????"
+    IDS_PB_SELNULL          "?????? ?????? ?????"
+    IDS_PB_SMSSELMAX        "?? ????? ???? ?????? ??????????"
+    IDS_PB_SAVEERR          "??? ?? ?????? ????????"
+    IDS_PB_ADDPBFAIL        "??? ???????"
+    IDS_PB_UPDATAERR        "??? ?? ????? ?????"
+    IDS_PB_DELERR           "??? ?? ??? ?????"
 END
 
 STRINGTABLE DISCARDABLE 
 BEGIN
-    IDS_PIN_ENABLE_T        " „ﬂÌ‰ «·—„“ «·”—Ì"
-    IDS_PIN_DISABLE_T       "«Ìﬁ«› «·—„“ «·”—Ì"
-    IDS_PIN_ERR_LEN         "Œÿ√ ›Ì ⁄œœ Œ«‰«  «·—„“ «·”—Ì"
-    IDS_PIN_WR_ENABLE       "«·—„“ «·”—Ì „›⁄· „”»ﬁ«¯"
-    IDS_PIN_WR_DISABLE      "«·—„“ «·”—Ì „Êﬁ› „”»ﬁ«¯"
-    IDS_PIN_ERR_PIN1        "—„“ ”—Ì Œ«ÿ∆"
-    IDS_PIN_MODIFY_T        " ⁄œÌ· «·—„“ «·”—Ì"
-    IDS_PIN_UNLOCK_T        "›ﬂ ﬁ›· «·—„“ «·”—Ì » PUK"
-    IDS_PIN_BTNT            "«·—„“ «·”—Ì"
+    IDS_PIN_ENABLE_T        "????? ????? ?????"
+    IDS_PIN_DISABLE_T       "????? ????? ?????"
+    IDS_PIN_ERR_LEN         "??? ?? ??? ????? ????? ?????"
+    IDS_PIN_WR_ENABLE       "????? ????? ???? ??????"
+    IDS_PIN_WR_DISABLE      "????? ????? ???? ??????"
+    IDS_PIN_ERR_PIN1        "??? ??? ????"
+    IDS_PIN_MODIFY_T        "????? ????? ?????"
+    IDS_PIN_UNLOCK_T        "?? ??? ????? ????? ? PUK"
+    IDS_PIN_BTNT            "????? ?????"
     IDS_PUK_BTNT            "PUK:"
-    IDS_PIN_ERR_UNSAME      "·Ì” Â‰«ﬂ  ÿ«»ﬁ!"
-    IDS_PUK_ERR             "—„“ PUK Œ«ÿ∆"
-    IDS_SIM_DESTROYED       "‘—ÌÕ… SIM „⁄ÿ·…"
-    IDS_PIN_MODIFY_OK       " „  ⁄œÌ· «·—„“ «·”—Ì"
-    IDS_INT_ERR_INPUTERROR  "Œÿ√ ›Ì «·«œŒ«·"
-    IDS_INT_ERR_INPUTTOOLONG "«·„œŒ· ÿÊÌ· Ãœ«¯"
+    IDS_PIN_ERR_UNSAME      "??? ???? ?????!"
+    IDS_PUK_ERR             "??? PUK ????"
+    IDS_SIM_DESTROYED       "????? SIM ?????"
+    IDS_PIN_MODIFY_OK       "?? ????? ????? ?????"
+    IDS_INT_ERR_INPUTERROR  "??? ?? ???????"
+    IDS_INT_ERR_INPUTTOOLONG "?????? ???? ????"
 END
 
 STRINGTABLE DISCARDABLE 
 BEGIN
-    IDS_INT_ERR_NOUSB       "·« ÌÊÃœ ÃÂ«“ USB"
-    IDS_INT_ERR_DELETERASERROR "›‘· RasDeleteEntry"
+    IDS_INT_ERR_NOUSB       "?? ???? ???? USB"
+    IDS_INT_ERR_DELETERASERROR "??? RasDeleteEntry"
     IDS_INT_ERR_RASERRORFORMAT 
-                            "Œÿ√ €Ì— „⁄—Ê› ⁄‰œ «·« ’«· »Œœ„… «·Ê’Ê· ⁄‰ »⁄œ RAS(%ld)"
-    IDS_INT_CONNECTED       "„—»Êÿ"
-    IDS_INT_CONNLIMITEFORMAT "Ì„ﬂ‰  ﬂÊÌ‰ %d Ê«ÃÂ«  —»ÿ ›ﬁÿ"
-    IDS_CONTACT_PLUS        "«·—„“ «·„ÊÃ» Ì„ﬂ‰  Ê—ÌœÂ √Ê·«¯ ›ﬁÿ"
-    IDS_PB_NULLDEL          "√Ê·«¯, «·—Ã«¡ «Œ Ì«— „œŒ·… „‰ œ› — «·⁄‰«ÊÌ‰"
-    IDS_MODIFYPIN_DISABLE   "√Ê·«¯, ÌÃ»  ›⁄Ì· «·—„“ «·”—Ì"
-    IDS_SIGNIN_NEEDPUK      " Õ «Ã «·Ï —„“ PUK"
-    IDS_GENERATOR_CREATEFAIL "·« Ì„ﬂ‰  ﬂÊÌ‰ «·„·›"
-    IDS_GENERATOR_FILENAMEERR "«”„ „·› €Ì— „ﬁ»Ê·"
-    IDS_GENERATOR_LESSMEM   "–«ﬂ—… ﬁ·Ì·…!"
+                            "??? ??? ????? ??? ??????? ????? ?????? ?? ??? RAS(%ld)"
+    IDS_INT_CONNECTED       "?????"
+    IDS_INT_CONNLIMITEFORMAT "???? ????? %d ?????? ??? ???"
+    IDS_CONTACT_PLUS        "????? ?????? ???? ?????? ????? ???"
+    IDS_PB_NULLDEL          "?????, ?????? ?????? ????? ?? ???? ????????"
+    IDS_MODIFYPIN_DISABLE   "?????, ??? ????? ????? ?????"
+    IDS_SIGNIN_NEEDPUK      "????? ??? ??? PUK"
+    IDS_GENERATOR_CREATEFAIL "?? ???? ????? ?????"
+    IDS_GENERATOR_FILENAMEERR "??? ??? ??? ?????"
+    IDS_GENERATOR_LESSMEM   "????? ?????!"
     IDS_GENERATOR_CSVADNVCF "(*.csv)|*.csv|vCard  (*.vcf)|*.vcf||"
     IDS_GENERATOR_CSVEX     ".csv"
     IDS_GENERATOR_VCFEX     ".vcf"
@@ -2642,222 +2506,361 @@ END
 
 STRINGTABLE DISCARDABLE 
 BEGIN
-    IDS_GENERATOR_TITLE     " Œ“Ì‰ ·„·› CSV/VCF"
-    IDS_GENERATOR_CSVTITLE  " Œ“Ì‰ ·„·› CSV"
-    IDS_PARSER_LOADFILE     " Õ„Ì· „‰ „·› CSV/VCF"
-    IDS_NO_NEWSMS           "·« ÌÊÃœ —”«∆· ÃœÌœ…"
-    IDS_POP_SMS_T           "—”«·… ÃœÌœ…"
-    IDS_POP_CALL_T          "„ﬂ«·„… Ê«—œ…"
-    IDS_SMS_SENDING_TIP     "«—”«· «·Ï"
+    IDS_GENERATOR_TITLE     "????? ???? CSV/VCF"
+    IDS_GENERATOR_CSVTITLE  "????? ???? CSV"
+    IDS_PARSER_LOADFILE     "????? ?? ??? CSV/VCF"
+    IDS_NO_NEWSMS           "?? ???? ????? ?????"
+    IDS_POP_SMS_T           "????? ?????"
+    IDS_POP_CALL_T          "?????? ?????"
+    IDS_SMS_SENDING_TIP     "????? ???"
     IDS_APPPRONAME          "CM200 USB Modem.exe"
     IDS_ABOUTURL            " "
     IDS_ABOUTEMAIL          " "
     IDS_APPSKINPASH         "skin\\neostyle\\theme.ini"
     IDS_APPXPSKINPATH       "skin\\xpstyle\\theme.ini"
-    IDS_INT_CONNSTS_CONNECTING "ÌÃ—Ì «·—»ÿ..."
-    IDS_INT_CONNSTS_DEVCONNECTED "«·ÃÂ«“ „Ê’Ê·"
-    IDS_INT_CONNSTS_AUTHENTICATING "ÌÃ—Ì «· ÊÀÌﬁ..."
-    IDS_INT_CONNSTS_AUTHENTICATED " „ «· ÊÀÌﬁ"
+    IDS_INT_CONNSTS_CONNECTING "???? ?????..."
+    IDS_INT_CONNSTS_DEVCONNECTED "?????? ?????"
+    IDS_INT_CONNSTS_AUTHENTICATING "???? ???????..."
+    IDS_INT_CONNSTS_AUTHENTICATED "?? ???????"
 END
 
 STRINGTABLE DISCARDABLE 
 BEGIN
-    IDS_INT_CONNSTS_CONNECTED " „ «·—»ÿ"
-    IDS_INT_CONNSTS_DISCONNECTED " „ ›’· «·—»ÿ"
-    IDS_SET_TAB_GENERAL     "«·—„“ «·”—Ì"
-    IDS_SET_TAB_SECURITY    "Õ„«Ì…"
-    IDS_SET_TAB_MESSAGES    "«—”«· —”«·…"
-    IDS_SET_TAB_NETWORK     "‘»ﬂ…"
-    IDS_INT_NUMBERCHANGE    "Â·  —€» »Ã⁄· «· ⁄œÌ· œ«∆„«¯ø"
-    IDS_MAIN_CGMRERROR      "›‘· «·Õ’Ê· ⁄·Ï ‰”Œ… ›Ì—„ ÊÌ—"
-    IDS_MAIN_CGSNERROR      "›‘· ﬁ—«¡… IMEI"
-    IDS_CONFIG_CGSN         " Ã—Ì ﬁ—«¡… IMEI..."
-    IDS_TIMEOUT_CGMR_INIT   "‰›«– «·Êﬁ  «··«“„ ··Õ’Ê· ⁄·Ï ‰”Œ… ›Ì—„ ÊÌ—"
-    IDS_TIMEOUT_CGSN_INIT   "‰›«– «·Êﬁ  «··«“„ ·ﬁ—«¡… IMEI"
-    IDS_CONFIG_SMS_CSDH     "ÌÃ—Ì ÷»ÿ CSDH ··—”«∆·..."
-    IDS_TIMEOUT_SMSCSDH_INIT "‰›«– «·Êﬁ  «··«“„ ·÷»ÿ CSDH ··—”«∆·"
-    IDS_INT_CONN_SIMNOTREADY "Õ«·… ‘—ÌÕ…  SIM€Ì— ’ÕÌÕ"
-    IDS_ABOUT_COPYRIGHT     " Õ–Ì—: Â–« «·»—‰«„Ã „Õ„Ì »ﬁÊ«‰Ì‰ ÕﬁÊﬁ «·‰‘— Ê„⁄«Âœ«  ÕﬁÊﬁ «·‰‘— «·⁄«·„Ì….  n\\·« ÌÃÊ“ «⁄«œ… «‰ «Ã √Ê ‰‘— √Ì Ã“¡ „‰ Â–« «·”Ê›  ÊÌ— »√Ì ‘ﬂ· √Ê √Ì… ÿ—Ìﬁ… »œÊ‰ «·Õ’Ê· ⁄·Ï „Ê«›ﬁ… ŒÿÌ…  „”»ﬁ… „‰ s%"
+    IDS_INT_CONNSTS_CONNECTED "?? ?????"
+    IDS_INT_CONNSTS_DISCONNECTED "?? ??? ?????"
+    IDS_SET_TAB_GENERAL     "????? ?????"
+    IDS_SET_TAB_SECURITY    "?????"
+    IDS_SET_TAB_MESSAGES    "????? ?????"
+    IDS_SET_TAB_NETWORK     "????"
+    IDS_INT_NUMBERCHANGE    "?? ???? ???? ??????? ???????"
+    IDS_MAIN_CGMRERROR      "??? ?????? ??? ???? ???? ???"
+    IDS_MAIN_CGSNERROR      "??? ????? IMEI"
+    IDS_CONFIG_CGSN         "???? ????? IMEI..."
+    IDS_TIMEOUT_CGMR_INIT   "???? ????? ?????? ?????? ??? ???? ???? ???"
+    IDS_TIMEOUT_CGSN_INIT   "???? ????? ?????? ?????? IMEI"
+    IDS_CONFIG_SMS_CSDH     "???? ??? CSDH ???????..."
+    IDS_TIMEOUT_SMSCSDH_INIT "???? ????? ?????? ???? CSDH ???????"
+    IDS_INT_CONN_SIMNOTREADY "???? ?????  SIM??? ????"
+    IDS_ABOUT_COPYRIGHT     "?????: ??? ???????? ???? ??????? ???? ????? ???????? ???? ????? ????????.  n\\?? ???? ????? ????? ?? ??? ?? ??? ?? ??? ?????? ??? ??? ??? ?? ??? ????? ???? ?????? ??? ?????? ????  ????? ?? s%"
 END
 
 STRINGTABLE DISCARDABLE 
 BEGIN
-    IDS_IMEI                "«·—ﬁ„ «· ”·”·Ì IMEI"
-    IDS_FIRMWARE_VERSION    "‰”Œ… ›Ì—„ ÊÌ—"
-    IDS_SOFTWARE_VERSION    "‰”Œ… «·”Ê› ÊÌ—"
-    IDS_CONNTYPE_UNKNOW     "„ÃÂÊ·"
+    IDS_IMEI                "????? ???????? IMEI"
+    IDS_FIRMWARE_VERSION    "???? ???? ???"
+    IDS_SOFTWARE_VERSION    "???? ?????????"
+    IDS_CONNTYPE_UNKNOW     "?????"
     IDS_CONNTYPE_GPRS       "GPRS"
     IDS_CONNTYPE_EDGE       "EDGE"
     IDS_CONNTYPE_HSDPA      "HSDPA"
-    IDS_SETUP_SCA_ERROR     "›‘· ﬁ—«¡… CSA"
-    IDS_START_INSERTPCCARD  "«·—Ã«¡ —»ÿ „Êœ„ «·USB"
-    IDS_SETUP_SCA_OK        " „ «⁄œ«œ CSA »‰Ã«Õ"
-    IDS_SETUP_COPS_ERROR    "›‘· «·Õ’Ê· ⁄·Ï ·«∆Õ… «·‘»ﬂ« "
-    IDS_SMS_MOVE_TIP        "ÌÊÃœ »⁄÷ «·—”«∆· ⁄·Ï ‘—ÌÕ… USIM. Â·  —€» »‰ﬁ·Â« «·Ï «·Õ«”Ê»ø"
-    IDS_SETUP_COPS_SETERROR "›‘· «⁄œ«œ «·‘»ﬂ…"
-    IDS_NWLIST_STAT         "«·Õ«·…"
-    IDS_NWLIST_NAME         "«”„ «·„“Êœ"
-    IDS_NWLIST_NUMBER       "—„“ —ﬁ„Ì"
+    IDS_SETUP_SCA_ERROR     "??? ????? CSA"
+    IDS_START_INSERTPCCARD  "?????? ??? ???? ??USB"
+    IDS_SETUP_SCA_OK        "?? ????? CSA ?????"
+    IDS_SETUP_COPS_ERROR    "??? ?????? ??? ????? ???????"
+    IDS_SMS_MOVE_TIP        "???? ??? ??????? ??? ????? USIM. ?? ???? ?????? ??? ????????"
+    IDS_SETUP_COPS_SETERROR "??? ????? ??????"
+    IDS_NWLIST_STAT         "??????"
+    IDS_NWLIST_NAME         "??? ??????"
+    IDS_NWLIST_NUMBER       "??? ????"
 END
 
 STRINGTABLE DISCARDABLE 
 BEGIN
-    IDS_NWLIST_ACT          "‰Ê⁄ «·‘»ﬂ…"
+    IDS_NWLIST_ACT          "??? ??????"
     IDS_NWACT_GSM           "2G"
     IDS_NWACT_GSMCOM        "GSM Compact"
     IDS_NWACT_UTRAN         "3G"
-    IDS_NWSTAT_UNKNOWN      "„ÃÂÊ·"
-    IDS_NWSTAT_AVAILABLE    "„ «Õ"
-    IDS_NWSTAT_CURRENT      "Õ«·Ì"
-    IDS_NWSTAT_FORBIDDEN    "„„‰Ê⁄"
-    IDS_SETUP_NWAUTOSETERROR "Œÿ√ ›Ì «⁄œ«œ «·Ê÷⁄"
-    IDS_RES_DLLNOTFOUND     "·« Ì„ﬂ‰ «·⁄ÀÊ— ⁄·Ï DLL «·„Õœœ"
-    IDS_SETUP_CGDCONT_ERROR "›‘· «·Õ’Ê· ⁄·Ï APN"
-    IDS_DATACARD_NOT_INSERT "»ÿ«ﬁ… «·–«ﬂ—… €Ì— „œŒ·…, «÷€ÿ „Ê«›ﬁ À„ Œ—ÊÃ"
-    IDS_SIM_NOT_INSERT      "‘—ÌÕ… «·”Ì„ €Ì— „œŒ·…, «÷€ÿ „Ê«›ﬁ À„ Œ—ÊÃ"
-    IDS_CONTACT_A           "—„“ @ €Ì— „ÊÃÊœ. ” ﬁÊ„ »«œŒ«· «Ì„Ì· €Ì— ’ÕÌÕ. «÷€ÿ ⁄·Ï “— „Ê«›ﬁ ··«” „—«—"
-    IDS_REFRESH_NWLIST      "ÌÃ—Ì «·Õ’Ê· ⁄·Ï ·«∆Õ… «·‘»ﬂ« ..."
-    IDS_CONTACT_ERRMAIL     "Œÿ√! ” ﬁÊ„ »«œŒ«· «Ì„Ì· €Ì— ’ÕÌÕ. «÷€ÿ ⁄·Ï “— „Ê«›ﬁ ··«” „—«—"
+    IDS_NWSTAT_UNKNOWN      "?????"
+    IDS_NWSTAT_AVAILABLE    "????"
+    IDS_NWSTAT_CURRENT      "????"
+    IDS_NWSTAT_FORBIDDEN    "?????"
+    IDS_SETUP_NWAUTOSETERROR "??? ?? ????? ?????"
+    IDS_RES_DLLNOTFOUND     "?? ???? ?????? ??? DLL ??????"
+    IDS_SETUP_CGDCONT_ERROR "??? ?????? ??? APN"
+    IDS_DATACARD_NOT_INSERT "????? ??????? ??? ?????, ???? ????? ?? ????"
+    IDS_SIM_NOT_INSERT      "????? ????? ??? ?????, ???? ????? ?? ????"
+    IDS_CONTACT_A           "??? @ ??? ?????. ????? ?????? ????? ??? ????. ???? ??? ?? ????? ?????????"
+    IDS_REFRESH_NWLIST      "???? ?????? ??? ????? ???????..."
+    IDS_CONTACT_ERRMAIL     "???! ????? ?????? ????? ??? ????. ???? ??? ?? ????? ?????????"
 END
 
 STRINGTABLE DISCARDABLE 
 BEGIN
-    IDS_SETOK               " „ «·«⁄œ«œ »‰Ã«Õ"
-    IDS_SMS_READ_REPLAY     "«Ã«»…"
-    IDS_SMS_READ_EXIT       "Œ—ÊÃ"
-    IDS_NW_SRV_NO           "Œœ„… €Ì— „ Ê›—…"
-    IDS_NW_SRV_LIMIT        "Œœ„… „ÕœÊœ…"
-    IDS_INT_DELPROFILE      "√‰  ⁄·Ï Ê‘ﬂ Õ–› ‰„ÿ «·—»ÿ. Â·  —€» »«·«” „—«—ø"
-    IDS_SET_TAB_SKIN        "√‰„«ÿ «·‘«‘…"
-    IDS_NOSMSITEMSEL        "«·—Ã«¡ «Œ Ì«— ⁄‰’— √Ê·«¯"
-    IDS_SMS_PCCARD_FULL     "–«ﬂ—… «·„Êœ„ „„ ·∆…!\n ”Ì „ Õ›Ÿ «·—”«∆· «·ﬁ«œ„… ›Ì –«ﬂ—… «·Õ«”Ê»"
-    IDS_INIT_SEARCH_DEVICE  "ÌÃ—Ì «·»ÕÀ ⁄‰ „Êœ„ USB..."
-    IDS_SET_TAB_PROFILES    "√‰„«ÿ"
-    IDS_SET_TAB_PREFER      " ›÷Ì·« "
-    IDS_SAVEOK              " „ «·Õ›Ÿ"
-    IDS_CHOOSE_SOUNDFILE    "«Œ — „·› «·’Ê "
-    IDS_INT_NOPROFILE       "√Ê·«¯, «·—Ã«¡  ﬂÊÌ‰ ‰„ÿ «·—»ÿ"
-    IDS_INT_DISC_TIP        "Â· √‰  „ √ﬂœ „‰ √‰ﬂ  —€» »›’· «·—»ÿø"
+    IDS_SETOK               "?? ??????? ?????"
+    IDS_SMS_READ_REPLAY     "?????"
+    IDS_SMS_READ_EXIT       "????"
+    IDS_NW_SRV_NO           "???? ??? ??????"
+    IDS_NW_SRV_LIMIT        "???? ??????"
+    IDS_INT_DELPROFILE      "??? ??? ??? ??? ??? ?????. ?? ???? ???????????"
+    IDS_SET_TAB_SKIN        "????? ??????"
+    IDS_NOSMSITEMSEL        "?????? ?????? ???? ?????"
+    IDS_SMS_PCCARD_FULL     "????? ?????? ??????!\n ???? ??? ??????? ??????? ?? ????? ???????"
+    IDS_INIT_SEARCH_DEVICE  "???? ????? ?? ???? USB..."
+    IDS_SET_TAB_PROFILES    "?????"
+    IDS_SET_TAB_PREFER      "???????"
+    IDS_SAVEOK              "?? ?????"
+    IDS_CHOOSE_SOUNDFILE    "???? ??? ?????"
+    IDS_INT_NOPROFILE       "?????, ?????? ????? ??? ?????"
+    IDS_INT_DISC_TIP        "?? ??? ????? ?? ??? ???? ???? ??????"
 END
 
 STRINGTABLE DISCARDABLE 
 BEGIN
-    IDS_SAVETIP             "Õ›Ÿ «· ⁄œÌ·ø"
-    IDS_INT_LIMIT_FLUX      "„‰ %d-%d-%d «·ﬂ„ «·„” Œœ„  Ã«Ê“ %d „Ì€«»«Ì "
-    IDS_INT_LIMIT_DURATION  "„‰ %d-%d-%d «·ﬂ„ «·„” Œœ„  Ã«Ê“ %d ”«⁄« , %d œﬁ«∆ﬁ"
-    IDS_INT_APN_EMPTY       "√Ê·«¯, «·—Ã«¡ «œŒ«· APN"
-    IDS_INT_BUTTON_CONN     "«—»ÿ"
-    IDS_INT_BUTTON_DISC     "«›’· «·—»ÿ"
-    IDS_EXPORT_PBHEADER     "«”„, ÃÊ«·, „‰“·, „Ã„Ê⁄…, ‘—ﬂ…, «Ì„Ì·, „·«ÕŸ… \r\n"
-    IDS_EXPORT_SMSHEADER    "Ê·«Ì…, —ﬁ„, œ„€… «·Êﬁ , „Õ ÊÏ \r\n"
-    IDS_EXPORT_NETHEADER    "‰Ê⁄ «·—»ÿ, œ„€… «·Êﬁ , «·„œ…, ByteIn,ByteOut "
-    IDS_SEARCH_NWLIST       "ÌÃ—Ì «·»ÕÀ ⁄‰ ‘»ﬂ…..."
-    IDS_PB_DELUSIMERR       "Œÿ√ ›Ì „”Õ –«ﬂ—… ‘—ÌÕ… USIM"
-    IDS_PB_DELPCCARD_WAITINFO "ÌÃ—Ì Õ–› „œŒ·… œ› — «·⁄‰«ÊÌ‰ „‰ «·„Êœ„..."
-    IDS_PB_DELUSIM_WAITINFO "ÌÃ—Ì Õ–› „œŒ·… œ› — «·⁄‰«ÊÌ‰ „‰ ‘—ÌÕ… USIM..."
-    IDS_SCA_TIP             "ÌÃ» «œŒ«· —ﬁ„ „—ﬂ“ Œœ„… «·—”«∆·!"
-    IDS_INTERNET_PWDERR     "ﬂ·„… «·„—Ê— €Ì— ’ÕÌÕ…!"
-    IDS_INTERNET_PWDDIFF    "ÌÊÃœ ⁄œ„  ÿ«»ﬁ ›Ì ﬂ·„… «·„—Ê—!"
+    IDS_SAVETIP             "??? ????????"
+    IDS_INT_LIMIT_FLUX      "?? %d-%d-%d ???? ???????? ????? %d ????????"
+    IDS_INT_LIMIT_DURATION  "?? %d-%d-%d ???? ???????? ????? %d ?????, %d ?????"
+    IDS_INT_APN_EMPTY       "?????, ?????? ????? APN"
+    IDS_INT_BUTTON_CONN     "????"
+    IDS_INT_BUTTON_DISC     "???? ?????"
+    IDS_EXPORT_PBHEADER     "???, ????, ????, ??????, ????, ?????, ?????? \r\n"
+    IDS_EXPORT_SMSHEADER    "?????, ???, ???? ?????, ????? \r\n"
+    IDS_EXPORT_NETHEADER    "??? ?????, ???? ?????, ?????, ByteIn,ByteOut "
+    IDS_SEARCH_NWLIST       "???? ????? ?? ????..."
+    IDS_PB_DELUSIMERR       "??? ?? ??? ????? ????? USIM"
+    IDS_PB_DELPCCARD_WAITINFO "???? ??? ????? ???? ???????? ?? ??????..."
+    IDS_PB_DELUSIM_WAITINFO "???? ??? ????? ???? ???????? ?? ????? USIM..."
+    IDS_SCA_TIP             "??? ????? ??? ???? ???? ???????!"
+    IDS_INTERNET_PWDERR     "???? ?????? ??? ?????!"
+    IDS_INTERNET_PWDDIFF    "???? ??? ????? ?? ???? ??????!"
 END
 
 STRINGTABLE DISCARDABLE 
 BEGIN
-    IDS_NETTREE_EXPANDALL   " Ê”Ì⁄ «·ﬂ·"
-    IDS_NETTREE_COLLAPSEALL "ÿÌ «·ﬂ·"
-    IDS_SMS_SEARCHCONDITION "«·—Ã«¡ «œŒ«· ‘—ÿ «·»ÕÀ"
-    IDS_NETTREE_RESETSTATISTICS "≈⁄«œ…  «·«Õ’«¡« "
-    IDS_WARNING_RESETSTATISTICS "Â· √‰  „ √ﬂœ „‰ √‰ﬂ  —€» »≈⁄«œ…  «·«Õ’«¡« ø"
-    IDS_TIME_LASTRESET      "¬Œ— Êﬁ  «⁄«œ…"
-    IDS_PBMENU_GROUP        "„Ã„Ê⁄…"
+    IDS_NETTREE_EXPANDALL   "????? ????"
+    IDS_NETTREE_COLLAPSEALL "?? ????"
+    IDS_SMS_SEARCHCONDITION "?????? ????? ??? ?????"
+    IDS_NETTREE_RESETSTATISTICS "?????  ?????????"
+    IDS_WARNING_RESETSTATISTICS "?? ??? ????? ?? ??? ???? ??????  ??????????"
+    IDS_TIME_LASTRESET      "??? ??? ?????"
+    IDS_PBMENU_GROUP        "??????"
 END
 
 STRINGTABLE DISCARDABLE 
 BEGIN
-    IDS_TREE_STATISTICS     "«Õ’«∆Ì« "
-    IDS_TREE_DAILY          "ÌÊ„Ì"
-    IDS_TREE_MONTHLY        "‘Â—Ì"
-    IDS_TREE_YEARLY         "”‰ÊÌ"
-    IDS_NETTREE_NETLOG      "⁄—÷ ”Ã· «·‰ "
-    IDS_STATIC_USIM         "USIM ﬂ«— "
-    IDS_STATIC_RUIM         "R-UIM ﬂ«— "
-    IDS_WARNING_INPUTGROUP  "«·—Ã«¡ «œŒ«· «”„ «·„Ã„Ê⁄…"
-    IDS_WARNING_GROUPEXISTED "«”„ «·„Ã„Ê⁄… «·„œŒ· „ÊÃÊœ „”»ﬁ«¯"
-    IDS_DEFAULT             "(«› —«÷Ì)"
-    IDS_SMSTREE_ARCHIVE     " √—‘›…"
-    IDS_SMSTREE_LOCAL       "„Õ·Ì"
+    IDS_TREE_STATISTICS     "????????"
+    IDS_TREE_DAILY          "????"
+    IDS_TREE_MONTHLY        "????"
+    IDS_TREE_YEARLY         "????"
+    IDS_NETTREE_NETLOG      "??? ??? ????"
+    IDS_STATIC_USIM         "USIM ????"
+    IDS_STATIC_RUIM         "R-UIM ????"
+    IDS_WARNING_INPUTGROUP  "?????? ????? ??? ????????"
+    IDS_WARNING_GROUPEXISTED "??? ???????? ?????? ????? ??????"
+    IDS_DEFAULT             "(???????)"
+    IDS_SMSTREE_ARCHIVE     " ?????"
+    IDS_SMSTREE_LOCAL       "????"
     IDS_SMSTREE_USIM        "R-UIM"
-    IDS_SMSTREE_INBOX       "«·»—Ìœ «·Ê«—œ"
-    IDS_SMSTREE_OUTBOX      "«·»—Ìœ «·Œ«—Ã"
-    IDS_SMSTREE_DRAFT       "„”Êœ…"
+    IDS_SMSTREE_INBOX       "?????? ??????"
+    IDS_SMSTREE_OUTBOX      "?????? ??????"
+    IDS_SMSTREE_DRAFT       "?????"
 END
 
 STRINGTABLE DISCARDABLE 
 BEGIN
-    IDS_MESSAGE_USBMODEM    "—”«∆· ⁄·Ï –«ﬂ—… «·„Êœ„"
-    IDS_MESSAGE_RUIM        "√—ﬁ«„/⁄‰«ÊÌ‰ ⁄·Ï –«ﬂ—… «·”Ì„ R-UIM"
-    IDS_MESSAGE_USIM        "—”«∆· ⁄·Ï –«ﬂ—… «·”Ì„  USIM"
-    IDS_ESN                 "«·—ﬁ„ «· ”·”·Ì «·«·ﬂ —Ê‰Ì ESN:"
-    IDS_CONTACTS_USBMODEM   "√—ﬁ«„/⁄‰«ÊÌ‰ ⁄·Ï –«ﬂ—… «·„Êœ„"
-    IDS_CONTACTS_USIM       "√—ﬁ«„/⁄‰«ÊÌ‰ ⁄·Ï –«ﬂ—… «·”Ì„ USIM"
+    IDS_MESSAGE_USBMODEM    "????? ??? ????? ??????"
+    IDS_MESSAGE_RUIM        "?????/?????? ??? ????? ????? R-UIM"
+    IDS_MESSAGE_USIM        "????? ??? ????? ?????  USIM"
+    IDS_ESN                 "????? ???????? ?????????? ESN:"
+    IDS_CONTACTS_USBMODEM   "?????/?????? ??? ????? ??????"
+    IDS_CONTACTS_USIM       "?????/?????? ??? ????? ????? USIM"
 END
 
 STRINGTABLE DISCARDABLE 
 BEGIN
-    IDS_SMS_ARCHIVE         "√—‘Ì›"
-    IDS_SMS_ARCHIVESUCC     " „ √—‘›… «·—”«∆· »‰Ã«Õ"
-    IDS_SMS_ARCHIVEFAIL     "›‘· √—‘›… «·—”«∆·"
-    IDS_SMS_RESUMESUCC      " «»⁄ √—‘›… «·—”«∆· »‰Ã«Õ"
-    IDS_SMS_RESUMEFAIL      " «»⁄ ›‘· √—‘›… «·—”«∆·"
-    IDS_SMS_RESUME          " «»⁄"
-    IDS_SMSTREE_USBMODEM    "„Êœ„ USB"
+    IDS_SMS_ARCHIVE         "?????"
+    IDS_SMS_ARCHIVESUCC     "?? ????? ??????? ?????"
+    IDS_SMS_ARCHIVEFAIL     "??? ????? ???????"
+    IDS_SMS_RESUMESUCC      "???? ????? ??????? ?????"
+    IDS_SMS_RESUMEFAIL      "???? ??? ????? ???????"
+    IDS_SMS_RESUME          "????"
+    IDS_SMSTREE_USBMODEM    "???? USB"
 END
 
 STRINGTABLE DISCARDABLE 
 BEGIN
-    IDS_CONTACTS_RUIM       "√—ﬁ«„/⁄‰«ÊÌ‰ ⁄·Ï –«ﬂ—… «·”Ì„ R-UIM:"
-    IDS_SMS_SETSUCC         " „ «·÷»ÿ »‰Ã«Õ!"
-    IDS_SETSMSW_6HOUR       "6 ”«⁄…"
-    IDS_SETSMSW_1DAY        "1 ÌÊ„"
-    IDS_SETSMSW_3DAY        "3 ÌÊ„"
-    IDS_SETSMSW_1WEEK       "1 √”»Ê⁄"
-    IDS_SETSMSW_MAX         "«·Õœ «·«ﬁ’Ï"
-    IDS_SETSMSC_30MIN       "30 «·Õœ «·√œ‰Ï"
-    IDS_SETSMSC_1HOUR       "1 ”«⁄…"
-    IDS_SETSMSC_2HOUR       "2 ”«⁄…"
-    IDS_SETSMSC_6HOUR       "6 ”«⁄…"
-    IDS_SETSMSC_12HOUR      "12 ”«⁄…"
-    IDS_SETSMSC_1DAY        "1 ÌÊ„"
-    IDS_SETSMSC_1WEEK       "1 √”»Ê⁄"
-    IDS_SETSMSC_MAX         "«·Õœ «·«ﬁ’Ï"
+    IDS_CONTACTS_RUIM       "?????/?????? ??? ????? ????? R-UIM:"
+    IDS_SMS_SETSUCC         "?? ????? ?????!"
+    IDS_SETSMSW_6HOUR       "6 ????"
+    IDS_SETSMSW_1DAY        "1 ???"
+    IDS_SETSMSW_3DAY        "3 ???"
+    IDS_SETSMSW_1WEEK       "1 ?????"
+    IDS_SETSMSW_MAX         "???? ??????"
+    IDS_SETSMSC_30MIN       "30 ???? ??????"
+    IDS_SETSMSC_1HOUR       "1 ????"
+    IDS_SETSMSC_2HOUR       "2 ????"
+    IDS_SETSMSC_6HOUR       "6 ????"
+    IDS_SETSMSC_12HOUR      "12 ????"
+    IDS_SETSMSC_1DAY        "1 ???"
+    IDS_SETSMSC_1WEEK       "1 ?????"
+    IDS_SETSMSC_MAX         "???? ??????"
 END
 
 STRINGTABLE DISCARDABLE 
 BEGIN
-    IDS_SETSMSW_1HOUR       "1 ”«⁄…"
-    IDS_NAMEANDNUMBER       "«”„/—ﬁ„ Â« ›"
-    IDS_USAGE               "«·«” Â·«ﬂ"
-    IDS_OPTIONS             "ŒÌ«—« "
-    IDS_CONNECTION          "«·—»ÿ "
-    IDS_CALLTIP             "« ’«·"
-    IDS_SMSTIP              "—”«·… ‰’Ì… ﬁ’Ì—…"
-    IDS_PHONEBOOKTIP        "œ› — «·⁄‰«ÊÌ‰"
-    IDS_SETUP_SMS_PRI1      "Ã‰—«· ·Ê«¡"
-    IDS_SETUP_SMS_PRI2      "„ ›«⁄·"
-    IDS_SETUP_SMS_PRI3      "„·Õ"
-    IDS_SETUP_SMS_PRI4      "ÿ«—∆"
+    IDS_SETSMSW_1HOUR       "1 ????"
+    IDS_NAMEANDNUMBER       "???/??? ????"
+    IDS_USAGE               "?????????"
+    IDS_OPTIONS             "??????"
+    IDS_CONNECTION          "????? "
+    IDS_CALLTIP             "?????"
+    IDS_SMSTIP              "????? ???? ?????"
+    IDS_PHONEBOOKTIP        "???? ????????"
+    IDS_SETUP_SMS_PRI1      "????? ????"
+    IDS_SETUP_SMS_PRI2      "??????"
+    IDS_SETUP_SMS_PRI3      "???"
+    IDS_SETUP_SMS_PRI4      "????"
 END
 
 STRINGTABLE DISCARDABLE 
 BEGIN
-    IDS_SETSMSC_DEFAULT     "«› —«÷Ì"
+    IDS_SETSMSC_DEFAULT     "???????"
 END
 
 STRINGTABLE DISCARDABLE 
 BEGIN
-    IDS_STR_WRITESMS_TITILE "ﬂ «»… —”«·…"
+    IDS_STR_WRITESMS_TITILE "????? ?????"
 END
 
 #endif    // Neutral (Sys. Default) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////////////////////////////////////////
+// Chinese (P.R.C.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHS)
+#ifdef _WIN32
+LANGUAGE LANG_CHINESE, SUBLANG_CHINESE_SIMPLIFIED
+#pragma code_page(936)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDI_ICON_TRANSFER       ICON    DISCARDABLE     "..\\res\\Icon_01.ico"
+IDI_ICON_DOWNLOAD       ICON    DISCARDABLE     "..\\res\\icon_dow.ico"
+IDI_ICON_NODE           ICON    DISCARDABLE     "..\\res\\Icon_09.ico"
+IDI_ICON_YEARLY         ICON    DISCARDABLE     "..\\res\\Icon_05.ico"
+IDI_ICON_UPLOAD         ICON    DISCARDABLE     "..\\res\\Icon_02.ico"
+#endif    // Chinese (P.R.C.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME           ICON    DISCARDABLE     "..\\res\\MAINFRAME.ICO"
+IDI_ICON_SET            ICON    DISCARDABLE     "..\\res\\setup01.ico"
+IDI_ICON_SET_HV         ICON    DISCARDABLE     "..\\res\\setup001.ico"
+IDI_ICON_INFO           ICON    DISCARDABLE     "..\\res\\icon1.ico"
+IDI_ICON_WARNING        ICON    DISCARDABLE     "..\\res\\icon2.ico"
+IDI_ICON_SMILE          ICON    DISCARDABLE     "..\\res\\icon3.ico"
+IDI_ICON_NET            ICON    DISCARDABLE     "..\\res\\connect01.ico"
+IDI_ICON_CALL_HV        ICON    DISCARDABLE     "..\\res\\call001.ico"
+IDI_ICON_CALL           ICON    DISCARDABLE     "..\\res\\call01.ico"
+IDI_ICON_SMS_HV         ICON    DISCARDABLE     "..\\res\\message001.ico"
+IDI_ICON_SMS            ICON    DISCARDABLE     "..\\res\\message01.ico"
+IDI_ICON_PHBK_HV        ICON    DISCARDABLE     "..\\res\\phonebook001.ico"
+IDI_ICON_PHBK           ICON    DISCARDABLE     "..\\res\\phonebook01.ico"
+IDI_ICON_NET_HV         ICON    DISCARDABLE     "..\\res\\connect001.ico"
+IDI_ICON_XSMS           ICON    DISCARDABLE     "..\\res\\xsms.ico"
+IDI_ICON_PADHANGUP      ICON    DISCARDABLE     "..\\res\\padhangup.ico"
+IDI_ICON_PADCALL        ICON    DISCARDABLE     "..\\res\\padcall.ico"
+IDI_ICON_HELP_HV        ICON    DISCARDABLE     "..\\res\\HELP.ico"
+IDI_ICON_HELP           ICON    DISCARDABLE     "..\\res\\HELP2.ico"
+IDI_ICON_BROWSE         ICON    DISCARDABLE     "..\\res\\browser2.ico"
+IDI_ICON_BROWSE_HV      ICON    DISCARDABLE     "..\\res\\browser1.ico"
+IDI_ICON_STATISTICS     ICON    DISCARDABLE     "..\\res\\Icon_04.ico"
+IDI_ICON_DAILY          ICON    DISCARDABLE     "..\\res\\Icon_06.ico"
+IDI_ICON_MONTHLY        ICON    DISCARDABLE     "..\\res\\Icon_07.ico"
+IDI_ICON_USAGE_HV       ICON    DISCARDABLE     "..\\res\\usage01.ico"
+IDI_ICON_USAGE          ICON    DISCARDABLE     "..\\res\\usage001.ico"
+IDI_ICON_SMS_PRESS      ICON    DISCARDABLE     "..\\res\\message03.ico"
+IDI_ICON_NET_PRESS      ICON    DISCARDABLE     "..\\res\\connect03.ico"
+IDI_ICON_BROWSE_PRESS   ICON    DISCARDABLE     "..\\res\\browser3.ico"
+IDI_ICON_USAGE_PRESS    ICON    DISCARDABLE     "..\\res\\usage03.ico"
+IDI_ICON_CALL_PRESS     ICON    DISCARDABLE     "..\\res\\call03.ico"
+IDI_ICON_PHONEBOOK_PRESS ICON    DISCARDABLE     "..\\res\\phonebook03.ico"
+IDI_ICON_SETUP_PRESS    ICON    DISCARDABLE     "..\\res\\setup03.ico"
+IDI_ICON_SMSNEW         ICON    DISCARDABLE     "..\\res\\new.ico"
+IDI_ICON_SMSREPLY       ICON    DISCARDABLE     "..\\res\\reply.ico"
+IDI_ICON_SMSFORWARD     ICON    DISCARDABLE     "..\\res\\forward.ico"
+IDI_ICON_SMSDELEDT      ICON    DISCARDABLE     "..\\res\\delete.ico"
+IDI_ICON_SMSEXTRACT     ICON    DISCARDABLE     "..\\res\\extract.ico"
+IDI_ICON_SMSSEARCH      ICON    DISCARDABLE     "..\\res\\search.ico"
+IDI_ICON_SMSDAIL        ICON    DISCARDABLE     "..\\res\\dial.ico"
+IDI_ICON_SMS_FILE       ICON    DISCARDABLE     "..\\res\\file.ico"
+IDI_ICON_SMS_INBOX      ICON    DISCARDABLE     "..\\res\\inbox.ico"
+IDI_ICON_SMS_OUTBOX     ICON    DISCARDABLE     "..\\res\\outbox.ico"
+IDI_ICON_SMS_DRAFT      ICON    DISCARDABLE     "..\\res\\draft.ico"
+IDI_ICON_SMS_EDIT       ICON    DISCARDABLE     "..\\res\\edit.ico"
+IDI_ICON_PB_SMS         ICON    DISCARDABLE     "..\\res\\sms.ico"
+IDI_ICON_PB_TRANSFER    ICON    DISCARDABLE     "..\\res\\Transfer.ico"
+IDI_ICON_PB_GROUP       ICON    DISCARDABLE     "..\\res\\group.ico"
+IDI_ICON_SMS_ARCHIVE    ICON    DISCARDABLE     "..\\res\\archive.ico"
+IDI_ICON_SMS_RESUME     ICON    DISCARDABLE     "..\\res\\resume.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDB_BITMAP_SMSMENU      BITMAP  DISCARDABLE     "..\\res\\smsmenu.bmp"
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE MOVEABLE PURE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE MOVEABLE PURE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE MOVEABLE PURE 
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)\r\n"
+    "#ifdef _WIN32\r\n"
+    "LANGUAGE 9, 1\r\n"
+    "#pragma code_page(1252)\r\n"
+    "#endif //_WIN32\r\n"
+    "#include ""afxres.rc""         // Standard components\r\n"
+    "#endif\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+#endif    // English (U.S.) resources
 /////////////////////////////////////////////////////////////////////////////
 
 

@@ -413,6 +413,19 @@ struct stSetData
 
 
 //网络类型
+#ifdef FEATURE_HAIER_CM
+typedef enum {
+    NW_TYPE_NOSRV = 0,
+	NW_TYPE_AMPS = 1,
+	NW_TYPE_CDMA = 2,
+    NW_TYPE_GSM = 3,
+	NW_TYPE_HDR	= 4, 
+    NW_TYPE_WCDMA = 5, 
+	NW_TYPE_EDGE = 7 ,
+	NW_TYPE_CDMA_HDR = 8, 
+    NW_TYPE_MAX
+} EnNetWorkType;
+#else
 typedef enum {
     NW_TYPE_NOSRV = 0, 
     NW_TYPE_GSM, 
@@ -421,6 +434,7 @@ typedef enum {
 	NW_TYPE_CDMA2000,
     NW_TYPE_MAX
 } EnNetWorkType;
+#endif
 
 //网络服务
 typedef enum {

@@ -2277,6 +2277,9 @@ IDB_BITMAP_SMSMENU      BITMAP  DISCARDABLE     "..\\res\\smsmenu.bmp"
 IDB_BITMAP_UPSPEEDICON  BITMAP  DISCARDABLE     "..\\res\\upspeedicon.bmp"
 IDB_BITMAP_DOWNSPEEDICON BITMAP  DISCARDABLE     "..\\res\\downspeedicon.bmp"
 IDB_ICON_VOICEMAIL      BITMAP  DISCARDABLE     "..\\res\\voicemail.bmp"
+IDB_ICON_NWT_CDMA       BITMAP  DISCARDABLE     "..\\res\\cdma_icon.bmp"
+IDB_ICON_NWT_HDR        BITMAP  DISCARDABLE     "..\\res\\hdr_icon.bmp"
+IDB_ICON_NWT_CDMA_HDR   BITMAP  DISCARDABLE     "..\\res\\cdma_hdr_icon.bmp"
 
 #ifdef APSTUDIO_INVOKED
 /////////////////////////////////////////////////////////////////////////////
@@ -2590,7 +2593,6 @@ END
 
 STRINGTABLE DISCARDABLE 
 BEGIN
-    IDS_APPNAME             ""
     IDS_PB_NULLPB           "Null PB record!"
     IDS_PB_READERR          "Error when read data!"
     IDS_FILEERR             "Invaild File!"
@@ -2737,7 +2739,7 @@ BEGIN
     IDS_POP_SMS_T           "New SMS"
     IDS_POP_CALL_T          "Incoming Call"
     IDS_SMS_SENDING_TIP     "Sending to "
-    IDS_APPPRONAME          "CM200 USB Modem.exe"//"FlexiNet.exe"
+    IDS_APPPRONAME          "CM200 USB Modem.exe"
     IDS_ABOUTURL            " "
     IDS_ABOUTEMAIL          " "
     IDS_APPSKINPASH         "skin\\neostyle\\theme.ini"
