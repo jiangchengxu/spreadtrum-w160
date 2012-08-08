@@ -346,6 +346,9 @@ extern CString GBToUCS2(const char *strGb);
 extern int  UCS2ToUCS2(CString strGb, CString strUcs2);
 //UCS2转GB处理函数
 extern CString UCS2ToGB(const CString &strUcs2);
+#ifdef FEATURE_HAIER_SMS
+extern char * WCharToGB(const wchar_t *strUcs2);
+#endif
 extern CString BTToUCS2(const TCHAR*strGb);
 extern void ASCToUCS2(const char* unicode, TCHAR* WChar);
 extern BOOL ASCHEXToWchar(const char* ascii, TCHAR* WChar);

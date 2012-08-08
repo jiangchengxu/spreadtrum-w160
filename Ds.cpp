@@ -22,7 +22,11 @@ const char gc_dsatResCodeTbl[DSAT_MAX][DSAT_MODE_MAX][30] =
     "+CMS ERROR:", "+CMS ERROR:",
 	"+CMS ERROR: 500", "+CMS ERROR: 500",
     "+CMTI: ", "+CMTI: ", 
+#ifdef FEATURE_HAIER_SMS
+    "^HCMT:", "^HCMT:", 
+#else
     "+CMT: ", "+CMT: ", 
+#endif
 	"+RVMFB: ","+RVMFB: ",//add by liub
 	"+RVMFBUPDATE: ","+RVMFBUPDATE: ",//TATA
 #ifdef FEATURE_HAIER_CM
@@ -1078,6 +1082,33 @@ CString UCS2ToGB(const CString &strUcs2)
 
      return strGb;
 }
+
+#ifdef FEATURE_HAIER_SMS
+char * WCharToGB(const wchar_t *wchar)
+{
+     char* pszGb=NULL;  
+     int iLen=0; //需要转换的字符数
+	 int strlen = wcslen(wchar);
+	 wchar_t *wszUnicode = new wchar_t[strlen + 1];
+	 memset(wszUnicode, 0, sizeof(wchar_t)*(strlen + 1));
+
+	 WCharToUnicode(wchar, (char *)wszUnicode);
+
+     //计算转换的字符数
+     iLen=WideCharToMultiByte (CP_ACP,0, wszUnicode, -1, NULL,0, NULL, NULL);
+     
+     //给pszGbt分配内存
+     pszGb=new char[iLen+1];   
+     
+     //转换Unicode码到Gb码繁体，使用API函数WideCharToMultiByte
+     WideCharToMultiByte (CP_ACP,0, wszUnicode, -1, pszGb,iLen, NULL, NULL);    
+
+     pszGb[iLen] = 0;
+     
+     //释放内存
+     return pszGb;
+}
+#endif
 
 void ASCToUCS2(const char* unicode, TCHAR* WChar)
 {

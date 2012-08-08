@@ -1115,7 +1115,153 @@ void CHSDPADlg::AtRespCVMI(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL], WORD wS
 
 }
 
+#ifdef FEATURE_HAIER_SMS
+enum{
+	STATE_OA_NUMBER = 0,
+	STATE_DAYTIME_YEAR,
+	STATE_DAYTIME_MONTH,
+	STATE_DAYTIME_DAY,
+	STATE_DAYTIME_HOUR,
+	STATE_DAYTIME_MINUTE,
+	STATE_DAYTIME_SECOND,
+	STATE_LANGUAGE,
+	STATE_FORMAT,
+	STATE_LENGTH,
+	STATE_PRIORITY,
+	STATE_SECURITY,
+	STATE_TYPE,
+	STATE_STATUS,
+	STATE_SMS_END,
+};
+void CHSDPADlg::AtRespCMT(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL], WORD wStrNum)
+{
+    CHSDPADlg* pDlg = (CHSDPADlg*)pWnd;
 
+	pDlg->SMS_type_CPTCMTCFTCDS_VOICEMAIL = 1;
+    int cnt = 0;
+	int priorityFlag = 0;
+	CString temp;
+    char *p, *ptmp;
+	char ptr[SMS_SC_NUM_MAX] = {0};
+    p = (char*)(strArr[0] + strlen(gc_dsatResCodeTbl[DSAT_CMT][gc_dsatmode]));
+
+	int curstate = STATE_OA_NUMBER;
+	int length = 0;
+	int mYear, mMonth, mDay, mHour, mMinute, mSecond;
+	mYear = mMonth = mDay = mHour = mMinute = mSecond = 0;
+	int format = 0;
+
+
+    StSmsRecord record;
+    memset(&record, 0x00, sizeof(StSmsRecord));
+	record.m_NoATRspCDS = TRUE;
+//	record.m_FlashMessage = FALSE;
+	record.voicemail = 0;
+    record.state = SMS_STATE_MT_NOT_READ;
+
+    while(*p != '\0')
+    {
+		memset(ptr, 0, SMS_SC_NUM_MAX+2);
+		ptmp = strchr((const char *)p, ',');
+		if(ptmp == NULL){
+			//最后一个参数的长度
+			length = strlen(p);
+		}else{
+			length = ptmp - p;
+		}
+
+		strncpy(ptr, p, length > SMS_SC_NUM_MAX ? SMS_SC_NUM_MAX : length);
+
+		switch(curstate){
+		case STATE_OA_NUMBER:
+			strcpy(record.szNumber, ptr);
+			break;
+		case STATE_DAYTIME_YEAR:
+			mYear = atoi(ptr);
+			break;
+		case STATE_DAYTIME_MONTH:
+			mMonth = atoi(ptr);
+			break;
+		case STATE_DAYTIME_DAY:
+			mDay = atoi(ptr);
+			break;
+		case STATE_DAYTIME_HOUR:
+			mHour = atoi(ptr);
+			break;
+		case STATE_DAYTIME_MINUTE:
+			mMinute = atoi(ptr);
+			break;
+		case STATE_DAYTIME_SECOND:
+			mSecond = atoi(ptr);
+			break;
+		case STATE_LANGUAGE:
+			break;
+		case STATE_FORMAT:
+			format = atoi(ptr);
+			break;
+		case STATE_LENGTH:
+			break;
+		case STATE_PRIORITY:
+			record.SMSpriority = atoi(ptr);
+			break;
+		case STATE_SECURITY:
+			break;
+		case STATE_TYPE:
+			break;
+		case STATE_STATUS:
+			break;
+		case STATE_SMS_END:
+			break;
+		}
+
+		if(curstate == STATE_SMS_END){
+			break;
+		}
+
+		curstate++;
+		p+=length + 1;
+    }
+
+	pDlg->SMS_Priority = record.SMSpriority;
+
+
+    if((mMonth >= 1 && mMonth <= 12) && (mDay >= 1 && mDay <= 31) 
+        && (mHour >= 0 && mHour <= 23) && (mMinute >=0 && mMinute <= 59) && (mSecond >=0 && mSecond <= 59))
+    {
+        record.timestamp = COleDateTime(mYear, mMonth, mDay, mHour, mMinute, mSecond);
+    }
+    else{
+		record.timestamp = COleDateTime::GetCurrentTime();
+	}
+
+    if(wStrNum == 2)
+    {
+		if(format == 0){
+			//GSM 7bit
+		}else if(format == 1){
+			//ASCII
+			strcat(record.szContent, (char*)strArr[1]);
+		}else if(format == 6){
+			//UNICODE
+			//去掉短信内容结束符0X001A/0X001B
+			int wlength = wcslen((wchar_t*)strArr[1]);
+			wchar_t *content = new wchar_t[wlength];
+			memset(content, 0, wlength*sizeof(wchar_t));
+			wcsncpy(content, (wchar_t*)strArr[1], wlength-1);
+			char * strGb = WCharToGB(content);
+			strcat(record.szContent, (strGb));
+		}else{
+			//OTHER FORMAT
+		}
+    }
+    else
+        memset(record.szContent, 0, SMS_CHAR_MAX*2);
+    
+	pDlg->RcvNewSmsProc(LOC_PC, record);
+    Sleep(100);
+}
+#
+#else
 void CHSDPADlg::AtRespCMT(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL], WORD wStrNum)
 {
     CHSDPADlg* pDlg = (CHSDPADlg*)pWnd;
@@ -1238,6 +1384,7 @@ void CHSDPADlg::AtRespCMT(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL], WORD wSt
 	pDlg->RcvNewSmsProc(LOC_PC, record);
     Sleep(100);
 }
+#endif
 
 void CHSDPADlg::AtRespRSSI(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL], WORD wStrNum)
 {
