@@ -21,10 +21,11 @@ const char gc_dsatResCodeTbl[DSAT_MAX][DSAT_MODE_MAX][30] =
     "+CME ERROR:", "+CME ERROR:",
     "+CMS ERROR:", "+CMS ERROR:",
 	"+CMS ERROR: 500", "+CMS ERROR: 500",
-    "+CMTI: ", "+CMTI: ", 
 #ifdef FEATURE_HAIER_SMS
+	"+CMTI:", "+CMTI:",
     "^HCMT:", "^HCMT:", 
 #else
+	"+CMTI: ", "+CMTI: ",
     "+CMT: ", "+CMT: ", 
 #endif
 	"+RVMFB: ","+RVMFB: ",//add by liub
@@ -87,6 +88,10 @@ const char gc_dsatResCodeTbl[DSAT_MAX][DSAT_MODE_MAX][30] =
 	"+CEND:", "+CEND:",
 	"^CEND:", "^CEND",
 	"+CFNM:", "+CFNM:",
+	"^SMMEMFUL:", "^SMMEMFUL:",
+	"+VMGFS:", "+VMGFS:",
+	"^CONN:", "^CONN:",
+	"+CANS","+CANS",
 #endif
 };
 
@@ -480,6 +485,7 @@ static void AtRespParse(CSerialPort *pComm)
             ch = *pComm->m_RxQueueCtrl.pRead++;
             if(pComm->m_RxQueueCtrl.pRead >= &pComm->m_RxQueueCtrl.RxBuffer[SERIAL_RXBUFFERSIZE])
                 pComm->m_RxQueueCtrl.pRead = &pComm->m_RxQueueCtrl.RxBuffer[0];
+
             pComm->m_RxQueueCtrl.wRxCount--;
             LeaveCriticalSection(&pComm->m_csRxQueue);    
         }
@@ -574,10 +580,20 @@ static void AtRespParse(CSerialPort *pComm)
             }
             else if(ch != AT_FLAG_S3) //error
             {
-                memset(&g_DsatStrArr[--g_DsatStrNum][0], 0, (DSAT_STRING_COL));
-                g_DsatPtr = &g_DsatStrArr[g_DsatStrNum][0];
-                g_DsatResCode = DSAT_MAX;
-                g_DsatState = STATE_START;
+#ifdef FEATURE_HAIER_SMS
+				if(g_DsatResCode == DSAT_CMT || g_DsatResCode == DSAT_CDS){
+					g_DsatStrNum--;
+					*g_DsatPtr++ = AT_FLAG_S3;
+					*g_DsatPtr++ = ch;
+					g_DsatState = STATE_FIND_CONTENT;
+				}else
+#endif
+				{
+					memset(&g_DsatStrArr[--g_DsatStrNum][0], 0, (DSAT_STRING_COL));
+					g_DsatPtr = &g_DsatStrArr[g_DsatStrNum][0];
+					g_DsatResCode = DSAT_MAX;
+					g_DsatState = STATE_START;
+				}
             }
             break;
         case STATE_FIND_MR:
@@ -702,9 +718,17 @@ static void AtRespParse(CSerialPort *pComm)
 #ifdef FEATURE_HAIER_CM
 			else if(g_DsatResCode == DSAT_CFNM)
             {
-                //don't process +CFNM unsolicted command now
+                //don't process +CFNM unsolicited command now
             }else if(g_DsatResCode == DSAT_HCEND){
-				//don't process ^CEND unsolicted command now
+				//don't process ^CEND unsolicited command now
+			}else if(g_DsatResCode == DSAT_SMEMFUL){
+				//don't process ^SMEMFUL unsolicited command now
+			}else if(g_DsatResCode == DSAT_VMGFS){
+				//dont process +VMGFS unsolicited command now
+			}else if(g_DsatResCode == DSAT_CONN){
+				//dont process ^CONN unsolicited command now
+			}else if(g_DsatResCode == DSAT_CANS){
+				//dont process +CANS unsolicited command now
 			}
 #endif
 #ifdef FEATURE_ATAMOI

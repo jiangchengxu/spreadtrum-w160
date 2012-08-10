@@ -1234,20 +1234,27 @@ void CHSDPADlg::AtRespCMT(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL], WORD wSt
 		record.timestamp = COleDateTime::GetCurrentTime();
 	}
 
+	p = (char *)strArr[1];
+	if(*p == 0x05 || *p == 0x06){
+		//判断是否为长短信，如果是，跳过udh
+		p += *p + 1;
+		//record.flag |= SMS_RECORD_FLAG_CONCATENATE_SEGE;
+	}
+
     if(wStrNum == 2)
     {
 		if(format == 0){
 			//GSM 7bit
 		}else if(format == 1){
 			//ASCII
-			strcat(record.szContent, (char*)strArr[1]);
+			strcat(record.szContent, (char*)p);
 		}else if(format == 6){
 			//UNICODE
 			//去掉短信内容结束符0X001A/0X001B
-			int wlength = wcslen((wchar_t*)strArr[1]);
+			int wlength = wcslen((wchar_t*)p);
 			wchar_t *content = new wchar_t[wlength];
 			memset(content, 0, wlength*sizeof(wchar_t));
-			wcsncpy(content, (wchar_t*)strArr[1], wlength-1);
+			wcsncpy(content, (wchar_t*)p, wlength-1);
 			char * strGb = WCharToGB(content);
 			strcat(record.szContent, (strGb));
 		}else{
@@ -1260,7 +1267,7 @@ void CHSDPADlg::AtRespCMT(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL], WORD wSt
 	pDlg->RcvNewSmsProc(LOC_PC, record);
     Sleep(100);
 }
-#
+
 #else
 void CHSDPADlg::AtRespCMT(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL], WORD wStrNum)
 {
