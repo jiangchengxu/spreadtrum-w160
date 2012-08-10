@@ -374,6 +374,9 @@ extern void DecodeSmsPDU(const char *pdu, const USHORT len, StSmsRecord *pRecord
 
 extern BOOL ExtractConcatenateSmsPara(char *Para, USHORT *nRefCnt, BYTE *nSeqCnt, BYTE *nTotalCnt);
 extern BOOL ExtractConcatenateSmsPara_Flexi(CString Para, TCHAR *nRefCnt, BYTE *nSeqCnt, BYTE *nTotalCnt);//flexi版本，解析长短信参数
+#ifdef FEATURE_HAIER_SMS
+extern BOOL ExtractConcatenateSmsPara_ChinaTel(char *Para, int *nRefCnt, int *nSeqCnt, int *nTotalCnt);
+#endif
 //Modified by Zhou Bin 2008.12.30
 //extern BOOL DspConcatenateSmsPara(TCHAR *DspBuf, USHORT nRefCnt, BYTE nSeqCnt, BYTE nTotalCnt);
 extern BOOL DspConcatenateSmsPara(char *DspBuf, USHORT nRefCnt, BYTE nSeqCnt, BYTE nTotalCnt);

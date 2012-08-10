@@ -1234,11 +1234,15 @@ void CHSDPADlg::AtRespCMT(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL], WORD wSt
 		record.timestamp = COleDateTime::GetCurrentTime();
 	}
 
+	int nRefCnt=0, nSeqCnt=0, nTotalCnt=0;
 	p = (char *)strArr[1];
-	if(*p == 0x05 || *p == 0x06){
+	if(ExtractConcatenateSmsPara_ChinaTel(p, &nRefCnt, &nSeqCnt, &nTotalCnt)){
 		//判断是否为长短信，如果是，跳过udh
 		p += *p + 1;
-		//record.flag |= SMS_RECORD_FLAG_CONCATENATE_SEGE;
+		record.flag |= SMS_RECORD_FLAG_CONCATENATE_SEGE;
+		record.nRefCnt = nRefCnt;
+		record.nSeqCnt = nSeqCnt;
+		record.nTotalCnt = nTotalCnt;
 	}
 
     if(wStrNum == 2)
@@ -1268,6 +1272,40 @@ void CHSDPADlg::AtRespCMT(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL], WORD wSt
     Sleep(100);
 }
 
+BOOL ExtractConcatenateSmsPara_ChinaTel(char *Para, int *nRefCnt, int *nSeqCnt, int *nTotalCnt){
+	ASSERT(Para && strlen(Para) > 0);
+
+    char *p = Para;
+	int hrLength = 0;
+	int idenLength = 0;
+
+	hrLength = *p++;
+
+	if(p[0] == 0x00){
+		idenLength = 1;
+	}else if(p[0] == 0x08){
+		idenLength = 2;
+	}
+
+	if((hrLength != 0x05 || idenLength != 1)
+		&& (hrLength != 0x06 || idenLength != 2))
+		return FALSE;
+
+	p+= idenLength;
+
+	if(p[0] != hrLength - 2){
+		return FALSE;
+	}
+
+	p++;
+
+	*nRefCnt = p[0];
+	p++;
+	*nTotalCnt = p[0];
+	p++;
+	*nSeqCnt = p[0];
+	return TRUE;
+}
 #else
 void CHSDPADlg::AtRespCMT(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL], WORD wStrNum)
 {
