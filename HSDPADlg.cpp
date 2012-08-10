@@ -1116,23 +1116,6 @@ void CHSDPADlg::AtRespCVMI(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL], WORD wS
 }
 
 #ifdef FEATURE_HAIER_SMS
-enum{
-	STATE_OA_NUMBER = 0,
-	STATE_DAYTIME_YEAR,
-	STATE_DAYTIME_MONTH,
-	STATE_DAYTIME_DAY,
-	STATE_DAYTIME_HOUR,
-	STATE_DAYTIME_MINUTE,
-	STATE_DAYTIME_SECOND,
-	STATE_LANGUAGE,
-	STATE_FORMAT,
-	STATE_LENGTH,
-	STATE_PRIORITY,
-	STATE_SECURITY,
-	STATE_TYPE,
-	STATE_STATUS,
-	STATE_SMS_END,
-};
 void CHSDPADlg::AtRespCMT(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL], WORD wStrNum)
 {
     CHSDPADlg* pDlg = (CHSDPADlg*)pWnd;
@@ -1273,7 +1256,9 @@ void CHSDPADlg::AtRespCMT(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL], WORD wSt
 }
 
 BOOL ExtractConcatenateSmsPara_ChinaTel(char *Para, int *nRefCnt, int *nSeqCnt, int *nTotalCnt){
-	ASSERT(Para && strlen(Para) > 0);
+	if(Para == NULL || strlen(Para) == 0){
+		return FALSE;
+	}
 
     char *p = Para;
 	int hrLength = 0;

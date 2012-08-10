@@ -1937,6 +1937,150 @@ const char szCountryCodeArr[][10] = {
 
 BOOL SmsAtCMGRRspProc(BYTE (*strArr)[DSAT_STRING_COL], WORD wStrNum, StSmsRecord &record, const EnSmsKind kind)
 {
+#ifdef FEATURE_HAIER_SMS
+    int cnt = 0;
+	int priorityFlag = 0;
+	CString temp;
+    char *p, *ptmp;
+	char ptr[SMS_SC_NUM_MAX] = {0};
+    p = (char *)&strArr[0][strlen(gcstrResSms[AT_SMS_QCMGR])];
+
+	int curstate = STATE_OA_NUMBER;
+	int length = 0;
+	int mYear, mMonth, mDay, mHour, mMinute, mSecond;
+	mYear = mMonth = mDay = mHour = mMinute = mSecond = 0;
+	int format = 0;
+
+	record.m_NoATRspCDS = TRUE;
+	record.voicemail = 0;
+
+    while(*p != '\0')
+    {
+		memset(ptr, 0, SMS_SC_NUM_MAX+2);
+		ptmp = strchr((const char *)p, ',');
+		if(ptmp == NULL){
+			//最后一个参数的长度
+			length = strlen(p);
+		}else{
+			length = ptmp - p;
+		}
+
+		strncpy(ptr, p, length > SMS_SC_NUM_MAX ? SMS_SC_NUM_MAX : length);
+
+		switch(curstate){
+		case STATE_OA_NUMBER:
+			strcpy(record.szNumber, ptr);
+			break;
+		case STATE_DAYTIME_YEAR:
+			mYear = atoi(ptr);
+			break;
+		case STATE_DAYTIME_MONTH:
+			mMonth = atoi(ptr);
+			break;
+		case STATE_DAYTIME_DAY:
+			mDay = atoi(ptr);
+			break;
+		case STATE_DAYTIME_HOUR:
+			mHour = atoi(ptr);
+			break;
+		case STATE_DAYTIME_MINUTE:
+			mMinute = atoi(ptr);
+			break;
+		case STATE_DAYTIME_SECOND:
+			mSecond = atoi(ptr);
+			break;
+		case STATE_LANGUAGE:
+			break;
+		case STATE_FORMAT:
+			format = atoi(ptr);
+			break;
+		case STATE_LENGTH:
+			break;
+		case STATE_PRIORITY:
+			record.SMSpriority = atoi(ptr);
+			break;
+		case STATE_SECURITY:
+			break;
+		case STATE_TYPE:
+			break;
+		case STATE_STATUS:
+			record.state = (EnSmsState)atoi(ptr);
+			break;
+		case STATE_SMS_END:
+			break;
+		}
+
+		if(curstate == STATE_SMS_END){
+			break;
+		}
+
+		curstate++;
+		p+=length + 1;
+    }
+
+	if(kind == SMS_KIND_MT)
+    {
+        if(record.state != SMS_STATE_MT_NOT_READ
+            && record.state != SMS_STATE_MT_READ)
+        {
+            return FALSE;
+        }
+    }
+    else if(kind == SMS_KIND_MO)
+    {
+        if(record.state != SMS_STATE_MO_NOT_SENT
+            && record.state != SMS_STATE_MO_SENT)
+        {
+            return FALSE;
+        }
+    }
+
+    if((mMonth >= 1 && mMonth <= 12) && (mDay >= 1 && mDay <= 31) 
+        && (mHour >= 0 && mHour <= 23) && (mMinute >=0 && mMinute <= 59) && (mSecond >=0 && mSecond <= 59))
+    {
+        record.timestamp = COleDateTime(mYear, mMonth, mDay, mHour, mMinute, mSecond);
+    }
+    else{
+		record.timestamp = COleDateTime::GetCurrentTime();
+	}
+
+	int nRefCnt=0, nSeqCnt=0, nTotalCnt=0;
+	p = (char *)strArr[1];
+	if(ExtractConcatenateSmsPara_ChinaTel(p, &nRefCnt, &nSeqCnt, &nTotalCnt)){
+		//判断是否为长短信，如果是，跳过udh
+		p += *p + 1;
+		record.flag |= SMS_RECORD_FLAG_CONCATENATE_SEGE;
+		record.nRefCnt = nRefCnt;
+		record.nSeqCnt = nSeqCnt;
+		record.nTotalCnt = nTotalCnt;
+	}
+
+    if(wStrNum == 3)
+    {
+		if(format == 0){
+			//GSM 7bit
+		}else if(format == 1){
+			//ASCII
+			strcat(record.szContent, (char*)p);
+		}else if(format == 6){
+			//UNICODE
+			//去掉短信内容结束符0X001A/0X001B
+			int wlength = wcslen((wchar_t*)p);
+			wchar_t *content = new wchar_t[wlength];
+			memset(content, 0, wlength*sizeof(wchar_t));
+			wcsncpy(content, (wchar_t*)p, wlength-1);
+			char * strGb = WCharToGB(content);
+			strcat(record.szContent, (strGb));
+		}else{
+			//OTHER FORMAT
+		}
+    }
+    else
+        memset(record.szContent, 0, SMS_CHAR_MAX*2);
+
+    return TRUE;
+
+#else
     int cnt = 0;
     char *ptr[7], *p;
     p = (char *)&strArr[0][strlen(gcstrResSms[AT_SMS_QCMGR])];
@@ -2129,6 +2273,7 @@ BOOL SmsAtCMGRRspProc(BYTE (*strArr)[DSAT_STRING_COL], WORD wStrNum, StSmsRecord
 #endif
     
     return TRUE;
+#endif
 }
 
 const wchar_t GSM0338ToUCS2Array[GSM0338_EXTENSIONS][GSM0338_ALPHABET_SIZE] = 

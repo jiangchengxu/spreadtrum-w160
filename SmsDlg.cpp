@@ -2523,12 +2523,14 @@ void CSmsDlg::RspAtSmsQCPMS(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL], WORD w
 
     switch(pDlg->m_locType1) {
     case LOC_ME:
+#ifndef FEATURE_HAIER_SMS
         if (pDlg->VoiceMailCountSMSDlg != _T("-1"))
 		{
 			g_ME_SmsNum = atoi((const char*)ptr[0]);
 			g_ME_SmsMax = atoi((const char*)ptr[1]) -1;
 		}
 		else
+#endif
 		{
 			g_ME_SmsNum = atoi((const char*)ptr[0]);
 			g_ME_SmsMax = atoi((const char*)ptr[1]);
@@ -2544,11 +2546,13 @@ void CSmsDlg::RspAtSmsQCPMS(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL], WORD w
     {
         switch(pDlg->m_locType2) {
         case LOC_ME:
+#ifndef FEATURE_HAIER_SMS
 			if (pDlg->VoiceMailCountSMSDlg != _T("-1"))
 			{
 				g_ME_SmsMax = atoi((const char*)ptr[3]) -1;
 			}
 			else
+#endif
 			    g_ME_SmsMax = atoi((const char*)ptr[3]);
             g_ME_SmsNum = atoi((const char*)ptr[2]);
 

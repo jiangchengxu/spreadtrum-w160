@@ -245,6 +245,52 @@ typedef enum {
     AT_SMS_MAX
 } EnAtSmsType;
 
+
+#ifdef FEATURE_HAIER_SMS
+typedef enum{
+	STATE_OA_NUMBER = 0,
+	STATE_DAYTIME_YEAR,
+	STATE_DAYTIME_MONTH,
+	STATE_DAYTIME_DAY,
+	STATE_DAYTIME_HOUR,
+	STATE_DAYTIME_MINUTE,
+	STATE_DAYTIME_SECOND,
+	STATE_LANGUAGE,
+	STATE_FORMAT,
+	STATE_LENGTH,
+	STATE_PRIORITY,
+	STATE_SECURITY,
+	STATE_TYPE,
+	STATE_STATUS,
+	STATE_SMS_END,
+}EnAtSmsContextState;
+
+const char gcstrAtSms[AT_SMS_MAX][15] = {
+    "AT+CPMS=",
+        "AT^HCMGR=",
+        "AT^HCMGW=",
+        "AT+CMGD=",
+        "AT^HCMGS=",
+        "AT+CSCA=",
+        "AT+CMGF=",
+        "AT+CNMI=",
+        "AT+CSMP=",
+		"AT+HMSGL=",//add by liub for SMS CDMA2000
+		"AT+HMSGP=",//add by liub for SMS CDMA2000
+};
+
+const char gcstrResSms[AT_SMS_MAX][15] = {
+    "+CPMS:",
+        "^HCMGR:",
+        "^HCMGW:",
+        "+CMGD:",
+        "^HCMGS:",
+        "+CSCA:",
+        "+CMGF:",
+        "+CNMI:",
+        "+CSMP:",
+};
+#else
 const char gcstrAtSms[AT_SMS_MAX][15] = {
     "AT+CPMS=",
         "AT+CMGR=",
@@ -270,6 +316,7 @@ const char gcstrResSms[AT_SMS_MAX][15] = {
         "+CNMI: ",
         "+CSMP: ",
 };
+#endif
 
 const char gcstrSmsState[SMS_STATE_MAX][SMS_MODE_MAX][15] = {
     "0", "REC UNREAD",
