@@ -1132,6 +1132,35 @@ char * WCharToGB(const wchar_t *wchar)
      //释放内存
      return pszGb;
 }
+
+wchar_t * GBTOWChar(CString str)
+{
+	short int temp = 0;
+	str.TrimLeft();
+	str.TrimRight();
+	USES_CONVERSION;
+	char* strGb = T2A(str);
+	//计算转换的字符数
+	int iLen = MultiByteToWideChar(CP_ACP, 0, strGb, -1, NULL, 0);
+
+	//给wszUnicode分配内存
+	wchar_t *wszUnicode = new wchar_t[iLen+1];
+	memset(wszUnicode, 0, sizeof(wchar_t)*(iLen+1));
+
+	//转换Big5码到Unicode码，使用了API函数MultiByteToWideChar
+	MultiByteToWideChar(CP_ACP, 0, strGb, -1, wszUnicode, iLen);
+
+	strGb = (char *)wszUnicode;
+	iLen = wcslen(wszUnicode);
+
+	for(int i = 0; i < iLen; i++){
+		temp = strGb[i*2];
+		strGb[i*2] = strGb[i*2+1];
+		strGb[i*2+1] =  temp;
+	}
+	return wszUnicode;
+}
+
 #endif
 
 void ASCToUCS2(const char* unicode, TCHAR* WChar)

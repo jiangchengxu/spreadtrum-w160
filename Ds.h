@@ -275,8 +275,8 @@ const char gcstrAtSms[AT_SMS_MAX][15] = {
         "AT+CMGF=",
         "AT+CNMI=",
         "AT+CSMP=",
-		"AT+HMSGL=",//add by liub for SMS CDMA2000
-		"AT+HMSGP=",//add by liub for SMS CDMA2000
+		"AT^HSMSSS=",//add by liub for SMS CDMA2000
+		"AT^HSMSSS=",//add by liub for SMS CDMA2000
 };
 
 const char gcstrResSms[AT_SMS_MAX][15] = {
@@ -399,6 +399,7 @@ extern int  UCS2ToUCS2(CString strGb, CString strUcs2);
 extern CString UCS2ToGB(const CString &strUcs2);
 #ifdef FEATURE_HAIER_SMS
 extern char * WCharToGB(const wchar_t *strUcs2);
+extern wchar_t * GBTOWChar(CString str);
 #endif
 extern CString BTToUCS2(const TCHAR*strGb);
 extern void ASCToUCS2(const char* unicode, TCHAR* WChar);

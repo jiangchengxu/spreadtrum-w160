@@ -576,6 +576,9 @@ void CDlgSetupPowerMng::RspAtSmsQHMSGP(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_C
 //CDMA2000的+CSMP，与WCDMA完全不同
 BOOL CDlgSetupPowerMng::SndAtSmsQCSMP()
 {
+#ifdef FEATURE_HAIER_SMS
+	return SYNCINITFUNCRET_DONE;
+#endif
 	char szAtBuf[50] = {0};
     sprintf(szAtBuf, "%s,1,%d,1,%d\r", gcstrAtSms[AT_SMS_QCSMP],g_SetData.Messages_nValPeriod,g_SetData.Messages_nDefDelivery);
     CSerialPort* pComm = ((CHSDPAApp*)AfxGetApp())->m_pSerialPort;

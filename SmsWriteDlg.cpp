@@ -300,7 +300,11 @@ void CSmsWriteDlg::OnButtonSmsSend()
 //                     }
 //////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////CDMA2000 add by liub
+					#ifdef FEATURE_HAIER_SMS
+					   if(SndAtSmsQHMSGP())
+					#else
 					   if(SndAtSmsQHMSGL())
+					#endif
 				       {
 				           ::ResetEvent(g_BGPassEvt);
 				           m_pMainWnd->CtlAllSmsRcvConcTimer(FALSE);
@@ -633,7 +637,7 @@ BOOL CSmsWriteDlg::SndAtSmsQHMSGL()
 	char szAtBuf[50] = {0};
     BYTE para1, para2;
     para1 = para2 = 0;
-    
+
 #ifdef FEATURE_SMS_CONCATENATE
     if(gSmsIsConcatenate)
     {
@@ -667,7 +671,7 @@ BOOL CSmsWriteDlg::SndAtSmsQHMSGL()
         para2 = 4;
     }
 #endif
-	
+
     sprintf(szAtBuf, "%s,%d\r", gcstrAtSms[AT_SMS_QHMSGL],para2);
 	
     CSerialPort* pComm = ((CHSDPAApp*)AfxGetApp())->m_pSerialPort;
@@ -689,6 +693,42 @@ BOOL CSmsWriteDlg::SndAtSmsQHMSGP()
     char szAtBuf[50] = {0};
 	BYTE para1;
     para1 = 0;
+#ifdef FEATURE_HAIER_SMS
+#ifdef FEATURE_SMS_CONCATENATE
+		if(gSmsIsConcatenate)
+		{
+			if(gSmsIsAsciiCode)
+			{
+				m_pMainWnd->m_pSmsDlg->sms_format = 1;
+			}
+			else
+			{
+				m_pMainWnd->m_pSmsDlg->sms_format = 6;
+			}
+		}
+		else
+		{
+			if(IsAlphabetUnicode(m_strSmsDetails))
+			{
+				m_pMainWnd->m_pSmsDlg->sms_format = 1;
+			}
+			else
+			{
+				m_pMainWnd->m_pSmsDlg->sms_format = 6;
+			}
+		}
+#else
+		if(IsAlphabetUnicode(m_strSmsDetails))
+		{
+			m_pMainWnd->m_pSmsDlg->sms_format = 1;	//ascii
+		}
+		else
+		{
+			m_pMainWnd->m_pSmsDlg->sms_format = 6;	//unicode
+		}
+#endif
+#endif
+
 #ifdef FEATURE_SMS_CONCATENATE
 	if (gSmsIsConcatenate)
 	{
@@ -699,6 +739,23 @@ BOOL CSmsWriteDlg::SndAtSmsQHMSGP()
 #endif
 	if (m_WriteType == SMS_WRITE_FORWORD)
 	{
+#ifdef FEATURE_HAIER_SMS
+#ifdef FEATURE_SMS_CONCATENATE
+		if (gSmsIsConcatenate)
+		{
+			if (gSmsCurSege +1 == gSmsTotalSege)
+			{
+				sprintf(szAtBuf, "%s%d,%d,%d,\r", gcstrAtSms[AT_SMS_QHMSGP], g_SetData.Messages_nDeliReport,m_pMainWnd->m_pSmsDlg->ForwardSMSpriority,m_pMainWnd->m_pSmsDlg->sms_format);
+			}
+			else
+				sprintf(szAtBuf, "%s%d,%d,%d,\r", gcstrAtSms[AT_SMS_QHMSGP], 0,m_pMainWnd->m_pSmsDlg->ForwardSMSpriority,m_pMainWnd->m_pSmsDlg->sms_format);
+		}
+		else
+			sprintf(szAtBuf, "%s%d,%d,%d,\r", gcstrAtSms[AT_SMS_QHMSGP], g_SetData.Messages_nDeliReport,m_pMainWnd->m_pSmsDlg->ForwardSMSpriority,m_pMainWnd->m_pSmsDlg->sms_format);
+#else
+		sprintf(szAtBuf, "%s%d,%d,%d,\r", gcstrAtSms[AT_SMS_QHMSGP], g_SetData.Messages_nDeliReport,m_pMainWnd->m_pSmsDlg->ForwardSMSpriority,m_pMainWnd->m_pSmsDlg->sms_format);
+#endif
+#else
 #ifdef FEATURE_SMS_CONCATENATE
 		if (gSmsIsConcatenate)
 		{
@@ -708,17 +765,37 @@ BOOL CSmsWriteDlg::SndAtSmsQHMSGP()
 			}
 			else
 				sprintf(szAtBuf, "%s%d,,%d,%d\r", gcstrAtSms[AT_SMS_QHMSGP], 0,para1,m_pMainWnd->m_pSmsDlg->ForwardSMSpriority);
-
-			
 		}
 		else
 			sprintf(szAtBuf, "%s%d,,%d,%d\r", gcstrAtSms[AT_SMS_QHMSGP], g_SetData.Messages_nDeliReport,para1,m_pMainWnd->m_pSmsDlg->ForwardSMSpriority);
 #else
 		sprintf(szAtBuf, "%s%d,,%d,%d\r", gcstrAtSms[AT_SMS_QHMSGP], g_SetData.Messages_nDeliReport,para1,m_pMainWnd->m_pSmsDlg->ForwardSMSpriority);
 #endif
+#endif
 	}
 	else
 	{
+#ifdef FEATURE_HAIER_SMS
+#ifdef FEATURE_SMS_CONCATENATE
+		if (gSmsIsConcatenate)
+		{
+			if (gSmsCurSege +1 == gSmsTotalSege)
+			{
+				sprintf(szAtBuf, "%s%d,%d,%d,\r", gcstrAtSms[AT_SMS_QHMSGP], g_SetData.Messages_nDeliReport,g_SetData.Messages_nPriority,m_pMainWnd->m_pSmsDlg->sms_format);
+			}
+			else
+				sprintf(szAtBuf, "%s%d,%d,%d,\r", gcstrAtSms[AT_SMS_QHMSGP], 0,g_SetData.Messages_nPriority,m_pMainWnd->m_pSmsDlg->sms_format);
+			
+			
+		}
+		else
+			sprintf(szAtBuf, "%s%d,%d,%d,\r", gcstrAtSms[AT_SMS_QHMSGP], g_SetData.Messages_nDeliReport,g_SetData.Messages_nPriority,m_pMainWnd->m_pSmsDlg->sms_format);
+
+
+#else
+		sprintf(szAtBuf, "%s%d,%d,%d,\r", gcstrAtSms[AT_SMS_QHMSGP], g_SetData.Messages_nDeliReport,g_SetData.Messages_nPriority,m_pMainWnd->m_pSmsDlg->sms_format);
+#endif
+#else
 #ifdef FEATURE_SMS_CONCATENATE
 		if (gSmsIsConcatenate)
 		{
@@ -728,8 +805,6 @@ BOOL CSmsWriteDlg::SndAtSmsQHMSGP()
 			}
 			else
 				sprintf(szAtBuf, "%s%d,,%d,%d\r", gcstrAtSms[AT_SMS_QHMSGP], 0,para1,g_SetData.Messages_nPriority);
-			
-			
 		}
 		else
 			sprintf(szAtBuf, "%s%d,,%d,%d\r", gcstrAtSms[AT_SMS_QHMSGP], g_SetData.Messages_nDeliReport,para1,g_SetData.Messages_nPriority);
@@ -737,6 +812,7 @@ BOOL CSmsWriteDlg::SndAtSmsQHMSGP()
 
 #else
 		sprintf(szAtBuf, "%s%d,,%d,%d\r", gcstrAtSms[AT_SMS_QHMSGP], g_SetData.Messages_nDeliReport,para1,g_SetData.Messages_nPriority);
+#endif
 #endif
 	}
 //    sprintf(szAtBuf, "%s%d,,%d,%d\r", gcstrAtSms[AT_SMS_QHMSGP], g_SetData.Messages_nDeliReport,para1,g_SetData.Messages_nPriority);
@@ -910,6 +986,7 @@ BOOL CSmsWriteDlg::SndAtSmsQCMGS(int nStep)
 //             szGPTemp,
 //             pNumType);
 // 		delete []szGPTemp;
+
 		sprintf(szAtAscBuf, "%s\"%s\",%s\r", 
             gcstrAtSms[AT_SMS_QCMGS], 
             /*m_szGroupNum[m_nCurNum],*/
@@ -940,24 +1017,43 @@ BOOL CSmsWriteDlg::SndAtSmsQCMGS(int nStep)
 				wcscpy(szAtBuf, BTToUCS2(unicodStr));
             }
             
-              CString strUc = BTToUCS2((CString)gszSmsSege[gSmsCurSege]);
-		wcsncat(szAtBuf, strUc, sizeof(szAtBuf));
-              int szhlen=WCharToUnicode(szAtBuf,szAtAscBuf);
+			CString strUc = BTToUCS2((CString)gszSmsSege[gSmsCurSege]);
+			wcsncat(szAtBuf, strUc, sizeof(szAtBuf));
+			int szhlen=WCharToUnicode(szAtBuf,szAtAscBuf);
 
 			
             szAtAscBuf[szhlen] = gccCtrl_Z;
-	     buffsize=szhlen+1;
+			buffsize=szhlen+1;
         }
         else
 #endif
         {
-           CString strUC = BTToUCS2((CString)m_strSmsDetails);
-        
-      	int len= WCharToUnicode(strUC, szAtAscBuf);
+#ifdef FEATURE_HAIER_SMS
+			if(m_pMainWnd->m_pSmsDlg->sms_format == 1){
+				//ascii
+				USES_CONVERSION;
+				int len = m_strSmsDetails.GetLength();
+				char* p = T2A(m_strSmsDetails);
+				strncpy(szAtAscBuf, (char *)p, len);
+				szAtAscBuf[len] = gccCtrl_Z;
+				buffsize=len+1;
+			}else{
+				//unicode
+				wchar_t *buf = GBTOWChar((CString)m_strSmsDetails);
+				int iLen = wcslen((wchar_t *)buf);
+				wcsncpy((wchar_t *)szAtAscBuf, buf, iLen);
+				szAtAscBuf[iLen*2] = 0;
+				szAtAscBuf[iLen*2+1] = gccCtrl_Z;
+				buffsize=iLen*2+2;
+			}
+#else
+			CString strUC = BTToUCS2((CString)m_strSmsDetails);
+			int len= WCharToUnicode(strUC, szAtAscBuf);
 
-			 szAtAscBuf[len] = gccCtrl_Z;
+			szAtAscBuf[len] = gccCtrl_Z;
 			
 			buffsize=len+1;
+#endif
         }
     }
     

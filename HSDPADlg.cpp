@@ -5648,7 +5648,11 @@ void CHSDPADlg::AtRespPS(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL], WORD wStr
 EnSyncInitFuncRetType CHSDPADlg::SndAtSmsQHMSGP()
 {
 	char szAtBuf[50] = {0};
+#ifdef FEATURE_HAIER_SMS
+	sprintf(szAtBuf, "%s%d,%d,,\r", gcstrAtSms[AT_SMS_QHMSGP], g_SetData.Messages_nDeliReport,g_SetData.Messages_nPriority);
+#else
     sprintf(szAtBuf, "%s%d,,,%d\r", gcstrAtSms[AT_SMS_QHMSGP], g_SetData.Messages_nDeliReport,g_SetData.Messages_nPriority);
+#endif
     CSerialPort* pComm = ((CHSDPAApp*)AfxGetApp())->m_pSerialPort;
     ASSERT(pComm);
 	
@@ -5670,6 +5674,9 @@ EnSyncInitFuncRetType CHSDPADlg::SndAtSmsQHMSGP()
 //CDMA2000的+CSMP，与WCDMA完全不同
 EnSyncInitFuncRetType CHSDPADlg::SndAtSmsQCSMP()
 {
+#ifdef FEATURE_HAIER_SMS
+	return SYNCINITFUNCRET_DONE;
+#endif
 	char szAtBuf[50] = {0};
     sprintf(szAtBuf, "%s,1,%d,1,%d\r", gcstrAtSms[AT_SMS_QCSMP],g_SetData.Messages_nValPeriod,g_SetData.Messages_nDefDelivery);
     CSerialPort* pComm = ((CHSDPAApp*)AfxGetApp())->m_pSerialPort;

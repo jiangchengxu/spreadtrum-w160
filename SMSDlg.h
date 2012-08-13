@@ -44,7 +44,9 @@ public:
 //	BOOL UnKnowSms;
 
 	int ForwardSMSpriority;
-
+#ifdef FEATURE_HAIER_SMS
+	int sms_format;
+#endif
     CSmsData  *sms_full_motify;//added by lly
 	CString smstree_node_name;//add  by liub
 	CString voicesmscount;//add by liub for voicemail
