@@ -417,12 +417,14 @@ void CDlgSetupPowerMng::OnButtonSetupMsgSet()
     if(!wcsicmp(g_SetData.Setup_sz3GType,_T("CDMA2000")))
 	{
 		g_SetData.Messages_nPriority = m_Priority.GetCurSel();//当前选中的行。
+#ifndef FEATURE_HAIER_SMS
 		if (1 == m_cmbDeliReport.GetCurSel())
 		{
 			g_SetData.Messages_nDeliReport = 2;
 
 		}
 		else
+#endif
 			g_SetData.Messages_nDeliReport = m_cmbDeliReport.GetCurSel();
 
 	}else
@@ -576,11 +578,12 @@ void CDlgSetupPowerMng::RspAtSmsQHMSGP(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_C
 //CDMA2000的+CSMP，与WCDMA完全不同
 BOOL CDlgSetupPowerMng::SndAtSmsQCSMP()
 {
-#ifdef FEATURE_HAIER_SMS
-	return SYNCINITFUNCRET_DONE;
-#endif
 	char szAtBuf[50] = {0};
+#ifdef FEATURE_HAIER_SMS
+	sprintf(szAtBuf, "AT\r");
+#else
     sprintf(szAtBuf, "%s,1,%d,1,%d\r", gcstrAtSms[AT_SMS_QCSMP],g_SetData.Messages_nValPeriod,g_SetData.Messages_nDefDelivery);
+#endif
     CSerialPort* pComm = ((CHSDPAApp*)AfxGetApp())->m_pSerialPort;
     ASSERT(pComm);
 	
