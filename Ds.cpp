@@ -3254,6 +3254,20 @@ int UE_SmsFindCardRecord(EnLocType loctype, WORD nIndex)
     return -1;
 }
 
+void HDEBUG(char * msg, ...){
+	char file[250] = {0};
+	char *filename = strrchr((char *)__FILE__, '\\') + 1;
+	sprintf(file, ">>>>[%s:%d] ", filename, __LINE__);
+
+	strcat(file, msg);
+	strcat(file, "\n");
+	va_list arg_ptr;
+	va_start(arg_ptr, file);
+	USES_CONVERSION;
+	unsigned short *ptr = A2W(file);
+	TRACE(ptr, arg_ptr);
+	va_end(arg_ptr);
+}
 int g_DataCardTotalNum = 0; //DATACARD存储器支持的总条数
 int g_USimTotalNum = 0;     //USIM存储器支持的总条数
 int g_DataCardUsedNum = 0; //DATACARD存储器的已用条数

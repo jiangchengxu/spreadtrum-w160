@@ -519,5 +519,6 @@ extern BYTE g_nDataConnType;
 extern BOOL g_bConnLimitTip;
 extern CString    m_str_sms_Prompt;
 extern int gCurAutoPref;
+extern void HDEBUG(char * msg, ...);
 
 #endif //#ifndef _AFX_DS_H_
