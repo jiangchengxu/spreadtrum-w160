@@ -121,7 +121,7 @@ static EnDsatState g_DsatState = STATE_START;
 //解析得到的结果码
 static EnDsatResCode g_DsatResCode = DSAT_MAX;
 
-
+//用于控制是否可以打电话或接听电话
 HANDLE g_BGPassEvt;
 HANDLE g_BGReadNewSmsEvt;
 HANDLE g_BGEvtArr[BGEVT_ARRNUM];
@@ -231,7 +231,7 @@ UINT BGThreadProc(LPVOID pParam)
             //pMainDlg->m_bInComSms = TRUE;
             HDEBUG_0("BGThreadProc : got g_BGEvtArr[BGEVT_SMS] events and waiting for g_BGPassEvt");
             ::WaitForSingleObject(g_BGPassEvt, INFINITE);
-            
+            HDEBUG_0("BGThreadProc : BGEVT_SMS got g_BGPassEvt");
             while(true)
             {
                 g_BGSmsStrNum = 0;
@@ -262,14 +262,18 @@ UINT BGThreadProc(LPVOID pParam)
         case BGEVT_CALL:
             pMainDlg->m_bInComCall = TRUE;
 			HDEBUG_0("BGThreadProc : got g_BGEvtArr[BGEVT_CALL] events and waiting for g_BGPassEvt");
-            if(WAIT_OBJECT_0 == ::WaitForSingleObject(g_BGPassEvt, INFINITE))
+            if(WAIT_OBJECT_0 == ::WaitForSingleObject(g_BGPassEvt, INFINITE)){
+				HDEBUG_0("BGThreadProc : BGEVT_CALL got g_BGPassEvt");
                 (BGCallResp.m_AtRespFunc)(BGCallResp.m_pWnd, g_BGCallStrArr, g_BGCallStrNum);
+            }
             break;
         case BGEVT_CLIP:
             pMainDlg->m_bInComCall = TRUE;
 			HDEBUG_0("BGThreadProc : got g_BGEvtArr[BGEVT_CLIP] events and waiting for g_BGPassEvt");
-            if(WAIT_OBJECT_0 == ::WaitForSingleObject(g_BGPassEvt, INFINITE))
+            if(WAIT_OBJECT_0 == ::WaitForSingleObject(g_BGPassEvt, INFINITE)){
+				HDEBUG_0("BGThreadProc : BGEVT_CLIP got g_BGPassEvt");
                 (BGClipResp.m_AtRespFunc)(BGClipResp.m_pWnd, g_BGClipStrArr, g_BGClipStrNum);
+            }
             break;
         case BGEVT_END:
 			HDEBUG_0("BGThreadProc : got g_BGEvtArr[BGEVT_END] events and close all BGEvtArr");
@@ -625,7 +629,6 @@ static void AtRespParse(CSerialPort *pComm)
         //解析到一条完整的AT命令响应，调用AT处理回调函数
         if(g_DsatState == STATE_END && g_DsatResCode != DSAT_MAX)
         {
-        	TRACE(_T("%d"), g_DsatResCode);
         	HDEBUG_1("AtRespParse: got a AT command response, g_DsatResCode = %u",g_DsatResCode);
             if(g_DsatResCode == DSAT_RING)
             {
