@@ -182,7 +182,7 @@ void BGEvtCall(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL], WORD wStrNum)
     g_BGCallStrNum = wStrNum;
     for(WORD cnt = 0; cnt < wStrNum; cnt++)
         strcpy((char*)g_BGCallStrArr[cnt], (char*)strArr[cnt]);
-
+	HDEBUG_0("BGEvtCall :SetEvent( g_BGEvtArr[BGEVT_CALL] )");
     ::SetEvent(g_BGEvtArr[BGEVT_CALL]);
 }
 
@@ -199,7 +199,7 @@ void BGEvtClip(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL], WORD wStrNum)
     g_BGClipStrNum = wStrNum;
     for(WORD cnt = 0; cnt < wStrNum; cnt++)
         strcpy((char*)g_BGClipStrArr[cnt], (char*)strArr[cnt]);
-
+	HDEBUG_0("BGEvtClip :SetEvent( g_BGEvtArr[BGEVT_CLIP] )");
     ::SetEvent(g_BGEvtArr[BGEVT_CLIP]);
 }
 
@@ -218,17 +218,18 @@ UINT BGThreadProc(LPVOID pParam)
     g_BGEvtArr[BGEVT_END]   = ::CreateEvent(NULL, FALSE, FALSE, NULL);
     g_BGPassEvt = ::CreateEvent(NULL, TRUE, TRUE, NULL);
     g_BGReadNewSmsEvt = ::CreateEvent(NULL, FALSE, TRUE, NULL);
-	HDEBUG_0("BGThreadProc : enter work loop, set g_BGEvtArr first");
+	HDEBUG_0("BGThreadProc : enter work loop, initialize all g_BGEvtArr first");
     DWORD dwEvent;
     while(true)
     {
-    	
+    	HDEBUG_0("BGThreadProc : waiting for g_BGEvtArr events");
         dwEvent = ::WaitForMultipleObjects(BGEVT_ARRNUM, g_BGEvtArr, FALSE, INFINITE);
         dwEvent -= WAIT_OBJECT_0;
-
+		HDEBUG_1("BGThreadProc : got g_BGEvtArr[%s] events", dwEvent);
         switch(dwEvent) {
         case BGEVT_SMS:
             //pMainDlg->m_bInComSms = TRUE;
+            HDEBUG_0("BGThreadProc : got g_BGEvtArr[BGEVT_SMS] events and waiting for g_BGPassEvt");
             ::WaitForSingleObject(g_BGPassEvt, INFINITE);
             
             while(true)
@@ -248,6 +249,7 @@ UINT BGThreadProc(LPVOID pParam)
                     g_BGSmsQueue.wRxCount--;
                     ::LeaveCriticalSection(&g_BGSmsQueue.cs);
                     //Sleep(100);
+                    HDEBUG_0("BGThreadProc : call BGSmsResp response function");
                     (BGSmsResp.m_AtRespFunc)(BGSmsResp.m_pWnd, g_BGSmsStrArr, g_BGSmsStrNum);
                 }
                 else
@@ -259,15 +261,18 @@ UINT BGThreadProc(LPVOID pParam)
             break;
         case BGEVT_CALL:
             pMainDlg->m_bInComCall = TRUE;
+			HDEBUG_0("BGThreadProc : got g_BGEvtArr[BGEVT_CALL] events and waiting for g_BGPassEvt");
             if(WAIT_OBJECT_0 == ::WaitForSingleObject(g_BGPassEvt, INFINITE))
                 (BGCallResp.m_AtRespFunc)(BGCallResp.m_pWnd, g_BGCallStrArr, g_BGCallStrNum);
             break;
         case BGEVT_CLIP:
             pMainDlg->m_bInComCall = TRUE;
+			HDEBUG_0("BGThreadProc : got g_BGEvtArr[BGEVT_CLIP] events and waiting for g_BGPassEvt");
             if(WAIT_OBJECT_0 == ::WaitForSingleObject(g_BGPassEvt, INFINITE))
                 (BGClipResp.m_AtRespFunc)(BGClipResp.m_pWnd, g_BGClipStrArr, g_BGClipStrNum);
             break;
         case BGEVT_END:
+			HDEBUG_0("BGThreadProc : got g_BGEvtArr[BGEVT_END] events and close all BGEvtArr");
             for(BYTE i=BGEVT_SMS; i<BGEVT_ARRNUM;i++)
                 ::CloseHandle(g_BGEvtArr[i]);
             ::CloseHandle(g_BGPassEvt);
@@ -359,9 +364,10 @@ CHSDPADlg *pDsMainDlg = NULL;
 static void CallAtRespFunc(EnAtRespFuncType type)
 {
     ASSERT(type >= ATRESP_RING && type < ATRESP_MAX); 
-    
+    HDEBUG_1("CallAtRespFunc: at type = %d", type);
     if(type == ATRESP_GENERAL_AT)
     {
+    	HDEBUG_0("CallAtRespFunc: waiting for g_AtRegEvt for ATRESP_GENERAL_AT");
         if(WAIT_OBJECT_0 != ::WaitForSingleObject(g_AtRegEvt, 30000))
         {
             ASSERT(FALSE);
@@ -406,11 +412,12 @@ static void CallAtRespFunc(EnAtRespFuncType type)
             }
         }
 #endif
-
+		HDEBUG_1("CallAtRespFunc: call g_AtRespArr[%d] response function", type);
         (*g_AtRespArr[type].m_AtRespFunc)(g_AtRespArr[type].m_pWnd, g_DsatStrArr, g_DsatStrNum);
     }
     else
     {
+    	HDEBUG_0("CallAtRespFunc: call g_AtRespArr[ATRESP_GENERAL_AT] response function and reset ResetEvent(g_AtRegEvt);");
         StAtResp lastAtResp = g_AtRespArr[type];
         DeRegisterAtRespFunc(type);
         (*lastAtResp.m_AtRespFunc)(lastAtResp.m_pWnd,g_DsatStrArr, g_DsatStrNum);
@@ -476,7 +483,7 @@ static void AtRespParse(CSerialPort *pComm)
 		file.Close();		
 	}
 #endif
-
+	HDEBUG_0("AtRespParse: enter");
     BYTE ch = 0;
     while(true)
     {
@@ -614,9 +621,12 @@ static void AtRespParse(CSerialPort *pComm)
             break;
         }
 
+		
         //解析到一条完整的AT命令响应，调用AT处理回调函数
         if(g_DsatState == STATE_END && g_DsatResCode != DSAT_MAX)
         {
+        	TRACE(_T("%d"), g_DsatResCode);
+        	HDEBUG_1("AtRespParse: got a AT command response, g_DsatResCode = %u",g_DsatResCode);
             if(g_DsatResCode == DSAT_RING)
             {
                 if(g_SetData.Main_nCall)
@@ -783,6 +793,7 @@ void DsEventCreate()
     g_DsEventArr[DSEVENT_ATRESP] = g_AtRespEvent;
     g_DsEventArr[DSEVENT_ATTIMEOUT] = g_AtTimeout;
     g_DsEventArr[DSEVENT_END] = g_EndEvent;
+	HDEBUG_0("DsEventCreate() :create g_DsEventArr");
 }
 
 void DsEventDestroy()
@@ -802,23 +813,29 @@ UINT DsThreadProc(LPVOID pParam)
     DeRegisterAtRespFunc(ATRESP_MAX);
 
     ResetSmsRcvConcBuf(SMS_RCVCONCBUF_MAX);
-    
+
+	HDEBUG_0("DsThreadProc : enter DsThread and waiting for g_AppRegEvt");
     ::WaitForSingleObject(g_AppRegEvt, INFINITE);
 
+	HDEBUG_0("DsThreadProc : got g_AppRegEvt");
     DWORD dwEvent = 0;
     while(true)
     {
+    	HDEBUG_0("DsThreadProc : enter while loop, and waiting for g_DsEventArr");
         dwEvent = ::WaitForMultipleObjects(DSEVENT_ARRNUM, g_DsEventArr, FALSE, INFINITE);
         dwEvent -= WAIT_OBJECT_0;
-
+		
         switch(dwEvent) {
         case DSEVENT_ATRESP:
+			HDEBUG_0("DsThreadProc : got g_DsEventArr[DSEVENT_ATRESP]");
             AtRespParse(pComm);
             break;
         case DSEVENT_ATTIMEOUT:
+			HDEBUG_0("DsThreadProc : got g_DsEventArr[DSEVENT_ATTIMEOUT]");
             AtTimeoutProc(pComm);
             break;
         case DSEVENT_END:
+			HDEBUG_0("DsThreadProc : got g_DsEventArr[DSEVENT_END]");
             DsEventDestroy();
             AfxEndThread(0);
             break;
@@ -3257,16 +3274,18 @@ int UE_SmsFindCardRecord(EnLocType loctype, WORD nIndex)
 
 void HDEBUG(char *filepath, int line, char * msg, ...){
 	char file[250] = {0};
+	char content[250] = {0};
 	char *filename = strrchr((char *)filepath, '\\') + 1;
 	sprintf(file, ">>>>[%s:%d] ", filename, line);
 
 	strcat(file, msg);
 	strcat(file, "\n");
 	va_list arg_ptr;
-	va_start(arg_ptr, file);
+	va_start(arg_ptr, msg);
 	USES_CONVERSION;
-	unsigned short *ptr = A2W(file);
-	TRACE(ptr, arg_ptr);
+	vsprintf(content, file, arg_ptr);
+	unsigned short *ptr = A2W(content);
+	TRACE(ptr);
 	va_end(arg_ptr);
 }
 int g_DataCardTotalNum = 0; //DATACARD存储器支持的总条数
