@@ -519,6 +519,10 @@ extern BYTE g_nDataConnType;
 extern BOOL g_bConnLimitTip;
 extern CString    m_str_sms_Prompt;
 extern int gCurAutoPref;
-extern void HDEBUG(char * msg, ...);
+extern void HDEBUG(char *filepath, int line, char * msg, ...);
 
+#define HDEBUG_0(msg) HDEBUG(##__FILE__##, ##__LINE__##, msg)
+#define HDEBUG_1(msg, arg1) HDEBUG(##__FILE__##, ##__LINE__##, msg, arg1) 
+#define HDEBUG_2(msg, arg1, arg2) HDEBUG(##__FILE__##, ##__LINE__##, msg, arg1, arg2)
+#define HDEBUG_3(msg, arg1, arg2, arg3) HDEBUG(##__FILE__##, ##__LINE__##, msg, arg1, arg2, arg3) 
 #endif //#ifndef _AFX_DS_H_

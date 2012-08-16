@@ -165,7 +165,7 @@ void BGEvtSms(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL], WORD wStrNum)
         g_BGSmsQueue.wRxCount++;
     }
     ::LeaveCriticalSection(&g_BGSmsQueue.cs);
-
+	HDEBUG_0("BGEvtSms :SetEvent( g_BGEvtArr[BGEVT_SMS] )");
     ::SetEvent(g_BGEvtArr[BGEVT_SMS]);
 }
 
@@ -218,10 +218,11 @@ UINT BGThreadProc(LPVOID pParam)
     g_BGEvtArr[BGEVT_END]   = ::CreateEvent(NULL, FALSE, FALSE, NULL);
     g_BGPassEvt = ::CreateEvent(NULL, TRUE, TRUE, NULL);
     g_BGReadNewSmsEvt = ::CreateEvent(NULL, FALSE, TRUE, NULL);
-
+	HDEBUG_0("BGThreadProc : enter work loop, set g_BGEvtArr first");
     DWORD dwEvent;
     while(true)
     {
+    	
         dwEvent = ::WaitForMultipleObjects(BGEVT_ARRNUM, g_BGEvtArr, FALSE, INFINITE);
         dwEvent -= WAIT_OBJECT_0;
 
@@ -3254,10 +3255,10 @@ int UE_SmsFindCardRecord(EnLocType loctype, WORD nIndex)
     return -1;
 }
 
-void HDEBUG(char * msg, ...){
+void HDEBUG(char *filepath, int line, char * msg, ...){
 	char file[250] = {0};
-	char *filename = strrchr((char *)__FILE__, '\\') + 1;
-	sprintf(file, ">>>>[%s:%d] ", filename, __LINE__);
+	char *filename = strrchr((char *)filepath, '\\') + 1;
+	sprintf(file, ">>>>[%s:%d] ", filename, line);
 
 	strcat(file, msg);
 	strcat(file, "\n");
