@@ -1874,7 +1874,7 @@ void CHSDPADlg::AtRespCPBSS(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL], WORD w
 void CHSDPADlg::AtRespCLIP(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL], WORD wStrNum)
 {
 	CHSDPADlg* pdlg=(CHSDPADlg*)pWnd;
-
+	HDEBUG_0("AtRespCLIP");
 	if (pdlg->m_pCallDlg->m_blIsInCalling)
 	{
 		return;
@@ -2430,6 +2430,7 @@ void CHSDPADlg::AtRespHandSet(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL], WORD
 
 void CHSDPADlg::AtRespATE0(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL], WORD wStrNum)
 {
+	HDEBUG_0("AtRespATE0 : setEvent m_hSyncInitEvt");
     SetEvent(((CHSDPADlg*)pWnd)->m_hSyncInitEvt);
 }
 
@@ -2928,6 +2929,7 @@ LRESULT CHSDPADlg::PinVerify(WPARAM wParam, LPARAM lParam)
 
 LRESULT CHSDPADlg::OnInitSMSAndPB(WPARAM wParam, LPARAM lParam)
 {
+	HDEBUG_1("OnInitSMSAndPB enter wParam=%d", wParam);
 	if (wParam == 1)
 	{
 		SyncInitFunc();
@@ -3064,6 +3066,7 @@ void CHSDPADlg::RegisterDsAutoMsgRsp()
 	RegisterAtRespFunc(ATRESP_PS, AtRespPS, (LPVOID)this);
 	RegisterAtRespFunc(ATRESP_HVPRIV, AtRespHVPRIV, (LPVOID)this);
 	RegisterAtRespFunc(ATRESP_SIDLOCK, AtRespSIDLOCK, (LPVOID)this);
+	HDEBUG_0("RegisterDsAutoMsgRsp : regist auto msg response, and set event g_AppRegEvt");
     ::SetEvent(g_AppRegEvt);
 }
 
@@ -3109,13 +3112,17 @@ EnSyncInitFuncRetType CHSDPADlg::AtSndATE0()
 {
     char szAtBuf[20] = {0};
     strcpy(szAtBuf, "ATE0\r");
+	HDEBUG_0("AtSndATE0 : write data to port");
     if(m_pComm->WriteToPort(szAtBuf, strlen(szAtBuf)))
     {
+    	HDEBUG_0("AtSndATE0 : RegisterAtRespFunc  ATRESP_GENERAL_AT");
         RegisterAtRespFunc(ATRESP_GENERAL_AT, AtRespATE0, (LPVOID)this);
 
-        if(WAIT_OBJECT_0 == WaitForSingleObject(m_hSyncInitEvt, 8000))
+		HDEBUG_0("AtSndATE0 : begin to waiting for m_hSyncInitEvt");
+        if(WAIT_OBJECT_0 == WaitForSingleObject(m_hSyncInitEvt, 8000)){
+			HDEBUG_0("AtSndATE0 : got m_hSyncInitEvt, return SYNCINITFUNCRET_DONE");
             return SYNCINITFUNCRET_DONE;
-        else
+        }else
             return SYNCINITFUNCRET_RSP_TO;
     }
     else
@@ -3306,7 +3313,7 @@ BOOL CHSDPADlg::SyncInitFunc(int nStatus)
     EnterCriticalSection(&m_csSyncInitMask);
     m_bSyncInitMask = TRUE;
     LeaveCriticalSection(&m_csSyncInitMask);
-
+	HDEBUG_0("SyncInitFunc enter, ResetEvent g_BGPassEvt");
     //初始化时不接收来电来短信
     ::ResetEvent(g_BGPassEvt); 
 	
@@ -3363,6 +3370,7 @@ BOOL CHSDPADlg::SyncInitFunc(int nStatus)
     do {
         cnt++;
     	InitType = AtSndATE0();
+		HDEBUG_0("AtSndATE0 return %d", InitType);
         if(InitType == SYNCINITFUNCRET_RSP_TO)
         {
             DeRegisterAtRespFunc(ATRESP_GENERAL_AT);
@@ -3821,6 +3829,7 @@ BOOL CHSDPADlg::SyncInitFunc(int nStatus)
 	}
 
     //可以接收来电来短信
+    HDEBUG_0("SyncInitFunc : set event g_BGPassEvt");
     ::SetEvent(g_BGPassEvt);
     
     EnterCriticalSection(&m_csSyncInitMask);
