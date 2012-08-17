@@ -57,6 +57,9 @@ public:
 	static void RspAtSmsQHMSGL(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL], WORD wStrNum);
     //œÏ”¶AT$QCMGS
 	static void RspAtSmsQCMGS(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL], WORD wStrNum);	
+#ifdef FEATURE_HAIER_SMS
+	static void AtRespHCMGSS(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL], WORD wStrNum);
+#endif
 
     CSmsWriteDlg(CWnd* pParent = NULL,
                  LPCTSTR lpszNumber = NULL,

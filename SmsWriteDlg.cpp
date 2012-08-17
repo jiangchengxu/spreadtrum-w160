@@ -91,8 +91,17 @@ CSmsWriteDlg::CSmsWriteDlg(CWnd* pParent,LPCTSTR lpszNumber, LPCTSTR lpszContent
 	{
 		wcsncpy((TCHAR*)m_szSCNumber, gSmsCentreNum, SMS_SC_NUM_MAX);
 	}
-	
+	#ifdef FEATURE_HAIER_SMS
+	RegisterAtRespFunc(ATRESP_HCMGSS,AtRespHCMGSS,this);
+	#endif
 }
+
+#ifdef FEATURE_HAIER_SMS
+void CSmsWriteDlg::AtRespHCMGSS(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL], WORD wStrNum)
+{
+	((CSmsWriteDlg *)pWnd)->PostMessage(WM_SMS_SEND_PROC, (WPARAM)AT_SMS_QCMGS, (LPARAM)TRUE);	
+}
+#endif
 
 void CSmsWriteDlg::DoDataExchange(CDataExchange* pDX)
 {
@@ -1013,10 +1022,31 @@ BOOL CSmsWriteDlg::SndAtSmsQCMGS(int nStep)
 //                   ASCToUCS2((char*)szHead,(TCHAR *)unicodStr );
 //                   wcscpy(szAtBuf, unicodStr);
 // 				      	       delete[] unicodStr;
+#ifdef FEATURE_HAIER_SMS
+#else
 				CString unicodStr = A2W(szHead);
 				wcscpy(szAtBuf, BTToUCS2(unicodStr));
+#endif
             }
-            
+#ifdef FEATURE_HAIER_SMS
+			if(m_pMainWnd->m_pSmsDlg->sms_format == 1){
+				//ascii
+				USES_CONVERSION;
+				int len = ((CString)gszSmsSege[gSmsCurSege]).GetLength();
+				char* p = T2A(gszSmsSege[gSmsCurSege]);
+				strncpy(szAtAscBuf, (char *)p, len);
+				szAtAscBuf[len] = gccCtrl_Z;
+				buffsize=len+1;
+			}else{
+				//unicode
+				wchar_t *buf = GBTOWChar((CString)gszSmsSege[gSmsCurSege]);
+				int iLen = wcslen((wchar_t *)buf);
+				wcsncpy((wchar_t *)szAtAscBuf, buf, iLen);
+				szAtAscBuf[iLen*2] = 0;
+				szAtAscBuf[iLen*2+1] = gccCtrl_Z;
+				buffsize=iLen*2+2;
+			}
+#else   
 			CString strUc = BTToUCS2((CString)gszSmsSege[gSmsCurSege]);
 			wcsncat(szAtBuf, strUc, sizeof(szAtBuf));
 			int szhlen=WCharToUnicode(szAtBuf,szAtAscBuf);
@@ -1024,6 +1054,7 @@ BOOL CSmsWriteDlg::SndAtSmsQCMGS(int nStep)
 			
             szAtAscBuf[szhlen] = gccCtrl_Z;
 			buffsize=szhlen+1;
+#endif
         }
         else
 #endif
@@ -1145,7 +1176,13 @@ void CSmsWriteDlg::RspAtSmsQCMGS(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL], W
 			pDlg->thelastone = FALSE;
 			
 		}
+
+		#ifdef FEATURE_HAIER_SMS
+		::SetEvent(g_BGCSSEvt);
+		#else
         pDlg->PostMessage(WM_SMS_SEND_PROC, (WPARAM)AT_SMS_QCMGS, (LPARAM)TRUE);
+		#endif
+
     }
     else
 	{

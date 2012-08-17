@@ -93,6 +93,9 @@ const char gc_dsatResCodeTbl[DSAT_MAX][DSAT_MODE_MAX][30] =
 	"^CONN:", "^CONN:",
 	"+CANS","+CANS",
 #endif
+#ifdef FEATURE_HAIER_SMS
+	"^HCMGSS:","^HCMGSS:"
+#endif
 };
 
 static StAtResp g_AtRespArr[ATRESP_MAX];
@@ -125,10 +128,15 @@ static EnDsatResCode g_DsatResCode = DSAT_MAX;
 HANDLE g_BGPassEvt;
 HANDLE g_BGReadNewSmsEvt;
 HANDLE g_BGEvtArr[BGEVT_ARRNUM];
-
+#ifdef FEATURE_HAIER_SMS
+HANDLE g_BGCSSEvt;//Concate sms sent event
+#endif
 StAtResp BGSmsResp;
 StAtResp BGCallResp;
 StAtResp BGClipResp;
+#ifdef FEATURE_HAIER_SMS
+StAtResp BGCSSResp;
+#endif
 
 //解析结果字符串缓冲
 static BYTE g_BGSmsStrArr[BG_STRING_ROW][BG_STRING_COL];
@@ -142,6 +150,19 @@ static WORD g_BGClipStrNum;
 
 //短消息CMTI通知缓存队列
 static StBGSmsQueue g_BGSmsQueue;
+
+#ifdef FEATURE_HAIER_SMS
+void BGEvtCSS(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL], WORD wStrNum)
+{
+    ASSERT(wStrNum <= BG_STRING_ROW);
+
+    if(wStrNum > BG_STRING_ROW)
+    {
+        return;
+    }
+    ::SetEvent(g_BGEvtArr[BGEVT_CSS]);
+}
+#endif
 
 void BGEvtSms(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL], WORD wStrNum)
 {
@@ -216,6 +237,10 @@ UINT BGThreadProc(LPVOID pParam)
     g_BGEvtArr[BGEVT_CALL]  = ::CreateEvent(NULL, FALSE, FALSE, NULL);
     g_BGEvtArr[BGEVT_CLIP]  = ::CreateEvent(NULL, FALSE, FALSE, NULL);
     g_BGEvtArr[BGEVT_END]   = ::CreateEvent(NULL, FALSE, FALSE, NULL);
+#ifdef FEATURE_HAIER_SMS
+	g_BGEvtArr[BGEVT_CSS]	= ::CreateEvent(NULL, FALSE, FALSE, NULL);
+	g_BGCSSEvt = ::CreateEvent(NULL, FALSE, FALSE, NULL); 
+#endif
     g_BGPassEvt = ::CreateEvent(NULL, TRUE, TRUE, NULL);
     g_BGReadNewSmsEvt = ::CreateEvent(NULL, FALSE, TRUE, NULL);
 
@@ -266,6 +291,13 @@ UINT BGThreadProc(LPVOID pParam)
             if(WAIT_OBJECT_0 == ::WaitForSingleObject(g_BGPassEvt, INFINITE))
                 (BGClipResp.m_AtRespFunc)(BGClipResp.m_pWnd, g_BGClipStrArr, g_BGClipStrNum);
             break;
+#ifdef FEATURE_HAIER_SMS
+		case BGEVT_CSS:
+			if(WAIT_OBJECT_0 == ::WaitForSingleObject(g_BGCSSEvt, INFINITE)){
+                (BGCSSResp.m_AtRespFunc)(BGCSSResp.m_pWnd, 0, 0);
+            }
+            break;
+#endif
         case BGEVT_END:
             for(BYTE i=BGEVT_SMS; i<BGEVT_ARRNUM;i++)
                 ::CloseHandle(g_BGEvtArr[i]);
@@ -320,6 +352,14 @@ void RegisterAtRespFunc(EnAtRespFuncType type, AtRespFunc func, LPVOID pWnd)
         g_AtRespArr[type].m_AtRespFunc = BGEvtSms;
         g_AtRespArr[type].m_pWnd = NULL;
     }
+#ifdef FEATURE_HAIER_SMS
+	else if(type == ATRESP_HCMGSS){
+        BGCSSResp.m_AtRespFunc = func;
+        BGCSSResp.m_pWnd = pWnd;
+        g_AtRespArr[type].m_AtRespFunc = BGEvtCSS;
+        g_AtRespArr[type].m_pWnd = NULL;
+	}
+#endif
     else
     {
         g_AtRespArr[type].m_AtRespFunc = func;
@@ -729,6 +769,11 @@ static void AtRespParse(CSerialPort *pComm)
 				//dont process ^CONN unsolicited command now
 			}else if(g_DsatResCode == DSAT_CANS){
 				//dont process +CANS unsolicited command now
+			}
+#endif
+#ifdef FEATURE_HAIER_SMS
+			else if(g_DsatResCode == DSAT_HCMGSS){
+				CallAtRespFunc(ATRESP_HCMGSS);
 			}
 #endif
 #ifdef FEATURE_ATAMOI
