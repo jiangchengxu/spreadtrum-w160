@@ -86,6 +86,9 @@ typedef enum
 	DSAT_CONN,
 	DSAT_CANS,
 #endif
+#ifdef FEATURE_HAIER_SMS
+	DSAT_HCMGSS,
+#endif
     DSAT_MAX
 } EnDsatResCode;
 
@@ -106,7 +109,10 @@ typedef enum
     BGEVT_SMS = 0, 
     BGEVT_CALL, 
     BGEVT_CLIP,
-    BGEVT_END, 
+    BGEVT_END,
+#ifdef FEATURE_HAIER_SMS
+	BGEVT_CSS,
+#endif 
     BGEVT_ARRNUM,
 } EnBGEvt;
 
@@ -128,7 +134,9 @@ typedef struct
 extern HANDLE g_BGPassEvt;
 extern HANDLE g_BGReadNewSmsEvt;
 extern HANDLE g_BGEvtArr[BGEVT_ARRNUM];
-
+#ifdef FEATURE_HAIER_SMS
+extern HANDLE g_BGCSSEvt;
+#endif
 
 //AT命令处理回调函数
 #if 0
@@ -163,6 +171,9 @@ typedef enum
 	ATRESP_PS,         /*数据业务*/
 	ATRESP_HVPRIV,
 	ATRESP_SIDLOCK,
+#ifdef FEATURE_HAIER_SMS
+	ATRESP_HCMGSS,
+#endif
     ATRESP_GENERAL_AT,  /*通用AT*/
     ATRESP_MAX
 } EnAtRespFuncType;

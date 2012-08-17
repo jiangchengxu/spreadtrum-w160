@@ -93,6 +93,9 @@ const char gc_dsatResCodeTbl[DSAT_MAX][DSAT_MODE_MAX][30] =
 	"^CONN:", "^CONN:",
 	"+CANS","+CANS",
 #endif
+#ifdef FEATURE_HAIER_SMS
+	"^HCMGSS:","^HCMGSS:"
+#endif
 };
 
 static StAtResp g_AtRespArr[ATRESP_MAX];
@@ -125,10 +128,15 @@ static EnDsatResCode g_DsatResCode = DSAT_MAX;
 HANDLE g_BGPassEvt;
 HANDLE g_BGReadNewSmsEvt;
 HANDLE g_BGEvtArr[BGEVT_ARRNUM];
-
+#ifdef FEATURE_HAIER_SMS
+HANDLE g_BGCSSEvt;//Concate sms sent event
+#endif
 StAtResp BGSmsResp;
 StAtResp BGCallResp;
 StAtResp BGClipResp;
+#ifdef FEATURE_HAIER_SMS
+StAtResp BGCSSResp;
+#endif
 
 //解析结果字符串缓冲
 static BYTE g_BGSmsStrArr[BG_STRING_ROW][BG_STRING_COL];
@@ -142,6 +150,20 @@ static WORD g_BGClipStrNum;
 
 //短消息CMTI通知缓存队列
 static StBGSmsQueue g_BGSmsQueue;
+
+#ifdef FEATURE_HAIER_SMS
+void BGEvtCSS(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL], WORD wStrNum)
+{
+    ASSERT(wStrNum <= BG_STRING_ROW);
+
+    if(wStrNum > BG_STRING_ROW)
+    {
+        return;
+    }
+	HDEBUG_0("BGEvtSms :SetEvent( g_BGEvtArr[BGEvtCSS] )");
+    ::SetEvent(g_BGEvtArr[BGEVT_CSS]);
+}
+#endif
 
 void BGEvtSms(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL], WORD wStrNum)
 {
@@ -216,6 +238,10 @@ UINT BGThreadProc(LPVOID pParam)
     g_BGEvtArr[BGEVT_CALL]  = ::CreateEvent(NULL, FALSE, FALSE, NULL);
     g_BGEvtArr[BGEVT_CLIP]  = ::CreateEvent(NULL, FALSE, FALSE, NULL);
     g_BGEvtArr[BGEVT_END]   = ::CreateEvent(NULL, FALSE, FALSE, NULL);
+#ifdef FEATURE_HAIER_SMS
+	g_BGEvtArr[BGEVT_CSS]	= ::CreateEvent(NULL, FALSE, FALSE, NULL);
+	g_BGCSSEvt = ::CreateEvent(NULL, FALSE, FALSE, NULL); 
+#endif
     g_BGPassEvt = ::CreateEvent(NULL, TRUE, TRUE, NULL);
     g_BGReadNewSmsEvt = ::CreateEvent(NULL, FALSE, TRUE, NULL);
 	HDEBUG_0("BGThreadProc : enter work loop, initialize all g_BGEvtArr first");
@@ -225,7 +251,7 @@ UINT BGThreadProc(LPVOID pParam)
     	HDEBUG_0("BGThreadProc : waiting for g_BGEvtArr events");
         dwEvent = ::WaitForMultipleObjects(BGEVT_ARRNUM, g_BGEvtArr, FALSE, INFINITE);
         dwEvent -= WAIT_OBJECT_0;
-		HDEBUG_1("BGThreadProc : got g_BGEvtArr[%s] events", dwEvent);
+		HDEBUG_0("BGThreadProc : got g_BGEvtArr events");
         switch(dwEvent) {
         case BGEVT_SMS:
             //pMainDlg->m_bInComSms = TRUE;
@@ -275,6 +301,14 @@ UINT BGThreadProc(LPVOID pParam)
                 (BGClipResp.m_AtRespFunc)(BGClipResp.m_pWnd, g_BGClipStrArr, g_BGClipStrNum);
             }
             break;
+#ifdef FEATURE_HAIER_SMS
+		case BGEVT_CSS:
+			if(WAIT_OBJECT_0 == ::WaitForSingleObject(g_BGCSSEvt, INFINITE)){
+				HDEBUG_0("BGThreadProc : BGEVT_CSS got g_BGPassEvt");
+                (BGCSSResp.m_AtRespFunc)(BGCSSResp.m_pWnd, 0, 0);
+            }
+            break;
+#endif
         case BGEVT_END:
 			HDEBUG_0("BGThreadProc : got g_BGEvtArr[BGEVT_END] events and close all BGEvtArr");
             for(BYTE i=BGEVT_SMS; i<BGEVT_ARRNUM;i++)
@@ -330,6 +364,14 @@ void RegisterAtRespFunc(EnAtRespFuncType type, AtRespFunc func, LPVOID pWnd)
         g_AtRespArr[type].m_AtRespFunc = BGEvtSms;
         g_AtRespArr[type].m_pWnd = NULL;
     }
+#ifdef FEATURE_HAIER_SMS
+	else if(type == ATRESP_HCMGSS){
+        BGCSSResp.m_AtRespFunc = func;
+        BGCSSResp.m_pWnd = pWnd;
+        g_AtRespArr[type].m_AtRespFunc = BGEvtCSS;
+        g_AtRespArr[type].m_pWnd = NULL;
+	}
+#endif
     else
     {
         g_AtRespArr[type].m_AtRespFunc = func;
@@ -368,7 +410,7 @@ CHSDPADlg *pDsMainDlg = NULL;
 static void CallAtRespFunc(EnAtRespFuncType type)
 {
     ASSERT(type >= ATRESP_RING && type < ATRESP_MAX); 
-    HDEBUG_1("CallAtRespFunc: at type = %d", type);
+    HDEBUG_0("CallAtRespFunc: at type =");
     if(type == ATRESP_GENERAL_AT)
     {
     	HDEBUG_0("CallAtRespFunc: waiting for g_AtRegEvt for ATRESP_GENERAL_AT");
@@ -416,7 +458,7 @@ static void CallAtRespFunc(EnAtRespFuncType type)
             }
         }
 #endif
-		HDEBUG_1("CallAtRespFunc: call g_AtRespArr[%d] response function", type);
+		HDEBUG_0("CallAtRespFunc: call g_AtRespArr response function");
         (*g_AtRespArr[type].m_AtRespFunc)(g_AtRespArr[type].m_pWnd, g_DsatStrArr, g_DsatStrNum);
     }
     else
@@ -629,7 +671,7 @@ static void AtRespParse(CSerialPort *pComm)
         //解析到一条完整的AT命令响应，调用AT处理回调函数
         if(g_DsatState == STATE_END && g_DsatResCode != DSAT_MAX)
         {
-        	HDEBUG_1("AtRespParse: got a AT command response, g_DsatResCode = %u",g_DsatResCode);
+        	HDEBUG_0("AtRespParse: got a AT command response, g_DsatResCode = ");
             if(g_DsatResCode == DSAT_RING)
             {
                 if(g_SetData.Main_nCall)
@@ -743,6 +785,11 @@ static void AtRespParse(CSerialPort *pComm)
 				//dont process ^CONN unsolicited command now
 			}else if(g_DsatResCode == DSAT_CANS){
 				//dont process +CANS unsolicited command now
+			}
+#endif
+#ifdef FEATURE_HAIER_SMS
+			else if(g_DsatResCode == DSAT_HCMGSS){
+				CallAtRespFunc(ATRESP_HCMGSS);
 			}
 #endif
 #ifdef FEATURE_ATAMOI
@@ -3276,6 +3323,7 @@ int UE_SmsFindCardRecord(EnLocType loctype, WORD nIndex)
 }
 
 void HDEBUG(char *filepath, int line, char * msg, ...){
+#if 1
 	char file[250] = {0};
 	char content[250] = {0};
 	char *filename = strrchr((char *)filepath, '\\') + 1;
@@ -3290,6 +3338,7 @@ void HDEBUG(char *filepath, int line, char * msg, ...){
 	unsigned short *ptr = A2W(content);
 	TRACE(ptr);
 	va_end(arg_ptr);
+#endif
 }
 int g_DataCardTotalNum = 0; //DATACARD存储器支持的总条数
 int g_USimTotalNum = 0;     //USIM存储器支持的总条数

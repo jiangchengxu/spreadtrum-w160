@@ -3370,7 +3370,7 @@ BOOL CHSDPADlg::SyncInitFunc(int nStatus)
     do {
         cnt++;
     	InitType = AtSndATE0();
-		HDEBUG_0("AtSndATE0 return %d", InitType);
+		HDEBUG_0("AtSndATE0 return %d");
         if(InitType == SYNCINITFUNCRET_RSP_TO)
         {
             DeRegisterAtRespFunc(ATRESP_GENERAL_AT);
