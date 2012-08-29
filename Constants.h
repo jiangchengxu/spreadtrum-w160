@@ -64,7 +64,7 @@ const int SMS_SC_NUM_MAX = PB_NUM_MAX;
 //const int SMS_CONCAT8_ASCII_MAX = 153;
 //const int SMS_CONCAT8_GB_MAX = 67;
 
-const int SMS_CONCAT8_ASCII_MAX = 153;//FLEXI 需求
+const int SMS_CONCAT8_ASCII_MAX = 153;//FLEXI 需求 
 const int SMS_CONCAT8_GB_MAX = 63;//FLEXI 需求
 
 const int SMS_CONCAT16_ASCII_MAX = 151;

@@ -708,7 +708,7 @@ BOOL CSmsWriteDlg::SndAtSmsQHMSGP()
 		{
 			if(gSmsIsAsciiCode)
 			{
-				m_pMainWnd->m_pSmsDlg->sms_format = 1;
+				m_pMainWnd->m_pSmsDlg->sms_format = 1;//GSM7
 			}
 			else
 			{
@@ -719,7 +719,7 @@ BOOL CSmsWriteDlg::SndAtSmsQHMSGP()
 		{
 			if(IsAlphabetUnicode(m_strSmsDetails))
 			{
-				m_pMainWnd->m_pSmsDlg->sms_format = 1;
+				m_pMainWnd->m_pSmsDlg->sms_format = 1; //GSM7
 			}
 			else
 			{
@@ -995,14 +995,25 @@ BOOL CSmsWriteDlg::SndAtSmsQCMGS(int nStep)
 //             szGPTemp,
 //             pNumType);
 // 		delete []szGPTemp;
-
+#ifndef FEATURE_HAIER_SMS
+        char szHead[30];
+        if(gSmsIsConcatenate)
+        {
+            memset(szHead, 0x00, sizeof(szHead));
+            SetConcatenateSmsParaA(szHead, gSmsRefCnt, gSmsCurSege+1, gSmsTotalSege, MinMaxChar);
+		}
+		sprintf(szAtAscBuf, "%s\"%s\",0,%s,\r", 
+        gcstrAtSms[AT_SMS_QCMGS], 
+		m_szGroupNumSendNum,
+        szHead);
+#else
 		sprintf(szAtAscBuf, "%s\"%s\",%s\r", 
-            gcstrAtSms[AT_SMS_QCMGS], 
-            /*m_szGroupNum[m_nCurNum],*/
-			m_szGroupNumSendNum,
-            pNumType);
-
-             buffsize=strlen(szAtAscBuf);
+        gcstrAtSms[AT_SMS_QCMGS], 
+        /*m_szGroupNum[m_nCurNum],*/
+		m_szGroupNumSendNum,
+        pNumType);
+#endif
+        buffsize=strlen(szAtAscBuf);
     }
     else
     {
@@ -1013,6 +1024,7 @@ BOOL CSmsWriteDlg::SndAtSmsQCMGS(int nStep)
 
         if(bConcsms)
         {
+#ifdef FEATURE_HAIER_SMS
             char szHead[30];
             memset(szHead, 0x00, sizeof(szHead));
             if(SetConcatenateSmsParaA(szHead, gSmsRefCnt, gSmsCurSege+1, gSmsTotalSege, MinMaxChar))
@@ -1022,21 +1034,22 @@ BOOL CSmsWriteDlg::SndAtSmsQCMGS(int nStep)
 //                   ASCToUCS2((char*)szHead,(TCHAR *)unicodStr );
 //                   wcscpy(szAtBuf, unicodStr);
 // 				      	       delete[] unicodStr;
-#ifdef FEATURE_HAIER_SMS
-#else
-				CString unicodStr = A2W(szHead);
-				wcscpy(szAtBuf, BTToUCS2(unicodStr));
-#endif
+
+//				CString unicodStr = A2W(szHead);
+//				wcscpy(szAtBuf, BTToUCS2(unicodStr));
+				memcpy(szAtAscBuf, szHead, 6);
             }
+#endif
 #ifdef FEATURE_HAIER_SMS
 			if(m_pMainWnd->m_pSmsDlg->sms_format == 1){
 				//ascii
 				USES_CONVERSION;
-				int len = ((CString)gszSmsSege[gSmsCurSege]).GetLength();
+				int len = ((CString)gszSmsSege[gSmsCurSege]).GetLength() + 6;
 				char* p = T2A(gszSmsSege[gSmsCurSege]);
-				strncpy(szAtAscBuf, (char *)p, len);
+				strncpy(szAtAscBuf + 6, (char *)p, len - 6);
 				szAtAscBuf[len] = gccCtrl_Z;
-				buffsize=len+1;
+				buffsize=len+1 ;
+				TRACE(_T("len = %d"), len);
 			}else{
 				//unicode
 				wchar_t *buf = GBTOWChar((CString)gszSmsSege[gSmsCurSege]);
@@ -1064,6 +1077,7 @@ BOOL CSmsWriteDlg::SndAtSmsQCMGS(int nStep)
 				//ascii
 				USES_CONVERSION;
 				int len = m_strSmsDetails.GetLength();
+				
 				char* p = T2A(m_strSmsDetails);
 				strncpy(szAtAscBuf, (char *)p, len);
 				szAtAscBuf[len] = gccCtrl_Z;

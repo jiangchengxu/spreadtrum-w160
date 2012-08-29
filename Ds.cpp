@@ -1796,6 +1796,17 @@ BOOL SetConcatenateSmsParaA(char *DspBuf, USHORT nRefCnt, BYTE nSeqCnt, BYTE nTo
         return FALSE;
     else
     {
+#ifdef FEATURE_HAIER_SMS
+        if(nRefCnt <= 0x00FF){
+			DspBuf[0] = 0x05;
+			DspBuf[1] = 0x00;
+			DspBuf[2] = 0x03;
+			DspBuf[3] = nRefCnt & 0xFF;
+			DspBuf[4] = nTotalCnt & 0xFF;
+			DspBuf[5] = nSeqCnt & 0xFF;
+        }
+        return TRUE;
+#else
         if(nRefCnt <= 0x00FF)
 		{
 			if (nSeqCnt<10 && nTotalCnt <10)
@@ -1837,6 +1848,7 @@ BOOL SetConcatenateSmsParaA(char *DspBuf, USHORT nRefCnt, BYTE nSeqCnt, BYTE nTo
 				sprintf(DspBuf,"(%d%c%d)",nSeqCnt,MinMaxChar,nTotalCnt);//FLEXI modify by liub
 			}
 		}
+#endif
             //sprintf(DspBuf, "060804%04X%02X%02X", nRefCnt, nTotalCnt, nSeqCnt);
 		    //sprintf(DspBuf,"(%d/%d)",nSeqCnt,nTotalCnt);//FLEXI modify by liub
         return TRUE;
