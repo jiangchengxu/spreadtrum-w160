@@ -996,24 +996,12 @@ BOOL CSmsWriteDlg::SndAtSmsQCMGS(int nStep)
 //             szGPTemp,
 //             pNumType);
 // 		delete []szGPTemp;
-#ifndef FEATURE_HAIER_SMS
-        char szHead[30];
-        if(gSmsIsConcatenate)
-        {
-            memset(szHead, 0x00, sizeof(szHead));
-            SetConcatenateSmsParaA(szHead, gSmsRefCnt, gSmsCurSege+1, gSmsTotalSege, MinMaxChar);
-		}
-		sprintf(szAtAscBuf, "%s\"%s\",0,%s,\r", 
-        gcstrAtSms[AT_SMS_QCMGS], 
-		m_szGroupNumSendNum,
-        szHead);
-#else
 		sprintf(szAtAscBuf, "%s\"%s\",%s\r", 
         gcstrAtSms[AT_SMS_QCMGS], 
         /*m_szGroupNum[m_nCurNum],*/
 		m_szGroupNumSendNum,
         pNumType);
-#endif
+
         buffsize=strlen(szAtAscBuf);
     }
     else
@@ -1025,7 +1013,6 @@ BOOL CSmsWriteDlg::SndAtSmsQCMGS(int nStep)
 
         if(bConcsms)
         {
-#ifdef FEATURE_HAIER_SMS
             char szHead[30];
             memset(szHead, 0x00, sizeof(szHead));
             if(SetConcatenateSmsParaA(szHead, gSmsRefCnt, gSmsCurSege+1, gSmsTotalSege, MinMaxChar))
@@ -1040,7 +1027,7 @@ BOOL CSmsWriteDlg::SndAtSmsQCMGS(int nStep)
 //				wcscpy(szAtBuf, BTToUCS2(unicodStr));
 				memcpy(szAtAscBuf, szHead, 6);
             }
-#endif
+
 #ifdef FEATURE_HAIER_SMS
 			if(m_pMainWnd->m_pSmsDlg->sms_format == 1){
 				//ascii
