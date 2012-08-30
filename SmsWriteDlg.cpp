@@ -953,6 +953,7 @@ BOOL CSmsWriteDlg::SndAtSmsQCMGS(int nStep)
     TCHAR szAtBuf[1600] = {0};
     char szAtAscBuf[1600] = {0};
 	int buffsize;
+	int udhLen = 6;
     ASSERT(m_nCurNum < m_nNumCount);
 
     if(nStep == 1)
@@ -1044,20 +1045,19 @@ BOOL CSmsWriteDlg::SndAtSmsQCMGS(int nStep)
 			if(m_pMainWnd->m_pSmsDlg->sms_format == 1){
 				//ascii
 				USES_CONVERSION;
-				int len = ((CString)gszSmsSege[gSmsCurSege]).GetLength() + 6;
+				int len = ((CString)gszSmsSege[gSmsCurSege]).GetLength() + udhLen;
 				char* p = T2A(gszSmsSege[gSmsCurSege]);
-				strncpy(szAtAscBuf + 6, (char *)p, len - 6);
+				strncpy(szAtAscBuf + udhLen, (char *)p, len - udhLen);
 				szAtAscBuf[len] = gccCtrl_Z;
 				buffsize=len+1 ;
-				TRACE(_T("len = %d"), len);
 			}else{
 				//unicode
 				wchar_t *buf = GBTOWChar((CString)gszSmsSege[gSmsCurSege]);
 				int iLen = wcslen((wchar_t *)buf);
-				wcsncpy((wchar_t *)szAtAscBuf, buf, iLen);
-				szAtAscBuf[iLen*2] = 0;
-				szAtAscBuf[iLen*2+1] = gccCtrl_Z;
-				buffsize=iLen*2+2;
+				wcsncpy((wchar_t *)(szAtAscBuf + udhLen), buf, iLen);
+				szAtAscBuf[iLen*2 + udhLen] = 0;
+				szAtAscBuf[iLen*2+1 + udhLen] = gccCtrl_Z;
+				buffsize=iLen*2+2 + udhLen;
 			}
 #else   
 			CString strUc = BTToUCS2((CString)gszSmsSege[gSmsCurSege]);
