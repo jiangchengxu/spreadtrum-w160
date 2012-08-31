@@ -17,9 +17,7 @@
 #define UPCASE(c) (((c) >= 'a' && (c) <= 'z') ? ((c) - 0x20) : (c))
 
 //AT命令结果码
-typedef enum
-{
-#ifndef FEATURE_ATAMOI
+typedef enum {
     DSAT_OK = 0,
     DSAT_ERROR,
     DSAT_RING,
@@ -27,63 +25,33 @@ typedef enum
     DSAT_DIALTONE,
     DSAT_CME_ERROR,
     DSAT_CMS_ERROR,
-	DSAT_CMS_ERROR_500,
+    DSAT_CMS_ERROR_500,
     DSAT_CMTI,
     DSAT_CMT,
-	DSAT_RVMFB,//add by liub
-	DSAT_RVMFBUPDATE,
+    DSAT_RVMFB,//add by liub
+    DSAT_RVMFBUPDATE,
     DSAT_RSSI,
-    DSAT_CSMSS, 
-    DSAT_CPBSS, 
+    DSAT_CSMSS,
+    DSAT_CPBSS,
     DSAT_CLIP,
-    DSAT_NWCHG, 
+    DSAT_NWCHG,
     DSAT_NWSRVCHG,
     DSAT_ROAMCHG,
     DSAT_HANDSET,
     DSAT_SIMREADY,
     DSAT_PLMNCHG,
-    DSAT_SRVSTATUSCHG, 
-    DSAT_CDS, 
-	DSAT_CUSD,
-	DSAT_PS,   
-#else
-    DSAT_OK = 0,
-    DSAT_ERROR,
-    DSAT_CME_ERROR,
-    DSAT_CMS_ERROR,
-	DSAT_CMS_ERROR_500,
-    DSAT_ATAMOI,
-    DSAT_RING,
-    DSAT_NO_CARRIER,
-    DSAT_DIALTONE,
-    DSAT_CMTI, 
-    DSAT_CMT, 
-	DSAT_RVMFB,//add by liub
-	DSAT_RVMFBUPDATE,
-    DSAT_RSSI,
-    DSAT_CSMSS, 
-    DSAT_CPBSS, 
-    DSAT_CLIP,
-    DSAT_NWCHG, 
-    DSAT_NWSRVCHG, 
-    DSAT_ROAMCHG,
-    DSAT_HANDSET,
-    DSAT_SIMREADY,
-    DSAT_PLMNCHG, 
-    DSAT_SRVSTATUSCHG, 
-    DSAT_CDS, 
-	DSAT_CUSD,
-	DSAT_PS,  
-#endif
-	DSAT_HVPRIV,
-	DSAT_SIDLOCK,
+    DSAT_SRVSTATUSCHG,
+    DSAT_CDS,
+    DSAT_CUSD,
+    DSAT_PS,
+    DSAT_HVPRIV,
+    DSAT_SIDLOCK,
     DSAT_MAX
 } EnDsatResCode;
 
 
 //AT命令结果码模式
-typedef enum
-{
+typedef enum {
     DSAT_MODE_DIGIT = 0,    //数字
     DSAT_MODE_STRING,        //字符串
     DSAT_MODE_MAX
@@ -92,12 +60,11 @@ typedef enum
 #define DSAT_STRING_ROW 30        //处理结果字符串最大数目
 #define DSAT_STRING_COL 800        //处理结果字符串最大长度
 
-typedef enum
-{
-    BGEVT_SMS = 0, 
-    BGEVT_CALL, 
+typedef enum {
+    BGEVT_SMS = 0,
+    BGEVT_CALL,
     BGEVT_CLIP,
-    BGEVT_END, 
+    BGEVT_END,
     BGEVT_ARRNUM,
 } EnBGEvt;
 
@@ -106,8 +73,7 @@ typedef enum
 #define BG_STRING_COL DSAT_STRING_COL
 
 //DS,BG线程使用的消息CMTI通知队列
-typedef struct
-{
+typedef struct {
     CRITICAL_SECTION cs;
     BYTE StrArr[BG_SMS_ARRNUM][BG_STRING_ROW][BG_STRING_COL];
     WORD StrNum[BG_SMS_ARRNUM];
@@ -122,15 +88,10 @@ extern HANDLE g_BGEvtArr[BGEVT_ARRNUM];
 
 
 //AT命令处理回调函数
-#if 0
-typedef void (*AtRespFunc)(CWnd* pWnd, BYTE (*strArr)[DSAT_STRING_COL], WORD wStrNum);
-#else
-typedef void (*AtRespFunc)(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL], WORD wStrNum);
-#endif
+typedef void (*AtRespFunc)(LPVOID pWnd, BYTE(*strArr)[DSAT_STRING_COL], WORD wStrNum);
 
 //回调函数类型
-typedef enum
-{
+typedef enum {
     ATRESP_RING = 0,    /*来电提示*/
     ATRESP_CMTI,        /*来短信,非CLASS0*/
     ATRESP_CMT,         /*来短信，CLASS0*/
@@ -148,34 +109,24 @@ typedef enum
     ATRESP_PLMNCHG,     /*注册网络变化通知*/
     ATRESP_SRVSTATUSCHG,/*服务状态变化通知*/
     ATRESP_CDS,         /*消息发送报告*/
-	ATRESP_RVMFB,       //VOICEMAIL ADD BY LIUB
-	ATRESP_RVMFBUPDATA, //VOICEMAIL更新条数
+    ATRESP_RVMFB,       //VOICEMAIL ADD BY LIUB
+    ATRESP_RVMFBUPDATA, //VOICEMAIL更新条数
     ATRESP_CUSD,         /*ussd*/
-	ATRESP_PS,         /*数据业务*/
-	ATRESP_HVPRIV,
-	ATRESP_SIDLOCK,
+    ATRESP_PS,         /*数据业务*/
+    ATRESP_HVPRIV,
+    ATRESP_SIDLOCK,
     ATRESP_GENERAL_AT,  /*通用AT*/
     ATRESP_MAX
 } EnAtRespFuncType;
 
 //AT命令响应结构
-#if 0
-typedef struct
-{
-    AtRespFunc m_AtRespFunc; //处理AT响应的函数
-    CWnd       *m_pWnd;         //处理AT响应的窗口
-} StAtResp;
-#else
-typedef struct
-{
+typedef struct {
     AtRespFunc m_AtRespFunc; //处理AT响应的函数
     LPVOID     m_pWnd;         //处理AT响应的窗口
 } StAtResp;
-#endif
 
 //Ds处理的事件
-typedef enum
-{
+typedef enum {
     DSEVENT_ATRESP = 0,    //从串口收到数据
     DSEVENT_ATTIMEOUT,     //APP普通命令超时
     DSEVENT_END,           //结束线程
@@ -183,8 +134,7 @@ typedef enum
 } EnDsEventType;
 
 //AT响应解析状态机
-typedef enum
-{
+typedef enum {
     STATE_START = 0,
     STATE_HEAD_S3,
     STATE_HEAD_S4,
@@ -204,11 +154,7 @@ extern HANDLE g_EndEvent;
 extern HANDLE g_AtTimeout;
 
 extern void AtTimeoutNotify();
-#if 0
-extern void RegisterAtRespFunc(EnAtRespFuncType type, AtRespFunc func, CWnd* pWnd);
-#else
 extern void RegisterAtRespFunc(EnAtRespFuncType type, AtRespFunc func, LPVOID pWnd);
-#endif
 extern void DeRegisterAtRespFunc(EnAtRespFuncType type);
 extern void DsEventCreate();
 extern void DsEventDestroy();
@@ -231,53 +177,53 @@ typedef enum {
     AT_SMS_QCMGF,     //消息模式
     AT_SMS_QCNMI,     //路由设置
     AT_SMS_QCSMP,     //写发配置
-	AT_SMS_QHMSGL,    //短消息语言和编码设置(CDMA2000)//add by liub 
-	AT_SMS_QHMSGP,    //短消息其他参数设置(CDMA2000)//add by liub 
+    AT_SMS_QHMSGL,    //短消息语言和编码设置(CDMA2000)//add by liub
+    AT_SMS_QHMSGP,    //短消息其他参数设置(CDMA2000)//add by liub
     AT_SMS_MAX
 } EnAtSmsType;
 
 const char gcstrAtSms[AT_SMS_MAX][15] = {
     "AT+CPMS=",
-        "AT+CMGR=",
-        "AT+CMGW=",
-        "AT+CMGD=",
-        "AT+CMGS=",
-        "AT+CSCA=",
-        "AT+CMGF=",
-        "AT+CNMI=",
-        "AT+CSMP=",
-		"AT+HMSGL=",//add by liub for SMS CDMA2000
-		"AT+HMSGP=",//add by liub for SMS CDMA2000
+    "AT+CMGR=",
+    "AT+CMGW=",
+    "AT+CMGD=",
+    "AT+CMGS=",
+    "AT+CSCA=",
+    "AT+CMGF=",
+    "AT+CNMI=",
+    "AT+CSMP=",
+    "AT+HMSGL=",//add by liub for SMS CDMA2000
+    "AT+HMSGP=",//add by liub for SMS CDMA2000
 };
 
 const char gcstrResSms[AT_SMS_MAX][15] = {
     "+CPMS: ",
-        "+CMGR: ",
-        "+CMGW: ",
-        "+CMGD: ",
-        "+CMGS: ",
-        "+CSCA: ",
-        "+CMGF: ",
-        "+CNMI: ",
-        "+CSMP: ",
+    "+CMGR: ",
+    "+CMGW: ",
+    "+CMGD: ",
+    "+CMGS: ",
+    "+CSCA: ",
+    "+CMGF: ",
+    "+CNMI: ",
+    "+CSMP: ",
 };
 
 const char gcstrSmsState[SMS_STATE_MAX][SMS_MODE_MAX][15] = {
     "0", "REC UNREAD",
-        "1", "REC READ",
-        "2", "STO UNSENT",
-        "3", "STO SENT"
+    "1", "REC READ",
+    "2", "STO UNSENT",
+    "3", "STO SENT"
 };
 //add by liub for voicemail
 const char gcstrVoicemailRes[2][50] = {
-	"+CVMR: No voice mail",
-	"+CVMR: No voice mail to view",
+    "+CVMR: No voice mail",
+    "+CVMR: No voice mail to view",
 };
 
 //Flexi需求，长短信拆分时显示Min@Max格式时可代替中间的@的字符集
 // add by liub for Flexi
-const char LMS_Flexi_MinMaxChar[10]= {
-	'*','-','/',':','~','.','#','^','|','%',
+const char LMS_Flexi_MinMaxChar[10] = {
+    '*', '-', '/', ':', '~', '.', '#', '^', '|', '%',
 };
 
 const char LMS_Flexi_RcvConcNoAll[6] = {"<...>"};//flexi长短信占位省略符
@@ -303,15 +249,13 @@ extern BOOL IsValidCallNumChar(UINT nChar);
 extern BOOL IsValidSmsNumChar(UINT nChar);
 
 //电源设置参数
-const char gcstrSetPower[POWER_MAX][2] = 
-{    
+const char gcstrSetPower[POWER_MAX][2] = {
     "0", //电源关
     "1", //电源开
 };
 
 //网络服务名称
-const UINT gcstrNetWorkSrv[NW_SRV_MAX+2] = 
-{    
+const UINT gcstrNetWorkSrv[NW_SRV_MAX+2] = {
     IDS_UNKNOWN,     //NW_SRV_NONE ,
     IDS_CONNTYPE_GPRS,     //NW_SRV_GPRS,
     IDS_CONNTYPE_EDGE,     //NW_SRV_EDGE,
@@ -320,13 +264,13 @@ const UINT gcstrNetWorkSrv[NW_SRV_MAX+2] =
 
 //版本查询特殊号码
 const TCHAR szVersionNum[VERSION_MAX][10] = {
-    _T("*#06#"), 
+    _T("*#06#"),
     _T("*7638#"),
 };
 
 //版本对话框标题
 const UINT szVersionTitle[VERSION_MAX] = {
-    IDS_IMEI, 
+    IDS_IMEI,
     IDS_FIRMWARE_VERSION,
 };
 extern BOOL UnicodeIsHighStr(TCHAR *wchar);
@@ -351,7 +295,7 @@ extern BOOL IsAlphabet(const char *str);
 extern USHORT GetUnicodeCharNum(const TCHAR *str);
 extern USHORT GetACSIICharNum(const TCHAR *str);
 
-extern void AtRespDummy(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL], WORD wStrNum);
+extern void AtRespDummy(LPVOID pWnd, BYTE(*strArr)[DSAT_STRING_COL], WORD wStrNum);
 
 #ifdef FEATURE_SMS_PDUMODE
 extern void DecodeNumFormSmsPDU(const char *pdunum, char *pOutNum);
@@ -369,7 +313,7 @@ extern BOOL SetConcatenateSmsPara(TCHAR*DspBuf, USHORT nRefCnt, BYTE nSeqCnt, BY
 extern BOOL SetConcatenateSmsParaA(char *DspBuf, USHORT nRefCnt, BYTE nSeqCnt, BYTE nTotalCnt, char MinMaxChar);
 extern BOOL IsConcatenateSms(StSmsRecord *pSmsRecord);
 
-#ifdef FEATURE_SMS_CONCATENATE 
+#ifdef FEATURE_SMS_CONCATENATE
 extern BYTE gSmsRefCnt;
 extern BOOL gSmsIsConcatenate;
 extern BOOL gSmsIsAsciiCode;
@@ -385,7 +329,7 @@ extern BOOL DivideSmsConcatenate(const TCHAR *szRawContent);
 
 //国家码列表
 extern const char szCountryCodeArr[][10];
-extern BOOL SmsAtCMGRRspProc(BYTE (*strArr)[DSAT_STRING_COL], WORD wStrNum, StSmsRecord &record, const EnSmsKind kind = SMS_KIND_ALL);
+extern BOOL SmsAtCMGRRspProc(BYTE(*strArr)[DSAT_STRING_COL], WORD wStrNum, StSmsRecord &record, const EnSmsKind kind = SMS_KIND_ALL);
 
 #define GSM0338_EXTENSIONS (2)
 #define GSM0338_ALPHABET_SIZE (0x80)
@@ -442,9 +386,9 @@ extern BOOL UE_SmsIsFull(EnLocType loctype);
 extern int  UE_SmsFindCardRecord(EnLocType loctype, WORD nIndex);
 
 extern int g_DataCardTotalNum;
-extern int g_USimTotalNum; 
+extern int g_USimTotalNum;
 extern int g_DataCardUsedNum;
-extern int g_USimUsedNum; 
+extern int g_USimUsedNum;
 
 extern StPbRecord* pUSIMPbRecord;
 extern StPbRecord* pDataCardPbRecord;
