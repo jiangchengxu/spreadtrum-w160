@@ -31,8 +31,7 @@ typedef enum {
     DSAT_RVMFB,//add by liub
     DSAT_RVMFBUPDATE,
     DSAT_RSSI,
-    DSAT_CSMSS,
-    DSAT_CPBSS,
+    DSAT_SPREADY,
     DSAT_CLIP,
     DSAT_NWCHG,
     DSAT_NWSRVCHG,
@@ -98,8 +97,7 @@ typedef enum {
     ATRESP_NO_CARRIER,  /*无载波*/
     ATRESP_DIALTONE,    /*网络侧挂断语音呼叫或通话*/
     ATRESP_RSSI,        /*场强变化*/
-    ATRESP_CSMSS,       /*SMS初始化结束通知*/
-    ATRESP_CPBSS,       /*PBM初始化结束通知*/
+    ATRESP_SPREADY,       /*SMS PBM 初始化结束通知*/
     ATRESP_CLIP,        /*来电号码通知*/
     ATRESP_NWCHG,       /*网络类型变化通知*/
     ATRESP_NWSRVCHG,    /*网络服务变化通知*/
@@ -273,6 +271,45 @@ const UINT szVersionTitle[VERSION_MAX] = {
     IDS_IMEI,
     IDS_FIRMWARE_VERSION,
 };
+
+/*
+** Define a type for the type of network.
+*/
+typedef enum uinetwk_network_type_e
+{
+   UI_NETWK_TYPE_UNKNOWN_TYPE,
+   UI_NETWK_TYPE_GSM_900,
+   UI_NETWK_TYPE_DCS_1800,
+   UI_NETWK_TYPE_PCS_1900,
+   UI_NETWK_TYPE_GSM_SAT,
+   UI_NETWK_TYPE_UMTS
+} uinetwk_network_type_e_type;
+
+/*
+** Define a type that contains the networks, country code, network code
+** and name.
+*/
+typedef struct uinetwk_network_info_s
+{
+
+   unsigned int                  mcc;
+     /* Mobile Network Code                                */
+
+   unsigned int                  mnc;
+    /* Mobile Country Code                                 */
+
+   uinetwk_network_type_e_type   network_type;
+
+   char                         *short_name_ptr;
+     /* Pointer to a null terminated string containing the */
+     /* network's short name.                              */
+
+   char                         *full_name_ptr;
+     /* Pointer to a null terminated string containing the */
+     /* network's full name.                               */
+
+} uinetwk_network_info_s_type;
+
 extern BOOL UnicodeIsHighStr(TCHAR *wchar);
 
 extern BOOL CStringisHighStr(CString str);
@@ -385,6 +422,7 @@ extern WORD UE_GetUnreadSmsNum(EnLocType loctype);
 extern BOOL UE_ClearSmsFlag(EnLocType loctype, BYTE Clearflag, BOOL bAll = TRUE);
 extern BOOL UE_SmsIsFull(EnLocType loctype);
 extern int  UE_SmsFindCardRecord(EnLocType loctype, WORD nIndex);
+extern BOOL get_network_info(unsigned int mcc, unsigned int mnc, uinetwk_network_info_s_type  *info_ptr);
 
 extern int g_DataCardTotalNum;
 extern int g_USimTotalNum;

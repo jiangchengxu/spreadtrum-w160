@@ -1498,16 +1498,26 @@ LRESULT CHSDPADlg::SwitchTo(WPARAM wParam, LPARAM lParam)
     return 0;
 }
 
-void CHSDPADlg::AtRespCSMSS(LPVOID pWnd, BYTE(*strArr)[DSAT_STRING_COL], WORD wStrNum)
+void CHSDPADlg::AtRespSPREADY(LPVOID pWnd, BYTE(*strArr)[DSAT_STRING_COL], WORD wStrNum)
 {
-    if (!memcmp((const char*)strArr[0], gc_dsatResCodeTbl[DSAT_CSMSS][gc_dsatmode],
-                strlen(gc_dsatResCodeTbl[DSAT_CSMSS][gc_dsatmode]))) {
-        char *ptr = (char*)strArr[0] + strlen(gc_dsatResCodeTbl[DSAT_CSMSS][gc_dsatmode]);
-        ((CHSDPADlg*)pWnd)->m_bSMSS = (BOOL)atoi(ptr);
+    if (!memcmp((const char*)strArr[0], gc_dsatResCodeTbl[DSAT_SPREADY][gc_dsatmode],
+                strlen(gc_dsatResCodeTbl[DSAT_SPREADY][gc_dsatmode]))) {
+        char *ptr = (char*)strArr[0] + strlen(gc_dsatResCodeTbl[DSAT_SPREADY][gc_dsatmode]);
+	 int res = atoi(ptr);
+	 if(res){
+		//sms initialized yet
+		((CHSDPADlg*)pWnd)->m_bSMSS = TRUE;
+	    if (((CHSDPADlg*)pWnd)->m_hSyncSmsInitEvt)
+	        SetEvent(((CHSDPADlg*)pWnd)->m_hSyncSmsInitEvt);
+	}else{
+		//phonebook initialized yet
+		 ((CHSDPADlg*)pWnd)->m_bPBSS = TRUE;
+	    if (((CHSDPADlg*)pWnd)->m_hSyncPbmInitEvt)
+	        SetEvent(((CHSDPADlg*)pWnd)->m_hSyncPbmInitEvt);		
+	}
     }
 
-    if (((CHSDPADlg*)pWnd)->m_hSyncSmsInitEvt)
-        SetEvent(((CHSDPADlg*)pWnd)->m_hSyncSmsInitEvt);
+
 }
 
 void CHSDPADlg::AtRespSIDLOCK(LPVOID pWnd, BYTE(*strArr)[DSAT_STRING_COL], WORD wStrNum)
@@ -1522,17 +1532,6 @@ void CHSDPADlg::AtRespSIDLOCK(LPVOID pWnd, BYTE(*strArr)[DSAT_STRING_COL], WORD 
         SetEvent(((CHSDPADlg*)pWnd)->m_hSimLockEvt);
 }
 
-void CHSDPADlg::AtRespCPBSS(LPVOID pWnd, BYTE(*strArr)[DSAT_STRING_COL], WORD wStrNum)
-{
-    if (!memcmp((const char*)strArr[0], gc_dsatResCodeTbl[DSAT_CPBSS][gc_dsatmode],
-                strlen(gc_dsatResCodeTbl[DSAT_CPBSS][gc_dsatmode]))) {
-        char *ptr = (char*)strArr[0] + strlen(gc_dsatResCodeTbl[DSAT_CPBSS][gc_dsatmode]);
-        ((CHSDPADlg*)pWnd)->m_bPBSS = (BOOL)atoi(ptr);
-    }
-
-    if (((CHSDPADlg*)pWnd)->m_hSyncPbmInitEvt)
-        SetEvent(((CHSDPADlg*)pWnd)->m_hSyncPbmInitEvt);
-}
 
 /*监听到来电号码*/
 /*返回串格式：
@@ -1861,6 +1860,10 @@ void CHSDPADlg::AtRespCOPSEx(LPVOID pWnd, BYTE(*strArr)[DSAT_STRING_COL], WORD w
     if (!strcmp((const char*)strArr[wStrNum-1], gc_dsatResCodeTbl[DSAT_OK][gc_dsatmode])
             && !memcmp((const char*)strArr[0], "+COPS: ", strlen("+COPS: "))) {
         int cnt = 0;
+		char temp[4] = {0};
+		int mcc = 0;
+		int mnc = 0;
+		uinetwk_network_info_s_type ninfo = {0};
         char *ptr = (char*)strArr[0] + strlen("+COPS: ");
         char *p = ptr;
         while (*p) {
@@ -1878,14 +1881,13 @@ void CHSDPADlg::AtRespCOPSEx(LPVOID pWnd, BYTE(*strArr)[DSAT_STRING_COL], WORD w
 
         CString strPLMN;
         if (cnt != 0) {
-            strPLMN = UCS2ToGB(ptr);
-            if (_T("Unknown") == strPLMN) {
-                strPLMN = _T(" ");
-            } else {
-                TCHAR szWchar[1024] = { 0 };
-                ASCHEXToWchar(ptr, szWchar);
-                strPLMN = UCS2ToGB(szWchar);
-            }
+			memcpy(temp, ptr, 3);
+			mcc = atoi(temp);
+			memset(temp, 0, 4);
+			memcpy(temp, ptr+3, 2);
+			mnc = atoi(temp);
+			get_network_info(mcc, mnc, &ninfo);
+            strPLMN = ninfo.short_name_ptr;
         }
 
         if (cnt == 0)
@@ -2006,10 +2008,10 @@ void CHSDPADlg::AtRespCSDH(LPVOID pWnd, BYTE(*strArr)[DSAT_STRING_COL], WORD wSt
     SetEvent(((CHSDPADlg*)pWnd)->m_hSyncInitEvt);
 }
 
-/*AT$CPINS?的回调函数*/
+/*AT*SPPRAS的回调函数*/
 void CHSDPADlg::AtRespSPPRAS(LPVOID pWnd, BYTE(*strArr)[DSAT_STRING_COL], WORD wStrNum)
 {
-    //$CPINS:1,0,10
+    //*SPPRAS:3,10,3,10
     CHSDPADlg* pdlg = (CHSDPADlg*)pWnd;
 
     BYTE* strRet = strArr[0] + strlen("*SPPRAS: ");
@@ -2471,8 +2473,7 @@ void CHSDPADlg::RegisterDsAutoMsgRsp()
     RegisterAtRespFunc(ATRESP_CMTI, AtRespCMTI, (LPVOID)this);
     RegisterAtRespFunc(ATRESP_CMT, AtRespCMT, (LPVOID)this);
     RegisterAtRespFunc(ATRESP_RSSI, AtRespRSSI, (LPVOID)this);
-    RegisterAtRespFunc(ATRESP_CSMSS, AtRespCSMSS, (LPVOID)this);
-    RegisterAtRespFunc(ATRESP_CPBSS, AtRespCPBSS, (LPVOID)this);
+    RegisterAtRespFunc(ATRESP_SPREADY, AtRespSPREADY, (LPVOID)this);
     RegisterAtRespFunc(ATRESP_CLIP, AtRespCLIP, (LPVOID)this);
     RegisterAtRespFunc(ATRESP_NWCHG, AtRespNWCHG, (LPVOID)this);
     RegisterAtRespFunc(ATRESP_NWSRVCHG, AtRespNWSRVCHG, (LPVOID)this);
@@ -2970,7 +2971,7 @@ BOOL CHSDPADlg::SyncInitFunc(int nStatus)
         str.LoadString(IDS_CHECK_SMS_STATUS);
         PreMsgDlg->SetText(str);
 
-        AtSndCSMSS();
+        //AtSndCSMSS();
         if (!m_bSMSS) {             //wyw_0121 modify
             int i = 0;
 
@@ -3013,7 +3014,7 @@ BOOL CHSDPADlg::SyncInitFunc(int nStatus)
         str.LoadString(IDS_CHECK_PBM_STATUS);
         PreMsgDlg->SetText(str);
 
-        AtSndCPBSS();
+        //AtSndCPBSS();
         if (!m_bPBSS)
             if (WAIT_TIMEOUT == WaitForSingleObject(m_hSyncPbmInitEvt, SYNCINIT_TIMEOUT_LONG)) {
                 res = FALSE;

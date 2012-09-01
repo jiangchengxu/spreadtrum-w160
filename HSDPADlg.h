@@ -174,9 +174,8 @@ public:
     static void AtRespPLMNCHG(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL], WORD wStrNum);
     static void AtRespNWSRVCHG(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL], WORD wStrNum);
     static void AtRespROAMCHG(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL], WORD wStrNum);
-    static void AtRespCSMSS(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL], WORD wStrNum);
+    static void AtRespSPREADY(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL], WORD wStrNum);
 	static void AtRespSIDLOCK(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL], WORD wStrNum);
-    static void AtRespCPBSS(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL], WORD wStrNum);
     static void AtRespCLIP(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL], WORD wStrNum);
     static void AtRespCOPS(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL], WORD wStrNum);
     static void AtRespCOPSFormat(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL], WORD wStrNum);
