@@ -294,6 +294,7 @@ extern BOOL IsAlphabet(const char *str);
 //获得双字节字符集文本串的字符个数
 extern USHORT GetUnicodeCharNum(const TCHAR *str);
 extern USHORT GetACSIICharNum(const TCHAR *str);
+extern char* strtrim(char * p);
 
 extern void AtRespDummy(LPVOID pWnd, BYTE(*strArr)[DSAT_STRING_COL], WORD wStrNum);
 

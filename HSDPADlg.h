@@ -195,7 +195,7 @@ public:
     static void AtRespQSIDLOCK(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL], WORD wStrNum);
 	static void AtRespQCPBSS(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL], WORD wStrNum);
     static void AtRespCFUN(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL], WORD wStrNum); 
-	static void AtRespCPINQS(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL], WORD wStrNum);
+	static void AtRespSPPRAS(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL], WORD wStrNum);
 	static void AtRespCNMI(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL], WORD wStrNum);
 	static void AtRespCMGF(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL], WORD wStrNum);
 	static void AtRespCSCA(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL], WORD wStrNum);
@@ -250,7 +250,7 @@ public:
     EnSyncInitFuncRetType AtSndROAM();
     EnSyncInitFuncRetType AtSndCSQ();
     EnSyncInitFuncRetType AtSndHANDSET();
-	EnSyncInitFuncRetType AtSndCPINQS();
+	EnSyncInitFuncRetType AtSndSPPRAS();
     EnSyncInitFuncRetType AtSndCPMS();
 
 

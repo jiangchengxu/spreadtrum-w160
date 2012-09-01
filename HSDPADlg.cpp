@@ -2007,48 +2007,37 @@ void CHSDPADlg::AtRespCSDH(LPVOID pWnd, BYTE(*strArr)[DSAT_STRING_COL], WORD wSt
 }
 
 /*AT$CPINS?的回调函数*/
-void CHSDPADlg::AtRespCPINQS(LPVOID pWnd, BYTE(*strArr)[DSAT_STRING_COL], WORD wStrNum)
+void CHSDPADlg::AtRespSPPRAS(LPVOID pWnd, BYTE(*strArr)[DSAT_STRING_COL], WORD wStrNum)
 {
     //$CPINS:1,0,10
     CHSDPADlg* pdlg = (CHSDPADlg*)pWnd;
 
-    CString strRet = strArr[0];
-    char* pbuf = (char *)strArr[0];
-    int nfrom = 0;
+    BYTE* strRet = strArr[0] + strlen("*SPPRAS: ");
     int nto = 0;
-    char temp[4];
+    char temp[4] = {0};
 
-    nfrom = strRet.ReverseFind(',') + 1;
-    nto = strRet.GetLength();
-    memcpy(temp, pbuf + nfrom, (nto - nfrom + 1));
+    nto = strchr((char *)strRet, ',') -  (char *)strRet;
+    memcpy(temp, strRet, nto);
+    pdlg->m_cHandlePin.m_nRemainTimes = atoi(temp);
 
+    strRet = strRet + nto + 1;
+	strRet = (BYTE *)strtrim((char *)strRet);
+
+	memset(temp, 0, 4);
+    nto = strchr((char *)strRet, ',') - (char *)strRet;
+    memcpy(temp, strRet, nto);
     pdlg->m_cHandlePin.m_nRemainTimes_puk = atoi(temp);
 
     if (0 >= pdlg->m_cHandlePin.m_nRemainTimes_puk) {
         pdlg->m_cHandlePin.m_nSimStat = CPIN_SIM_DESTROYED;
     }
-
-    strRet = strRet.Mid(0, (nfrom - 1));
-    //AfxMessageBox(strRet);  //debug
-    nfrom = strRet.ReverseFind(',') + 1;
-    nto = strRet.GetLength();
-    memcpy(temp, pbuf + nfrom, (nto - nfrom + 1));
-    pdlg->m_cHandlePin.m_nRemainTimes = atoi(temp);
-
     SetEvent(pdlg->m_hSyncInitEvt);
 }
 
 
 void CHSDPADlg::AtRespCPINQ(LPVOID pWnd, BYTE(*strArr)[DSAT_STRING_COL], WORD wStrNum)
 {
-    /*
-    struct _tPara {
-        CHSDPADlg *pWnd;
-        CPinEx *pHandle;
-    };*/
-
     CHSDPADlg* pdlg = (CHSDPADlg*)pWnd;
-//  CPinEx * pHandle = &(pdlg->m_cHandlePin);
     CString strRet = strArr[0];
 
     //需PIN码验证的提示有：
@@ -2600,15 +2589,15 @@ EnSyncInitFuncRetType CHSDPADlg::AtSndCPINQ()
     }
 }
 
-EnSyncInitFuncRetType CHSDPADlg::AtSndCPINQS()
+EnSyncInitFuncRetType CHSDPADlg::AtSndSPPRAS()
 {
-    const char ATCPINA[] = "AT$CPINS?\x0d\x00";
+    const char ATCPINA[] = "AT*SPPRAS?\x0d\x00";
     char szAtBuf[512] = {0};
     strcpy(szAtBuf, ATCPINA);
     ASSERT(m_pComm);
 
     if (m_pComm->WriteToPort(szAtBuf, strlen(szAtBuf))) {
-        RegisterAtRespFunc(ATRESP_GENERAL_AT, AtRespCPINQS, this);
+        RegisterAtRespFunc(ATRESP_GENERAL_AT, AtRespSPPRAS, this);
         if (WAIT_OBJECT_0 == WaitForSingleObject(m_hSyncInitEvt, SYNCINIT_TIMEOUT_SHORT))
             return SYNCINITFUNCRET_DONE;
         else
@@ -2819,7 +2808,7 @@ BOOL CHSDPADlg::SyncInitFunc(int nStatus)
             }
 
             if (res) {
-                if (SYNCINITFUNCRET_DONE != (InitType = AtSndCPINQS())) {
+                if (SYNCINITFUNCRET_DONE != (InitType = AtSndSPPRAS())) {
                     if (InitType == SYNCINITFUNCRET_RSP_TO) {
                         DeRegisterAtRespFunc(ATRESP_GENERAL_AT);
                         m_pComm->SetSerialState(SERIAL_STATE_CMD);
@@ -6075,10 +6064,10 @@ void CHSDPADlg::SetBottomIconPos()
 EnSyncInitFuncRetType CHSDPADlg::SndAtPowerCFUN(EnPowerType nPowerType)
 {
     ASSERT(nPowerType == POWER_ON || nPowerType == POWER_OFF);
-    const char szATSetPower[] = "AT+CFUN=";
+    const char szATSetPower[] = "AT";
     char szAtBuf[50] = {0};
 
-    sprintf(szAtBuf, "%s%s\r", szATSetPower, gcstrSetPower[nPowerType]);
+    sprintf(szAtBuf, "%s\r", szATSetPower);
 
     CSerialPort* pComm = ((CHSDPAApp*)AfxGetApp())->m_pSerialPort;
     ASSERT(pComm);

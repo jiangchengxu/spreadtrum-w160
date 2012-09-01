@@ -434,11 +434,11 @@ static void AtRespParse(CSerialPort *pComm)
         case STATE_TAIL_S3:
             if (ch == AT_FLAG_S4) {
                 g_DsatState = STATE_START;
-                if (g_DsatResCode == DSAT_MAX) {
+                /*if (g_DsatResCode == DSAT_MAX) {
                     //ignore unsupported AT command response ,espally unsolicated at command
                     memset(&g_DsatStrArr[--g_DsatStrNum][0], 0, (DSAT_STRING_COL));
                     g_DsatPtr = &g_DsatStrArr[g_DsatStrNum][0];
-                }
+                }*/
             } else if (ch != AT_FLAG_S3) { //error
                 memset(&g_DsatStrArr[--g_DsatStrNum][0], 0, (DSAT_STRING_COL));
                 g_DsatPtr = &g_DsatStrArr[g_DsatStrNum][0];
@@ -973,6 +973,29 @@ BOOL CStringisHighStr(CString str)
     result = UnicodeIsHighStr(lptstr);
     str.ReleaseBuffer();
     return result;
+}
+
+char * strtrim(char *p){
+	int len = 0;
+	if(*p == NULL){
+		return NULL;
+	}
+
+	while(*p != '\0'){
+		if(*p != ' ' && *p != '\t'){
+			break;
+		}
+		p++;
+	}
+
+	len = strlen(p);
+	while(len--){
+		if(*(p + len) != ' ' && *(p + len ) != '\t'){
+			break;
+		}
+		*(p + len) = '\0';
+	}
+	return p;
 }
 
 //判断文本中的字符是否全部在GSM-7bit编码表中
