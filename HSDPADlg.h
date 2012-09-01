@@ -55,7 +55,8 @@ typedef enum {
 } EnSyncInitFuncRetType;
 
 typedef enum {
-    SYNCINITFUNCID_HANDSET = 0,
+    SYNCINITFUNCID_STARTPOI = 0,
+    SYNCINITFUNCID_SSAM = SYNCINITFUNCID_STARTPOI,
    // SYNCINITFUNCID_CFUN,
 	//SYNCINITFUNCID_ROAM,
   // SYNCINITFUNCID_COPSFORMAT, 
@@ -182,7 +183,7 @@ public:
     static void AtRespNWRAT(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL], WORD wStrNum);
     static void AtRespROAM(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL], WORD wStrNum);
     static void AtRespCSQ(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL], WORD wStrNum);  
-    static void AtRespHandSet(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL], WORD wStrNum);    
+    static void AtRespSSAM(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL], WORD wStrNum);    
     static void AtRespATE0(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL], WORD wStrNum);
     static void AtRespCLVL(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL], WORD wStrNum);
     static void AtRespCSDH(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL], WORD wStrNum);
@@ -248,7 +249,7 @@ public:
     EnSyncInitFuncRetType AtSndNWRAT();
     EnSyncInitFuncRetType AtSndROAM();
     EnSyncInitFuncRetType AtSndCSQ();
-    EnSyncInitFuncRetType AtSndHANDSET();
+    EnSyncInitFuncRetType AtSndSSAM();
 	EnSyncInitFuncRetType AtSndSPPRAS();
     EnSyncInitFuncRetType AtSndCPMS();
 

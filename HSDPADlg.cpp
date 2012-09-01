@@ -1978,13 +1978,13 @@ void CHSDPADlg::AtRespCSQ(LPVOID pWnd, BYTE(*strArr)[DSAT_STRING_COL], WORD wStr
     SetEvent(((CHSDPADlg*)pWnd)->m_hSyncInitEvt);
 }
 
-void CHSDPADlg::AtRespHandSet(LPVOID pWnd, BYTE(*strArr)[DSAT_STRING_COL], WORD wStrNum)
+void CHSDPADlg::AtRespSSAM(LPVOID pWnd, BYTE(*strArr)[DSAT_STRING_COL], WORD wStrNum)
 {
     CString RetStr;
     CHSDPADlg *pdlg = (CHSDPADlg *)pWnd;
     RetStr = strArr[0];
     int nRect;
-    if (RetStr.Find(_T("1"), 0) != -1) {
+    if (RetStr.Find(_T("0"), 0) != -1) {
         nRect = 1;
     } else { /* if(RetStr.Find("0",0)!=-1)*/
         nRect = 0;
@@ -2323,12 +2323,12 @@ EnSyncInitFuncRetType CHSDPADlg::AtSndCSQ()
         return SYNCINITFUNCRET_SND_ERR;
 }
 
-EnSyncInitFuncRetType CHSDPADlg::AtSndHANDSET()
+EnSyncInitFuncRetType CHSDPADlg::AtSndSSAM()
 {
     char szAtBuf[20] = {0};
-    strcpy(szAtBuf, "AT$HANDSET?\r");
+    strcpy(szAtBuf, "AT+SSAM?\r");
     if (m_pComm->WriteToPort(szAtBuf, strlen(szAtBuf))) {
-        RegisterAtRespFunc(ATRESP_GENERAL_AT, AtRespHandSet, (LPVOID)this);
+        RegisterAtRespFunc(ATRESP_GENERAL_AT, AtRespSSAM, (LPVOID)this);
         if (WAIT_OBJECT_0 == WaitForSingleObject(m_hSyncInitEvt, SYNCINIT_TIMEOUT_SHORT))
             return SYNCINITFUNCRET_DONE;
         else
@@ -3029,7 +3029,7 @@ BOOL CHSDPADlg::SyncInitFunc(int nStatus)
     PreMsgDlg->SetText(str);
 #endif
     //发送网络,信号查询和短消息,字符集配置的AT命令
-    cnt = SYNCINITFUNCID_HANDSET;
+    cnt = SYNCINITFUNCID_STARTPOI;
     while (InitType == SYNCINITFUNCRET_DONE
             && m_pSyncFuncTbl[cnt] != NULL && cnt < SYNCINITFUNCID_MAX) {
 #ifdef _DEBUG
@@ -3827,7 +3827,7 @@ void CHSDPADlg::AtRespCSCS(LPVOID pWnd, BYTE(*strArr)[DSAT_STRING_COL], WORD wSt
 void CHSDPADlg::RegSyncInitFunc()               //wyw_0120 remove all Sleep
 {
     //注册启动函数
-    m_pSyncFuncTbl[SYNCINITFUNCID_HANDSET] = &CHSDPADlg::AtSndHANDSET;
+    m_pSyncFuncTbl[SYNCINITFUNCID_SSAM] = &CHSDPADlg::AtSndSSAM;
 //    Sleep(150);
     if (!wcsicmp(g_SetData.Setup_sz3GType, _T("WCDMA"))) {
         //  m_pSyncFuncTbl[SYNCINITFUNCID_CFUN] = &CHSDPADlg::AtSndCFUN;
@@ -3835,34 +3835,25 @@ void CHSDPADlg::RegSyncInitFunc()               //wyw_0120 remove all Sleep
     }
 //  m_pSyncFuncTbl[SYNCINITFUNCID_ROAM] = &CHSDPADlg::AtSndROAM;
     m_pSyncFuncTbl[SYNCINITFUNCID_COPS] = &CHSDPADlg::AtSndCOPS;
-//  Sleep(150);
     if (!wcsicmp(g_SetData.Setup_sz3GType, _T("WCDMA"))) {
         //  m_pSyncFuncTbl[SYNCINITFUNCID_NWRAT] = &CHSDPADlg::AtSndNWRAT;
     }
     m_pSyncFuncTbl[SYNCINITFUNCID_CSQ] = &CHSDPADlg::AtSndCSQ;
-//  Sleep(150);
     m_pSyncFuncTbl[SYNCINITFUNCID_CMGF] = &CHSDPADlg::AtSndCMGF;
-//  Sleep(150);
     if (!wcsicmp(g_SetData.Setup_sz3GType, _T("WCDMA"))) {
         //  m_pSyncFuncTbl[SYNCINITFUNCID_CSCA] = &CHSDPADlg::AtSndCSCA;
     }
 
     m_pSyncFuncTbl[SYNCINITFUNCID_CSDH] = &CHSDPADlg::AtSndCSDH;
-//  Sleep(150);
     //m_pSyncFuncTbl[SYNCINITFUNCID_CPMS] = &CHSDPADlg::AtSndCPMS;
-//  Sleep(150);
     m_pSyncFuncTbl[SYNCINITFUNCID_CNMI] = &CHSDPADlg::AtSndCNMI;
-//  Sleep(150);
     if (!wcsicmp(g_SetData.Setup_sz3GType, _T("WCDMA"))) {
         //if(g_SetData.Main_nCall)
         //  m_pSyncFuncTbl[SYNCINITFUNCID_CLIP] = &CHSDPADlg::AtSndCLIP;
     }
 
     m_pSyncFuncTbl[SYNCINITFUNCID_CSCS] = &CHSDPADlg::AtSndCSCS;
-//  Sleep(150);
     m_pSyncFuncTbl[SYNCINITFUNCID_CGMR] = &CHSDPADlg::AtSndCGMR;
-//  Sleep(150);
-
     //add by liub for CDMA2000 SMSSettings
     m_pSyncFuncTbl[SYNCINITFUNCID_HMSGP] = &CHSDPADlg::SndAtSmsQHMSGP;
 //  Sleep(150);
@@ -3880,9 +3871,9 @@ void CHSDPADlg::RegSyncInitFunc()               //wyw_0120 remove all Sleep
     //注册用户提示信息
     CString str;
     str.LoadString(IDS_CHECK_HANDSET_STATUS);
-    wcscpy(m_szSyncInitInfo[SYNCINITFUNCID_HANDSET][0], str);
+    wcscpy(m_szSyncInitInfo[SYNCINITFUNCID_SSAM][0], str);
     str.LoadString(IDS_TIMEOUT_HANDSET_INIT);
-    wcscpy(m_szSyncInitInfo[SYNCINITFUNCID_HANDSET][1], str);
+    wcscpy(m_szSyncInitInfo[SYNCINITFUNCID_SSAM][1], str);
 
     //str.LoadString(IDS_CHECK_RFPOWER_STATUS);
     // wcscpy(m_szSyncInitInfo[SYNCINITFUNCID_CFUN][0], str);
