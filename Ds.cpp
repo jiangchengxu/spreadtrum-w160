@@ -38,6 +38,7 @@ const char gc_dsatResCodeTbl[DSAT_MAX][DSAT_MODE_MAX][30] = {
     "+QCPDSI:", "+QCPDSI:",
     "+HVPRIV", "+HVPRIV",
     "+SIDLOCK: ", "+SIDLOCK: ",
+    "+SIND: ","+SIND: ",
 };
 
 static StAtResp g_AtRespArr[ATRESP_MAX];

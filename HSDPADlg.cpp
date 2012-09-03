@@ -1532,6 +1532,54 @@ void CHSDPADlg::AtRespSIDLOCK(LPVOID pWnd, BYTE(*strArr)[DSAT_STRING_COL], WORD 
         SetEvent(((CHSDPADlg*)pWnd)->m_hSimLockEvt);
 }
 
+void CHSDPADlg::AtRespSIND(LPVOID pWnd, BYTE(*strArr)[DSAT_STRING_COL], WORD wStrNum)
+{
+    if (!memcmp((const char*)strArr[0], gc_dsatResCodeTbl[DSAT_SIND][gc_dsatmode],
+                strlen(gc_dsatResCodeTbl[DSAT_SIND][gc_dsatmode]))) {
+        char *ptr = (char*)strArr[0] + strlen(gc_dsatResCodeTbl[DSAT_SIND][gc_dsatmode]);
+        char *p = strchr(ptr, ',');
+        int state = 0;
+        if(p == NULL){
+            state = atoi(ptr);
+        }else{
+            *p = '\0';
+            state = atoi(ptr);
+            ptr = p + 1;
+        }
+        switch(state)
+        {
+            case 0:
+            case 1:
+                break;
+            case 2:
+                break;
+            case 3:
+                break;
+            case 4:
+                break;
+            case 5:
+                break;
+            case 6:
+                break;
+            case 7:
+            case 11:
+                break;
+            case 8:
+                break;
+            case 9:
+                break;
+            case 10:
+                break;
+            case 12:
+                break;
+            default:
+                break;
+        }
+    }
+
+    if (((CHSDPADlg*)pWnd)->m_hSimLockEvt)
+        SetEvent(((CHSDPADlg*)pWnd)->m_hSimLockEvt);
+}
 
 /*监听到来电号码*/
 /*返回串格式：
@@ -2488,7 +2536,7 @@ void CHSDPADlg::RegisterDsAutoMsgRsp()
     RegisterAtRespFunc(ATRESP_PS, AtRespPS, (LPVOID)this);
     RegisterAtRespFunc(ATRESP_HVPRIV, AtRespHVPRIV, (LPVOID)this);
     RegisterAtRespFunc(ATRESP_SIDLOCK, AtRespSIDLOCK, (LPVOID)this);
-
+    RegisterAtRespFunc(ATRESP_SIND, AtRespSIND, (LPVOID)this);
     ::SetEvent(g_AppRegEvt);
 }
 
