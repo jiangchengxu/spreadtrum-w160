@@ -2011,9 +2011,14 @@ void CHSDPADlg::AtRespCSQ(LPVOID pWnd, BYTE(*strArr)[DSAT_STRING_COL], WORD wStr
     p = (unsigned char *)strchr((char *)p, ' ');
     len = strchr((char *)p, ',') - (char *)p;
     strncpy((char *)strRssi, (char *)p, len);
-    valRssi = atoi((char *)strRssi) / 6;
-    if (valRssi > 6) {
-        valRssi = 6;
+    valRssi = atoi((char *)strRssi);
+
+    if(valRssi >= 0 && valRssi <= 31){
+        valRssi /= 6;
+    }else if(valRssi >= 100 && valRssi <=191){
+          valRssi /= 18;
+    }else if(valRssi == 199){
+        valRssi = 0;
     }
 
     ((CHSDPADlg*)pWnd)->PostMessage(WM_ICON_UPDATE, ICON_TYPE_RSSI, valRssi);
@@ -2692,7 +2697,7 @@ EnSyncInitFuncRetType CHSDPADlg::AtSndCNMI(int para1, int para2)
 {
     char szAtBuf[20] = {0};
 
-    sprintf(szAtBuf, "%s%d,%d,,1\r", gcstrAtSms[AT_SMS_QCNMI], para1, para2);
+    sprintf(szAtBuf, "%s%d,%d,,1\r", gcstrAtSms[AT_SMS_QCNMI], 3, para2);
 
     if (m_pComm->WriteToPort(szAtBuf, strlen(szAtBuf))) {
         RegisterAtRespFunc(ATRESP_GENERAL_AT, AtRespCNMI, this);
@@ -3014,7 +3019,7 @@ BOOL CHSDPADlg::SyncInitFunc(int nStatus)
     }
 
 #endif //NOSIM
-
+/*
     //等待SMS初始化完成
     if (res) {
         str.LoadString(IDS_CHECK_SMS_STATUS);
@@ -3072,7 +3077,7 @@ BOOL CHSDPADlg::SyncInitFunc(int nStatus)
                 Sleep(500);
             }
     }
-
+*/
 #ifndef _DEBUG
     str.LoadString(IDS_CHECK_DATACARD_STATUS);
     PreMsgDlg->SetText(str);
@@ -4124,7 +4129,7 @@ void CHSDPADlg::AtResSndBeforeClose(LPVOID pWnd, BYTE(*strArr)[DSAT_STRING_COL],
 //get the firmware version
 EnSyncInitFuncRetType CHSDPADlg::AtSndCGMR()
 {
-    const char szATCGMR[] = "AT+GMR\r";
+    const char szATCGMR[] = "AT+CGMR\r";
 
     if (m_pComm->WriteToPort(szATCGMR, strlen(szATCGMR))) {
         RegisterAtRespFunc(ATRESP_GENERAL_AT, AtRespCGMR, (LPVOID)this);
@@ -4165,7 +4170,7 @@ void CHSDPADlg::AtRespCGMR(LPVOID pWnd, BYTE(*strArr)[DSAT_STRING_COL], WORD wSt
 //get the IMEI
 EnSyncInitFuncRetType CHSDPADlg::AtSndCGSN()
 {
-    const char szATCGSN[] = "AT+GSN\r";
+    const char szATCGSN[] = "AT+CGSN\r";
 
     if (m_pComm->WriteToPort(szATCGSN, strlen(szATCGSN))) {
         RegisterAtRespFunc(ATRESP_GENERAL_AT, AtRespCGSN, (LPVOID)this);
