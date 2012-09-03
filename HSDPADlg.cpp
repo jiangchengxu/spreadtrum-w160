@@ -2488,6 +2488,7 @@ void CHSDPADlg::RegisterDsAutoMsgRsp()
     RegisterAtRespFunc(ATRESP_PS, AtRespPS, (LPVOID)this);
     RegisterAtRespFunc(ATRESP_HVPRIV, AtRespHVPRIV, (LPVOID)this);
     RegisterAtRespFunc(ATRESP_SIDLOCK, AtRespSIDLOCK, (LPVOID)this);
+
     ::SetEvent(g_AppRegEvt);
 }
 
@@ -2759,7 +2760,7 @@ BOOL CHSDPADlg::SyncInitFunc(int nStatus)
         res = FALSE;
 
     if (res) {
-        if (SYNCINITFUNCRET_DONE != (InitType = SndAtPowerCFUN(POWER_ON))) {
+        if (SYNCINITFUNCRET_DONE != (InitType = SndAtPowerCFUNQ(POWER_ON))) {
             if (InitType == SYNCINITFUNCRET_RSP_TO) {
                 DeRegisterAtRespFunc(ATRESP_GENERAL_AT);
                 m_pComm->SetSerialState(SERIAL_STATE_CMD);
@@ -6051,6 +6052,45 @@ void CHSDPADlg::SetBottomIconPos()
     x += itemRect.Width();
     GetDlgItem(IDC_UI_ICON_PLMN2)->GetWindowRect(itemRect);
     GetDlgItem(IDC_UI_ICON_PLMN2)->MoveWindow(x, rc.bottom - 16, itemRect.Width(), itemRect.Height());
+}
+
+void CHSDPADlg::RspAtPowerCFUNQ(LPVOID pWnd, BYTE(*strArr)[DSAT_STRING_COL], WORD wStrNum)
+{
+    CHSDPADlg* pDlg = (CHSDPADlg*)pWnd;
+    pDlg->KillTimer(IDT_CFUN_TIMEOUT);
+
+    if (!strcmp((const char*)strArr[wStrNum-1], gc_dsatResCodeTbl[DSAT_OK][gc_dsatmode])
+            && !memcmp((const char*)strArr[0], "+CFUN: ", strlen("+CFUN: "))){
+            char *ptr = (char *)(strArr[0] + strlen("+CFUN: "));
+            int state = atoi(ptr);
+    }else {
+        //ÉèÖÃÊ§°Ü
+        AfxMessageBox(IDS_RF_SETERROR);
+    }
+
+    SetEvent(((CHSDPADlg*)pWnd)->m_hSyncInitEvt);
+}
+
+EnSyncInitFuncRetType CHSDPADlg::SndAtPowerCFUNQ(EnPowerType nPowerType)
+{
+    ASSERT(nPowerType == POWER_ON || nPowerType == POWER_OFF);
+    const char szATSetPower[] = "AT+CFUN?";
+    char szAtBuf[50] = {0};
+
+    sprintf(szAtBuf, "%s\r", szATSetPower);
+
+    CSerialPort* pComm = ((CHSDPAApp*)AfxGetApp())->m_pSerialPort;
+    ASSERT(pComm);
+    if (pComm->WriteToPort(szAtBuf, strlen(szAtBuf))) {
+        //      SetTimer(IDT_CFUN_TIMEOUT, 60000, NULL);
+        RegisterAtRespFunc(ATRESP_GENERAL_AT, RspAtPowerCFUNQ, this);
+
+        if (WAIT_OBJECT_0 == WaitForSingleObject(m_hSyncInitEvt, 30000))
+            return SYNCINITFUNCRET_DONE;
+        else
+            return SYNCINITFUNCRET_RSP_TO;
+    } else
+        return SYNCINITFUNCRET_SND_ERR;
 }
 
 EnSyncInitFuncRetType CHSDPADlg::SndAtPowerCFUN(EnPowerType nPowerType)
