@@ -2016,9 +2016,14 @@ void CHSDPADlg::AtRespCSQ(LPVOID pWnd, BYTE(*strArr)[DSAT_STRING_COL], WORD wStr
     if(valRssi >= 0 && valRssi <= 31){
         valRssi /= 6;
     }else if(valRssi >= 100 && valRssi <=191){
-          valRssi /= 18;
+          valRssi -= 100;
+          valRssi  /= 18;
     }else if(valRssi == 199){
         valRssi = 0;
+    }
+
+    if(valRssi > 6){
+        valRssi = 6;
     }
 
     ((CHSDPADlg*)pWnd)->PostMessage(WM_ICON_UPDATE, ICON_TYPE_RSSI, valRssi);
