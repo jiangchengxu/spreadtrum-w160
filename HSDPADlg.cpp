@@ -1694,6 +1694,16 @@ void CHSDPADlg::AtRespCREG(LPVOID pWnd, BYTE(*strArr)[DSAT_STRING_COL], WORD wSt
         SetEvent(((CHSDPADlg*)pWnd)->m_hSimLockEvt);
 }
 
+void CHSDPADlg::AtRespECIND(LPVOID pWnd, BYTE(*strArr)[DSAT_STRING_COL], WORD wStrNum)
+{
+    if(!memcmp((const char*)strArr[0], gc_dsatResCodeTbl[DSAT_ECIND][gc_dsatmode],
+                strlen(gc_dsatResCodeTbl[DSAT_ECIND][gc_dsatmode]))){
+
+    }
+
+    if (((CHSDPADlg*)pWnd)->m_hSimLockEvt)
+        SetEvent(((CHSDPADlg*)pWnd)->m_hSimLockEvt);
+}
 /*监听到来电号码*/
 /*返回串格式：
 +CLIP:  Number type,Subaddress,Subaddress type,
@@ -1740,12 +1750,13 @@ void CHSDPADlg::AtRespCLIP(LPVOID pWnd, BYTE(*strArr)[DSAT_STRING_COL], WORD wSt
     pdlg->SendMessage(WM_AT_RING, 0, 0);
 }
 
-void CHSDPADlg::AtRespQCSMSS(LPVOID pWnd, BYTE(*strArr)[DSAT_STRING_COL], WORD wStrNum)
+void CHSDPADlg::AtRespQSMSS(LPVOID pWnd, BYTE(*strArr)[DSAT_STRING_COL], WORD wStrNum)
 {
     if (!strcmp((const char*)strArr[wStrNum-1], gc_dsatResCodeTbl[DSAT_OK][gc_dsatmode])
-            && !memcmp((const char*)strArr[0], "$CSMSS:", strlen("$CSMSS:"))) {
-        char *ptr = (char*)strArr[0] + strlen("$CSMSS:");
-        ((CHSDPADlg*)pWnd)->m_bSMSS = (BOOL)atoi(ptr);
+            && !memcmp((const char*)strArr[0], "+CSCA:", strlen("+CSCA:"))) {
+        ((CHSDPADlg*)pWnd)->m_bSMSS = TRUE;
+    }else{
+         ((CHSDPADlg*)pWnd)->m_bSMSS = FALSE;
     }
     SetEvent(((CHSDPADlg*)pWnd)->m_hSyncSmsInitEvt);
 }
@@ -1773,12 +1784,13 @@ void CHSDPADlg::AtRespQPCONLINE(LPVOID pWnd, BYTE(*strArr)[DSAT_STRING_COL], WOR
     SetEvent(((CHSDPADlg*)pWnd)->m_hSyncPconlineInitEvt);
 }
 
-void CHSDPADlg::AtRespQCPBSS(LPVOID pWnd, BYTE(*strArr)[DSAT_STRING_COL], WORD wStrNum)
+void CHSDPADlg::AtRespQPHBS(LPVOID pWnd, BYTE(*strArr)[DSAT_STRING_COL], WORD wStrNum)
 {
     if (!strcmp((const char*)strArr[wStrNum-1], gc_dsatResCodeTbl[DSAT_OK][gc_dsatmode])
-            && !memcmp((const char*)strArr[0], "$CPBSS:", strlen("$CPBSS:"))) {
-        char *ptr = (char*)strArr[0] + strlen("$CPBSS:");
-        ((CHSDPADlg*)pWnd)->m_bPBSS = (BOOL)atoi(ptr);
+            && !memcmp((const char*)strArr[0], "+CPBR:", strlen("+CPBR:"))) {
+        ((CHSDPADlg*)pWnd)->m_bPBSS = TRUE;
+    }else{
+        ((CHSDPADlg*)pWnd)->m_bPBSS = FALSE;
     }
     SetEvent(((CHSDPADlg*)pWnd)->m_hSyncPbmInitEvt);
 }
@@ -2338,12 +2350,13 @@ void CHSDPADlg::OnTimer(UINT nIDEvent)
     CBaseDialog::OnTimer(nIDEvent);
 }
 
-EnSyncInitFuncRetType CHSDPADlg::AtSndCSMSS()
+EnSyncInitFuncRetType CHSDPADlg::AtSndQSMSS()
 {
+    //check if sms initialized or not
     char szAtBuf[20] = {0};
-    strcpy(szAtBuf, "AT$CSMSS?\r");
+    strcpy(szAtBuf, "AT+CSCA?\r");
     if (m_pComm->WriteToPort(szAtBuf, strlen(szAtBuf))) {
-        RegisterAtRespFunc(ATRESP_GENERAL_AT, AtRespQCSMSS, (LPVOID)this);
+        RegisterAtRespFunc(ATRESP_GENERAL_AT, AtRespQSMSS, (LPVOID)this);
         if (WAIT_OBJECT_0 == WaitForSingleObject(m_hSyncSmsInitEvt, SYNCINIT_TIMEOUT_SHORT))
             return SYNCINITFUNCRET_DONE;
         else
@@ -2370,7 +2383,8 @@ EnSyncInitFuncRetType CHSDPADlg::AtSndSICLOCK()
 EnSyncInitFuncRetType CHSDPADlg::AtSndPCONLINE()
 {
     char szAtBuf[20] = {0};
-    strcpy(szAtBuf, "AT$PCONLINE=1\r");
+    //strcpy(szAtBuf, "AT$PCONLINE=1\r");
+    strcpy(szAtBuf, "AT\r");
     if (m_pComm->WriteToPort(szAtBuf, strlen(szAtBuf))) {
         RegisterAtRespFunc(ATRESP_GENERAL_AT, AtRespQPCONLINE, (LPVOID)this);
         if (WAIT_OBJECT_0 == WaitForSingleObject(m_hSyncPconlineInitEvt, SYNCINIT_TIMEOUT_SHORT))
@@ -2396,12 +2410,13 @@ EnSyncInitFuncRetType CHSDPADlg::AtSndOPCONLINE()
         return SYNCINITFUNCRET_SND_ERR;
 }
 
-EnSyncInitFuncRetType CHSDPADlg::AtSndCPBSS()
+EnSyncInitFuncRetType CHSDPADlg::AtSndQPHBS()
 {
+    //Query phb initialized or not
     char szAtBuf[20] = {0};
-    strcpy(szAtBuf, "AT$CPBSS?\r");
+    strcpy(szAtBuf, "AT+CPBR=?\r");
     if (m_pComm->WriteToPort(szAtBuf, strlen(szAtBuf))) {
-        RegisterAtRespFunc(ATRESP_GENERAL_AT, AtRespQCPBSS, (LPVOID)this);
+        RegisterAtRespFunc(ATRESP_GENERAL_AT, AtRespQPHBS, (LPVOID)this);
         if (WAIT_OBJECT_0 == WaitForSingleObject(m_hSyncPbmInitEvt, SYNCINIT_TIMEOUT_SHORT))
             return SYNCINITFUNCRET_DONE;
         else
@@ -2663,6 +2678,7 @@ void CHSDPADlg::RegisterDsAutoMsgRsp()
     RegisterAtRespFunc(ATRESP_MODE, AtRespMODE, (LPVOID)this);
     RegisterAtRespFunc(ATRESP_SYSINFO, AtRespSYSINFO, (LPVOID)this);
     RegisterAtRespFunc(ATRESP_CREG, AtRespCREG, (LPVOID)this);
+    RegisterAtRespFunc(ATRESP_ECIND, AtRespECIND, (LPVOID)this);
     ::SetEvent(g_AppRegEvt);
 }
 
@@ -3140,13 +3156,13 @@ BOOL CHSDPADlg::SyncInitFunc(int nStatus)
     }
 
 #endif //NOSIM
-/*
+
     //等待SMS初始化完成
     if (res) {
         str.LoadString(IDS_CHECK_SMS_STATUS);
         PreMsgDlg->SetText(str);
 
-        //AtSndCSMSS();
+        AtSndQSMSS();
         if (!m_bSMSS) {             //wyw_0121 modify
             int i = 0;
 
@@ -3189,7 +3205,7 @@ BOOL CHSDPADlg::SyncInitFunc(int nStatus)
         str.LoadString(IDS_CHECK_PBM_STATUS);
         PreMsgDlg->SetText(str);
 
-        //AtSndCPBSS();
+        AtSndQPHBS();
         if (!m_bPBSS)
             if (WAIT_TIMEOUT == WaitForSingleObject(m_hSyncPbmInitEvt, SYNCINIT_TIMEOUT_LONG)) {
                 res = FALSE;
@@ -3198,7 +3214,7 @@ BOOL CHSDPADlg::SyncInitFunc(int nStatus)
                 Sleep(500);
             }
     }
-*/
+
 #ifndef _DEBUG
     str.LoadString(IDS_CHECK_DATACARD_STATUS);
     PreMsgDlg->SetText(str);
@@ -4912,7 +4928,7 @@ EnSyncInitFuncRetType CHSDPADlg::SndAtSmsQHMSGP()
 //CDMA2000的+CSMP，与WCDMA完全不同
 EnSyncInitFuncRetType CHSDPADlg::SndAtSmsQCSMP()
 {
-    char szAtBuf[50] = {0};
+ /*   char szAtBuf[50] = {0};
     sprintf(szAtBuf, "%s,1,%d,1,%d\r", gcstrAtSms[AT_SMS_QCSMP], g_SetData.Messages_nValPeriod, g_SetData.Messages_nDefDelivery);
     CSerialPort* pComm = ((CHSDPAApp*)AfxGetApp())->m_pSerialPort;
     ASSERT(pComm);
@@ -4926,7 +4942,8 @@ EnSyncInitFuncRetType CHSDPADlg::SndAtSmsQCSMP()
 //        SetTimer(IDT_QHCSMP_TIMEOUT, 60000, NULL);
 //        return SYNCINITFUNCRET_DONE;
     } else
-        return SYNCINITFUNCRET_SND_ERR;
+        return SYNCINITFUNCRET_SND_ERR;*/
+	return SYNCINITFUNCRET_DONE;
 }
 
 void CHSDPADlg::RspAtSmsQHMSGP(LPVOID pWnd, BYTE(*strArr)[DSAT_STRING_COL], WORD wStrNum)

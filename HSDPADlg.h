@@ -183,6 +183,7 @@ public:
     static void AtRespSYSINFO(LPVOID pWnd, BYTE(*strArr)[DSAT_STRING_COL], WORD wStrNum);
     static void AtRespCREG(LPVOID pWnd, BYTE(*strArr)[DSAT_STRING_COL], WORD wStrNum);
     static void AtRespCLIP(LPVOID pWnd, BYTE(*strArr)[DSAT_STRING_COL], WORD wStrNum);
+    static void AtRespECIND(LPVOID pWnd, BYTE(*strArr)[DSAT_STRING_COL], WORD wStrNum);
     static void AtRespCOPS(LPVOID pWnd, BYTE(*strArr)[DSAT_STRING_COL], WORD wStrNum);
     static void AtRespCOPSFormat(LPVOID pWnd, BYTE(*strArr)[DSAT_STRING_COL], WORD wStrNum);
     static void AtRespNWRAT(LPVOID pWnd, BYTE(*strArr)[DSAT_STRING_COL], WORD wStrNum);
@@ -195,10 +196,10 @@ public:
     static void AtRespCPINQ(LPVOID pWnd, BYTE(*strArr)[DSAT_STRING_COL], WORD wStrNum);
     static void AtRespReadNewSms(LPVOID pWnd, BYTE(*strArr)[DSAT_STRING_COL], WORD wStrNum);
     static void AtRespCLCKsc2(LPVOID pWnd, BYTE(*strArr)[DSAT_STRING_COL], WORD wStrNum);
-    static void AtRespQCSMSS(LPVOID pWnd, BYTE(*strArr)[DSAT_STRING_COL], WORD wStrNum);
+    static void AtRespQSMSS(LPVOID pWnd, BYTE(*strArr)[DSAT_STRING_COL], WORD wStrNum);
     static void AtRespQPCONLINE(LPVOID pWnd, BYTE(*strArr)[DSAT_STRING_COL], WORD wStrNum);
     static void AtRespQSIDLOCK(LPVOID pWnd, BYTE(*strArr)[DSAT_STRING_COL], WORD wStrNum);
-    static void AtRespQCPBSS(LPVOID pWnd, BYTE(*strArr)[DSAT_STRING_COL], WORD wStrNum);
+    static void AtRespQPHBS(LPVOID pWnd, BYTE(*strArr)[DSAT_STRING_COL], WORD wStrNum);
     static void AtRespCFUN(LPVOID pWnd, BYTE(*strArr)[DSAT_STRING_COL], WORD wStrNum);
     static void AtRespSPPRAS(LPVOID pWnd, BYTE(*strArr)[DSAT_STRING_COL], WORD wStrNum);
     static void AtRespCNMI(LPVOID pWnd, BYTE(*strArr)[DSAT_STRING_COL], WORD wStrNum);
@@ -244,8 +245,8 @@ public:
     EnSyncInitFuncRetType AtSndCLVL();
     EnSyncInitFuncRetType AtSndCSDH();
     EnSyncInitFuncRetType AtSndCPINQ();
-    EnSyncInitFuncRetType AtSndCSMSS();
-    EnSyncInitFuncRetType AtSndCPBSS();
+    EnSyncInitFuncRetType AtSndQSMSS();
+    EnSyncInitFuncRetType AtSndQPHBS();
     EnSyncInitFuncRetType AtSndCOPS();
     EnSyncInitFuncRetType AtSndSICLOCK();
     EnSyncInitFuncRetType AtSndPCONLINE();

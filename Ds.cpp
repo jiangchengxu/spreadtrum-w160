@@ -42,7 +42,8 @@ const char gc_dsatResCodeTbl[DSAT_MAX][DSAT_MODE_MAX][30] = {
     "^MODE: ", "^MODE: ",
     "^SYSINFO: ", "^SYSINFO: ",
     "+CREG: ", "+CREG: ",
-    "+CGREG: ", "+CGREG: "
+    "+CGREG: ", "+CGREG: ",
+    "+ECIND: ", "+ECIND: ",
 };
 
 static StAtResp g_AtRespArr[ATRESP_MAX];
@@ -1134,6 +1135,8 @@ static void AtRespParse(CSerialPort *pComm)
             } else if (g_DsatResCode == DSAT_CREG || g_DsatResCode ==
                        DSAT_CGREG) {
                 CallAtRespFunc(ATRESP_CREG);
+            }else if(g_DsatResCode == DSAT_ECIND){
+                CallAtRespFunc(ATRESP_ECIND);
             }
 
             else if (g_DsatResCode == DSAT_OK || g_DsatResCode == DSAT_ERROR

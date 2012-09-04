@@ -2590,8 +2590,8 @@ void CSmsDlg::RspAtSmsQCMGR(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL], WORD w
 // 	}
 
     if(strcmp((const char*)strArr[0], gc_dsatResCodeTbl[DSAT_ERROR][gc_dsatmode]) == 0
-        || memcmp((const char*)strArr[0], gc_dsatResCodeTbl[DSAT_CMS_ERROR][gc_dsatmode],
-                   strlen(gc_dsatResCodeTbl[DSAT_CMS_ERROR][gc_dsatmode])) == 0)
+        || memcmp((const char*)strArr[0], gc_dsatResCodeTbl[DSAT_CME_ERROR][gc_dsatmode],
+                   strlen(gc_dsatResCodeTbl[DSAT_CME_ERROR][gc_dsatmode])) == 0)
     {
         pDlg->PostMessage(WM_SMS_OPERATE_PROC, (WPARAM)AT_SMS_QCMGR, (LPARAM)FALSE);        
         return;
