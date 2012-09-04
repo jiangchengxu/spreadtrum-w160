@@ -1581,6 +1581,119 @@ void CHSDPADlg::AtRespSIND(LPVOID pWnd, BYTE(*strArr)[DSAT_STRING_COL], WORD wSt
         SetEvent(((CHSDPADlg*)pWnd)->m_hSimLockEvt);
 }
 
+void CHSDPADlg::AtRespMODE(LPVOID pWnd, BYTE(*strArr)[DSAT_STRING_COL], WORD wStrNum)
+{
+    if (!memcmp((const char*)strArr[0], gc_dsatResCodeTbl[DSAT_MODE][gc_dsatmode],
+                strlen(gc_dsatResCodeTbl[DSAT_MODE][gc_dsatmode]))) {
+        char *ptr = (char*)strArr[0] + strlen(gc_dsatResCodeTbl[DSAT_MODE][gc_dsatmode]);
+        char *p = strchr(ptr, ',');
+        int state = 0;
+        if(p == NULL){
+            state = atoi(ptr);
+        }else{
+            *p = '\0';
+            state = atoi(ptr);
+            ptr = p + 1;
+        }
+        switch(state)
+        {
+            case 0:
+            case 1:
+                break;
+            case 2:
+                break;
+            case 3:
+                break;
+            case 4:
+                break;
+            case 5:
+                break;
+            case 6:
+                break;
+            case 7:
+            case 11:
+                break;
+            case 8:
+                break;
+            case 9:
+                break;
+            case 10:
+                break;
+            case 12:
+                break;
+            default:
+                break;
+        }
+    }
+
+    if (((CHSDPADlg*)pWnd)->m_hSimLockEvt)
+        SetEvent(((CHSDPADlg*)pWnd)->m_hSimLockEvt);
+}
+
+void CHSDPADlg::AtRespSYSINFO(LPVOID pWnd, BYTE(*strArr)[DSAT_STRING_COL], WORD wStrNum)
+{
+    if (!memcmp((const char*)strArr[0], gc_dsatResCodeTbl[DSAT_SYSINFO][gc_dsatmode],
+                strlen(gc_dsatResCodeTbl[DSAT_SYSINFO][gc_dsatmode]))) {
+        char *ptr = (char*)strArr[0] + strlen(gc_dsatResCodeTbl[DSAT_SYSINFO][gc_dsatmode]);
+        char *p = strchr(ptr, ',');
+        int state = 0;
+        if(p == NULL){
+            state = atoi(ptr);
+        }else{
+            *p = '\0';
+            state = atoi(ptr);
+            ptr = p + 1;
+        }
+        switch(state)
+        {
+            case 0:
+            case 1:
+                break;
+            case 2:
+                break;
+            case 3:
+                break;
+            case 4:
+                break;
+            case 5:
+                break;
+            case 6:
+                break;
+            case 7:
+            case 11:
+                break;
+            case 8:
+                break;
+            case 9:
+                break;
+            case 10:
+                break;
+            case 12:
+                break;
+            default:
+                break;
+        }
+    }
+
+    if (((CHSDPADlg*)pWnd)->m_hSimLockEvt)
+        SetEvent(((CHSDPADlg*)pWnd)->m_hSimLockEvt);
+}
+
+void CHSDPADlg::AtRespCREG(LPVOID pWnd, BYTE(*strArr)[DSAT_STRING_COL], WORD wStrNum)
+{
+    if(!memcmp((const char*)strArr[0], gc_dsatResCodeTbl[DSAT_CREG][gc_dsatmode],
+                strlen(gc_dsatResCodeTbl[DSAT_CREG][gc_dsatmode]))
+            || !memcmp((const char*)strArr[0], gc_dsatResCodeTbl[DSAT_CGREG][gc_dsatmode],
+                strlen(gc_dsatResCodeTbl[DSAT_CGREG][gc_dsatmode])))  {
+        char *ptr = (char*)strArr[0] + strlen(gc_dsatResCodeTbl[DSAT_CGREG][gc_dsatmode]);
+        char *p = strchr(ptr, ',');
+
+    }
+
+    if (((CHSDPADlg*)pWnd)->m_hSimLockEvt)
+        SetEvent(((CHSDPADlg*)pWnd)->m_hSimLockEvt);
+}
+
 /*监听到来电号码*/
 /*返回串格式：
 +CLIP:  Number type,Subaddress,Subaddress type,
@@ -2043,9 +2156,9 @@ void CHSDPADlg::AtRespSSAM(LPVOID pWnd, BYTE(*strArr)[DSAT_STRING_COL], WORD wSt
     RetStr = strArr[0];
     int nRect;
     if (RetStr.Find(_T("0"), 0) != -1) {
-        nRect = 1;
-    } else { /* if(RetStr.Find("0",0)!=-1)*/
         nRect = 0;
+    } else { /* if(RetStr.Find("0",0)!=-1)*/
+        nRect = 1;
     }
     pdlg->PostMessage(WM_ICON_UPDATE, ICON_TYPE_HANDSET, nRect);
     SetEvent(((CHSDPADlg*)pWnd)->m_hSyncInitEvt);
@@ -2547,6 +2660,9 @@ void CHSDPADlg::RegisterDsAutoMsgRsp()
     RegisterAtRespFunc(ATRESP_HVPRIV, AtRespHVPRIV, (LPVOID)this);
     RegisterAtRespFunc(ATRESP_SIDLOCK, AtRespSIDLOCK, (LPVOID)this);
     RegisterAtRespFunc(ATRESP_SIND, AtRespSIND, (LPVOID)this);
+    RegisterAtRespFunc(ATRESP_MODE, AtRespMODE, (LPVOID)this);
+    RegisterAtRespFunc(ATRESP_SYSINFO, AtRespSYSINFO, (LPVOID)this);
+    RegisterAtRespFunc(ATRESP_CREG, AtRespCREG, (LPVOID)this);
     ::SetEvent(g_AppRegEvt);
 }
 
@@ -3126,16 +3242,16 @@ BOOL CHSDPADlg::SyncInitFunc(int nStatus)
     PreMsgDlg = NULL;
 
 
-    AtSendCVMI();
+    //AtSendCVMI();
 
 #ifdef FEATURE_VERSION_NOSIM
     m_cHandlePin.m_nSimStat = CPIN_SIM_NONE_REQUIRED;
 #endif
 
-    if (m_bSimReady) {
+    /*if (m_bSimReady) {
         m_pPhoneBookDlg->ReadDataFromSimOrUSB(0); //从USB Modem读取电话本记录
         m_pPhoneBookDlg->UpdateContactNumForTreeCtrl(m_pPhoneBookDlg->m_ht_PCCard, 1);
-    }
+    }*/
 
 #ifndef FEATURE_VERSION_NOSIM
     if (m_bSimReady) {

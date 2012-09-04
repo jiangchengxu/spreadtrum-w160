@@ -46,6 +46,10 @@ typedef enum {
     DSAT_HVPRIV,
     DSAT_SIDLOCK,
     DSAT_SIND,
+    DSAT_MODE,
+    DSAT_SYSINFO,
+    DSAT_CREG,
+    DSAT_CGREG,
     DSAT_MAX
 } EnDsatResCode;
 
@@ -115,6 +119,9 @@ typedef enum {
     ATRESP_HVPRIV,
     ATRESP_SIDLOCK,
     ATRESP_SIND,
+    ATRESP_MODE,
+    ATRESP_SYSINFO,
+    ATRESP_CREG,		/*与CGREG相同*/
     ATRESP_GENERAL_AT,  /*通用AT*/
     ATRESP_MAX
 } EnAtRespFuncType;
