@@ -106,8 +106,8 @@ void CDlgSignIn::AtRespCPinVerify(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL], 
 
 EnSyncInitFuncRetType CDlgSignIn::OnSignin()
 {
-	const TCHAR ATCPIN_V[]=_T("AT+CPIN=\"");
-	const TCHAR DQuote[]= _T("\"\x0d\x00");
+	const TCHAR ATCPIN_V[]=_T("AT+CPIN=");
+	const TCHAR DQuote[]= _T("\x0d\x00");
 	TCHAR szAtBuf[512] = {0};
 	char szAtAscBuf[512] = {0};
 	CString cVal = ATCPIN_V;

@@ -1503,18 +1503,18 @@ void CHSDPADlg::AtRespSPREADY(LPVOID pWnd, BYTE(*strArr)[DSAT_STRING_COL], WORD 
     if (!memcmp((const char*)strArr[0], gc_dsatResCodeTbl[DSAT_SPREADY][gc_dsatmode],
                 strlen(gc_dsatResCodeTbl[DSAT_SPREADY][gc_dsatmode]))) {
         char *ptr = (char*)strArr[0] + strlen(gc_dsatResCodeTbl[DSAT_SPREADY][gc_dsatmode]);
-	 int res = atoi(ptr);
-	 if(res){
-		//sms initialized yet
-		((CHSDPADlg*)pWnd)->m_bSMSS = TRUE;
-	    if (((CHSDPADlg*)pWnd)->m_hSyncSmsInitEvt)
-	        SetEvent(((CHSDPADlg*)pWnd)->m_hSyncSmsInitEvt);
-	}else{
-		//phonebook initialized yet
-		 ((CHSDPADlg*)pWnd)->m_bPBSS = TRUE;
-	    if (((CHSDPADlg*)pWnd)->m_hSyncPbmInitEvt)
-	        SetEvent(((CHSDPADlg*)pWnd)->m_hSyncPbmInitEvt);		
-	}
+        int res = atoi(ptr);
+        if (res) {
+            //sms initialized yet
+            ((CHSDPADlg*)pWnd)->m_bSMSS = TRUE;
+            if (((CHSDPADlg*)pWnd)->m_hSyncSmsInitEvt)
+                SetEvent(((CHSDPADlg*)pWnd)->m_hSyncSmsInitEvt);
+        } else {
+            //phonebook initialized yet
+            ((CHSDPADlg*)pWnd)->m_bPBSS = TRUE;
+            if (((CHSDPADlg*)pWnd)->m_hSyncPbmInitEvt)
+                SetEvent(((CHSDPADlg*)pWnd)->m_hSyncPbmInitEvt);
+        }
     }
 
 
@@ -1538,47 +1538,53 @@ void CHSDPADlg::AtRespSIND(LPVOID pWnd, BYTE(*strArr)[DSAT_STRING_COL], WORD wSt
                 strlen(gc_dsatResCodeTbl[DSAT_SIND][gc_dsatmode]))) {
         char *ptr = (char*)strArr[0] + strlen(gc_dsatResCodeTbl[DSAT_SIND][gc_dsatmode]);
         char *p = strchr(ptr, ',');
+        char *pPhbState;
         int state = 0;
-        if(p == NULL){
+        if (p == NULL) {
             state = atoi(ptr);
-        }else{
+        } else {
             *p = '\0';
             state = atoi(ptr);
             ptr = p + 1;
         }
-        switch(state)
-        {
-            case 0:
-            case 1:
-                break;
-            case 2:
-                break;
-            case 3:
-                break;
-            case 4:
-                break;
-            case 5:
-                break;
-            case 6:
-                break;
-            case 7:
-            case 11:
-                break;
-            case 8:
-                break;
-            case 9:
-                break;
-            case 10:
-                break;
-            case 12:
-                break;
-            default:
-                break;
+        switch (state) {
+        case 0:
+        case 1:
+            break;
+        case 2:
+            break;
+        case 3:
+            break;
+        case 4:
+            break;
+        case 5:
+            break;
+        case 6:
+            break;
+        case 7:
+        case 11:
+            break;
+        case 8:
+            break;
+        case 9:
+            break;
+        case 10:
+            pPhbState = strstr(ptr, "\"SM\"") + strlen("\"SM\",");
+            p = strchr(pPhbState, ',');
+            *p = '\0';
+            ((CHSDPADlg*)pWnd)->m_bPBSS = (BOOL)atoi(pPhbState);
+            if (((CHSDPADlg*)pWnd)->m_hSyncPbmInitEvt)
+                SetEvent(((CHSDPADlg*)pWnd)->m_hSyncPbmInitEvt);
+            break;
+        case 12:
+            ((CHSDPADlg*)pWnd)->m_bSMSS = TRUE;
+            if (((CHSDPADlg*)pWnd)->m_hSyncSmsInitEvt)
+                SetEvent(((CHSDPADlg*)pWnd)->m_hSyncSmsInitEvt);
+            break;
+        default:
+            break;
         }
     }
-
-    if (((CHSDPADlg*)pWnd)->m_hSimLockEvt)
-        SetEvent(((CHSDPADlg*)pWnd)->m_hSimLockEvt);
 }
 
 void CHSDPADlg::AtRespMODE(LPVOID pWnd, BYTE(*strArr)[DSAT_STRING_COL], WORD wStrNum)
@@ -1588,41 +1594,40 @@ void CHSDPADlg::AtRespMODE(LPVOID pWnd, BYTE(*strArr)[DSAT_STRING_COL], WORD wSt
         char *ptr = (char*)strArr[0] + strlen(gc_dsatResCodeTbl[DSAT_MODE][gc_dsatmode]);
         char *p = strchr(ptr, ',');
         int state = 0;
-        if(p == NULL){
+        if (p == NULL) {
             state = atoi(ptr);
-        }else{
+        } else {
             *p = '\0';
             state = atoi(ptr);
             ptr = p + 1;
         }
-        switch(state)
-        {
-            case 0:
-            case 1:
-                break;
-            case 2:
-                break;
-            case 3:
-                break;
-            case 4:
-                break;
-            case 5:
-                break;
-            case 6:
-                break;
-            case 7:
-            case 11:
-                break;
-            case 8:
-                break;
-            case 9:
-                break;
-            case 10:
-                break;
-            case 12:
-                break;
-            default:
-                break;
+        switch (state) {
+        case 0:
+        case 1:
+            break;
+        case 2:
+            break;
+        case 3:
+            break;
+        case 4:
+            break;
+        case 5:
+            break;
+        case 6:
+            break;
+        case 7:
+        case 11:
+            break;
+        case 8:
+            break;
+        case 9:
+            break;
+        case 10:
+            break;
+        case 12:
+            break;
+        default:
+            break;
         }
     }
 
@@ -1632,59 +1637,59 @@ void CHSDPADlg::AtRespMODE(LPVOID pWnd, BYTE(*strArr)[DSAT_STRING_COL], WORD wSt
 
 void CHSDPADlg::AtRespSYSINFO(LPVOID pWnd, BYTE(*strArr)[DSAT_STRING_COL], WORD wStrNum)
 {
+    CHSDPADlg* pMain = (CHSDPADlg*)pWnd;
     if (!memcmp((const char*)strArr[0], gc_dsatResCodeTbl[DSAT_SYSINFO][gc_dsatmode],
                 strlen(gc_dsatResCodeTbl[DSAT_SYSINFO][gc_dsatmode]))) {
         char *ptr = (char*)strArr[0] + strlen(gc_dsatResCodeTbl[DSAT_SYSINFO][gc_dsatmode]);
-        char *p = strchr(ptr, ',');
-        int state = 0;
-        if(p == NULL){
-            state = atoi(ptr);
-        }else{
-            *p = '\0';
-            state = atoi(ptr);
-            ptr = p + 1;
+        char *p = ptr;
+        int rescode[7] = {0};
+        int cnt = 0;
+        while (*p != '\0' && cnt < 7) {
+            if (*p == ',') {
+                *p = '\0';
+                rescode[cnt++]  = atoi(ptr);
+                ptr = p + 1;
+            } else {
+                p++;
+            }
         }
-        switch(state)
-        {
-            case 0:
-            case 1:
-                break;
-            case 2:
-                break;
-            case 3:
-                break;
-            case 4:
-                break;
-            case 5:
-                break;
-            case 6:
-                break;
-            case 7:
-            case 11:
-                break;
-            case 8:
-                break;
-            case 9:
-                break;
-            case 10:
-                break;
-            case 12:
-                break;
-            default:
-                break;
-        }
+
+        //rescode[0] indicate srv state
+        pMain->m_SrvStatus = (EnSrvStatus)rescode[0];
+        ASSERT(pMain->m_SrvStatus >= SRVSTATUS_NONE && pMain->m_SrvStatus < SRVSTATUS_MAX);
+
+        //rescode[1] indicate srv domain
+        pMain->m_bPS = (BOOL)rescode[1];
+
+        //rescode[2] indicate roam state
+        pMain->m_RoamStatus = (EnRoamStatus)rescode[2];
+        ASSERT(pMain->m_RoamStatus >= ROAM_OFF && pMain->m_RoamStatus <= ROAM_MAX);
+
+        //rescode[3] indicate sys mode
+
+        //rescode[4] indicate sim state
+
+        //rescode[5] reserved
+
+        //rescode[6] indicate sys submode
+
+        pMain->PostMessage(WM_ICON_UPDATE, ICON_TYPE_PLMN2, pMain->m_SrvStatus);
+        pMain->PostMessage(WM_ICON_UPDATE, ICON_TYPE_NETWORK, pMain->m_NetworkType);//NETWORK SERVICE
+        //pMain->PostMessage(WM_ICON_UPDATE, ICON_TYPE_NWSRV, pMain->m_nNwSrv);//NETWORK SERVICE
+        pMain->PostMessage(WM_ICON_UPDATE, ICON_TYPE_PLMN, 1);  //PLMN
+        pMain->PostMessage(WM_ICON_UPDATE, ICON_TYPE_PS, pMain->m_bPS);  //PS
+        pMain->PostMessage(WM_ICON_UPDATE, ICON_TYPE_ROAM, pMain->m_RoamStatus);//ROAM
     }
 
-    if (((CHSDPADlg*)pWnd)->m_hSimLockEvt)
-        SetEvent(((CHSDPADlg*)pWnd)->m_hSimLockEvt);
+
 }
 
 void CHSDPADlg::AtRespCREG(LPVOID pWnd, BYTE(*strArr)[DSAT_STRING_COL], WORD wStrNum)
 {
-    if(!memcmp((const char*)strArr[0], gc_dsatResCodeTbl[DSAT_CREG][gc_dsatmode],
+    if (!memcmp((const char*)strArr[0], gc_dsatResCodeTbl[DSAT_CREG][gc_dsatmode],
                 strlen(gc_dsatResCodeTbl[DSAT_CREG][gc_dsatmode]))
             || !memcmp((const char*)strArr[0], gc_dsatResCodeTbl[DSAT_CGREG][gc_dsatmode],
-                strlen(gc_dsatResCodeTbl[DSAT_CGREG][gc_dsatmode])))  {
+                       strlen(gc_dsatResCodeTbl[DSAT_CGREG][gc_dsatmode])))  {
         char *ptr = (char*)strArr[0] + strlen(gc_dsatResCodeTbl[DSAT_CGREG][gc_dsatmode]);
         char *p = strchr(ptr, ',');
 
@@ -1696,8 +1701,8 @@ void CHSDPADlg::AtRespCREG(LPVOID pWnd, BYTE(*strArr)[DSAT_STRING_COL], WORD wSt
 
 void CHSDPADlg::AtRespECIND(LPVOID pWnd, BYTE(*strArr)[DSAT_STRING_COL], WORD wStrNum)
 {
-    if(!memcmp((const char*)strArr[0], gc_dsatResCodeTbl[DSAT_ECIND][gc_dsatmode],
-                strlen(gc_dsatResCodeTbl[DSAT_ECIND][gc_dsatmode]))){
+    if (!memcmp((const char*)strArr[0], gc_dsatResCodeTbl[DSAT_ECIND][gc_dsatmode],
+                strlen(gc_dsatResCodeTbl[DSAT_ECIND][gc_dsatmode]))) {
 
     }
 
@@ -1755,8 +1760,8 @@ void CHSDPADlg::AtRespQSMSS(LPVOID pWnd, BYTE(*strArr)[DSAT_STRING_COL], WORD wS
     if (!strcmp((const char*)strArr[wStrNum-1], gc_dsatResCodeTbl[DSAT_OK][gc_dsatmode])
             && !memcmp((const char*)strArr[0], "+CSCA:", strlen("+CSCA:"))) {
         ((CHSDPADlg*)pWnd)->m_bSMSS = TRUE;
-    }else{
-         ((CHSDPADlg*)pWnd)->m_bSMSS = FALSE;
+    } else {
+        ((CHSDPADlg*)pWnd)->m_bSMSS = FALSE;
     }
     SetEvent(((CHSDPADlg*)pWnd)->m_hSyncSmsInitEvt);
 }
@@ -1789,7 +1794,7 @@ void CHSDPADlg::AtRespQPHBS(LPVOID pWnd, BYTE(*strArr)[DSAT_STRING_COL], WORD wS
     if (!strcmp((const char*)strArr[wStrNum-1], gc_dsatResCodeTbl[DSAT_OK][gc_dsatmode])
             && !memcmp((const char*)strArr[0], "+CPBR:", strlen("+CPBR:"))) {
         ((CHSDPADlg*)pWnd)->m_bPBSS = TRUE;
-    }else{
+    } else {
         ((CHSDPADlg*)pWnd)->m_bPBSS = FALSE;
     }
     SetEvent(((CHSDPADlg*)pWnd)->m_hSyncPbmInitEvt);
@@ -2033,10 +2038,10 @@ void CHSDPADlg::AtRespCOPSEx(LPVOID pWnd, BYTE(*strArr)[DSAT_STRING_COL], WORD w
     if (!strcmp((const char*)strArr[wStrNum-1], gc_dsatResCodeTbl[DSAT_OK][gc_dsatmode])
             && !memcmp((const char*)strArr[0], "+COPS: ", strlen("+COPS: "))) {
         int cnt = 0;
-		char temp[4] = {0};
-		int mcc = 0;
-		int mnc = 0;
-		uinetwk_network_info_s_type ninfo = {0};
+        char temp[4] = {0};
+        int mcc = 0;
+        int mnc = 0;
+        uinetwk_network_info_s_type ninfo = {0};
         char *ptr = (char*)strArr[0] + strlen("+COPS: ");
         char *p = ptr;
         while (*p) {
@@ -2054,12 +2059,12 @@ void CHSDPADlg::AtRespCOPSEx(LPVOID pWnd, BYTE(*strArr)[DSAT_STRING_COL], WORD w
 
         CString strPLMN;
         if (cnt != 0) {
-			memcpy(temp, ptr, 3);
-			mcc = atoi(temp);
-			memset(temp, 0, 4);
-			memcpy(temp, ptr+3, 2);
-			mnc = atoi(temp);
-			get_network_info(mcc, mnc, &ninfo);
+            memcpy(temp, ptr, 3);
+            mcc = atoi(temp);
+            memset(temp, 0, 4);
+            memcpy(temp, ptr + 3, 2);
+            mnc = atoi(temp);
+            get_network_info(mcc, mnc, &ninfo);
             strPLMN = ninfo.short_name_ptr;
         }
 
@@ -2138,16 +2143,16 @@ void CHSDPADlg::AtRespCSQ(LPVOID pWnd, BYTE(*strArr)[DSAT_STRING_COL], WORD wStr
     strncpy((char *)strRssi, (char *)p, len);
     valRssi = atoi((char *)strRssi);
 
-    if(valRssi >= 0 && valRssi <= 31){
+    if (valRssi >= 0 && valRssi <= 31) {
         valRssi /= 6;
-    }else if(valRssi >= 100 && valRssi <=191){
-          valRssi -= 100;
-          valRssi  /= 18;
-    }else if(valRssi == 199){
+    } else if (valRssi >= 100 && valRssi <= 191) {
+        valRssi -= 100;
+        valRssi  /= 18;
+    } else if (valRssi == 199) {
         valRssi = 0;
     }
 
-    if(valRssi > 6){
+    if (valRssi > 6) {
         valRssi = 6;
     }
 
@@ -2201,14 +2206,14 @@ void CHSDPADlg::AtRespSPPRAS(LPVOID pWnd, BYTE(*strArr)[DSAT_STRING_COL], WORD w
     int nto = 0;
     char temp[4] = {0};
 
-    nto = strchr((char *)strRet, ',') -  (char *)strRet;
+    nto = strchr((char *)strRet, ',') - (char *)strRet;
     memcpy(temp, strRet, nto);
     pdlg->m_cHandlePin.m_nRemainTimes = atoi(temp);
 
     strRet = strRet + nto + 1;
-	strRet = (BYTE *)strtrim((char *)strRet);
+    strRet = (BYTE *)strtrim((char *)strRet);
 
-	memset(temp, 0, 4);
+    memset(temp, 0, 4);
     nto = strchr((char *)strRet, ',') - (char *)strRet;
     memcpy(temp, strRet, nto);
     pdlg->m_cHandlePin.m_nRemainTimes_puk = atoi(temp);
@@ -4928,22 +4933,22 @@ EnSyncInitFuncRetType CHSDPADlg::SndAtSmsQHMSGP()
 //CDMA2000的+CSMP，与WCDMA完全不同
 EnSyncInitFuncRetType CHSDPADlg::SndAtSmsQCSMP()
 {
- /*   char szAtBuf[50] = {0};
-    sprintf(szAtBuf, "%s,1,%d,1,%d\r", gcstrAtSms[AT_SMS_QCSMP], g_SetData.Messages_nValPeriod, g_SetData.Messages_nDefDelivery);
-    CSerialPort* pComm = ((CHSDPAApp*)AfxGetApp())->m_pSerialPort;
-    ASSERT(pComm);
+    /*   char szAtBuf[50] = {0};
+       sprintf(szAtBuf, "%s,1,%d,1,%d\r", gcstrAtSms[AT_SMS_QCSMP], g_SetData.Messages_nValPeriod, g_SetData.Messages_nDefDelivery);
+       CSerialPort* pComm = ((CHSDPAApp*)AfxGetApp())->m_pSerialPort;
+       ASSERT(pComm);
 
-    if (pComm->WriteToPort(szAtBuf, strlen(szAtBuf), FALSE)) {
-        RegisterAtRespFunc(ATRESP_GENERAL_AT, RspAtSmsQCSMP, (LPVOID)this);
-        if (WAIT_OBJECT_0 == WaitForSingleObject(m_hSyncInitEvt, 30000))
-            return SYNCINITFUNCRET_DONE;
-        else
-            return SYNCINITFUNCRET_RSP_TO;
-//        SetTimer(IDT_QHCSMP_TIMEOUT, 60000, NULL);
-//        return SYNCINITFUNCRET_DONE;
-    } else
-        return SYNCINITFUNCRET_SND_ERR;*/
-	return SYNCINITFUNCRET_DONE;
+       if (pComm->WriteToPort(szAtBuf, strlen(szAtBuf), FALSE)) {
+           RegisterAtRespFunc(ATRESP_GENERAL_AT, RspAtSmsQCSMP, (LPVOID)this);
+           if (WAIT_OBJECT_0 == WaitForSingleObject(m_hSyncInitEvt, 30000))
+               return SYNCINITFUNCRET_DONE;
+           else
+               return SYNCINITFUNCRET_RSP_TO;
+    //        SetTimer(IDT_QHCSMP_TIMEOUT, 60000, NULL);
+    //        return SYNCINITFUNCRET_DONE;
+       } else
+           return SYNCINITFUNCRET_SND_ERR;*/
+    return SYNCINITFUNCRET_DONE;
 }
 
 void CHSDPADlg::RspAtSmsQHMSGP(LPVOID pWnd, BYTE(*strArr)[DSAT_STRING_COL], WORD wStrNum)
@@ -6251,10 +6256,10 @@ void CHSDPADlg::RspAtPowerCFUNQ(LPVOID pWnd, BYTE(*strArr)[DSAT_STRING_COL], WOR
     pDlg->KillTimer(IDT_CFUN_TIMEOUT);
 
     if (!strcmp((const char*)strArr[wStrNum-1], gc_dsatResCodeTbl[DSAT_OK][gc_dsatmode])
-            && !memcmp((const char*)strArr[0], "+CFUN: ", strlen("+CFUN: "))){
-            char *ptr = (char *)(strArr[0] + strlen("+CFUN: "));
-            int state = atoi(ptr);
-    }else {
+            && !memcmp((const char*)strArr[0], "+CFUN: ", strlen("+CFUN: "))) {
+        char *ptr = (char *)(strArr[0] + strlen("+CFUN: "));
+        int state = atoi(ptr);
+    } else {
         //设置失败
         AfxMessageBox(IDS_RF_SETERROR);
     }

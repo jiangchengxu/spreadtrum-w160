@@ -458,7 +458,9 @@ typedef enum {
 typedef enum {
     SRVSTATUS_NONE = 0, 
     SRVSTATUS_LIMIT, 
-    SRVSTATUS_FULL, 
+    SRVSTATUS_FULL,
+    SRVSTATUS_DOMAIN_LIMIT,
+    SRVSTATUS_BATTERY_SAVER,
     SRVSTATUS_MAX
 } EnSrvStatus;
 
