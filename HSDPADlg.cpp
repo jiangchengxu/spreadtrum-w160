@@ -2955,6 +2955,16 @@ BOOL CHSDPADlg::SyncInitFunc(int nStatus)
         res = FALSE;
 
     if (res) {
+        if (SYNCINITFUNCRET_DONE != (InitType = SndAtCMEE())) {
+            if (InitType == SYNCINITFUNCRET_RSP_TO) {
+                DeRegisterAtRespFunc(ATRESP_GENERAL_AT);
+                m_pComm->SetSerialState(SERIAL_STATE_CMD);
+            }
+            res = FALSE;
+        }
+    }
+
+    if (res) {
         if (SYNCINITFUNCRET_DONE != (InitType = SndAtPowerCFUNQ(POWER_ON))) {
             if (InitType == SYNCINITFUNCRET_RSP_TO) {
                 DeRegisterAtRespFunc(ATRESP_GENERAL_AT);
@@ -6280,6 +6290,37 @@ EnSyncInitFuncRetType CHSDPADlg::SndAtPowerCFUNQ(EnPowerType nPowerType)
     if (pComm->WriteToPort(szAtBuf, strlen(szAtBuf))) {
         //      SetTimer(IDT_CFUN_TIMEOUT, 60000, NULL);
         RegisterAtRespFunc(ATRESP_GENERAL_AT, RspAtPowerCFUNQ, this);
+
+        if (WAIT_OBJECT_0 == WaitForSingleObject(m_hSyncInitEvt, 30000))
+            return SYNCINITFUNCRET_DONE;
+        else
+            return SYNCINITFUNCRET_RSP_TO;
+    } else
+        return SYNCINITFUNCRET_SND_ERR;
+}
+
+void CHSDPADlg::RspAtCMEE(LPVOID pWnd, BYTE(*strArr)[DSAT_STRING_COL], WORD wStrNum)
+{
+    CHSDPADlg* pDlg = (CHSDPADlg*)pWnd;
+    pDlg->KillTimer(IDT_CFUN_TIMEOUT);
+
+    if (!strcmp((const char*)strArr[wStrNum-1],
+                gc_dsatResCodeTbl[DSAT_OK][gc_dsatmode])) {
+    } else {
+        //ÉèÖÃÊ§°Ü
+    }
+
+    SetEvent(((CHSDPADlg*)pWnd)->m_hSyncInitEvt);
+}
+
+EnSyncInitFuncRetType CHSDPADlg::SndAtCMEE()
+{
+    const char szATSetCMEE[] = "AT+CMEE=2";
+
+    CSerialPort* pComm = ((CHSDPAApp*)AfxGetApp())->m_pSerialPort;
+    ASSERT(pComm);
+    if (pComm->WriteToPort(szATSetCMEE, strlen(szATSetCMEE))) {
+        RegisterAtRespFunc(ATRESP_GENERAL_AT, RspAtCMEE, this);
 
         if (WAIT_OBJECT_0 == WaitForSingleObject(m_hSyncInitEvt, 30000))
             return SYNCINITFUNCRET_DONE;

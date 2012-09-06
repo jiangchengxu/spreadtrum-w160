@@ -135,6 +135,7 @@ public:
 
     EnSyncInitFuncRetType SndAtPowerCFUN(EnPowerType nPowerType);
     EnSyncInitFuncRetType SndAtPowerCFUNQ(EnPowerType nPowerType);
+    EnSyncInitFuncRetType SndAtCMEE();
     BOOL AtSendCVMI();//add by liub for voicemail
     BOOL m_bPCONLINE;
 
@@ -229,6 +230,7 @@ public:
 
     static void RspAtPowerCFUN(LPVOID pWnd, BYTE(*strArr)[DSAT_STRING_COL], WORD wStrNum);
     static void RspAtPowerCFUNQ(LPVOID pWnd, BYTE(*strArr)[DSAT_STRING_COL], WORD wStrNum);
+    static void RspAtCMEE(LPVOID pWnd, BYTE(*strArr)[DSAT_STRING_COL], WORD wStrNum);
     BOOL SndAtSmsQCMGR(USHORT index);
     BOOL SndAtSmsQCMGD(USHORT index);
     BOOL ProgressOpen(int nUpper = 0, int nStep = 0);
