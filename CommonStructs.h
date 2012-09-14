@@ -125,6 +125,7 @@ typedef enum
     SMS_STATE_MT_READ,
     SMS_STATE_MO_NOT_SENT,    
     SMS_STATE_MO_SENT,
+    SMS_STATE_ALL,
     SMS_STATE_MAX
 }EnSmsState;
 

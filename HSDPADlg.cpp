@@ -6315,7 +6315,7 @@ void CHSDPADlg::RspAtCMEE(LPVOID pWnd, BYTE(*strArr)[DSAT_STRING_COL], WORD wStr
 
 EnSyncInitFuncRetType CHSDPADlg::SndAtCMEE()
 {
-    const char szATSetCMEE[] = "AT+CMEE=2";
+    const char szATSetCMEE[] = "AT+CMEE=2\r";
 
     CSerialPort* pComm = ((CHSDPAApp*)AfxGetApp())->m_pSerialPort;
     ASSERT(pComm);

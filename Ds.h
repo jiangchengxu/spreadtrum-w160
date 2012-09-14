@@ -221,7 +221,8 @@ const char gcstrSmsState[SMS_STATE_MAX][SMS_MODE_MAX][15] = {
     "0", "REC UNREAD",
     "1", "REC READ",
     "2", "STO UNSENT",
-    "3", "STO SENT"
+    "3", "STO SENT",
+    "4", "ALL"
 };
 //add by liub for voicemail
 const char gcstrVoicemailRes[2][50] = {
