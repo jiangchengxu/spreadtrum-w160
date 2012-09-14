@@ -66,7 +66,7 @@ BOOL CPinEx::GetPinStat()
 
 BOOL CPinEx::GetPinRemainTimes()
 {
-	const char ATCLCKsc2[]="AT$CPINS?\x0d\x00";  
+	const char ATCLCKsc2[]="AT*SPPRAS?\x0d\x00";  
 	char szAtBuf[512] = {0};
 	strcpy(szAtBuf, ATCLCKsc2);
 	
@@ -153,32 +153,28 @@ const stTXTCode CPinEx::cpin_table[] = {
 /*AT$CPINS?的回调函数*/
 void CPinEx::AtRespPinRemainTimes(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL], WORD wStrNum)
 {
-	//$CPINS:1,0,10
-	CPinEx * pHandle = (CPinEx*)pWnd;
-	CString strRet = strArr[0];
-	char* pbuf = (char *)strArr[0];
-	int nfrom = 0;
-	int nto = 0;
-	//TCHAR temp[4];
-	char temp[4];
+    //*SPPRAS:3,10,3,10
+    CPinEx* pdlg = (CPinEx*)pWnd;
 
-	nfrom = strRet.ReverseFind(',') + 1;
-	nto = strRet.GetLength();
-	memcpy(temp,pbuf + nfrom,(nto - nfrom + 1));
+    BYTE* strRet = strArr[0] + strlen("*SPPRAS: ");
+    int nto = 0;
+    char temp[4] = {0};
 
-    //pHandle->m_nRemainTimes_puk = _ttoi(temp);
-	pHandle->m_nRemainTimes_puk = atoi(temp);
+    nto = strchr((char *)strRet, ',') - (char *)strRet;
+    memcpy(temp, strRet, nto);
+    pdlg->m_nRemainTimes = atoi(temp);
 
-	strRet = strRet.Mid(0,(nfrom - 1));
-	
-	nfrom = strRet.ReverseFind(',') + 1;
-	nto = strRet.GetLength();
-	memcpy(temp,pbuf + nfrom,(nto - nfrom + 1));
-   // pHandle->m_nRemainTimes = _ttoi(temp);
-	pHandle->m_nRemainTimes = atoi(temp);
+    strRet = strRet + nto + 1;
+    strRet = (BYTE *)strtrim((char *)strRet);
 
-	::SetEvent(pHandle->m_GetPinStatEvent);
+    memset(temp, 0, 4);
+    nto = strchr((char *)strRet, ',') - (char *)strRet;
+    memcpy(temp, strRet, nto);
+    pdlg->m_nRemainTimes_puk = atoi(temp);
+
+    ::SetEvent(pdlg->m_GetPinStatEvent);
 }
+
 
 /*AT+CPIN?命令的回调函数*/
 void CPinEx::AtRespPinHandler(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL], WORD wStrNum)
