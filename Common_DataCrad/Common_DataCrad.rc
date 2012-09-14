@@ -2737,7 +2737,7 @@ BEGIN
     IDS_POP_SMS_T           "New SMS"
     IDS_POP_CALL_T          "Incoming Call"
     IDS_SMS_SENDING_TIP     "Sending to "
-    IDS_APPPRONAME          "FlexiNet.exe"
+    IDS_APPPRONAME          "CM200 USB Modem.exe"
     IDS_ABOUTURL            " "
     IDS_ABOUTEMAIL          " "
     IDS_APPSKINPASH         "skin\\neostyle\\theme.ini"
