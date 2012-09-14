@@ -189,47 +189,12 @@ void CDlgConnect::OnRadioRas()
 		wcscpy(profile.szPhoneNumber, g_SetData.Internet_szLocalPhoneNumber);
 			wcscpy(profile.szUserName, g_SetData.Internet_szUserName);
 			wcscpy(profile.szPassword, g_SetData.Internet_szPassword);
-		//	wcscpy(profile.szAPN, _T("ibox.tim.it"));
+			wcscpy(profile.szAPN, _T("3GNET"));
 		profile.NetPreConfig = (EnInternetPreConf)m_connect_type; 
 		m_pConnProf->AddConnProfile(profile);
 	} 
 	nConnNum = m_pConnProf->GetConnNum();
-/*modified by lijl begin 2008.12.19*/
-//#if 0
-	/*add by GL on 2008-03-24 begin*/
-	if (nConnNum == 1)
-	{
-		StConnProfile profile;
-		memset(&profile, 0x00, sizeof(StConnProfile));
-		//		profile.bDefault = TRUE;
-		profile.AuthProtocol = (EnAuthProtocol)g_SetData.Internet_nAuthType;
-// 		CString strTempEdit;
-// 		strTempEdit .Format(_T("%s (Edit.)"), g_SetData.Internet_szDefaultConnName);
-		wcscpy(profile.szEntryName, _T("Flexinet[Time based]"));
-		wcscpy(profile.szPhoneNumber, _T("#777"));
-		wcscpy(profile.szUserName, _T("telkomnet@flexi-time"));
-		wcscpy(profile.szPassword, _T("telkom"));
-		profile.NetPreConfig = (EnInternetPreConf)m_connect_type; 
-		m_pConnProf->AddConnProfile(profile);
-	} 
-	nConnNum = m_pConnProf->GetConnNum();
-	if (nConnNum == 2)
-	{
-		StConnProfile profile;
-		memset(&profile, 0x00, sizeof(StConnProfile));
-		//		profile.bDefault = TRUE;
-		profile.AuthProtocol = (EnAuthProtocol)g_SetData.Internet_nAuthType;
-		// 		CString strTempEdit;
-		// 		strTempEdit .Format(_T("%s (Edit.)"), g_SetData.Internet_szDefaultConnName);
-		wcscpy(profile.szEntryName, _T("Flexinet[Volume based]"));
-		wcscpy(profile.szPhoneNumber, _T("#777"));
-		wcscpy(profile.szUserName, _T("telkomnet@flexi"));
-		wcscpy(profile.szPassword, _T("telkom"));
-		profile.NetPreConfig = (EnInternetPreConf)m_connect_type; 
-		m_pConnProf->AddConnProfile(profile);
-	} 
-//#endif
-/*modified by lijl end 2008.12.19*/
+
 	m_cmbConnectionName.ResetContent();
 
 	WORD cnt = 0;
@@ -663,11 +628,11 @@ void CDlgConnect::OnButtonDial()
         
 		m_StrUserName=profile.szUserName;
 
-		if(m_StrUserName.Compare(_T(""))==0)
+		/*if(m_StrUserName.Compare(_T(""))==0)
 		{
 			AfxMessageBox(_T("Please input user name!"));
 			return;
-		}
+		}*/
 		m_strAPN=profile.szAPN;
 		m_strLastAPN=m_strAPN;
 
