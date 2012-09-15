@@ -389,7 +389,6 @@ void CNetLog::ExportARecord(IGenerator* netlogHandle,int iIndex)
 				tempCell.Format(_T("GPRS"));
 				break;
 			}
-			case NW_SRV_UMTS:
 			case NW_SRV_HSDPA:
 			{
 				tempCell.Format(_T("UMTS"));

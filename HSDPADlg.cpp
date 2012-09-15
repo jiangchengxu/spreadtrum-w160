@@ -1589,50 +1589,76 @@ void CHSDPADlg::AtRespSIND(LPVOID pWnd, BYTE(*strArr)[DSAT_STRING_COL], WORD wSt
 
 void CHSDPADlg::AtRespMODE(LPVOID pWnd, BYTE(*strArr)[DSAT_STRING_COL], WORD wStrNum)
 {
+	CHSDPADlg* pDlg = (CHSDPADlg*)pWnd;
     if (!memcmp((const char*)strArr[0], gc_dsatResCodeTbl[DSAT_MODE][gc_dsatmode],
                 strlen(gc_dsatResCodeTbl[DSAT_MODE][gc_dsatmode]))) {
         char *ptr = (char*)strArr[0] + strlen(gc_dsatResCodeTbl[DSAT_MODE][gc_dsatmode]);
         char *p = strchr(ptr, ',');
-        int state = 0;
-        if (p == NULL) {
-            state = atoi(ptr);
-        } else {
-            *p = '\0';
-            state = atoi(ptr);
-            ptr = p + 1;
+        int sys_mode = 0;
+		BYTE nwsrv = 0;
+        *p = '\0';
+        sys_mode = atoi(ptr);
+        pDlg->m_NetworkSrv = (EnNetWorkSrv)atoi(p+1);
+
+        switch(sys_mode){
+            case 0:
+				pDlg->m_NetworkType = NW_TYPE_NOSRV;
+				break;
+            case 3:
+				pDlg->m_NetworkType = NW_TYPE_GSM;
+				break;
+            case 5:
+				pDlg->m_NetworkType = NW_TYPE_WCDMA;
+				break;
+            case 15:
+				pDlg->m_NetworkType = NW_TYPE_TDSCDMA;
+				break;
+            default:
+				pDlg->m_NetworkType = NW_TYPE_UNKNOWN;
+				break;
         }
-        switch (state) {
-        case 0:
-        case 1:
+
+        pDlg->m_NetCallLog = NW_CALLLOG_NOSRV;
+        switch (pDlg->m_NetworkSrv) {
+        case NW_SRV_GPRS:
+            nwsrv = 1;
+            pDlg->m_NetCallLog = NW_CALLLOG_GSM;
             break;
-        case 2:
+        case NW_SRV_EDGE:
+            nwsrv = 2;
+            pDlg->m_NetCallLog = NW_CALLLOG_GSM;
             break;
-        case 3:
+        case NW_SRV_HSDPA:
+            nwsrv = 3;
+            pDlg->m_NetCallLog = NW_CALLLOG_WCDMA;
             break;
-        case 4:
+        case NW_SRV_GSM:
+            nwsrv = 4;
+            pDlg->m_NetCallLog = NW_CALLLOG_GSM;
             break;
-        case 5:
+        case NW_SRV_WCDMA:
+            nwsrv = 5;
+            pDlg->m_NetCallLog = NW_CALLLOG_WCDMA;
             break;
-        case 6:
+        case NW_SRV_HSUPA:
+            nwsrv = 6;
+            pDlg->m_NetCallLog = NW_CALLLOG_WCDMA;
             break;
-        case 7:
-        case 11:
-            break;
-        case 8:
-            break;
-        case 9:
-            break;
-        case 10:
-            break;
-        case 12:
-            break;
+        case NW_SRV_TDSCDMA:
+            nwsrv = 6;
+            pDlg->m_NetCallLog = NW_CALLLOG_TDSCDMA;
         default:
             break;
         }
+
+        if (nwsrv >= 1 && nwsrv <= 3) {
+            g_nDataConnType = nwsrv;
+        }
+        pDlg->m_nNwSrv = nwsrv;
+        pDlg->PostMessage(WM_ICON_UPDATE, ICON_TYPE_NETWORK, pDlg->m_NetworkType);
+        pDlg->PostMessage(WM_ICON_UPDATE, ICON_TYPE_NWSRV, (LPARAM)nwsrv);
     }
 
-    if (((CHSDPADlg*)pWnd)->m_hSimLockEvt)
-        SetEvent(((CHSDPADlg*)pWnd)->m_hSimLockEvt);
 }
 
 void CHSDPADlg::AtRespSYSINFO(LPVOID pWnd, BYTE(*strArr)[DSAT_STRING_COL], WORD wStrNum)
@@ -1666,12 +1692,13 @@ void CHSDPADlg::AtRespSYSINFO(LPVOID pWnd, BYTE(*strArr)[DSAT_STRING_COL], WORD 
         ASSERT(pMain->m_RoamStatus >= ROAM_OFF && pMain->m_RoamStatus <= ROAM_MAX);
 
         //rescode[3] indicate sys mode
-
+        pMain->m_NetworkSrv = (EnNetWorkSrv)rescode[3];
         //rescode[4] indicate sim state
 
         //rescode[5] reserved
 
         //rescode[6] indicate sys submode
+        pMain->m_NetworkSrv = (EnNetWorkSrv)rescode[6];
 
         pMain->PostMessage(WM_ICON_UPDATE, ICON_TYPE_PLMN2, pMain->m_SrvStatus);
         pMain->PostMessage(WM_ICON_UPDATE, ICON_TYPE_NETWORK, pMain->m_NetworkType);//NETWORK SERVICE
@@ -1850,7 +1877,7 @@ void CHSDPADlg::AtRespNWSRVCHG(LPVOID pWnd, BYTE(*strArr)[DSAT_STRING_COL], WORD
             nwsrv = 4;
             pDlg->m_NetCallLog = NW_CALLLOG_GSM;
             break;
-        case NW_SRV_UMTS:
+        case NW_SRV_WCDMA:
             nwsrv = 5;
             pDlg->m_NetCallLog = NW_CALLLOG_WCDMA;
             break;
@@ -4061,9 +4088,9 @@ void CHSDPADlg::RegSyncInitFunc()               //wyw_0120 remove all Sleep
     m_pSyncFuncTbl[SYNCINITFUNCID_CSCS] = &CHSDPADlg::AtSndCSCS;
     m_pSyncFuncTbl[SYNCINITFUNCID_CGMR] = &CHSDPADlg::AtSndCGMR;
     //add by liub for CDMA2000 SMSSettings
-    m_pSyncFuncTbl[SYNCINITFUNCID_HMSGP] = &CHSDPADlg::SndAtSmsQHMSGP;
+//    m_pSyncFuncTbl[SYNCINITFUNCID_HMSGP] = &CHSDPADlg::SndAtSmsQHMSGP;
 //  Sleep(150);
-    m_pSyncFuncTbl[SYNCINITFUNCID_CSMP] = &CHSDPADlg::SndAtSmsQCSMP;
+//    m_pSyncFuncTbl[SYNCINITFUNCID_CSMP] = &CHSDPADlg::SndAtSmsQCSMP;
 //  Sleep(150);
     //add by liub end
 
