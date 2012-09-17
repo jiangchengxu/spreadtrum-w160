@@ -2373,8 +2373,12 @@ BOOL SmsAtCMGRRspProc(BYTE(*strArr)[DSAT_STRING_COL], WORD wStrNum, StSmsRecord 
     CString szSCNumTemp = (char*)ptr[scnum];
     if (scnum == -1 || !(ptr[scnum] && *ptr[scnum]))
         memset(record.szSCNumber, 0x00, SMS_SC_NUM_MAX);
-    else
-        wcsncpy((TCHAR*)record.szSCNumber, szSCNumTemp, SMS_SC_NUM_MAX);
+    else{
+        USES_CONVERSION;
+        CString strGb = UCS2ToGB(szSCNumTemp);
+        strncpy(record.szSCNumber, W2A((LPCTSTR)strGb), SMS_SC_NUM_MAX * 2);
+        //wcsncpy((TCHAR*)record.szSCNumber, szSCNumTemp, SMS_SC_NUM_MAX);
+    }
 
     if (concatenate != -1 && ptr[concatenate] && *ptr[concatenate]) {
         if (ExtractConcatenateSmsPara(ptr[concatenate], &record.nRefCnt, &record.nSeqCnt, &record.nTotalCnt))

@@ -1087,11 +1087,13 @@ void CHSDPADlg::AtRespCMT(LPVOID pWnd, BYTE(*strArr)[DSAT_STRING_COL], WORD wStr
 
 
     record.state = SMS_STATE_MT_NOT_READ;
-    //Modified by Zhou Bin 2008.12.30
-    //CString ptr0=(char*)ptr[0];
-
-    //wcscpy(record.szNumber, ptr0);
-    strcpy(record.szNumber, ptr[0]);
+	
+	if (!(ptr[0] && *ptr[0])){
+		memset(record.szNumber, 0x00, SMS_SC_NUM_MAX);
+	}else{
+		CString strGb = UCS2ToGB(A2W((char*)ptr[0]));
+		strncpy((char*)record.szNumber, W2A(strGb), SMS_SC_NUM_MAX*2);
+	}
 
     int time, scnum, concatenate;
     time = 1; scnum = 0, concatenate = 3;
@@ -1106,8 +1108,10 @@ void CHSDPADlg::AtRespCMT(LPVOID pWnd, BYTE(*strArr)[DSAT_STRING_COL], WORD wStr
     //  CString ptrsc=(char*)(ptr[scnum]);
     if (!(ptr[scnum] && *ptr[scnum]))
         memset(record.szSCNumber, 0x00, SMS_SC_NUM_MAX);
-    else
-        strncpy((char*)record.szSCNumber, ptr[scnum], SMS_SC_NUM_MAX);
+    else{
+        CString strGb = UCS2ToGB(A2W((char*)ptr[scnum]));
+        strncpy((char*)record.szSCNumber, W2A(strGb), SMS_SC_NUM_MAX*2);
+    }
     // wcsncpy(record.szSCNumber, ptrsc, SMS_SC_NUM_MAX);
 
     if ((ptr[concatenate] && *ptr[concatenate])) { //flexi LMS:此处需修改为：根据下位机修改过的参数来判断是否是长短信
@@ -1722,8 +1726,7 @@ void CHSDPADlg::AtRespCREG(LPVOID pWnd, BYTE(*strArr)[DSAT_STRING_COL], WORD wSt
 
     }
 
-    if (((CHSDPADlg*)pWnd)->m_hSimLockEvt)
-        SetEvent(((CHSDPADlg*)pWnd)->m_hSimLockEvt);
+
 }
 
 void CHSDPADlg::AtRespECIND(LPVOID pWnd, BYTE(*strArr)[DSAT_STRING_COL], WORD wStrNum)
@@ -1733,8 +1736,7 @@ void CHSDPADlg::AtRespECIND(LPVOID pWnd, BYTE(*strArr)[DSAT_STRING_COL], WORD wS
 
     }
 
-    if (((CHSDPADlg*)pWnd)->m_hSimLockEvt)
-        SetEvent(((CHSDPADlg*)pWnd)->m_hSimLockEvt);
+
 }
 /*监听到来电号码*/
 /*返回串格式：
@@ -2382,7 +2384,7 @@ void CHSDPADlg::OnTimer(UINT nIDEvent)
     CBaseDialog::OnTimer(nIDEvent);
 }
 
-EnSyncInitFuncRetType CHSDPADlg::AtSndQSMSS()
+EnSyncInitFuncRetType CHSDPADlg::AtSndQCSCA()
 {
     //check if sms initialized or not
     char szAtBuf[20] = {0};
@@ -2442,7 +2444,7 @@ EnSyncInitFuncRetType CHSDPADlg::AtSndOPCONLINE()
         return SYNCINITFUNCRET_SND_ERR;
 }
 
-EnSyncInitFuncRetType CHSDPADlg::AtSndQPHBS()
+EnSyncInitFuncRetType CHSDPADlg::AtSndQPHBR()
 {
     //Query phb initialized or not
     char szAtBuf[20] = {0};
@@ -2893,7 +2895,8 @@ void CHSDPADlg::AtRespCSCA(LPVOID pWnd, BYTE(*strArr)[DSAT_STRING_COL], WORD wSt
             } else
                 q++;
         }
-        CString szptr = (char*)ptr;
+    USES_CONVERSION;
+	CString szptr = UCS2ToGB(A2W((char*)ptr));
         wcsncpy(gSmsCentreNum, szptr, SMS_SC_NUM_MAX);
     }
 
@@ -3204,7 +3207,7 @@ BOOL CHSDPADlg::SyncInitFunc(int nStatus)
         str.LoadString(IDS_CHECK_SMS_STATUS);
         PreMsgDlg->SetText(str);
 
-        AtSndQSMSS();
+        AtSndQCSCA();
         if (!m_bSMSS) {             //wyw_0121 modify
             int i = 0;
 
@@ -3247,7 +3250,7 @@ BOOL CHSDPADlg::SyncInitFunc(int nStatus)
         str.LoadString(IDS_CHECK_PBM_STATUS);
         PreMsgDlg->SetText(str);
 
-        AtSndQPHBS();
+        AtSndQPHBR();
         if (!m_bPBSS)
             if (WAIT_TIMEOUT == WaitForSingleObject(m_hSyncPbmInitEvt, SYNCINIT_TIMEOUT_LONG)) {
                 res = FALSE;
@@ -3300,7 +3303,7 @@ BOOL CHSDPADlg::SyncInitFunc(int nStatus)
     PreMsgDlg = NULL;
 
 
-    //AtSendCVMI();
+    //AtSendCVMI(); //voice mail
 
 #ifdef FEATURE_VERSION_NOSIM
     m_cHandlePin.m_nSimStat = CPIN_SIM_NONE_REQUIRED;
@@ -3360,15 +3363,6 @@ BOOL CHSDPADlg::SyncInitFunc(int nStatus)
     b_start = 1;//初始化完成
     return res;
 }
-
-
-/*
-EnSyncInitFuncRetType CHSDPADlg::AtSndCSCA()
-{
-    return (AtSndCSCA(NULL));
-}
-*/
-
 
 EnSyncInitFuncRetType CHSDPADlg::AtSndCMGF()
 {
@@ -4073,8 +4067,11 @@ void CHSDPADlg::RegSyncInitFunc()               //wyw_0120 remove all Sleep
     }
     m_pSyncFuncTbl[SYNCINITFUNCID_CSQ] = &CHSDPADlg::AtSndCSQ;
     m_pSyncFuncTbl[SYNCINITFUNCID_CMGF] = &CHSDPADlg::AtSndCMGF;
+    m_pSyncFuncTbl[SYNCINITFUNCID_CSCS] = &CHSDPADlg::AtSndCSCS;
+    m_pSyncFuncTbl[SYNCINITFUNCID_CGMR] = &CHSDPADlg::AtSndCGMR;
+
     if (!wcsicmp(g_SetData.Setup_sz3GType, _T("WCDMA"))) {
-        //  m_pSyncFuncTbl[SYNCINITFUNCID_CSCA] = &CHSDPADlg::AtSndCSCA;
+          m_pSyncFuncTbl[SYNCINITFUNCID_CSCA] = &CHSDPADlg::AtSndCSCA;
     }
 
     m_pSyncFuncTbl[SYNCINITFUNCID_CSDH] = &CHSDPADlg::AtSndCSDH;
@@ -4085,8 +4082,7 @@ void CHSDPADlg::RegSyncInitFunc()               //wyw_0120 remove all Sleep
         //  m_pSyncFuncTbl[SYNCINITFUNCID_CLIP] = &CHSDPADlg::AtSndCLIP;
     }
 
-    m_pSyncFuncTbl[SYNCINITFUNCID_CSCS] = &CHSDPADlg::AtSndCSCS;
-    m_pSyncFuncTbl[SYNCINITFUNCID_CGMR] = &CHSDPADlg::AtSndCGMR;
+
     //add by liub for CDMA2000 SMSSettings
 //    m_pSyncFuncTbl[SYNCINITFUNCID_HMSGP] = &CHSDPADlg::SndAtSmsQHMSGP;
 //  Sleep(150);

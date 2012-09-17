@@ -45,6 +45,7 @@ public:
 	static int CALLBACK ListCompare(LPARAM lParam1, LPARAM lParam2, LPARAM lParamSort);
 
 	bool CheckNameUnicode(const TCHAR* ch,int* iByte);
+	bool CPhoneBookDlg::CheckNameUnicode(const TCHAR* ch);
 	BOOL isChineseChar(const char* ch);
 	BOOL isChineseCharUnicode(const TCHAR* ch);
 

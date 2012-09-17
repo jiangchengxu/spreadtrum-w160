@@ -1308,7 +1308,7 @@ bool CPhoneBookDlg::WriteToUSIM(StPbRecord *PbBookPC,int Flag)
 if(Flag==1)
 {
 #ifndef FEATURE_VERSION_NOSIM
-	if(strNameLenTemp.GetLength() > PB_NAME_PC_MAX)
+	if(strNameLenTemp.GetLength() > PB_NAME_SIM_MAX)
 	{
 		strTemp = strNameLenTemp.Left(PB_NAME_SIM_MAX);
 		memcpy(PbBookPC->strName,strTemp,PB_NAME_MAX);
@@ -3206,7 +3206,6 @@ void CPhoneBookDlg::ReadDataFromLoc(int flag)
 			{
 				m_pWaitDlg->m_strPrompt=StrPBTransferInfo+_T("R-UIM...");
 			}
-            //m_pWaitDlg->m_strPrompt.LoadString(IDS_PBTRANSFER_INITUSIMINFO);
 
             break;
         }        
@@ -3365,7 +3364,7 @@ void CPhoneBookDlg::AtRespReadState(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL]
             from = buffer.ReverseFind(',')+1;
             to = buffer.GetLength() - 1;
             memcpy(temp,pbuf+from,(to - from + 1));
-            int nStoreTotalNumer = atoi(temp);
+            int nStoreTotalNumer = 50;//atoi(temp);     //need to changed jiang
 
 			/*
 			//得到已用条数
@@ -3551,7 +3550,8 @@ void CPhoneBookDlg::AtRespReadState(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL]
 					//获取姓名
 					strTemp.Delete(strTemp.GetLength() - 1, 1);
 					int nNameFrom = strTemp.ReverseFind('\"');
-					CString strName = strTemp.Mid(nNameFrom + 1, (strTemp.GetLength() - 1));
+					CString strName = strTemp.Mid(nNameFrom + 1 + 2, (strTemp.GetLength() - 
+1 - 2));    //ignore the fist two character "80" indicate it's unicode string
 					strName.TrimLeft();
                     strName.TrimRight();
 					if (_T("") != strName)
@@ -3896,10 +3896,18 @@ bool CPhoneBookDlg::AtWriteARecord2(CString Name,CString Num, int index,int nfla
         m_StrSource.Insert(m_StrSource.GetLength(),_T("\",129,"));
         if (_T("") != Name)
         {        
-			//Name.Insert(strlen(Name),"\"");
-			m_StrSource.Insert(m_StrSource.GetLength(),_T("\""));
-			CString CodeUnicode=BTToUCS2(Name);
-			UCS2ToUCS2(Name,CodeUnicode);
+                     CString CodeUnicode;
+			bool bCheckRes = CheckNameUnicode(Name);
+                    	if(bCheckRes)
+                    	{
+                     m_StrSource.Insert(m_StrSource.GetLength(),_T("\"80")); 
+                     //add 80 to indicate ucs string
+
+			CodeUnicode=BTToUCS2(Name);
+                    	}else{
+                       m_StrSource.Insert(m_StrSource.GetLength(),_T("\""));
+                        CodeUnicode = Name; 
+                    }
 			m_StrSource.Insert(m_StrSource.GetLength(),CodeUnicode);
 			m_StrSource.Insert(m_StrSource.GetLength(),_T("\""));
         }
@@ -4940,8 +4948,8 @@ bool CPhoneBookDlg::CheckNameUnicode(const TCHAR* ch,int* iByte)
 
 	while(*ch)
 	{
-		BOOL bRes = isChineseCharUnicode(ch);
-		if(bRes)
+		//BOOL bRes = isChineseCharUnicode(ch);
+		if(*ch>0x80)
 		{
 			ch++;
 			if(nLen < PB_NAME_UCS_MAX)
@@ -4968,6 +4976,23 @@ bool CPhoneBookDlg::CheckNameUnicode(const TCHAR* ch,int* iByte)
 		}
 	}
 	return true;
+}
+
+bool CPhoneBookDlg::CheckNameUnicode(const TCHAR* ch)
+{
+	bool bNameUcs = false;  //用于区分姓名中是否有中文，默认为英文
+
+	while(*ch)
+	{
+		if(*ch>0x80)
+		{			
+			bNameUcs = true;
+                    break;
+		}
+                ch++;
+	}
+
+	return bNameUcs;
 }
 
 BOOL CPhoneBookDlg::isChineseChar(const char* ch)

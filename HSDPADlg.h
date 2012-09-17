@@ -67,7 +67,7 @@ typedef enum {
     SYNCINITFUNCID_CSQ,//liub
     SYNCINITFUNCID_CMGF,
 
-//  SYNCINITFUNCID_CSCA,
+    SYNCINITFUNCID_CSCA,
 
     SYNCINITFUNCID_CSDH,
     ///  SYNCINITFUNCID_CPMS,
@@ -247,8 +247,8 @@ public:
     EnSyncInitFuncRetType AtSndCLVL();
     EnSyncInitFuncRetType AtSndCSDH();
     EnSyncInitFuncRetType AtSndCPINQ();
-    EnSyncInitFuncRetType AtSndQSMSS();
-    EnSyncInitFuncRetType AtSndQPHBS();
+    EnSyncInitFuncRetType AtSndQCSCA();
+    EnSyncInitFuncRetType AtSndQPHBR();
     EnSyncInitFuncRetType AtSndCOPS();
     EnSyncInitFuncRetType AtSndSICLOCK();
     EnSyncInitFuncRetType AtSndPCONLINE();
