@@ -194,12 +194,12 @@ void CModifyPinDlg::OnBtnMpinOk()
 
 int CModifyPinDlg::OnPinModify()
 {
-	const TCHAR AtCpwd[]=_T("AT+CPWD=\"SC\",");
-	const TCHAR Suffix[]=_T("\x0d\x00");
+	const TCHAR AtCpwd[]=_T("AT+CPWD=\"SC\",\"");
+	const TCHAR Suffix[]=_T("\"\x0d\x00");
 	TCHAR szAtBuf[512] = {0};
 	CString strSend = AtCpwd;
 	strSend += m_pinCurr;
-	strSend +=_T(",");
+	strSend +=_T("\",\"");
 	strSend +=m_pinNew;
 	strSend += Suffix;
 	wcscpy(szAtBuf, strSend);
