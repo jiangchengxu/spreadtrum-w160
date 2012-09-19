@@ -4031,9 +4031,8 @@ EnSyncInitFuncRetType CHSDPADlg::AtSndCSCS()
 {
     char szAtBuf[30] = {0};
     char szChSet[10] = {0};
-    TCHAR* st = g_SetData.Main_CharSet;
-
-    sprintf(szAtBuf, "AT+CSCS=\"%s\"\r", szChSet);
+	USES_CONVERSION;
+    sprintf(szAtBuf, "AT+CSCS=\"%s\"\r", W2A(g_SetData.Main_CharSet));
 
     if (m_pComm->WriteToPort(szAtBuf, strlen(szAtBuf))) {
         RegisterAtRespFunc(ATRESP_GENERAL_AT, AtRespCSCS, (LPVOID)this);
