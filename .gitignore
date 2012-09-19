@@ -2,5 +2,7 @@ Debug/
 HSDPA.opt
 HSDPA.plg
 HSDPA.ncb
+*.log
+*.dat
 *.orig
 cm200.*
