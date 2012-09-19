@@ -287,19 +287,17 @@ void CSmsWriteDlg::OnButtonSmsSend()
 					if(!DivideSmsConcatenate(m_strSmsDetails))
                         return;
 #endif                    
-
-//////////////////////////////////////////////////////////////////////////WCDMA modify by liub
-//                     if(SndAtSmsQCSMP())
-//                     {
-//                         ::ResetEvent(g_BGPassEvt);
-//                         m_pMainWnd->CtlAllSmsRcvConcTimer(FALSE);
-//                     }
-//                     else
-//                     {
-//                         ::SetEvent(g_BGPassEvt);
-//                     }
-//////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////CDMA2000 add by liub
+                        if (!wcsicmp(g_SetData.Setup_sz3GType, _T("WCDMA"))){
+                             if(SndAtSmsQCSMP())
+                             {
+                                 ::ResetEvent(g_BGPassEvt);
+                                 m_pMainWnd->CtlAllSmsRcvConcTimer(FALSE);
+                             }
+                             else
+                             {
+                                 ::SetEvent(g_BGPassEvt);
+                             }
+                        }else if(!wcsicmp(g_SetData.Setup_sz3GType, _T("CDMA2000"))){
 					   if(SndAtSmsQHMSGL())
 				       {
 				           ::ResetEvent(g_BGPassEvt);
@@ -309,7 +307,7 @@ void CSmsWriteDlg::OnButtonSmsSend()
 				       {
 				           ::SetEvent(g_BGPassEvt);
 					   }
-//////////////////////////////////////////////////////////////////////////
+                        }   
                 }
             }
         }
@@ -529,10 +527,13 @@ void CSmsWriteDlg::OnTimer(UINT nIDEvent)
     {
         KillTimer(IDT_QCSMP_TIMEOUT);
     }
-	if (IDT_QHMSGL_TIMEOUT == nIDEvent)//add by liub for CDMA2000
-	{
-		KillTimer(IDT_QHMSGL_TIMEOUT);
-	}
+    if (IDT_QHMSGL_TIMEOUT == nIDEvent)//add by liub for CDMA2000
+    {
+    	KillTimer(IDT_QHMSGL_TIMEOUT);
+    }
+    if(IDT_QCMMS_TIMEOUT == nIDEvent){
+        KillTimer(IDT_QCMMS_TIMEOUT);
+    }
     if(IDT_QCSCA_TIMEOUT == nIDEvent)
     {
         KillTimer(IDT_QCSCA_TIMEOUT);
@@ -579,7 +580,7 @@ BOOL CSmsWriteDlg::SndAtSmsQCSMP()
         }
         else
         {
-            para1 = 113; para2 = 167; para3 = 0; para4 = 8;
+            para1 = 113; para2 = 167; para3 = 0; para4 = 2;
         }
     }
     else
@@ -590,7 +591,7 @@ BOOL CSmsWriteDlg::SndAtSmsQCSMP()
         }
         else
         {
-            para1 = 17; para2 = 167; para3 = 0; para4 = 8;
+            para1 = 17; para2 = 167; para3 = 0; para4 = 2;
         }
     }
 #else
@@ -600,7 +601,7 @@ BOOL CSmsWriteDlg::SndAtSmsQCSMP()
     }
     else
     {
-        para1 = 17; para2 = 167; para3 = 0; para4 = 8;
+        para1 = 17; para2 = 167; para3 = 0; para4 = 2;
     }
 #endif
 
@@ -820,17 +821,12 @@ void CSmsWriteDlg::RspAtSmsQCSMP(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL], W
 //输出：TRUE/FALSE
 BOOL CSmsWriteDlg::SndAtSmsQCSCA()
 {
-    char szAtBuf[50] = {0};
+    char szAtBuf[100] = {0};
+    CString scNumber = BTToUCS2((LPCTSTR)m_szSCNumber);
 
-	//Modified by Zhou Bin 2008.12.30
-//       char *szTemp = new char[_tcslen(m_szSCNumber) + 1];
-//      	memset(szTemp, 0, _tcslen(m_szSCNumber) + 1);
-//     	int len = WCharToChar(m_szSCNumber, szTemp);
-	
-    //sprintf(szAtBuf, "%s\"%s\"\r", gcstrAtSms[AT_SMS_QCSCA], szTemp);
-	sprintf(szAtBuf, "%s\"%s\"\r", gcstrAtSms[AT_SMS_QCSCA], m_szSCNumber);
+    USES_CONVERSION;
+    sprintf(szAtBuf, "%s\"%s\"\r", gcstrAtSms[AT_SMS_QCSCA], W2A(scNumber));
 
-	//delete []szTemp;
     CSerialPort* pComm = ((CHSDPAApp*)AfxGetApp())->m_pSerialPort;
     ASSERT(pComm);
 
@@ -858,16 +854,47 @@ void CSmsWriteDlg::RspAtSmsQCSCA(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL], W
         pDlg->PostMessage(WM_SMS_SEND_PROC, (WPARAM)AT_SMS_QCSCA, (LPARAM)TRUE);
 }
 
+BOOL CSmsWriteDlg:: SndAtSmsQCMMS(int param)
+{
+    char szAtBuf[50] = {0};
+    ASSERT(param == 0 || param == 1 || param == 2);
+    sprintf(szAtBuf, "%s\"%s\"\r", gcstrAtSms[AT_SMS_QCMMS], param);
+
+    CSerialPort* pComm = ((CHSDPAApp*)AfxGetApp())->m_pSerialPort;
+    ASSERT(pComm);
+
+    if(pComm->WriteToPort(szAtBuf, strlen(szAtBuf), FALSE))
+    {
+        RegisterAtRespFunc(ATRESP_GENERAL_AT, RspAtSmsQCMMS, (LPVOID)this);
+        SetTimer(IDT_QCMMS_TIMEOUT, 60000, NULL);
+        return TRUE;
+    }
+    else
+        return FALSE;
+}
+
+void CSmsWriteDlg::RspAtSmsQCMMS(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL], WORD wStrNum)
+{
+    CSmsWriteDlg* pDlg = (CSmsWriteDlg*)pWnd;
+    pDlg->KillTimer(IDT_QCMMS_TIMEOUT);
+    
+    if(strcmp((const char*)strArr[0], gc_dsatResCodeTbl[DSAT_OK][gc_dsatmode]) == 0)
+        pDlg->PostMessage(WM_SMS_SEND_PROC, (WPARAM)AT_SMS_QCMMS, (LPARAM)TRUE);
+    else
+        pDlg->PostMessage(WM_SMS_SEND_PROC, (WPARAM)AT_SMS_QCMMS, (LPARAM)TRUE);
+}
+
 //功能：发送AT$QCMGS
 //输入：nStep:写号码：1,写内容：2
 //输出：TRUE/FALSE
 BOOL CSmsWriteDlg::SndAtSmsQCMGS(int nStep)
 {    
 	memset(m_szGroupNumSendNum, 0x00, sizeof(m_szGroupNumSendNum));
-		USES_CONVERSION;
+	USES_CONVERSION;
     TCHAR szAtBuf[1600] = {0};
     char szAtAscBuf[1600] = {0};
 	int buffsize;
+    CString destAddr;
     ASSERT(m_nCurNum < m_nNumCount);
 
     if(nStep == 1)
@@ -901,19 +928,10 @@ BOOL CSmsWriteDlg::SndAtSmsQCMGS(int nStep)
         else
             pNumType = gcstrNumType[1];
 
-	    //Modified by Zhou Bin 2008.12.30
-// 		char *szGPTemp = new char[_tcslen(m_szGroupNum[m_nCurNum]) + 1];
-//      	memset(szGPTemp, 0, _tcslen(m_szGroupNum[m_nCurNum]) + 1);
-// 		WCharToChar(m_szGroupNum[m_nCurNum], szGPTemp);
-//         sprintf(szAtAscBuf, "%s\"%s\",%s\r", 
-//             gcstrAtSms[AT_SMS_QCMGS], 
-//             szGPTemp,
-//             pNumType);
-// 		delete []szGPTemp;
+            destAddr  = BTToUCS2(A2W(m_szGroupNumSendNum));
 		sprintf(szAtAscBuf, "%s\"%s\",%s\r", 
             gcstrAtSms[AT_SMS_QCMGS], 
-            /*m_szGroupNum[m_nCurNum],*/
-			m_szGroupNumSendNum,
+			W2A(destAddr),
             pNumType);
 
              buffsize=strlen(szAtAscBuf);
@@ -936,6 +954,7 @@ BOOL CSmsWriteDlg::SndAtSmsQCMGS(int nStep)
 //                   ASCToUCS2((char*)szHead,(TCHAR *)unicodStr );
 //                   wcscpy(szAtBuf, unicodStr);
 // 				      	       delete[] unicodStr;
+				
 				CString unicodStr = A2W(szHead);
 				wcscpy(szAtBuf, BTToUCS2(unicodStr));
             }
@@ -1105,9 +1124,16 @@ LRESULT CSmsWriteDlg::OnSmsSendPorc(WPARAM wParam, LPARAM lParam)
         }
         else if(AtType == AT_SMS_QCSCA)
         {
+#ifdef FEATURE_SMS_CONCATENATE
+            if(gSmsIsConcatenate && 0 == gSmsCurSege  && 0 != gSmsTotalSege){
+                bSndRes = SndAtSmsQCMMS(1);
+            }else
+#endif
+            bSndRes = SndAtSmsQCMGS(1);
+        }else if(AtType == AT_SMS_QCMMS){
             bSndRes = SndAtSmsQCMGS(1);
         }
-		else if(AtType == AT_SMS_QHMSGP)//add by liub
+	 else if(AtType == AT_SMS_QHMSGP)//add by liub
         {
 			if(pMainWnd->m_bInComSms || pMainWnd->m_bInComCall)
                 goto STOPSEND;
@@ -1170,7 +1196,6 @@ LRESULT CSmsWriteDlg::OnSmsSendPorc(WPARAM wParam, LPARAM lParam)
             //pWnd->PostMessage(WM_SMS_SAVE_MSG, (WPARAM)SMS_TYPE_OUTBOX, LOC_PC);
 			pMainWnd->m_pSmsDlg->PostMessage(WM_SMS_SAVE_MSG, (WPARAM)SMS_TYPE_OUTBOX, LOC_PC);
 
-            if(0){}
 #ifdef FEATURE_SMS_CONCATENATE
 
     
@@ -1180,7 +1205,11 @@ LRESULT CSmsWriteDlg::OnSmsSendPorc(WPARAM wParam, LPARAM lParam)
 				if (gSmsCurSege +1 == gSmsTotalSege && FALSE == thelastone)
 				{
 					thelastone = TRUE;
+                                   if(!wcsicmp(g_SetData.Setup_sz3GType,_T("CDMA2000"))){
 					SndAtSmsQHMSGP();
+                                    }else if(!wcsicmp(g_SetData.Setup_sz3GType,_T("WCDMA"))){
+                                       SndAtSmsQCMMS(0);
+                                    }
 				} 
 				else
 					bSndRes = SndAtSmsQCMGS(1);

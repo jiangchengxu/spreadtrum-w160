@@ -45,6 +45,8 @@ public:
 	BOOL SndAtSmsQHMSGL();
     //发送AT$QCSCA
     BOOL SndAtSmsQCSCA();
+	BOOL SndAtSmsQCMMS(int param);
+	
 	//发送AT$QHMSGP(设置短信其他参数<发送报告>,<短消息类型>,<消息头>,<优先级>)
 	BOOL SndAtSmsQHMSGP();
 	//响应AT$QHMSGP
@@ -56,7 +58,8 @@ public:
 	//响应AT$QHMSGL(CDMA2000) //add by liub
 	static void RspAtSmsQHMSGL(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL], WORD wStrNum);
     //响应AT$QCMGS
-	static void RspAtSmsQCMGS(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL], WORD wStrNum);	
+	static void RspAtSmsQCMGS(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL], WORD wStrNum);
+	static void RspAtSmsQCMMS(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL], WORD wStrNum);
 
     CSmsWriteDlg(CWnd* pParent = NULL,
                  LPCTSTR lpszNumber = NULL,

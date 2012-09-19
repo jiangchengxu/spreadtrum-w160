@@ -188,6 +188,7 @@ typedef enum {
     AT_SMS_QCSMP,     //写发配置
     AT_SMS_QHMSGL,    //短消息语言和编码设置(CDMA2000)//add by liub
     AT_SMS_QHMSGP,    //短消息其他参数设置(CDMA2000)//add by liub
+    AT_SMS_QCMMS,	//长短信//add by jcx
     AT_SMS_MAX
 } EnAtSmsType;
 
@@ -203,6 +204,7 @@ const char gcstrAtSms[AT_SMS_MAX][15] = {
     "AT+CSMP=",
     "AT+HMSGL=",//add by liub for SMS CDMA2000
     "AT+HMSGP=",//add by liub for SMS CDMA2000
+    "AT+CMMS=",
 };
 
 const char gcstrResSms[AT_SMS_MAX][15] = {
@@ -215,6 +217,7 @@ const char gcstrResSms[AT_SMS_MAX][15] = {
     "+CMGF: ",
     "+CNMI: ",
     "+CSMP: ",
+    "+CMMS: "
 };
 
 const char gcstrSmsState[SMS_STATE_MAX][SMS_MODE_MAX][15] = {

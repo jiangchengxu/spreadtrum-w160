@@ -89,6 +89,7 @@ typedef enum
 		IDT_CVMR_TIMEOUT,//add by liub for TATA voicemail
 		IDT_CVMD_TIMEOUT,//add by liub
         IDT_QCSCA_TIMEOUT, 
+        IDT_QCMMS_TIMEOUT, //add by jcx for WCDMA
 		IDT_PHMOD_TIMEROUT,
         TIMER_ID_ATRESP_TIMEOUT_CPBS_SEL_STORE, 
         TIMER_ID_ATRESP_TIMEOUT_CPBR_CHECK_TOTAL, 
