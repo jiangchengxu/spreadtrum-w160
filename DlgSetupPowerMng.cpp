@@ -606,7 +606,10 @@ void CDlgSetupPowerMng::RspAtSmsQCSMP(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_CO
 BOOL CDlgSetupPowerMng::SndAtSmsQCSCA()
 {
     char szAtBuf[50] = {0};
-    sprintf(szAtBuf, "%s\"%s\"\r", gcstrAtSms[AT_SMS_QCSCA], m_strSCA);
+	char ascSCA[50] = {0};
+	WCharToChar(m_strSCA, ascSCA);
+	
+    sprintf(szAtBuf, "%s\"%s\"\r", gcstrAtSms[AT_SMS_QCSCA], ascSCA);
     CSerialPort* pComm = ((CHSDPAApp*)AfxGetApp())->m_pSerialPort;
     ASSERT(pComm);
 

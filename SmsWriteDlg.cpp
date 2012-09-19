@@ -822,10 +822,10 @@ void CSmsWriteDlg::RspAtSmsQCSMP(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL], W
 BOOL CSmsWriteDlg::SndAtSmsQCSCA()
 {
     char szAtBuf[100] = {0};
-    CString scNumber = BTToUCS2((LPCTSTR)m_szSCNumber);
+    char scNumber[32] = {0};
 
-    USES_CONVERSION;
-    sprintf(szAtBuf, "%s\"%s\"\r", gcstrAtSms[AT_SMS_QCSCA], W2A(scNumber));
+    WCharToChar((TCHAR *)m_szSCNumber, scNumber);
+    sprintf(szAtBuf, "%s\"%s\"\r", gcstrAtSms[AT_SMS_QCSCA], scNumber);
 
     CSerialPort* pComm = ((CHSDPAApp*)AfxGetApp())->m_pSerialPort;
     ASSERT(pComm);
