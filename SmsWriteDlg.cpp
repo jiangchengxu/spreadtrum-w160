@@ -894,7 +894,7 @@ BOOL CSmsWriteDlg::SndAtSmsQCMGS(int nStep)
     TCHAR szAtBuf[1600] = {0};
     char szAtAscBuf[1600] = {0};
 	int buffsize;
-    CString destAddr;
+
     ASSERT(m_nCurNum < m_nNumCount);
 
     if(nStep == 1)
@@ -928,10 +928,9 @@ BOOL CSmsWriteDlg::SndAtSmsQCMGS(int nStep)
         else
             pNumType = gcstrNumType[1];
 
-            destAddr  = BTToUCS2(A2W(m_szGroupNumSendNum));
 		sprintf(szAtAscBuf, "%s\"%s\",%s\r", 
             gcstrAtSms[AT_SMS_QCMGS], 
-			W2A(destAddr),
+			m_szGroupNumSendNum,
             pNumType);
 
              buffsize=strlen(szAtAscBuf);
@@ -970,13 +969,15 @@ BOOL CSmsWriteDlg::SndAtSmsQCMGS(int nStep)
         else
 #endif
         {
-           CString strUC = BTToUCS2((CString)m_strSmsDetails);
-        
-      	int len= WCharToUnicode(strUC, szAtAscBuf);
-
-			 szAtAscBuf[len] = gccCtrl_Z;
-			
-			buffsize=len+1;
+                int len = 0;
+                if(IsAlphabetUnicode(m_strSmsDetails)){
+                    len = WCharToChar(m_strSmsDetails, szAtAscBuf);
+                }else{
+                    CString strUC = BTToUCS2((CString)m_strSmsDetails);
+                    len =  WCharToChar(strUC, szAtAscBuf);
+                }
+				szAtAscBuf[len] = gccCtrl_Z;
+				buffsize=len + 1;
         }
     }
     
