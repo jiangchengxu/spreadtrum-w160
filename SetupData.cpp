@@ -78,6 +78,7 @@ stStringType IniStringTable[]=
 	// Call Emergency Numbers
 	_T("Messages"), _T("Messages_szVoiceMailNumber"), _T(""),40,//add by liub for voicemail
 	_T("Call"), _T("Call_szEmergencyNumbers"), _T(""), MAX_PATH, 
+        _T("Main"),_T("Main_szCharSet"),_T(""), 10,
 };
 
 //全局变量中整型部分
@@ -195,6 +196,7 @@ TCHAR* ValueStringTable[] =
 	g_SetData.Internet_szLastTimeReset,
 	g_SetData.Messages_szVoiceMailNumber,//add by liub for voicemail
 	g_SetData.Call_szEmergencyNumbers,
+        g_SetData.Main_CharSet,
 };
 
 //设置部分数值型变量

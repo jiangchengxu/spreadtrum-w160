@@ -3368,7 +3368,6 @@ BOOL get_network_info
 
 }
 
-
 int g_DataCardTotalNum = 0; //DATACARD存储器支持的总条数
 int g_USimTotalNum = 0;     //USIM存储器支持的总条数
 int g_DataCardUsedNum = 0; //DATACARD存储器的已用条数

@@ -410,6 +410,7 @@ struct stSetData
 	TCHAR Call_szEmergencyNumbers[MAX_PATH];
 
 	int Main_nSimLock;
+	TCHAR Main_CharSet[10];	//add by jcx
 };
 
 

@@ -4031,8 +4031,7 @@ EnSyncInitFuncRetType CHSDPADlg::AtSndCSCS()
 {
     char szAtBuf[30] = {0};
     char szChSet[10] = {0};
-
-    strncpy(szChSet, "UCS2", sizeof(szChSet));
+    TCHAR* st = g_SetData.Main_CharSet;
 
     sprintf(szAtBuf, "AT+CSCS=\"%s\"\r", szChSet);
 
