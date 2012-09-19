@@ -2342,8 +2342,13 @@ BOOL SmsAtCMGRRspProc(BYTE(*strArr)[DSAT_STRING_COL], WORD wStrNum, StSmsRecord 
         }
     }
     //state test end
-    CString szNumTemp = (char*)ptr[1];
-    wcscpy((TCHAR *)record.szNumber, szNumTemp);
+	if (!(ptr[1] && *ptr[1])){
+		memset(record.szNumber, 0x00, PB_NUM_MAX);
+	}else{
+		USES_CONVERSION;
+		CString szNumTemp = UCS2ToGB(A2W((char*)ptr[1]));
+		wcscpy((TCHAR *)record.szNumber, szNumTemp);
+	}
 
     int time, scnum, concatenate, ascii_or_unicode;
     time = scnum = concatenate = ascii_or_unicode = -1;
