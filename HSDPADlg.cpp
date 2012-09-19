@@ -2895,8 +2895,8 @@ void CHSDPADlg::AtRespCSCA(LPVOID pWnd, BYTE(*strArr)[DSAT_STRING_COL], WORD wSt
             } else
                 q++;
         }
-    USES_CONVERSION;
-	CString szptr = UCS2ToGB(A2W((char*)ptr));
+    
+       CString szptr = (char*)ptr;
         wcsncpy(gSmsCentreNum, szptr, SMS_SC_NUM_MAX);
     }
 

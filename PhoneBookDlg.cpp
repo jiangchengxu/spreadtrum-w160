@@ -3528,6 +3528,7 @@ void CPhoneBookDlg::AtRespReadState(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL]
                 if (0 == strResult.CompareNoCase(_T("OK")))
                 {
                     CString strTemp;
+					BOOL bUnicode = FALSE;
 					strTemp.Format(_T("%s"),A2W((char *)strArr[0]));
                     
 					//获取电话号码的index
@@ -3550,13 +3551,20 @@ void CPhoneBookDlg::AtRespReadState(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL]
 					//获取姓名
 					strTemp.Delete(strTemp.GetLength() - 1, 1);
 					int nNameFrom = strTemp.ReverseFind('\"');
-					CString strName = strTemp.Mid(nNameFrom + 1 + 2, (strTemp.GetLength() - 
-1 - 2));    //ignore the fist two character "80" indicate it's unicode string
+					CString strName = strTemp.Mid(nNameFrom + 1, (strTemp.GetLength() - 
+1 )); 
+                    CString encode = strName.Left(2);
+					if(!encode.Compare(_T("80"))){
+						bUnicode = TRUE;
+						strName = strName.Mid(2);
+					}
 					strName.TrimLeft();
                     strName.TrimRight();
 					if (_T("") != strName)
 					{
-						strName = UCS2ToGB(strName);
+						if(bUnicode){
+							strName = UCS2ToGB(strName);
+						}
 					}
 					else
 					{
