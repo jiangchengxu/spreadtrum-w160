@@ -980,7 +980,7 @@ BOOL CSmsWriteDlg::SndAtSmsQCMGS(int nStep)
 				buffsize=len + 1;
         }
     }
-    
+
     CSerialPort* pComm = ((CHSDPAApp*)AfxGetApp())->m_pSerialPort;
     ASSERT(pComm);
     if(pComm->WriteToPort(szAtAscBuf, buffsize, FALSE))

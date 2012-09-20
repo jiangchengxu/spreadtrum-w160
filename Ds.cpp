@@ -2258,7 +2258,7 @@ const char szCountryCodeArr[][10] = {
 BOOL SmsAtCMGRRspProc(BYTE(*strArr)[DSAT_STRING_COL], WORD wStrNum, StSmsRecord &record, const EnSmsKind kind)
 {
     int cnt = 0;
-    char *ptr[7], *p;
+    char *ptr[9], *p;
     p = (char *)&strArr[0][strlen(gcstrResSms[AT_SMS_QCMGR])];
 #ifdef FEATURE_ATTEST_SUPPORT
     CStdioFile file;
@@ -2271,30 +2271,11 @@ BOOL SmsAtCMGRRspProc(BYTE(*strArr)[DSAT_STRING_COL], WORD wStrNum, StSmsRecord 
         file.Close();
     }
 #endif
-    ptr[0] = ptr[1] = ptr[2] = ptr[3] = ptr[4] = ptr[5] = ptr[6] = 0;
+    ptr[0] = ptr[1] = ptr[2] = ptr[3] = ptr[4] = ptr[5] = ptr[6] = ptr[7] = ptr[8] = 0;
 
     BOOL bOutQuot = TRUE;//判断是否在双引号内
     BOOL bNo_See_Comma = TRUE;//判断是否遇到逗号
-//
-//     while(*p != '\0')
-//     {
-//         if(*p == '\"')
-//         {
-//             if(bOutQuot && cnt < 5)
-//                 ptr[cnt++] = p;
-//
-//             bOutQuot = !bOutQuot;
-//             p++;
-//         }
-//         else if(*p == ',' && bOutQuot)
-//         {
-//             *p++ = '\0';
-//         }
-//         else
-//         {
-//             p++;
-//         }
-//     }
+
     while (*p != '\0') {
         if (bNo_See_Comma) {
             ptr[cnt++] = p;
@@ -2304,7 +2285,7 @@ BOOL SmsAtCMGRRspProc(BYTE(*strArr)[DSAT_STRING_COL], WORD wStrNum, StSmsRecord 
         }
 
 
-        if (*p == ',' && bOutQuot == TRUE && cnt < 7) {
+        if (*p == ',' && bOutQuot == TRUE && cnt < 9) {
 
             *p++ = '\0';
             bNo_See_Comma = TRUE;
@@ -2316,7 +2297,7 @@ BOOL SmsAtCMGRRspProc(BYTE(*strArr)[DSAT_STRING_COL], WORD wStrNum, StSmsRecord 
     }
 
 
-    for (int i = 0; i < 5; i++) {
+    for (int i = 0; i < 9; i++) {
         if (ptr[i] != 0) {
             if (*(ptr[i] + strlen(ptr[i]) - 1) == '\"')
                 *(ptr[i] + strlen(ptr[i]) - 1) = '\0';
@@ -2345,8 +2326,7 @@ BOOL SmsAtCMGRRspProc(BYTE(*strArr)[DSAT_STRING_COL], WORD wStrNum, StSmsRecord 
 	if (!(ptr[1] && *ptr[1])){
 		memset(record.szNumber, 0x00, PB_NUM_MAX);
 	}else{
-		USES_CONVERSION;
-		CString szNumTemp = UCS2ToGB(A2W((char*)ptr[1]));
+		CString szNumTemp = (char *)ptr[1];
 		wcscpy((TCHAR *)record.szNumber, szNumTemp);
 	}
 
@@ -2355,10 +2335,9 @@ BOOL SmsAtCMGRRspProc(BYTE(*strArr)[DSAT_STRING_COL], WORD wStrNum, StSmsRecord 
 
     if (record.state == SMS_STATE_MT_NOT_READ || record.state == SMS_STATE_MT_READ) {
         if (!wcsicmp(g_SetData.Setup_sz3GType, _T("CDMA2000"))) {
-            //time = 2; scnum = 4; concatenate = 3;
             time = 3; scnum = 2; concatenate = -1; ascii_or_unicode = 5;
         } else {
-            time = 3; scnum = 2; concatenate = -1; ascii_or_unicode = 5;
+            time = 3; scnum = 2; concatenate = -1; ascii_or_unicode = 7;
         }
     } else if (record.state == SMS_STATE_MO_NOT_SENT || record.state == SMS_STATE_MO_SENT) {
         if (!wcsicmp(g_SetData.Setup_sz3GType, _T("CDMA2000"))) {
@@ -2379,10 +2358,7 @@ BOOL SmsAtCMGRRspProc(BYTE(*strArr)[DSAT_STRING_COL], WORD wStrNum, StSmsRecord 
     if (scnum == -1 || !(ptr[scnum] && *ptr[scnum]))
         memset(record.szSCNumber, 0x00, SMS_SC_NUM_MAX);
     else{
-        USES_CONVERSION;
-        CString strGb = UCS2ToGB(szSCNumTemp);
-        strncpy(record.szSCNumber, W2A((LPCTSTR)strGb), SMS_SC_NUM_MAX * 2);
-        //wcsncpy((TCHAR*)record.szSCNumber, szSCNumTemp, SMS_SC_NUM_MAX);
+        wcsncpy((TCHAR*)record.szSCNumber, szSCNumTemp, SMS_SC_NUM_MAX);
     }
 
     if (concatenate != -1 && ptr[concatenate] && *ptr[concatenate]) {
@@ -2394,24 +2370,15 @@ BOOL SmsAtCMGRRspProc(BYTE(*strArr)[DSAT_STRING_COL], WORD wStrNum, StSmsRecord 
     USES_CONVERSION;
     if (wStrNum == 3) {
         //modify by lijl 2009.4.13 以ascii码形式存储短信内容
-        if (*ptr[ascii_or_unicode] == '4') {
-            CString strGb = UCS2ToGB(A2W((char*)strArr[1]));
-            strncpy(record.szContent, W2A(strGb), SMS_CHAR_MAX);
+		if(ptr[ascii_or_unicode] != NULL){
+			if (*ptr[ascii_or_unicode] == '0') {
+				strncpy(record.szContent, (char*)strArr[1], SMS_CHAR_MAX);
 
-        } else {
-            CString strGb = UCS2ToGB((CString)((char*)strArr[1]));
-            strncpy(record.szContent, W2A((LPCTSTR)strGb), SMS_CHAR_MAX * 2);
-            //wcsncpy((TCHAR *)record.szContent, strGb, SMS_CHAR_MAX*2);
-        }
-
-
-
-
-
-//      CString strGb = UCS2ToGB(A2W((char*)strArr[1]));
-//      strncpy(record.szContent, W2A(strGb), SMS_CHAR_MAX);
-
-
+			} else {
+				CString strGb = UCS2ToGB((CString)((char*)strArr[1]));
+				strncpy(record.szContent, W2A((LPCTSTR)strGb), SMS_CHAR_MAX * 2);
+			}
+		}
     } else
         memset((TCHAR *)record.szContent, 0, SMS_CHAR_MAX * 2);
 #ifdef FEATURE_ATTEST_SUPPORT
