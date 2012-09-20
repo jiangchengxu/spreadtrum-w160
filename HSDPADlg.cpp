@@ -3267,7 +3267,7 @@ BOOL CHSDPADlg::SyncInitFunc(int nStatus)
     //发送网络,信号查询和短消息,字符集配置的AT命令
     cnt = SYNCINITFUNCID_STARTPOI;
     while (InitType == SYNCINITFUNCRET_DONE
-            && m_pSyncFuncTbl[cnt] != NULL && cnt < SYNCINITFUNCID_MAX) {
+            && cnt < SYNCINITFUNCID_MAX) {
 #ifdef _DEBUG
         PreMsgDlg->SetText(m_szSyncInitInfo[cnt][0]);
         Sleep(200);
@@ -3282,20 +3282,21 @@ BOOL CHSDPADlg::SyncInitFunc(int nStatus)
 
         Sleep(50);
 #endif
-
-        InitType = (this->*m_pSyncFuncTbl[cnt])();
-        switch (InitType) {
-        case SYNCINITFUNCRET_DONE:
-            break;
-        case SYNCINITFUNCRET_RSP_TO:
-            DeRegisterAtRespFunc(ATRESP_GENERAL_AT);
-            m_pComm->SetSerialState(SERIAL_STATE_CMD);
-        case SYNCINITFUNCRET_SND_ERR:
-            res = FALSE;
-            PreMsgDlg->SetText(m_szSyncInitInfo[cnt][1]);
-            Sleep(500);
-            break;
-        }
+		if(m_pSyncFuncTbl[cnt] != NULL){
+			InitType = (this->*m_pSyncFuncTbl[cnt])();
+			switch (InitType) {
+			case SYNCINITFUNCRET_DONE:
+				break;
+			case SYNCINITFUNCRET_RSP_TO:
+				DeRegisterAtRespFunc(ATRESP_GENERAL_AT);
+				m_pComm->SetSerialState(SERIAL_STATE_CMD);
+			case SYNCINITFUNCRET_SND_ERR:
+				res = FALSE;
+				PreMsgDlg->SetText(m_szSyncInitInfo[cnt][1]);
+				Sleep(500);
+				break;
+			}
+		}
         cnt++;
     }
     PreMsgDlg->DestroyWindow();
@@ -4053,6 +4054,7 @@ void CHSDPADlg::AtRespCSCS(LPVOID pWnd, BYTE(*strArr)[DSAT_STRING_COL], WORD wSt
 
 void CHSDPADlg::RegSyncInitFunc()               //wyw_0120 remove all Sleep
 {
+    memset(m_pSyncFuncTbl, 0x00, sizeof(m_pSyncFuncTbl));
     //注册启动函数
     m_pSyncFuncTbl[SYNCINITFUNCID_SSAM] = &CHSDPADlg::AtSndSSAM;
 //    Sleep(150);
