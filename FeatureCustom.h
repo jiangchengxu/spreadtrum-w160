@@ -11,7 +11,7 @@
 #define FEATURE_AUTOSETRF
 
 /* SMS使用PDU模式特性开关 */
-//#define FEATURE_SMS_PDUMODE
+#define FEATURE_SMS_PDUMODE
 
 /* 支持Concatenated Short Messages特性开关 */
 #define FEATURE_SMS_CONCATENATE
