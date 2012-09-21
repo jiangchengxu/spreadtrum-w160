@@ -1891,10 +1891,12 @@ void EncodeSmsPDU()
 }
 #endif
 
-void ExtractSmsfoPara(int fo, StSmsRecord *record)
+void ExtractSmsfoPara(const char *fo, StSmsRecord *record)
 {
-    record->tp_mti = fo & 0x03;
-    record->tp_mms = fo >> 2 & 0x01;
+    ASSERT(fo != NULL);
+    int ifo = atoi(fo);
+    record->tp_mti = ifo & 0x03;
+    record->tp_mms = ifo >> 2 & 0x01;
 }
 //提取长短信的参数
 //输入："nRefCnt/nSeqCnt/nTotalCnt","1/1/2"
@@ -2348,17 +2350,16 @@ BOOL SmsAtCMGRRspProc(BYTE(*strArr)[DSAT_STRING_COL], WORD wStrNum, StSmsRecord 
     }
 
     if (fo != -1 && ptr[fo] && *ptr[fo]) {
-        ExtractSmsfoPara(fo, &record);
+        ExtractSmsfoPara(ptr[fo], &record);
         if(record.tp_mms == 0){
             //more message to sent
             record.flag |= SMS_RECORD_FLAG_CONCATENATE_SEGE;
         }
     }
-    //modified by wk end on 2006-8-22
 
     USES_CONVERSION;
     if (wStrNum == 3) {
-        //modify by lijl 2009.4.13 以ascii码形式存储短信内容
+        // 以ascii码形式存储短信内容
 		if(ptr[ascii_or_unicode] != NULL){
 			if (*ptr[ascii_or_unicode] == '0') {
 				strncpy(record.szContent, (char*)strArr[1], SMS_CHAR_MAX);

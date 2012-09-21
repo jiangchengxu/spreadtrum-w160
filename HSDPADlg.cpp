@@ -1043,31 +1043,31 @@ void CHSDPADlg::AtRespCMT(LPVOID pWnd, BYTE(*strArr)[DSAT_STRING_COL], WORD wStr
     int cnt = 0;
     int priorityFlag = 0;
     CString temp;
-    char *ptr[4], *p;
+    char *ptr[8], *p;
     p = (char*)(strArr[0] + strlen(gc_dsatResCodeTbl[DSAT_CMT][gc_dsatmode]));
-    ptr[0] = ptr[1] = ptr[2] = ptr[3] = 0;
+    ptr[0] = ptr[1] = ptr[2] = ptr[3] = ptr[4] = ptr[5] = ptr[6] = ptr[7] = 0;
 
-    BOOL bOutQuot = TRUE;
+    BOOL bOutQuot = TRUE;//判断是否在双引号内
+    BOOL bNo_See_Comma = TRUE;//判断是否遇到逗号
 
     while (*p != '\0') {
-        if (*p == '\"') {
-            if (bOutQuot && cnt < 4)
-                ptr[cnt++] = p;
+        if (bNo_See_Comma) {
+            ptr[cnt++] = p;
+            bNo_See_Comma = FALSE;
+        }
 
+        if (*p == ',' && bOutQuot == TRUE && cnt < 8) {
+            *p++ = '\0';
+            bNo_See_Comma = TRUE;
+        } else if (*p == '\"') {
             bOutQuot = !bOutQuot;
             p++;
-        } else if (*p == ',' && bOutQuot) {
-            *p++ = '\0';
-            priorityFlag++;
-        } else {
-            if (3 == priorityFlag) {
-                ptr[cnt++] = p;
-            }
+        } else
             p++;
-        }
     }
 
-    for (int i = 0; i < 4; i++) {
+
+    for (int i = 0; i < 8; i++) {
         if (ptr[i] != 0) {
             if (*(ptr[i] + strlen(ptr[i]) - 1) == '\"')
                 *(ptr[i] + strlen(ptr[i]) - 1) = '\0';
@@ -1079,24 +1079,19 @@ void CHSDPADlg::AtRespCMT(LPVOID pWnd, BYTE(*strArr)[DSAT_STRING_COL], WORD wStr
     StSmsRecord record;
     memset(&record, 0x00, sizeof(StSmsRecord));
     record.m_NoATRspCDS = TRUE;
-//  record.m_FlashMessage = FALSE;
     record.voicemail = 0;
-    temp = *ptr[2];
-    record.SMSpriority = _wtoi(temp);
-    pDlg->SMS_Priority = record.SMSpriority;
-
 
     record.state = SMS_STATE_MT_NOT_READ;
 	
 	if (!(ptr[0] && *ptr[0])){
 		memset(record.szNumber, 0x00, SMS_SC_NUM_MAX);
 	}else{
-		CString strGb = UCS2ToGB(A2W((char*)ptr[0]));
-		strncpy((char*)record.szNumber, W2A(strGb), SMS_SC_NUM_MAX*2);
+		CString strGb = (char*)ptr[0];
+		wcsncpy((TCHAR*)record.szNumber, strGb, SMS_SC_NUM_MAX);
 	}
 
-    int time, scnum, concatenate;
-    time = 1; scnum = 0, concatenate = 3;
+    int time, scnum, fo, ascii_or_unicode;
+    time = 2; scnum = -1, fo = 4, ascii_or_unicode = 6;
 
     if (!(ptr[time] && *ptr[time]))
         record.timestamp = COleDateTime::GetCurrentTime();
@@ -1104,43 +1099,31 @@ void CHSDPADlg::AtRespCMT(LPVOID pWnd, BYTE(*strArr)[DSAT_STRING_COL], WORD wStr
         if (!GetTimeFromStr((LPCSTR)ptr[time], record.timestamp))
             record.timestamp = COleDateTime::GetCurrentTime();
     }
-    //Modified by Zhou Bin 2008.12.30
-    //  CString ptrsc=(char*)(ptr[scnum]);
-    if (!(ptr[scnum] && *ptr[scnum]))
+
+    if (scnum == -1 || !(ptr[scnum] && *ptr[scnum]))
         memset(record.szSCNumber, 0x00, SMS_SC_NUM_MAX);
     else{
-        CString strGb = UCS2ToGB(A2W((char*)ptr[scnum]));
-        strncpy((char*)record.szSCNumber, W2A(strGb), SMS_SC_NUM_MAX*2);
-    }
-    // wcsncpy(record.szSCNumber, ptrsc, SMS_SC_NUM_MAX);
-
-    if ((ptr[concatenate] && *ptr[concatenate])) { //flexi LMS:此处需修改为：根据下位机修改过的参数来判断是否是长短信
-
-
-        //  if(ExtractConcatenateSmsPara(ptr[concatenate], &record.nRefCnt, &record.nSeqCnt, &record.nTotalCnt))
-        //                record.flag |= SMS_RECORD_FLAG_CONCATENATE_SEGE;//默认
-
-        //flexi start
-        //flexi LMS:此处需修改为：定义record.flag |= SMS_RECORD_FLAG_CONCATENATE_SEGE;
-        //重新修改ExtractConcatenateSmsPara函数，各个参数修改为从短信内容前7个字符取得，并删除短信内容中的前7个字符；
-        record.flag |= SMS_RECORD_FLAG_CONCATENATE_SEGE;
-        CString strGb = UCS2ToGB(A2W((char*)strArr[1]));//add by liub for UCS2转换为GB
-        CString str_concatenate = strGb.Left(7);
-        ExtractConcatenateSmsPara_Flexi(str_concatenate, &record.nRefCnt, &record.nSeqCnt, &record.nTotalCnt);//此函数还待修改
-        //flexi end
+        CString strGb = (char*)ptr[scnum];
+        wcsncpy((TCHAR*)record.szSCNumber, strGb, SMS_SC_NUM_MAX);
     }
 
+    if (fo != -1 && ptr[fo] && *ptr[fo]) { 
+        ExtractSmsfoPara(ptr[fo], &record);
+        if(record.tp_mms == 0){
+            //more message to sent
+            record.flag |= SMS_RECORD_FLAG_CONCATENATE_SEGE;
+        }
+    }
 
     if (wStrNum == 2) {
-        //CString strGb = GBToUCS2((char*)strArr[1]);//delete by liub 不知为什么要把GB转换为UCS2格式。
-        //CString strGb = UCS2ToGB((CString)((char*)strArr[1]));//add by liub for UCS2转换为GB
-        CString strGb = UCS2ToGB(A2W((char*)strArr[1]));//add by liub for UCS2转换为GB //flexi LMS:此处需修改为：如果是长短信，去掉前7个字符（待修改）
-        //wcsncpy(record.szContent, strGb, SMS_CHAR_MAX);
-        //strncpy(record.szContent, W2A(strGb), SMS_CHAR_MAX);
-        if ((ptr[concatenate] && *ptr[concatenate])) {
-            strGb = strGb.Mid(7);
-        }
-        strcat(record.szContent, W2A(strGb));
+	if(ptr[ascii_or_unicode] != NULL){
+		if (*ptr[ascii_or_unicode] == '0') {
+			strncpy(record.szContent, (char*)strArr[1], SMS_CHAR_MAX);
+		} else {
+			CString strGb = UCS2ToGB((CString)((char*)strArr[1]));
+			strncpy(record.szContent, W2A((LPCTSTR)strGb), SMS_CHAR_MAX * 2);
+		}
+	}
     } else
         memset(record.szContent, 0, SMS_CHAR_MAX * 2);
 
@@ -4629,7 +4612,7 @@ BOOL CHSDPADlg::SearchAndInsertSmsSege(StSmsRecord &record)
     CString inlist_szRight;
 
 
-    sege_szContenttemp = /*= UCS2ToGB(A2W((char*)*/record.szContent/*))*/;
+    sege_szContenttemp = record.szContent;
 
     SmsNum = GetTotalSmsNum(SMS_TYPE_INBOX, LOCFILTER_PC);
     for (i = 0; i < SmsNum; i++) {
@@ -4674,11 +4657,6 @@ BOOL CHSDPADlg::SearchAndInsertSmsSege(StSmsRecord &record)
     }
     return cnt;
 }
-
-
-
-
-
 
 void CHSDPADlg::RcvNewSmsProc(EnLocType loctype, StSmsRecord &record, WORD nIndex)
 {

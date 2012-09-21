@@ -357,7 +357,7 @@ extern void DecodeContentFromSmsPDU(const char *pduContent, const BYTE codeType,
 extern void DecodeSmsPDU(const char *pdu, const USHORT len, StSmsRecord *pRecord);
 #endif
 
-extern void ExtractSmsfoPara(int fo, StSmsRecord *record);
+extern void ExtractSmsfoPara(const char * fo, StSmsRecord *record);
 extern BOOL ExtractConcatenateSmsPara(char *Para, USHORT *nRefCnt, BYTE *nSeqCnt, BYTE *nTotalCnt);
 extern BOOL ExtractConcatenateSmsPara_Flexi(CString Para, TCHAR *nRefCnt, BYTE *nSeqCnt, BYTE *nTotalCnt);//flexi版本，解析长短信参数
 //Modified by Zhou Bin 2008.12.30
