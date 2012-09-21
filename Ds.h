@@ -241,7 +241,11 @@ const char LMS_Flexi_MinMaxChar[10] = {
 
 const char LMS_Flexi_RcvConcNoAll[6] = {"<...>"};//flexi长短信占位省略符
 
+#ifdef FEATURE_SMS_PDUMODE
+const EnSmsMode gSmsMode = SMS_MODE_PDU;
+#else
 const EnSmsMode gSmsMode = SMS_MODE_TEXT;
+#endif
 
 const char gcstrLoc[LOC_MAX][3] = {
     "PC", "ME", "SM"
@@ -351,6 +355,7 @@ extern char* strtrim(char * p);
 extern void AtRespDummy(LPVOID pWnd, BYTE(*strArr)[DSAT_STRING_COL], WORD wStrNum);
 
 #ifdef FEATURE_SMS_PDUMODE
+extern void DecodePDUFO(StSmsRecord *pRecord, int fo);
 extern void DecodeNumFormSmsPDU(const char *pdunum, char *pOutNum);
 extern void DecodeTimeFormSmsPDU(const char *pdutime, CTime *pOutTime);
 extern void DecodeContentFromSmsPDU(const char *pduContent, const BYTE codeType, char *pContent);

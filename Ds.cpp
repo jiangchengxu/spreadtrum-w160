@@ -1725,6 +1725,9 @@ void AtRespDummy(LPVOID pWnd, BYTE(*strArr)[DSAT_STRING_COL], WORD wStrNum)
 }
 
 #ifdef FEATURE_SMS_PDUMODE
+void DecodePDUFO(StSmsRecord *pRecord,  int fo){
+       
+}
 //长度，类型，号码
 /*0D91683129413485F7*/
 void DecodeNumFormSmsPDU(const char *pdunum, char *pOutNum)
@@ -1811,7 +1814,8 @@ void DecodeContentFromSmsPDU(const char *pduContent, const BYTE codeType, char *
     //UCS2
     else if (codeType == 0x08) {
         CString strGb = UCS2ToGB((CString)pduContent);
-        strncpy(pContent, strGb, SMS_CHAR_MAX);
+		USES_CONVERSION;
+        strncpy(pContent, W2A((LPCTSTR)strGb), SMS_CHAR_MAX * 2);
     } else
         ASSERT(false);
 }
@@ -1851,6 +1855,7 @@ void DecodeSmsPDU(const char *pdu, const USHORT len, StSmsRecord *pRecord)
         memset(buf, 0x00, sizeof(buf));
         strncpy(buf, p, 2);
         fo = strtol(buf, NULL, 16);
+        DecodePDUFO(pRecord, fo);
 
         p += 2;
         memset(buf, 0x00, sizeof(buf));
@@ -2254,7 +2259,46 @@ const char szCountryCodeArr[][10] = {
     "+961",
     "", //end flag
 };
+#ifdef FEATURE_SMS_PDUMODE
+BOOL SmsAtCMGRRspProc(BYTE(*strArr)[DSAT_STRING_COL], WORD wStrNum, StSmsRecord &record, const EnSmsKind kind)
+{
+    int cnt = 0;
+    char buf[9], *p;
+    p = (char *)&strArr[0][strlen(gcstrResSms[AT_SMS_QCMGR])];
+	
+	ASSERT(wStrNum == 3 || wStrNum == 2);
+    memset(buf, 0x00, sizeof(buf));
+    strncpy(buf, p, 1);
+    record.state = (EnSmsState)atoi(buf);
+    if (record.state > SMS_STATE_ALL || record.state < SMS_STATE_MT_NOT_READ) {
+        return FALSE;
+    }
 
+    //state test begin
+    if (kind == SMS_KIND_MT) {
+        if (record.state != SMS_STATE_MT_NOT_READ
+                && record.state != SMS_STATE_MT_READ) {
+            return FALSE;
+        }
+    } else if (kind == SMS_KIND_MO) {
+        if (record.state != SMS_STATE_MO_NOT_SENT
+                && record.state != SMS_STATE_MO_SENT) {
+            return FALSE;
+        }
+    }
+
+	if (record.state == SMS_STATE_MO_NOT_SENT || record.state == SMS_STATE_MO_SENT) {
+        record.state = SMS_STATE_MT_READ;
+    }
+
+    if(wStrNum == 3){
+		p = (char *)&strArr[1];
+		DecodeSmsPDU(p, strlen(p), &record);
+    }
+
+    return TRUE;
+}
+#else
 BOOL SmsAtCMGRRspProc(BYTE(*strArr)[DSAT_STRING_COL], WORD wStrNum, StSmsRecord &record, const EnSmsKind kind)
 {
     int cnt = 0;
@@ -2394,6 +2438,7 @@ BOOL SmsAtCMGRRspProc(BYTE(*strArr)[DSAT_STRING_COL], WORD wStrNum, StSmsRecord 
 
     return TRUE;
 }
+#endif
 
 const wchar_t GSM0338ToUCS2Array[GSM0338_EXTENSIONS][GSM0338_ALPHABET_SIZE] = {
     /* GSM 7 bit default alphabet */

@@ -2783,7 +2783,7 @@ EnSyncInitFuncRetType CHSDPADlg::AtSndCLVL()
 EnSyncInitFuncRetType CHSDPADlg::AtSndCSDH()
 {
     char szAtBuf[20] = {0};
-    strcpy(szAtBuf, "AT+CSDH=1\r");
+    strcpy(szAtBuf, "AT+CSDH=0\r");
     if (m_pComm->WriteToPort(szAtBuf, strlen(szAtBuf))) {
         RegisterAtRespFunc(ATRESP_GENERAL_AT, AtRespCSDH, (LPVOID)this);
 
