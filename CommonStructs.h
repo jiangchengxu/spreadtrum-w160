@@ -202,6 +202,8 @@ struct StSmsRecord
 	int         voicemail;                    //是否是语音消息 TATA需求
 	int         segeindex[SMS_CONCAT_SEGMENT_MAX][1];//长短信未收全时记录未收全的部分位置（未收全的部分会用“<...>”代替，
 	                                              //记录的是每个部分此字符串的位置）
+	BYTE	tp_mms;		//message type indicate
+	int		tp_mti;			//more message to send
 };
 
 struct StSmsCardRecord

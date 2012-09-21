@@ -1891,6 +1891,11 @@ void EncodeSmsPDU()
 }
 #endif
 
+void ExtractSmsfoPara(int fo, StSmsRecord *record)
+{
+    record->tp_mti = fo & 0x03;
+    record->tp_mms = fo >> 2 & 0x01;
+}
 //提取长短信的参数
 //输入："nRefCnt/nSeqCnt/nTotalCnt","1/1/2"
 //输出：长短信标识号,长短信当前分段号,长短信总分段号
@@ -2260,17 +2265,6 @@ BOOL SmsAtCMGRRspProc(BYTE(*strArr)[DSAT_STRING_COL], WORD wStrNum, StSmsRecord 
     int cnt = 0;
     char *ptr[9], *p;
     p = (char *)&strArr[0][strlen(gcstrResSms[AT_SMS_QCMGR])];
-#ifdef FEATURE_ATTEST_SUPPORT
-    CStdioFile file;
-    if (file.Open("Sms.log", CFile::modeReadWrite)) {
-        CString str;
-        str.Format("%s", p);
-        str.Insert(str.GetLength(), "\n");
-        DWORD dwActual = file.SeekToEnd();
-        file.WriteString(str);
-        file.Close();
-    }
-#endif
     ptr[0] = ptr[1] = ptr[2] = ptr[3] = ptr[4] = ptr[5] = ptr[6] = ptr[7] = ptr[8] = 0;
 
     BOOL bOutQuot = TRUE;//判断是否在双引号内
@@ -2330,22 +2324,14 @@ BOOL SmsAtCMGRRspProc(BYTE(*strArr)[DSAT_STRING_COL], WORD wStrNum, StSmsRecord 
 		wcscpy((TCHAR *)record.szNumber, szNumTemp);
 	}
 
-    int time, scnum, concatenate, ascii_or_unicode;
-    time = scnum = concatenate = ascii_or_unicode = -1;
+    int time, scnum, fo, ascii_or_unicode;
+    time = scnum = fo = ascii_or_unicode = -1;
 
     if (record.state == SMS_STATE_MT_NOT_READ || record.state == SMS_STATE_MT_READ) {
-        if (!wcsicmp(g_SetData.Setup_sz3GType, _T("CDMA2000"))) {
-            time = 3; scnum = 2; concatenate = -1; ascii_or_unicode = 5;
-        } else {
-            time = 3; scnum = 2; concatenate = -1; ascii_or_unicode = 7;
-        }
+            time = 3; scnum = -1; fo = -1; ascii_or_unicode = 7;
     } else if (record.state == SMS_STATE_MO_NOT_SENT || record.state == SMS_STATE_MO_SENT) {
-        if (!wcsicmp(g_SetData.Setup_sz3GType, _T("CDMA2000"))) {
-            time = 3; scnum = 2; concatenate = -1; ascii_or_unicode = 4;
-        } else {
-            time = 3; scnum = 2; concatenate = -1; ascii_or_unicode = 4;
-        }
-        record.state = SMS_STATE_MT_READ;
+            time = 3; scnum = -1; fo = -1; ascii_or_unicode = 4;
+            record.state = SMS_STATE_MT_READ;
     }
 
     if (time == -1 || !(ptr[time] && *ptr[time]))
@@ -2361,9 +2347,12 @@ BOOL SmsAtCMGRRspProc(BYTE(*strArr)[DSAT_STRING_COL], WORD wStrNum, StSmsRecord 
         wcsncpy((TCHAR*)record.szSCNumber, szSCNumTemp, SMS_SC_NUM_MAX);
     }
 
-    if (concatenate != -1 && ptr[concatenate] && *ptr[concatenate]) {
-        if (ExtractConcatenateSmsPara(ptr[concatenate], &record.nRefCnt, &record.nSeqCnt, &record.nTotalCnt))
+    if (fo != -1 && ptr[fo] && *ptr[fo]) {
+        ExtractSmsfoPara(fo, &record);
+        if(record.tp_mms == 0){
+            //more message to sent
             record.flag |= SMS_RECORD_FLAG_CONCATENATE_SEGE;
+        }
     }
     //modified by wk end on 2006-8-22
 
@@ -2373,7 +2362,6 @@ BOOL SmsAtCMGRRspProc(BYTE(*strArr)[DSAT_STRING_COL], WORD wStrNum, StSmsRecord 
 		if(ptr[ascii_or_unicode] != NULL){
 			if (*ptr[ascii_or_unicode] == '0') {
 				strncpy(record.szContent, (char*)strArr[1], SMS_CHAR_MAX);
-
 			} else {
 				CString strGb = UCS2ToGB((CString)((char*)strArr[1]));
 				strncpy(record.szContent, W2A((LPCTSTR)strGb), SMS_CHAR_MAX * 2);
@@ -2381,17 +2369,6 @@ BOOL SmsAtCMGRRspProc(BYTE(*strArr)[DSAT_STRING_COL], WORD wStrNum, StSmsRecord 
 		}
     } else
         memset((TCHAR *)record.szContent, 0, SMS_CHAR_MAX * 2);
-#ifdef FEATURE_ATTEST_SUPPORT
-    if (file.Open("Sms.log", CFile::modeReadWrite)) {
-        CString str;
-        str.Format("%s", (CString)((char*)strArr[1]));
-        str.Insert(str.GetLength(), "\n");
-        DWORD dwActual = file.SeekToEnd();
-        file.WriteString(str);
-        file.Close();
-    }
-#endif
-
     return TRUE;
 }
 
