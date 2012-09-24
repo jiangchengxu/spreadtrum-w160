@@ -1034,7 +1034,34 @@ void CHSDPADlg::AtRespCVMI(LPVOID pWnd, BYTE(*strArr)[DSAT_STRING_COL], WORD wSt
 
 }
 
+#ifdef FEATURE_SMS_PDUMODE
+void CHSDPADlg::AtRespCMT(LPVOID pWnd, BYTE(*strArr)[DSAT_STRING_COL], WORD wStrNum){
+    char *p;
+    CHSDPADlg* pDlg = (CHSDPADlg*)pWnd;
 
+    if(strncmp((char *)strArr[0], (gc_dsatResCodeTbl[DSAT_CMT][gc_dsatmode]), 
+strlen(gc_dsatResCodeTbl[DSAT_CMT][gc_dsatmode]))){
+        return;
+    }
+
+    USES_CONVERSION;
+    StSmsRecord record;
+    memset(&record, 0x00, sizeof(StSmsRecord));
+    record.m_NoATRspCDS = TRUE;
+    record.voicemail = 0;
+    record.SMSpriority = 0;
+    pDlg->SMS_Priority = record.SMSpriority;
+    record.state = SMS_STATE_MT_NOT_READ;
+
+    ASSERT(wStrNum == 2);
+
+    p = (char *)&strArr[1];
+    DecodeSmsPDU(p, strlen(p), &record);
+
+	pDlg->RcvNewSmsProc(LOC_PC, record);
+    Sleep(100);
+}
+#else
 void CHSDPADlg::AtRespCMT(LPVOID pWnd, BYTE(*strArr)[DSAT_STRING_COL], WORD wStrNum)
 {
     CHSDPADlg* pDlg = (CHSDPADlg*)pWnd;
@@ -1147,6 +1174,7 @@ void CHSDPADlg::AtRespCMT(LPVOID pWnd, BYTE(*strArr)[DSAT_STRING_COL], WORD wStr
     pDlg->RcvNewSmsProc(LOC_PC, record);
     Sleep(100);
 }
+#endif
 
 void CHSDPADlg::AtRespRSSI(LPVOID pWnd, BYTE(*strArr)[DSAT_STRING_COL], WORD wStrNum)
 {
