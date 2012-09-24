@@ -355,7 +355,8 @@ extern char* strtrim(char * p);
 extern void AtRespDummy(LPVOID pWnd, BYTE(*strArr)[DSAT_STRING_COL], WORD wStrNum);
 
 #ifdef FEATURE_SMS_PDUMODE
-extern void DecodePDUFO(StSmsRecord *pRecord, int fo);
+extern void DecodeFOFormSmsPDU(StSmsRecord *pRecord, char *fo);
+extern int DecodeUDHFormSmsPDU(StSmsRecord *pRecord, char *fo);
 extern void DecodeNumFormSmsPDU(const char *pdunum, char *pOutNum);
 extern void DecodeTimeFormSmsPDU(const char *pdutime, CTime *pOutTime);
 extern void DecodeContentFromSmsPDU(const char *pduContent, const BYTE codeType, char *pContent);

@@ -1725,9 +1725,62 @@ void AtRespDummy(LPVOID pWnd, BYTE(*strArr)[DSAT_STRING_COL], WORD wStrNum)
 }
 
 #ifdef FEATURE_SMS_PDUMODE
-void DecodePDUFO(StSmsRecord *pRecord,  int fo){
-       
+#define SMS_MASK_MTI    0X03
+#define SMS_MASK_UDHI   0X40
+void DecodeFOFormSmsPDU(StSmsRecord *pRecord,  char *fo){
+        USHORT ifo = 0;
+        if(fo == NULL)
+            return;
+
+        ifo = strtol(fo, NULL, 16);
+
+        if(ifo & SMS_MASK_UDHI){
+            pRecord->flag |= SMS_RECORD_FLAG_CONCATENATE_SEGE;
+        }
 }
+
+int DecodeUDHFormSmsPDU(StSmsRecord *pRecord,  char *para){
+        int udhl = 0;
+        char *ptr = para;
+        char p[5] = {0};
+        char* udh1 = "050003";
+        char* udh2 = "060804";
+
+        if(strncmp(udh1, para, strlen(udh1)) == 0){
+            ptr = para + strlen(udh1);
+            udhl = 6;
+            strncpy(p, ptr, 2);
+            pRecord->nRefCnt = strtol(p, NULL, 16);;
+
+            ptr += 2;
+            memset(p, 0x00, 5);
+            strncpy(p, ptr, 2);
+            pRecord->nTotalCnt = strtol(p, NULL, 16);;
+
+            ptr +=2;
+            memset(p, 0x00, 5);
+            strncpy(p, ptr, 2);
+            pRecord->nSeqCnt = strtol(p, NULL, 16);;
+        }else if(strncmp(udh2, para, strlen(udh2)) == 0){
+            ptr = para + strlen(udh2);
+            udhl = 7;
+            strncpy(p, ptr, 4);
+            pRecord->nRefCnt = strtol(p, NULL, 16);;
+
+            ptr += 4;
+            memset(p, 0x00, 5);
+            strncpy(p, ptr, 2);
+            pRecord->nTotalCnt = strtol(p, NULL, 16);;
+
+            ptr +=2;
+            memset(p, 0x00, 5);
+            strncpy(p, ptr, 2);
+            pRecord->nSeqCnt = strtol(p, NULL, 16);;
+        }
+
+        return udhl;
+}
+
 //长度，类型，号码
 /*0D91683129413485F7*/
 void DecodeNumFormSmsPDU(const char *pdunum, char *pOutNum)
@@ -1830,10 +1883,9 @@ void DecodeSmsPDU(const char *pdu, const USHORT len, StSmsRecord *pRecord)
     ASSERT(pRecord != NULL);
 
     const char *p = pdu;
-    char buf[10];
+    char buf[20];
     USHORT numlen = 0;
     USHORT contentlen = 0;
-    BYTE fo = 0;
     BYTE pid = 0;
     BYTE code = 0;
     char pdunum[50];
@@ -1854,8 +1906,7 @@ void DecodeSmsPDU(const char *pdu, const USHORT len, StSmsRecord *pRecord)
     if (*p) {
         memset(buf, 0x00, sizeof(buf));
         strncpy(buf, p, 2);
-        fo = strtol(buf, NULL, 16);
-        DecodePDUFO(pRecord, fo);
+        DecodeFOFormSmsPDU(pRecord, buf);
 
         p += 2;
         memset(buf, 0x00, sizeof(buf));
@@ -1885,7 +1936,18 @@ void DecodeSmsPDU(const char *pdu, const USHORT len, StSmsRecord *pRecord)
         strncpy(buf, p, 2);
         contentlen = strtol(buf, NULL, 16);
 
-        p += 2;
+        p += 2;         //skip content len
+        if(pRecord->flag & SMS_RECORD_FLAG_CONCATENATE_SEGE){
+            memset(buf, 0x00, sizeof(buf));
+            strncpy(buf, p, 14);
+            int udhl = DecodeUDHFormSmsPDU(pRecord, buf);
+            p += udhl * 2;
+
+            if(udhl == 0){
+                pRecord->flag &= ~SMS_RECORD_FLAG_CONCATENATE_SEGE;
+            }
+        }
+
         strncpy(pduContent, p, contentlen * 2);
         DecodeContentFromSmsPDU(pduContent, code, (char*)pRecord->szContent);
     }
