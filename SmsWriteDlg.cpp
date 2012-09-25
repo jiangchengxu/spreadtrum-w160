@@ -887,6 +887,98 @@ void CSmsWriteDlg::RspAtSmsQCMMS(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL], W
 //功能：发送AT$QCMGS
 //输入：nStep:写号码：1,写内容：2
 //输出：TRUE/FALSE
+#ifdef FEATURE_SMS_PDUMODE
+BOOL CSmsWriteDlg::SndAtSmsQCMGS(int nStep)
+{    
+	memset(m_szGroupNumSendNum, 0x00, sizeof(m_szGroupNumSendNum));
+	USES_CONVERSION;
+    TCHAR szAtBuf[1600] = {0};
+    char szAtAscBuf[1600] = {0};
+	int buffsize;
+
+    ASSERT(m_nCurNum < m_nNumCount);
+
+    if(nStep == 1)
+    {
+        const char *pNumType;
+		char *q;
+		q = m_szGroupNum[m_nCurNum];
+        
+		if (m_szGroupNum[m_nCurNum][0] == '+' && m_szGroupNum[m_nCurNum][1] == '6' && m_szGroupNum[m_nCurNum][2] == '2')
+		{
+			m_szGroupNumSendNum[0] = '0';
+			q = q + 3;
+			int i = 1;
+			while (*q != '\0')
+			{
+				m_szGroupNumSendNum[i] = *q;
+				q++;
+				i++;
+				
+			}
+			m_szGroupNumSendNum[i] = '\0';
+
+		}
+		else
+		{
+			strcat(m_szGroupNumSendNum,m_szGroupNum[m_nCurNum]);
+		}
+		
+        if(m_szGroupNum[m_nCurNum][0] == '+')
+            pNumType = gcstrNumType[0];
+        else
+            pNumType = gcstrNumType[1];
+
+		sprintf(szAtAscBuf, "%s\"%s\",%s\r", 
+            gcstrAtSms[AT_SMS_QCMGS], 
+			m_szGroupNumSendNum,
+            pNumType);
+
+             buffsize=strlen(szAtAscBuf);
+    }
+    else
+    {
+        EncodeSmsPDU(szAtAscBuf, m_szGroupNumSendNum, m_strSmsDetails);
+        {
+                int len = 0;
+                if(IsAlphabetUnicode(m_strSmsDetails)){
+                    len = WCharToChar(m_strSmsDetails, szAtAscBuf);
+                }else{
+                    CString strUC = BTToUCS2((CString)m_strSmsDetails);
+                    len =  WCharToChar(strUC, szAtAscBuf);
+                }
+				szAtAscBuf[len] = gccCtrl_Z;
+				buffsize=len + 1;
+        }
+    }
+
+    CSerialPort* pComm = ((CHSDPAApp*)AfxGetApp())->m_pSerialPort;
+    ASSERT(pComm);
+    if(pComm->WriteToPort(szAtAscBuf, buffsize, FALSE))
+    {
+        SetTimer(IDT_QCMGS_TIMEOUT, 60000, NULL);
+        RegisterAtRespFunc(ATRESP_GENERAL_AT, RspAtSmsQCMGS, this);
+        return TRUE;
+    }
+    else
+    {
+        SaveSendSmsToOutbox(FALSE);
+        CWnd *pWnd = GetOwner();
+        pWnd->PostMessage(WM_SMS_SAVE_MSG, (WPARAM)SMS_TYPE_OUTBOX, LOC_PC);
+
+		CString strAppName; 
+		strAppName.LoadString(IDS_APPNAME);
+		CString strSendFail;
+		strSendFail.LoadString(IDS_SMS_SEND_FAIL);
+		pDlg->MessageBox(strSendFail,strAppName,MB_OK | MB_ICONINFORMATION);
+		//AfxMessageBox(IDS_SMS_SEND_FAIL);
+
+        ProgressClose();
+        
+        return FALSE;
+    }
+}
+#else
 BOOL CSmsWriteDlg::SndAtSmsQCMGS(int nStep)
 {    
 	memset(m_szGroupNumSendNum, 0x00, sizeof(m_szGroupNumSendNum));
@@ -1007,6 +1099,7 @@ BOOL CSmsWriteDlg::SndAtSmsQCMGS(int nStep)
         return FALSE;
     }
 }
+#endif
 
 //功能：响应AT$QCMGS
 //输入：pWnd:窗口指针，strArr:结果行，wStrNum:行数

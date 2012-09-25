@@ -1737,6 +1737,237 @@ void DecodeFOFormSmsPDU(StSmsRecord *pRecord,  char *fo){
         if(ifo & SMS_MASK_UDHI){
             pRecord->flag |= SMS_RECORD_FLAG_CONCATENATE_SEGE;
         }
+        pRecord->tp_mti = ifo & SMS_MASK_MTI;
+}
+
+int gsmEncode7bit(const char* pSrc, unsigned char* pDst, int nSrcLength)
+{
+    int nSrc;        // 源字符串的计数值
+    int nDst;        // 目标编码串的计数值
+    int nChar;       // 当前正在处理的组内字符字节的序号，范围是0-7
+    unsigned char nLeft;    // 上一字节残余的数据
+    // 计数值初始化
+    nSrc = 0;
+    nDst = 0;
+    // 将源串每8个字节分为一组，压缩成7个字节
+    // 循环该处理过程，直至源串被处理完
+    // 如果分组不到8字节，也能正确处理
+    while (nSrc < nSrcLength)
+    {
+        // 取源字符串的计数值的最低3位
+        nChar = nSrc & 7;
+        // 处理源串的每个字节
+        if (nChar == 0)
+        {
+            // 组内第一个字节，只是保存起来，待处理下一个字节时使用
+            nLeft = *pSrc;
+        }
+        else
+        {
+            // 组内其它字节，将其右边部分与残余数据相加，得到一个目标编码字节
+            *pDst = (*pSrc << (8 - nChar)) | nLeft;
+            // 将该字节剩下的左边部分，作为残余数据保存起来
+            nLeft = *pSrc >> nChar;
+            // 修改目标串的指针和计数值
+            pDst++;
+            nDst++;
+        }
+        // 修改源串的指针和计数值
+        pSrc++;
+        nSrc++;
+    }
+    // 返回目标串长度
+    return nDst;
+}
+
+// 7-bit解码
+// pSrc: 源编码串指针
+// pDst: 目标字符串指针
+// nSrcLength: 源编码串长度
+// 返回: 目标字符串长度
+
+int gsmDecode7bit(const char* pSrc, char* pDst, int nSrcLength)
+{
+    int Data, cnt;
+    char str[3] = {0};
+    unsigned char *ascSrc = new unsigned char[nSrcLength];
+    int nSrc;        // 源字符串的计数值
+    int nDst;        // 目标解码串的计数值
+    int nByte;       // 当前正在处理的组内字节的序号，范围是0-6
+unsigned char nLeft;    // 上一字节残余的数据 
+    // 计数值初始化
+    nSrc = 0;
+nDst = 0;
+    // 组内字节序号和残余数据初始化
+    nByte = 0;
+nLeft = 0;
+    for(cnt = 0; cnt < nSrcLength/2; cnt++){
+        strncpy(str, pSrc+2*cnt, 2);
+        sscanf(str, "%x", &Data);
+        ascSrc[cnt] = Data;
+    }
+    ascSrc[cnt] = 0;
+    // 将源数据每7个字节分为一组，解压缩成8个字节
+    // 循环该处理过程，直至源数据被处理完
+    // 如果分组不到7字节，也能正确处理
+    while (nSrc < cnt)
+    {
+        // 将源字节右边部分与残余数据相加，去掉最高位，得到一个目标解码字节
+        *pDst = ((*ascSrc << nByte) | nLeft) & 0x7f;
+        // 将该字节剩下的左边部分，作为残余数据保存起来
+        nLeft = *ascSrc >> (7 - nByte);
+        // 修改目标串的指针和计数值
+        pDst++;
+        nDst++;
+        // 修改字节计数值
+        nByte++;
+        // 到了一组的最后一个字节
+        if (nByte == 7)
+        {
+            // 额外得到一个目标解码字节
+            *pDst = nLeft;
+            // 修改目标串的指针和计数值
+            pDst++;
+            nDst++;
+            // 组内字节序号和残余数据初始化
+            nByte = 0;
+            nLeft = 0;
+        }
+        // 修改源串的指针和计数值
+        ascSrc++;
+        nSrc++;
+    }
+    *pDst = 0;
+    // 返回目标串长度
+    return nDst;
+}
+
+//对fo后的pdu进行解析
+void DecodeDeliverySms(const char *pdu,   StSmsRecord *pRecord){
+        ASSERT(pdu != NULL && strlen(pdu) > 0);
+        ASSERT(pRecord != NULL);
+
+        USHORT numlen = 0;
+        USHORT contentlen = 0;
+        BYTE pid = 0;
+        BYTE code = 0;
+        char buf[20];
+        char pdunum[50];
+        char pdutime[30];
+        char pduContent[500];
+        const char *p = pdu;
+
+        memset(pdunum, 0x00, sizeof(pdunum));
+        memset(pdutime, 0x00, sizeof(pdutime));
+        memset(pduContent, 0x00, sizeof(pduContent));
+
+        memset(buf, 0x00, sizeof(buf));
+        strncpy(buf, p, 2);
+        numlen = strtol(buf, NULL, 16);
+
+        p += 2;
+        strncpy(pdunum, p, numlen + 2 +numlen%2);	//奇数时加F补足
+        DecodeNumFormSmsPDU(pdunum, (char*)pRecord->szNumber);
+
+        p += (numlen + 2 + numlen%2);
+        memset(buf, 0x00, sizeof(buf));
+        strncpy(buf, p, 2);
+        pid = strtol(buf, NULL, 16);
+
+        p += 2;
+        memset(buf, 0x00, sizeof(buf));
+        strncpy(buf, p, 2);
+        code = strtol(buf, NULL, 16);
+
+        p += 2;
+        strncpy(pdutime, p, 14);
+        DecodeTimeFormSmsPDU(pdutime, &pRecord->timestamp);
+
+        p += 14;
+        memset(buf, 0x00, sizeof(buf));
+        strncpy(buf, p, 2);
+        contentlen = strtol(buf, NULL, 16);
+
+        p += 2;         //skip content len
+        if(pRecord->flag & SMS_RECORD_FLAG_CONCATENATE_SEGE){
+            memset(buf, 0x00, sizeof(buf));
+            strncpy(buf, p, 14);
+            int udhl = DecodeUDHFormSmsPDU(pRecord, buf);
+            p += udhl * 2;
+
+            if(udhl == 0){
+                pRecord->flag &= ~SMS_RECORD_FLAG_CONCATENATE_SEGE;
+            }
+        }
+
+        strncpy(pduContent, p, contentlen * 2);
+        DecodeContentFromSmsPDU(pduContent, code, (char*)pRecord->szContent);
+}
+
+//对fo后的pdu进行解析
+void DecodeSubmitSms(const char *pdu,   StSmsRecord *pRecord){
+        ASSERT(pdu != NULL && strlen(pdu) > 0);
+        ASSERT(pRecord != NULL);
+
+        USHORT numlen = 0;
+        USHORT contentlen = 0;
+        BYTE pid = 0;
+        BYTE code = 0;
+        char buf[20];
+        char pdunum[50];
+        char pdutime[30];
+        char pduContent[500];
+        const char *p = pdu;
+
+        memset(pdunum, 0x00, sizeof(pdunum));
+        memset(pdutime, 0x00, sizeof(pdutime));
+        memset(pduContent, 0x00, sizeof(pduContent));
+
+        p += 2; //skip tp-mr
+        memset(buf, 0x00, sizeof(buf));
+        strncpy(buf, p, 2);
+        numlen = strtol(buf, NULL, 16);
+
+        p += 2;
+        strncpy(pdunum, p, numlen + 2 +numlen%2);	//奇数时加F补足
+        DecodeNumFormSmsPDU(pdunum, (char*)pRecord->szNumber);
+
+        p += (numlen + 2 + numlen%2);
+        memset(buf, 0x00, sizeof(buf));
+        strncpy(buf, p, 2);
+        pid = strtol(buf, NULL, 16);
+
+        p += 2;
+        memset(buf, 0x00, sizeof(buf));
+        strncpy(buf, p, 2);
+        code = strtol(buf, NULL, 16);
+
+        p += 2;     //skip tp-vp
+
+        p += 2;
+        memset(buf, 0x00, sizeof(buf));
+        strncpy(buf, p, 2);
+        contentlen = strtol(buf, NULL, 16);
+
+        p += 2;         //skip content len
+        if(pRecord->flag & SMS_RECORD_FLAG_CONCATENATE_SEGE){
+            memset(buf, 0x00, sizeof(buf));
+            strncpy(buf, p, 14);
+            int udhl = DecodeUDHFormSmsPDU(pRecord, buf);
+            p += udhl * 2;
+
+            if(udhl == 0){
+                pRecord->flag &= ~SMS_RECORD_FLAG_CONCATENATE_SEGE;
+            }
+        }
+
+        strncpy(pduContent, p, contentlen * 2);
+        DecodeContentFromSmsPDU(pduContent, code, (char*)pRecord->szContent);
+}
+
+//对fo后的pdu进行解析
+void DecodeSReportSms(const char *pdu,   StSmsRecord *pRecord){
+
 }
 
 int DecodeUDHFormSmsPDU(StSmsRecord *pRecord,  char *para){
@@ -1851,7 +2082,9 @@ void DecodeContentFromSmsPDU(const char *pduContent, const BYTE codeType, char *
     ASSERT(pduContent && pContent);
 
     //ASCII
-    if (codeType == 0x00) {
+    if(codeType == 0x00){
+        gsmDecode7bit(pduContent, pContent, strlen(pduContent));
+    }else if (codeType == 0x04) {
         const char *p = pduContent;
         char buf[10];
         char c;
@@ -1885,16 +2118,6 @@ void DecodeSmsPDU(const char *pdu, const USHORT len, StSmsRecord *pRecord)
     const char *p = pdu;
     char buf[20];
     USHORT numlen = 0;
-    USHORT contentlen = 0;
-    BYTE pid = 0;
-    BYTE code = 0;
-    char pdunum[50];
-    char pdutime[30];
-    char pduContent[500];
-
-    memset(pdunum, 0x00, sizeof(pdunum));
-    memset(pdutime, 0x00, sizeof(pdutime));
-    memset(pduContent, 0x00, sizeof(pduContent));
 
     memset(buf, 0x00, sizeof(buf));
     strncpy(buf, p, 2);
@@ -1907,54 +2130,119 @@ void DecodeSmsPDU(const char *pdu, const USHORT len, StSmsRecord *pRecord)
         memset(buf, 0x00, sizeof(buf));
         strncpy(buf, p, 2);
         DecodeFOFormSmsPDU(pRecord, buf);
-
-        p += 2;
-        memset(buf, 0x00, sizeof(buf));
-        strncpy(buf, p, 2);
-        numlen = strtol(buf, NULL, 16);
-
-        p += 2;
-        strncpy(pdunum, p, numlen + 3);
-        DecodeNumFormSmsPDU(pdunum, (char*)pRecord->szNumber);
-
-        p += (numlen + 3);
-        memset(buf, 0x00, sizeof(buf));
-        strncpy(buf, p, 2);
-        pid = strtol(buf, NULL, 16);
-
-        p += 2;
-        memset(buf, 0x00, sizeof(buf));
-        strncpy(buf, p, 2);
-        code = strtol(buf, NULL, 16);
-
-        p += 2;
-        strncpy(pdutime, p, 14);
-        DecodeTimeFormSmsPDU(pdutime, &pRecord->timestamp);
-
-        p += 14;
-        memset(buf, 0x00, sizeof(buf));
-        strncpy(buf, p, 2);
-        contentlen = strtol(buf, NULL, 16);
-
-        p += 2;         //skip content len
-        if(pRecord->flag & SMS_RECORD_FLAG_CONCATENATE_SEGE){
-            memset(buf, 0x00, sizeof(buf));
-            strncpy(buf, p, 14);
-            int udhl = DecodeUDHFormSmsPDU(pRecord, buf);
-            p += udhl * 2;
-
-            if(udhl == 0){
-                pRecord->flag &= ~SMS_RECORD_FLAG_CONCATENATE_SEGE;
-            }
+        
+        p+=2;
+        switch(pRecord->tp_mti){
+            case 0X00:  //SMS_DELIVERY or SMS DELIVERY REPORT
+            DecodeDeliverySms(p, pRecord);
+            break;
+            case 0x01:  //SMS_SUBMIT or SMS SUBMIT REPORT
+            DecodeSubmitSms(p, pRecord);
+            break;
+            case 0x02:  //SMS_STATUS_REPORT or SMS_COMMAND
+            DecodeSReportSms(p, pRecord);
+            break;
+            case 0x03:  //RESERVED
+            break;
+            default:
+            break;
         }
-
-        strncpy(pduContent, p, contentlen * 2);
-        DecodeContentFromSmsPDU(pduContent, code, (char*)pRecord->szContent);
     }
 }
 
-void EncodeSmsPDU()
+int EncodeNumForSmsPDU(const char *pnum, char *pOutNum)
 {
+    ASSERT(pnum && pOutNum);
+
+    const char *p = pnum;
+    const char *q = p;
+
+    while (*p) {
+        pOutNum[strlen(pOutNum)] = *p;
+        q = p + 1;
+        if (*q) {
+            pOutNum[strlen(pOutNum)] = *q;
+        }else{
+            pOutNum[strlen(pOutNum)] = 'F';
+            break;
+        }
+        
+        p+=2;
+    }
+    pOutNum[strlen(pOutNum)] = '\0';
+    return strlen(pOutNum);
+}
+
+void EncodeSCNumberForSmsPDU(char *pDeScn){
+        char *pDes = pDeScn;
+        char pTemp[20] = {0};
+        USES_CONVERSION;
+        char *pSCNumber = W2A(gSmsCentreNum); 
+        int cnt = 0;
+
+       if(pDeScn == NULL || strlen(pDeScn) == 0){
+            return;
+        }
+
+        strcpy(pDeScn, "00");
+
+        //TON of SMS Center number
+        if(pSCNumber[0] == '+'){
+            strcat(pDeScn, "91");       //145
+            pSCNumber++;
+        }else{
+            strcat(pDeScn, "7F");       //127
+        }
+
+        pDes = pDeScn + strlen(pDeScn); //skip exists characters
+
+        EncodeNumForSmsPDU(pSCNumber, pDes);
+
+        sprintf(pTemp, "%02X", strlen(pDeScn + 2)/2);   //convert the length of 
+// pdes to string
+        strncpy(pDeScn, pTemp, 2);
+}
+void EncodeSmsPDU(char *pduOut, CString da, CString context)
+{
+        int ifo = 0;
+        TCHAR sfo[16] = {0};
+        char temp[20] = {0};
+        char odtmp[20] = {0};
+		int numLen = 0;
+		CString pDA = da;
+        ASSERT(pduOut);
+        EncodeSCNumberForSmsPDU(pduOut);
+
+		USES_CONVERSION;
+        ifo |= 0x01;    //MTI submit sms
+        if(gSmsIsConcatenate){
+            ifo |= SMS_MASK_UDHI;
+            SetConcatenateSmsPara((TCHAR *)sfo,  gSmsRefCnt, gSmsCurSege+1, gSmsTotalSege); 
+            
+        }
+        sprintf(temp, "%02x00", ifo);
+		strcat(pduOut, temp);
+        
+		memset(temp, 0x00, sizeof(temp));
+		if(da.Left(1).Compare(_T("+"))){
+			strcat(temp, "91");
+			pDA = da.Mid(1);
+		}else{
+			strcat(temp, "81");
+		}
+		numLen = EncodeNumForSmsPDU(W2A(pDA),&temp[strlen(temp)]);
+              sprintf(odtmp, "%02x", numLen);
+            strcat(pduOut, odtmp);
+            strcat(pduOut, temp);
+
+            strcat(pduOut, "00");
+            //TP-PID
+
+            if(IsAlphabetUnicode(context)){
+                
+            }else{
+
+            }
 }
 #endif
 
@@ -2163,8 +2451,6 @@ BOOL SetConcatenateSmsParaA(char *DspBuf, USHORT nRefCnt, BYTE nSeqCnt, BYTE nTo
                 sprintf(DspBuf, "(%d%c%d)", nSeqCnt, MinMaxChar, nTotalCnt); //FLEXI modify by liub
             }
         }
-        //sprintf(DspBuf, "060804%04X%02X%02X", nRefCnt, nTotalCnt, nSeqCnt);
-        //sprintf(DspBuf,"(%d/%d)",nSeqCnt,nTotalCnt);//FLEXI modify by liub
         return TRUE;
     }
 }
@@ -2349,7 +2635,7 @@ BOOL SmsAtCMGRRspProc(BYTE(*strArr)[DSAT_STRING_COL], WORD wStrNum, StSmsRecord 
         }
     }
 
-	if (record.state == SMS_STATE_MO_NOT_SENT || record.state == SMS_STATE_MO_SENT) {
+    if (record.state == SMS_STATE_MO_NOT_SENT || record.state == SMS_STATE_MO_SENT) {
         record.state = SMS_STATE_MT_READ;
     }
 

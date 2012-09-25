@@ -358,9 +358,10 @@ extern void AtRespDummy(LPVOID pWnd, BYTE(*strArr)[DSAT_STRING_COL], WORD wStrNu
 extern void DecodeFOFormSmsPDU(StSmsRecord *pRecord, char *fo);
 extern int DecodeUDHFormSmsPDU(StSmsRecord *pRecord, char *fo);
 extern void DecodeNumFormSmsPDU(const char *pdunum, char *pOutNum);
-extern void DecodeTimeFormSmsPDU(const char *pdutime, CTime *pOutTime);
+extern void DecodeTimeFormSmsPDU(const char *pdutime, COleDateTime *pOutTime);
 extern void DecodeContentFromSmsPDU(const char *pduContent, const BYTE codeType, char *pContent);
 extern void DecodeSmsPDU(const char *pdu, const USHORT len, StSmsRecord *pRecord);
+extern void EncodeSmsPDU(char *pduOut, CString da, CString context);
 #endif
 
 extern BOOL ExtractConcatenateSmsPara(char *Para, USHORT *nRefCnt, BYTE *nSeqCnt, BYTE *nTotalCnt);
