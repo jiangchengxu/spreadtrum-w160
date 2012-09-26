@@ -1992,6 +1992,37 @@ void CHSDPADlg::AtRespSRVSTATUSCHG(LPVOID pWnd, BYTE(*strArr)[DSAT_STRING_COL], 
     }
 }
 
+#ifdef FEATURE_SMS_PDUMODE
+void CHSDPADlg::AtRespCDS(LPVOID pWnd, BYTE(*strArr)[DSAT_STRING_COL], WORD wStrNum)
+{
+
+    CHSDPADlg* pDlg = (CHSDPADlg*)pWnd;
+
+    int cnt = 0;
+    char *p;
+    if(strncmp((char *)strArr[0], (gc_dsatResCodeTbl[DSAT_CDS][gc_dsatmode]), 
+strlen(gc_dsatResCodeTbl[DSAT_CDS][gc_dsatmode]))){
+        return;
+    }
+
+    USES_CONVERSION;
+    StSmsRecord record;
+    memset(&record, 0x00, sizeof(StSmsRecord));
+    record.m_NoATRspCDS = TRUE;
+    record.voicemail = 0;
+    record.SMSpriority = 0;
+    pDlg->SMS_Priority = record.SMSpriority;
+    record.state = SMS_STATE_MT_NOT_READ;
+
+    ASSERT(wStrNum == 2);
+
+    p = (char *)&strArr[1];
+    DecodeSmsPDU(p, strlen(p), &record);
+
+    pDlg->RcvNewSmsProc(LOC_PC, record);
+    Sleep(100);
+}
+#else
 //接受到状态报告的消息
 //+CDS: 2,10,"+358501234567",145,"95/07/04/13:12:14+04","95/07/04/13:12:20+04",0 (status report of successful message delivery received)
 /* +CDS: "15335151066",,"09/01/06,16:14:58+00",4,8
@@ -2079,6 +2110,7 @@ void CHSDPADlg::AtRespCDS(LPVOID pWnd, BYTE(*strArr)[DSAT_STRING_COL], WORD wStr
     Sleep(100);
 
 }
+#endif
 
 void CHSDPADlg::AtRespCOPSFormat(LPVOID pWnd, BYTE(*strArr)[DSAT_STRING_COL], WORD wStrNum)
 {

@@ -1026,7 +1026,13 @@ static void AtRespParse(CSerialPort *pComm)
         case STATE_START:
             if (ch == AT_FLAG_S3)
             {
-                if ((g_DsatResCode == DSAT_CMT) || (g_DsatResCode == DSAT_CDS))
+                if ((g_DsatResCode == DSAT_CMT) 
+                    #ifndef FEATURE_SMS_PDUMODE
+                    //becase spreadtrum send double 0d0a before sms pdu which 
+// followed  by +CMT: 24, remove the expression for check  the 0d0a again
+                    || (g_DsatResCode == DSAT_CDS)
+                    #endif
+                    )
                     g_DsatState = STATE_RESCODE_S3;
                 else
                     g_DsatState = STATE_HEAD_S3;
@@ -1071,11 +1077,10 @@ static void AtRespParse(CSerialPort *pComm)
                 if ((g_DsatResCode != DSAT_CMT) && (g_DsatResCode != DSAT_CDS))
                 {
                     g_DsatResCode = FindEndCode((char *)g_DsatStrArr[g_DsatStrNum++]);
-                    if (g_DsatResCode == DSAT_MAX || g_DsatResCode == DSAT_CMT || g_DsatResCode == DSAT_CDS)
+                    if (g_DsatResCode == DSAT_MAX || g_DsatResCode == DSAT_CMT  || g_DsatResCode == DSAT_CDS)
                     {
                         g_DsatState = STATE_TAIL_S3;
-                    }
-                    else
+                    }else
                         g_DsatState = STATE_RESCODE_S3;
                     g_DsatPtr = &g_DsatStrArr[g_DsatStrNum][0];
                 }
@@ -2151,7 +2156,49 @@ void DecodeSubmitSms(const char *pdu,   StSmsRecord *pRecord)
 //对fo后的pdu进行解析
 void DecodeSReportSms(const char *pdu,   StSmsRecord *pRecord)
 {
+    ASSERT(pdu != NULL && strlen(pdu) > 0);
+    ASSERT(pRecord != NULL);
 
+    USHORT numlen = 0;
+    USHORT status = 0;
+    BYTE pid = 0;
+    BYTE code = 0;
+    char buf[20];
+    char pdunum[50];
+    char pdutime[30];
+    const char *p = pdu;
+
+    memset(pdunum, 0x00, sizeof(pdunum));
+    memset(pdutime, 0x00, sizeof(pdutime));
+
+    p += 2; //skip tp-mr
+    memset(buf, 0x00, sizeof(buf));
+    strncpy(buf, p, 2);
+    numlen = strtol(buf, NULL, 16);
+
+    p += 2;
+    strncpy(pdunum, p, numlen + 2 +numlen%2);	//奇数时加F补足
+    DecodeNumFormSmsPDU(pdunum, (char*)pRecord->szNumber);
+
+    p += (numlen + 2 + numlen%2);
+
+    strncpy(pdutime, p, 14);
+    DecodeTimeFormSmsPDU(pdutime, &pRecord->timestamp);
+    p += 14;
+
+    p += 14; //skip tp discharge time
+
+    memset(buf, 0x00, sizeof(buf));
+    strncpy(buf, p, 2);
+    status = strtol(buf, NULL, 16);
+    
+    switch(status){
+        case 0x00:
+        strcpy(pRecord->szContent, "Message received on handset");
+        break;
+        default:
+        break;
+    }
 }
 
 int DecodeUDHFormSmsPDU(StSmsRecord *pRecord,  char *para)
