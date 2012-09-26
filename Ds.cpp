@@ -1752,7 +1752,7 @@ int gsmEncode7bit(const char* pSrc, unsigned char* pDst, int nSrcLength)
     // 将源串每8个字节分为一组，压缩成7个字节
     // 循环该处理过程，直至源串被处理完
     // 如果分组不到8字节，也能正确处理
-    while (nSrc < nSrcLength)
+    while (nSrc <= nSrcLength)
     {
         // 取源字符串的计数值的最低3位
         nChar = nSrc & 7;
@@ -1764,12 +1764,16 @@ int gsmEncode7bit(const char* pSrc, unsigned char* pDst, int nSrcLength)
         }
         else
         {
+            unsigned char cChar[3] = {0};
+            unsigned char iChar;
             // 组内其它字节，将其右边部分与残余数据相加，得到一个目标编码字节
-            *pDst = (*pSrc << (8 - nChar)) | nLeft;
+            iChar = (*pSrc << (8 - nChar)) | nLeft;
+            sprintf((char *)cChar,"%02X", iChar);
+            strcat((char *)pDst, (char *)cChar);
             // 将该字节剩下的左边部分，作为残余数据保存起来
             nLeft = *pSrc >> nChar;
             // 修改目标串的指针和计数值
-            pDst++;
+            pDst+=2;
             nDst++;
         }
         // 修改源串的指针和计数值
@@ -1839,6 +1843,7 @@ nLeft = 0;
     }
     *pDst = 0;
     // 返回目标串长度
+    //delete [] ascSrc;         //release ascSrc will occur fatal error!
     return nDst;
 }
 
@@ -2158,56 +2163,64 @@ int EncodeNumForSmsPDU(const char *pnum, char *pOutNum)
     const char *q = p;
 
     while (*p) {
-        pOutNum[strlen(pOutNum)] = *p;
         q = p + 1;
         if (*q) {
             pOutNum[strlen(pOutNum)] = *q;
         }else{
             pOutNum[strlen(pOutNum)] = 'F';
-            break;
         }
-        
+        pOutNum[strlen(pOutNum)] = *p;
+
+		if(*q == '\0'){
+			break;
+		}
         p+=2;
     }
     pOutNum[strlen(pOutNum)] = '\0';
     return strlen(pOutNum);
 }
 
-void EncodeSCNumberForSmsPDU(char *pDeScn){
+//encode smscenter number, return the whole tpdu length
+int EncodeSCNumberForSmsPDU(char *sbuffer){
+        char pTemp[30] = {0};
+        char pDeScn[50] = {0};
         char *pDes = pDeScn;
-        char pTemp[20] = {0};
+        int iscLen = 0;
         USES_CONVERSION;
         char *pSCNumber = W2A(gSmsCentreNum); 
         int cnt = 0;
 
-       if(pDeScn == NULL || strlen(pDeScn) == 0){
-            return;
-        }
-
         strcpy(pDeScn, "00");
+        pDes += 2;
 
         //TON of SMS Center number
         if(pSCNumber[0] == '+'){
             strcat(pDeScn, "91");       //145
             pSCNumber++;
         }else{
-            strcat(pDeScn, "7F");       //127
+            strcat(pDeScn, "A1");       //161
         }
+        pDes += 2;
 
-        pDes = pDeScn + strlen(pDeScn); //skip exists characters
+        iscLen = EncodeNumForSmsPDU(pSCNumber, pDes) + 2;
 
-        EncodeNumForSmsPDU(pSCNumber, pDes);
-
-        sprintf(pTemp, "%02X", strlen(pDeScn + 2)/2);   //convert the length of 
-// pdes to string
+        sprintf(pTemp, "%02X", iscLen/2); 
         strncpy(pDeScn, pTemp, 2);
+
+        if(sbuffer != NULL){
+            strcpy(sbuffer, pDeScn);
+        }
+        return strlen(pDeScn);
 }
-void EncodeSmsPDU(char *pduOut, CString da, CString context)
+
+int  EncodeSmsPDU(char *pduOut, CString da, CString context)
 {
         int ifo = 0;
+        char *pOA;
         TCHAR sfo[16] = {0};
         char temp[20] = {0};
         char odtmp[20] = {0};
+        int contextLen = 0;
 		int numLen = 0;
 		CString pDA = da;
         ASSERT(pduOut);
@@ -2220,29 +2233,41 @@ void EncodeSmsPDU(char *pduOut, CString da, CString context)
             SetConcatenateSmsPara((TCHAR *)sfo,  gSmsRefCnt, gSmsCurSege+1, gSmsTotalSege); 
             
         }
-        sprintf(temp, "%02x00", ifo);
-		strcat(pduOut, temp);
+        sprintf(temp, "%02X00", ifo);
+		strcat(pduOut, /*temp*/"11FF");
         
 		memset(temp, 0x00, sizeof(temp));
-		if(da.Left(1).Compare(_T("+"))){
+		if(da.Left(1).Compare(_T("+")) == 0){
 			strcat(temp, "91");
 			pDA = da.Mid(1);
 		}else{
-			strcat(temp, "81");
+			strcat(temp, "A1");
 		}
-		numLen = EncodeNumForSmsPDU(W2A(pDA),&temp[strlen(temp)]);
-              sprintf(odtmp, "%02x", numLen);
+                pOA = W2A(pDA);
+		numLen = strlen(pOA);
+              sprintf(odtmp, "%02X", numLen);
+               EncodeNumForSmsPDU(W2A(pDA),&temp[strlen(temp)]);
             strcat(pduOut, odtmp);
             strcat(pduOut, temp);
 
             strcat(pduOut, "00");
             //TP-PID
-
+            
+            contextLen = 0;
             if(IsAlphabetUnicode(context)){
-                
+                strcat(pduOut, "00");    //TP-DCS
+                strcat(pduOut, "47");
+				char contLen[3] = {0};
+                contextLen = context.GetLength();
+				sprintf(contLen,"%02X",contextLen);
+				strcat(pduOut, contLen);
+                gsmEncode7bit(W2A(context), (unsigned char *)&pduOut[strlen(pduOut)], contextLen);
             }else{
-
+                CString strUC = BTToUCS2((CString)context);
+                contextLen =  WCharToChar(strUC, &pduOut[strlen(pduOut)]);
             }
+
+            return strlen(pduOut);
 }
 #endif
 

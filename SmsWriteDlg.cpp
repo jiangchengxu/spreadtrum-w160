@@ -896,60 +896,50 @@ BOOL CSmsWriteDlg::SndAtSmsQCMGS(int nStep)
     char szAtAscBuf[1600] = {0};
 	int buffsize;
 
-    ASSERT(m_nCurNum < m_nNumCount);
-
-    if(nStep == 1)
-    {
+        ASSERT(m_nCurNum < m_nNumCount);
         const char *pNumType;
-		char *q;
-		q = m_szGroupNum[m_nCurNum];
-        
-		if (m_szGroupNum[m_nCurNum][0] == '+' && m_szGroupNum[m_nCurNum][1] == '6' && m_szGroupNum[m_nCurNum][2] == '2')
-		{
-			m_szGroupNumSendNum[0] = '0';
-			q = q + 3;
-			int i = 1;
-			while (*q != '\0')
-			{
-				m_szGroupNumSendNum[i] = *q;
-				q++;
-				i++;
-				
-			}
-			m_szGroupNumSendNum[i] = '\0';
+        char *q;
+        q = m_szGroupNum[m_nCurNum];
 
-		}
-		else
-		{
-			strcat(m_szGroupNumSendNum,m_szGroupNum[m_nCurNum]);
-		}
-		
+        if (m_szGroupNum[m_nCurNum][0] == '+' && m_szGroupNum[m_nCurNum][1] == '6' && m_szGroupNum[m_nCurNum][2] == '2')
+        {
+        	m_szGroupNumSendNum[0] = '0';
+        	q = q + 3;
+        	int i = 1;
+        	while (*q != '\0')
+        	{
+        		m_szGroupNumSendNum[i] = *q;
+        		q++;
+        		i++;
+        		
+        	}
+        	m_szGroupNumSendNum[i] = '\0';
+
+        }
+        else
+        {
+        	strcat(m_szGroupNumSendNum,m_szGroupNum[m_nCurNum]);
+        }
+
         if(m_szGroupNum[m_nCurNum][0] == '+')
             pNumType = gcstrNumType[0];
         else
             pNumType = gcstrNumType[1];
 
-		sprintf(szAtAscBuf, "%s\"%s\",%s\r", 
+        buffsize = EncodeSmsPDU(szAtAscBuf, m_szGroupNumSendNum, m_strSmsDetails);
+    if(nStep == 1)
+    {
+            int scLen = EncodeSCNumberForSmsPDU(NULL);
+            sprintf(szAtAscBuf, "%s%d\r", 
             gcstrAtSms[AT_SMS_QCMGS], 
-			m_szGroupNumSendNum,
-            pNumType);
+		(buffsize - scLen)/2);
 
              buffsize=strlen(szAtAscBuf);
     }
     else
     {
-        EncodeSmsPDU(szAtAscBuf, m_szGroupNumSendNum, m_strSmsDetails);
-        {
-                int len = 0;
-                if(IsAlphabetUnicode(m_strSmsDetails)){
-                    len = WCharToChar(m_strSmsDetails, szAtAscBuf);
-                }else{
-                    CString strUC = BTToUCS2((CString)m_strSmsDetails);
-                    len =  WCharToChar(strUC, szAtAscBuf);
-                }
-				szAtAscBuf[len] = gccCtrl_Z;
-				buffsize=len + 1;
-        }
+              szAtAscBuf[buffsize] = gccCtrl_Z;
+              buffsize = buffsize + 1;
     }
 
     CSerialPort* pComm = ((CHSDPAApp*)AfxGetApp())->m_pSerialPort;
