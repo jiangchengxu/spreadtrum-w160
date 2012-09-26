@@ -2462,7 +2462,7 @@ int  EncodeSmsPDU(char *pduOut, CString da, CString context)
     int contextLen = 0;
     int numLen = 0;
     CString pDA = da;
-    boolean bAscContent = TRUE;
+    char szAscBuf[1600] = {0};
 
     ASSERT(pduOut);
     EncodeSCNumberForSmsPDU(pduOut);
@@ -2493,13 +2493,17 @@ int  EncodeSmsPDU(char *pduOut, CString da, CString context)
     strcat(pduOut, "00");
     //TP-PID
 
-    if(bAscContent)
+    if(IsAlphabetUnicode(context))
     {
         strcat(pduOut, "00");    //TP-DCS
+        contextLen = context.GetLength();
+        gsmEncode7bit(W2A(context), (unsigned char *)szAscBuf, contextLen);
     }
     else
     {
         strcat(pduOut, "08");    //TP-DCS
+        CString strUC = BTToUCS2((CString)context);
+        contextLen =  WCharToChar(strUC, szAscBuf)/2;
     }
 
     if((ifo & SMS_MASK_VP) == SMS_MASK_VP_RF)
@@ -2524,20 +2528,12 @@ int  EncodeSmsPDU(char *pduOut, CString da, CString context)
         }
     }/*TP-UDH*/
     memset(temp, 0x00, sizeof(temp));
-    contextLen = context.GetLength() + udhl;
+    contextLen += udhl;
     sprintf(temp,"%02X",contextLen);
     strcat(pduOut, temp);
     strcat(pduOut, udh);
 
-    if(bAscContent)
-    {
-        gsmEncode7bit(W2A(context), (unsigned char *)&pduOut[strlen(pduOut)], contextLen);
-    }
-    else
-    {
-        CString strUC = BTToUCS2((CString)context);
-        contextLen =  WCharToChar(strUC, &pduOut[strlen(pduOut)]);
-    }
+    strcat(pduOut, szAscBuf);
 
     return strlen(pduOut);
 }
