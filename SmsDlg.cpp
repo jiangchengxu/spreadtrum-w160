@@ -977,12 +977,7 @@ void CSmsDlg::OnButtonSmsForward()
         CSmsWriteDlg dlg(this, NULL, szContentCopy,
                          SMS_WRITE_FORWORD, NULL);
         dlg.DoModal();
-
-
     }
-
-
-
 }
 
 void CSmsDlg::OnButtonSmsAbstract()

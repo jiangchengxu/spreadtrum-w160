@@ -79,7 +79,7 @@ CSmsWriteDlg::CSmsWriteDlg(CWnd* pParent,LPCTSTR lpszNumber, LPCTSTR lpszContent
 
     m_strLastGroupNumber=_T("");
 
-    memset(m_szSCNumber, 0x00, SMS_SC_NUM_MAX);
+    memset(m_szSCNumber, 0x00, SMS_SC_NUM_MAX*2);
     m_WriteType = writeType;
 
     if(lpszSCNum && wcslen(lpszSCNum)) {
@@ -89,7 +89,6 @@ CSmsWriteDlg::CSmsWriteDlg(CWnd* pParent,LPCTSTR lpszNumber, LPCTSTR lpszContent
     else if(wcslen(gSmsCentreNum) > 0) {
         wcsncpy((TCHAR*)m_szSCNumber, gSmsCentreNum, SMS_SC_NUM_MAX);
     }
-
 }
 
 void CSmsWriteDlg::DoDataExchange(CDataExchange* pDX)

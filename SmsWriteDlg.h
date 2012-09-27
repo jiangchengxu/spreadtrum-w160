@@ -138,7 +138,7 @@ private:
     int m_nUpper;
     int m_nLower;
     //Modified by Zhou Bin 2008.12.30
-    char m_szSCNumber[SMS_SC_NUM_MAX +2]; //消息中心号码
+    char m_szSCNumber[SMS_SC_NUM_MAX*2 +2]; //消息中心号码
     EnSmsWriteType m_WriteType; //发送类别
 };
 
