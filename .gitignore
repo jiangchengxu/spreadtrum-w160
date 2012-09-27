@@ -1,6 +1,7 @@
 Debug/
 lang/
 res/
+*.orig
 HSDPA.opt
 HSDPA.plg
 HSDPA.ncb
