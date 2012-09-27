@@ -29,42 +29,42 @@ public:
 
 // Dialog Data
     //{{AFX_DATA(CContactDlg)
-	enum { IDD = IDD_DIALOG_CONTACT };
+    enum { IDD = IDD_DIALOG_CONTACT };
     CString m_strName;
     CString    m_strMobile;
     CString    m_strHome;
-	CString    m_strGroup;
-	CString    m_strGroupBeforechange;
+    CString    m_strGroup;
+    CString    m_strGroupBeforechange;
     CString    m_strCompany;
     CString    m_strEmail;
     CString    m_strMark;
-	CString    m_strPicPath;/*存放当前显示的图片存放的路径*/
-	CString    m_strPicOldPath;/*存放更新前的图片存放的路径*/
-	//int        nIndex;      /*用于标识编辑功能中被编辑信息的index*/
-	CEdit   m_EditName;
+    CString    m_strPicPath;/*存放当前显示的图片存放的路径*/
+    CString    m_strPicOldPath;/*存放更新前的图片存放的路径*/
+    //int        nIndex;      /*用于标识编辑功能中被编辑信息的index*/
+    CEdit   m_EditName;
     CNumEdit   m_EditMobile;
     CNumEdit   m_EditHome;
     CNumEdit   m_EditCompany;
-	CEdit   m_EditEMail;
-	CEdit   m_EditMark;
-	CComboBox m_ComboGroup;
-	bool       bLoadPic;    //用于标识是否更换了图片,true为更换,默认为false.
-	CPbData*   m_pPbData;
-	BOOL m_bSimCardFlag;  //标识是否是SIM卡中的联系人
-	//}}AFX_DATA
+    CEdit   m_EditEMail;
+    CEdit   m_EditMark;
+    CComboBox m_ComboGroup;
+    bool       bLoadPic;    //用于标识是否更换了图片,true为更换,默认为false.
+    CPbData*   m_pPbData;
+    BOOL m_bSimCardFlag;  //标识是否是SIM卡中的联系人
+    //}}AFX_DATA
 
 // Overrides
     // ClassWizard generated virtual function overrides
     //{{AFX_VIRTUAL(CContactDlg)
-    public:
+public:
 
     //消息预处理函数，拦截右键操作
     virtual BOOL PreTranslateMessage(MSG* pMsg);
 
-    protected:
+protected:
     virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
     //}}AFX_VIRTUAL
-	
+
 
 // Implementation
 protected:
@@ -74,23 +74,23 @@ protected:
     virtual void OnOK();
     virtual void OnCancel();
     virtual BOOL OnInitDialog();
-	afx_msg void OnUpdateEditCompany();
-	afx_msg void OnUpdateEditMobile();
-	afx_msg void OnUpdateEditHome();
-	afx_msg void OnLoadPic();
-	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
-	//}}AFX_MSG
-	BOOL isChineseChar(const char* ch);
-	BOOL isChineseCharUnicode(const TCHAR* ch);
-	bool CheckName(const char* ch);
-	bool CheckNameUnicode(const TCHAR* ch);
-	bool CheckNumber(CString strNum);
-	bool DisplayPicture(CString strPath);
-	CString GetPicDefPath();
-	CString GetPicNewPath();
-	CString GetSysTime();
-	BOOL CopyPicFile(CString strNowPath,CString strNewPath);
-	bool CompareChar(const TCHAR* chSource);
+    afx_msg void OnUpdateEditCompany();
+    afx_msg void OnUpdateEditMobile();
+    afx_msg void OnUpdateEditHome();
+    afx_msg void OnLoadPic();
+    afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
+    //}}AFX_MSG
+    BOOL isChineseChar(const char* ch);
+    BOOL isChineseCharUnicode(const TCHAR* ch);
+    bool CheckName(const char* ch);
+    bool CheckNameUnicode(const TCHAR* ch);
+    bool CheckNumber(CString strNum);
+    bool DisplayPicture(CString strPath);
+    CString GetPicDefPath();
+    CString GetPicNewPath();
+    CString GetSysTime();
+    BOOL CopyPicFile(CString strNowPath,CString strNewPath);
+    bool CompareChar(const TCHAR* chSource);
     DECLARE_MESSAGE_MAP()
 
 private:

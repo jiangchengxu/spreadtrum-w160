@@ -32,7 +32,7 @@ class ConnectionManagerDlg : public CDialog, public NoticeSubscriber
 {
 // Construction
 public:
-	ConnectionManagerDlg(CWnd* pParent = NULL);
+    ConnectionManagerDlg(CWnd* pParent = NULL);
     ~ConnectionManagerDlg();
 
     void SelectDevice(std::string& deviceName);
@@ -45,22 +45,22 @@ public:
     );
 
 // Dialog Data
-	enum { IDD = IDD_CONNECTIONMANAGER_DIALOG };
+    enum { IDD = IDD_CONNECTIONMANAGER_DIALOG };
 
 protected:
-	virtual void DoDataExchange(CDataExchange* pDX);
+    virtual void DoDataExchange(CDataExchange* pDX);
 
 
 // Implementation
 protected:
-	HICON m_hIcon;
+    HICON m_hIcon;
 
-	// Generated message map functions
-	virtual BOOL OnInitDialog();
+    // Generated message map functions
+    virtual BOOL OnInitDialog();
     afx_msg void OnClose();
-	afx_msg void OnSysCommand(UINT nID, LPARAM lParam);
-	afx_msg void OnPaint();
-	afx_msg HCURSOR OnQueryDragIcon();
+    afx_msg void OnSysCommand(UINT nID, LPARAM lParam);
+    afx_msg void OnPaint();
+    afx_msg HCURSOR OnQueryDragIcon();
     afx_msg LRESULT OnNewNotice(WPARAM wParam,LPARAM lParam);
     bool OpenUserGuide(const char* relativePath);
     void ProcessMsgNotice(NoticeRCP noticeRCP);
@@ -102,7 +102,7 @@ protected:
     void ProcessDeviceNotice(NoticeRCP noticeRCP);
     void LogMessage(MessageRCP msgRCP);
     void ReportMsgFailed(std::string name,uint16 error,bool isMsgBox);
-	DECLARE_MESSAGE_MAP()
+    DECLARE_MESSAGE_MAP()
 
 private:
     CPropertySheet m_propSheet;

@@ -14,33 +14,33 @@
 class CModifyPinDlg : public CBaseDialog
 {
 public:
-	HANDLE m_hCPwdEvt;
-	CPinEx* m_pHandlePin;
-	UINT m_nTag;
-	
-	
+    HANDLE m_hCPwdEvt;
+    CPinEx* m_pHandlePin;
+    UINT m_nTag;
+
+
 // Construction
 public:
-	CModifyPinDlg(CWnd* pParent,UINT tag);
-	~CModifyPinDlg();
-	int  OnPinModify();
-	int  OnPinUnlock();
-	BOOL CheckCorrect();
-	static void AtRespCPwd(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL], WORD wStrNum);
+    CModifyPinDlg(CWnd* pParent,UINT tag);
+    ~CModifyPinDlg();
+    int  OnPinModify();
+    int  OnPinUnlock();
+    BOOL CheckCorrect();
+    static void AtRespCPwd(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL], WORD wStrNum);
 // Dialog Data
     //{{AFX_DATA(CModifyPinDlg)
-	enum { IDD = IDD_DIALOG_MODIFY_PIN };
-	CString	m_pinConf;
-	CString	m_pinCurr;
-	CString	m_pinNew;
-	CString m_cRemainTime;
-	//CString	m_strLockTip;
-	//}}AFX_DATA
+    enum { IDD = IDD_DIALOG_MODIFY_PIN };
+    CString	m_pinConf;
+    CString	m_pinCurr;
+    CString	m_pinNew;
+    CString m_cRemainTime;
+    //CString	m_strLockTip;
+    //}}AFX_DATA
 
-	// Overrides
+    // Overrides
     // ClassWizard generated virtual function overrides
     //{{AFX_VIRTUAL(CModifyPinDlg)
-    protected:
+protected:
     virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
     //}}AFX_VIRTUAL
 
@@ -52,12 +52,12 @@ protected:
     virtual void OnOK();
     virtual BOOL OnInitDialog();
     //afx_msg void OnPaint();
-	afx_msg void OnBtnMpinOk();
-	//}}AFX_MSG
+    afx_msg void OnBtnMpinOk();
+    //}}AFX_MSG
     DECLARE_MESSAGE_MAP()
 
 protected:
-	HWND m_Hwnd;
+    HWND m_Hwnd;
 };
 
 

@@ -34,10 +34,10 @@ static const std::string SERVICE_TYPE_STRINGS[] = { "CTL","WDS","DMS","NAS" };
 // MessageManager
 //
 /// The MessageManager forms the core of the message parsing and logic layer.
-/// The MessageManager is responsible for obtaining service handles from the 
+/// The MessageManager is responsible for obtaining service handles from the
 /// connection layer and managing them. The MessageManager receives messages
 /// from the communication layer and publishes that message to its subscriber
-/// list. The MessageManager provides an interface for sending messages to 
+/// list. The MessageManager provides an interface for sending messages to
 /// the communication layer, loading messages from file and saving messages
 /// to file. The MessageManager follows the singleton and publish/subscribe
 /// patterns.

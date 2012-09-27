@@ -18,7 +18,7 @@ CSerialBufQueue::CSerialBufQueue()
 CSerialBufQueue::~CSerialBufQueue()
 {
     Clear();
-    DeleteCriticalSection(&m_csQueue);    
+    DeleteCriticalSection(&m_csQueue);
 }
 
 inline BOOL CSerialBufQueue::IsEmpty()
@@ -28,50 +28,45 @@ inline BOOL CSerialBufQueue::IsEmpty()
     EnterCriticalSection(&m_csQueue);
     isEmpty = (front == NULL && rear == NULL);
     LeaveCriticalSection(&m_csQueue);
-    
+
     return isEmpty;
 }
 
 void CSerialBufQueue::AddToTail(CSerialBuffer* buf)
-{    
+{
     ASSERT(buf != NULL);
 
     EnterCriticalSection(&m_csQueue);
-    
+
     buf->next = NULL;
 
     if(IsEmpty())
         front = rear = buf;
-    else
-    {
+    else {
         rear->next = buf;
         rear = buf;
     }
-    
+
     LeaveCriticalSection(&m_csQueue);
 }
 
 CSerialBuffer* CSerialBufQueue::GetFromHead()
 {
     EnterCriticalSection(&m_csQueue);
-    
+
     CSerialBuffer *buf = NULL;
 
-    if(!IsEmpty())
-    {
+    if(!IsEmpty()) {
         buf = front;
-        if(front == rear)
-        {
+        if(front == rear) {
             front = rear = NULL;
-        }
-        else
-        {
+        } else {
             front = front->next;
         }
     }
 
     LeaveCriticalSection(&m_csQueue);
-    
+
     return buf;
 }
 
@@ -81,8 +76,7 @@ void CSerialBufQueue::Clear()
 
     CSerialBuffer *buf = NULL;
 
-    while(!IsEmpty())
-    {
+    while(!IsEmpty()) {
         buf = GetFromHead();
         delete buf;
     }

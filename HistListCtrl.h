@@ -18,7 +18,7 @@ public:
 // Overrides
     // ClassWizard generated virtual function overrides
     //{{AFX_VIRTUAL(CHistListCtrl)
-    protected:
+protected:
     virtual void PreSubclassWindow();
     //}}AFX_VIRTUAL
     // Generated message map functions

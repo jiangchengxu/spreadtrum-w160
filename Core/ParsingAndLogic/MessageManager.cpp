@@ -30,10 +30,10 @@
 // --------------------------------------------------------------------------
 // ctor
 //
-/// Constructor for MessageManager. Initialize data members and start the 
+/// Constructor for MessageManager. Initialize data members and start the
 /// message manager (MM) thread.
 // --------------------------------------------------------------------------
-MessageManager::MessageManager() : 
+MessageManager::MessageManager() :
     m_hProcessThread(INVALID_HANDLE_VALUE),
     m_hProcessExitEvent(::CreateEvent(NULL, TRUE, FALSE, NULL)),
     m_hMsgEvent(::CreateEvent(NULL, TRUE, FALSE, NULL)), //??? close in dtor?
@@ -46,8 +46,7 @@ MessageManager::MessageManager() :
     ::InitializeCriticalSection(&m_addServiceCS);
 
     // initialize service handles
-    for (int i = 0; i < QMUX_TYPE_MAX; i++)
-    {
+    for (int i = 0; i < QMUX_TYPE_MAX; i++) {
         m_services.push_back(new QMIService(i));
     }
 }
@@ -60,14 +59,12 @@ MessageManager::MessageManager() :
 MessageManager::~MessageManager()
 {
     // if the message manager is still in the started state, stop it
-    if (m_isStarted)
-    {
+    if (m_isStarted) {
         StopMessageManager();
     }
 
     // delete service objects
-    for (int i = 0; i < QMUX_TYPE_MAX; i++)
-    {
+    for (int i = 0; i < QMUX_TYPE_MAX; i++) {
         delete m_services[i];
     }
 
@@ -76,10 +73,10 @@ MessageManager::~MessageManager()
 
     // release api resources
     QCWWAN_ReleaseResources();
-	
-	//wyw_0104
-	::CloseHandle(m_hProcessExitEvent);
-	::CloseHandle(m_hMsgEvent);
+
+    //wyw_0104
+    ::CloseHandle(m_hProcessExitEvent);
+    ::CloseHandle(m_hMsgEvent);
 }
 
 // --------------------------------------------------------------------------
@@ -98,7 +95,7 @@ MessageManager& MessageManager::GetInstance()
 // --------------------------------------------------------------------------
 // StartMessageManager
 //
-/// Start the received message processing thread and the device monitoring 
+/// Start the received message processing thread and the device monitoring
 /// thread used by the message manager to send messages to and recieve
 /// messages from a device.
 ///
@@ -107,12 +104,11 @@ MessageManager& MessageManager::GetInstance()
 bool MessageManager::StartMessageManager()
 {
     // start the received message process thread
-    m_hProcessThread = 
+    m_hProcessThread =
         ::CreateThread(NULL,0,StartProcessThread,NULL,0,NULL);
 
     // report if error starting the monitor thread
-    if (m_hProcessThread == NULL)
-    {
+    if (m_hProcessThread == NULL) {
         m_hProcessThread = INVALID_HANDLE_VALUE;
         std::stringstream stream;
         stream << _T("Error: Unable to start received message process thread.") << std::endl
@@ -122,8 +118,7 @@ bool MessageManager::StartMessageManager()
     }
 
     // start monitoring for removable network adapters
-    if(!DeviceMonitor::GetInstance().StartDeviceMonitor())
-    {
+    if(!DeviceMonitor::GetInstance().StartDeviceMonitor()) {
         return false;
     }
 
@@ -148,15 +143,14 @@ bool MessageManager::StopMessageManager()
     DeviceMonitor::GetInstance().StopDeviceMonitor();
 
     // stop the received message process thread
-    if (m_isStarted)
-    {
+    if (m_isStarted) {
         // trigger the exit event and wait for the thread to exit
         ::SetEvent(m_hProcessExitEvent);
         ::WaitForSingleObject(m_hProcessThread,INFINITE);
 
-		//wyw_0104
-		::CloseHandle(m_hProcessThread);
-		m_hProcessThread = INVALID_HANDLE_VALUE;
+        //wyw_0104
+        ::CloseHandle(m_hProcessThread);
+        m_hProcessThread = INVALID_HANDLE_VALUE;
     }
 
     return true;
@@ -166,10 +160,10 @@ bool MessageManager::StopMessageManager()
 // StartProcessThread
 //
 /// Start the recieved messsage processing thread. This method must be static
-/// to work with ::CreateThread. MessageManager is a singleton, so get its 
+/// to work with ::CreateThread. MessageManager is a singleton, so get its
 /// instance to call a non-static method and use non-static data members.
-/// 
-/// @param context - not used. 
+///
+/// @param context - not used.
 // --------------------------------------------------------------------------
 DWORD WINAPI MessageManager::StartProcessThread(LPVOID context)
 {
@@ -190,14 +184,13 @@ void MessageManager::ProcessThread()
 
     // process messages when available until exit is triggered
 
-	
-	
-	while (::WaitForMultipleObjects(2,waitHandles,FALSE,INFINITE) != WAIT_OBJECT_0)
-    {
 
-		// get a message off the queue
 
-		m_rspQueue.lock();
+    while (::WaitForMultipleObjects(2,waitHandles,FALSE,INFINITE) != WAIT_OBJECT_0) {
+
+        // get a message off the queue
+
+        m_rspQueue.lock();
 
         MsgBuf* pMsgBuf = m_rspQueue.front();
         m_rspQueue.pop();
@@ -206,20 +199,18 @@ void MessageManager::ProcessThread()
         // build a message reference counted pointer from the message buffer
         MessageRCP msgRCP = MessageFactory::GetInstance().CreateMessage(*pMsgBuf);
 
-        if (!msgRCP.IsNull())
-        {
+        if (!msgRCP.IsNull()) {
             // notify subscribers message received
             NoticeRCP noticeRCP = THeapObject<MsgNotice>::Create(msgRCP);
             NotifySubscribers(noticeRCP);
         }
-        
+
         // delete the used message buffer
         delete pMsgBuf;
 
         // if no more messages to process, reset msg event
         TSQCriticalSection<MsgBuf*> localLock(m_rspQueue);
-        if (m_rspQueue.empty())
-        {
+        if (m_rspQueue.empty()) {
             ::ResetEvent(m_hMsgEvent);
         }
     }
@@ -255,8 +246,7 @@ void MessageManager::TerminateDevice()
 void MessageManager::CloseServices()
 {
     // !!! make a map of uint16 to service, change close iteration
-    for (int i = 0; i < QMUX_TYPE_MAX; i++)
-    {
+    for (int i = 0; i < QMUX_TYPE_MAX; i++) {
         m_services[i]->CloseService();
     }
 }
@@ -275,14 +265,15 @@ void MessageManager::SendMessage(std::string& msgStr)
     // build a message reference counted pointer from the message string
     MessageRCP msgRCP = MessageFactory::GetInstance().CreateMessage(msgStr);
     // return if message is not created
-    if (msgRCP.IsNull()) { return; }
+    if (msgRCP.IsNull()) {
+        return;
+    }
 
     // get the message service type
     int svcType = msgRCP->GetSvcType();
 
     // verify connection to a device has been established
-    if (!DeviceMonitor::GetInstance().IsConnected())
-    {
+    if (!DeviceMonitor::GetInstance().IsConnected()) {
         std::stringstream stream;
         stream << _T("Error: Unable to send message:  ") << std::endl
                << _T("No device connection has been established.")
@@ -293,10 +284,8 @@ void MessageManager::SendMessage(std::string& msgStr)
 
     // open service if necessary
     ::EnterCriticalSection(&m_addServiceCS);
-    if (!m_services[svcType]->IsOpen())
-    {
-        if (!m_services[svcType]->OpenService(DeviceMonitor::GetInstance().GetDeviceName()))
-        {
+    if (!m_services[svcType]->IsOpen()) {
+        if (!m_services[svcType]->OpenService(DeviceMonitor::GetInstance().GetDeviceName())) {
             // ??? TerminateDevice();
             ::LeaveCriticalSection(&m_addServiceCS);
             return;
@@ -305,8 +294,7 @@ void MessageManager::SendMessage(std::string& msgStr)
     ::LeaveCriticalSection(&m_addServiceCS);
 
     // send the message buffer
-    if (m_services[svcType]->SendMsgBuf(msgRCP->GetMsgBuf()))
-    {
+    if (m_services[svcType]->SendMsgBuf(msgRCP->GetMsgBuf())) {
         // notify subscribers message sent
         NoticeRCP noticeRCP = THeapObject<MsgNotice>::Create(msgRCP);
         NotifySubscribers(noticeRCP);
@@ -346,7 +334,7 @@ void MessageManager::QueueMsgBuf(MsgBuf* pMsgBuf)
 void MessageManager::ReportStatus(std::string& status,uint8 severity)
 {
     // publish status
-    NoticeRCP noticeRCP = 
+    NoticeRCP noticeRCP =
         THeapObject<StatusNotice>::Create(status, severity);
     NotifySubscribers(noticeRCP);
 }
@@ -371,13 +359,12 @@ void MessageManager::ReportDevice
 )
 {
     // publish device notice
-    NoticeRCP noticeRCP = 
+    NoticeRCP noticeRCP =
         THeapObject<DeviceNotice>::Create(reason,type,networkAdapters);
     NotifySubscribers(noticeRCP);
 
     // if the connection to a device is lost, close all open services
-    if (type == DT_CONNECT_FAIL ||type == DT_DISCONNECT || type == DT_DETACH)
-    {
+    if (type == DT_CONNECT_FAIL ||type == DT_DISCONNECT || type == DT_DETACH) {
         CloseServices();
     }
 }

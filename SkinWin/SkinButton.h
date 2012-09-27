@@ -21,11 +21,10 @@ class CSkinButtonResource
     BOOL        m_bInited;
 
 public:
-    CSkinButtonResource()
-    {
+    CSkinButtonResource() {
         m_bInited = FALSE;
     }
-    
+
     BOOL DrawAImage( CDC *pDC, CRect r, CRect sr );
     BOOL LoadSkin( const TCHAR * skinfile , const CString& strControlType);
     BOOL DrawImage(CDC *pDC, CRect r, int state);
@@ -36,7 +35,7 @@ public:
 
 class CSkinButton : public CButton
 {
-    DECLARE_DYNAMIC(CSkinButton)    
+    DECLARE_DYNAMIC(CSkinButton)
 // Construction
     CSkinButtonResource * m_res;
 
@@ -50,7 +49,7 @@ class CSkinButton : public CButton
 public:
     CSkinButton();
 
-	DWORD st, ed;
+    DWORD st, ed;
 
 
 // Attributes
@@ -71,8 +70,7 @@ public:
     BOOL GetRegion();
     BOOL DrawImage( CMyBitmap& bmp );
     BOOL DrawText( CDC * pDC );
-    BOOL SetResource( CSkinButtonResource * res )
-    {
+    BOOL SetResource( CSkinButtonResource * res ) {
         m_res = res;
         //GetRegion();
         return res != NULL;

@@ -30,19 +30,19 @@
 // --------------------------------------------------------------------------
 MessageFactory& MessageFactory::GetInstance()
 {
-   static MessageFactory msgFactory;
-   return msgFactory;
+    static MessageFactory msgFactory;
+    return msgFactory;
 }
 
 // --------------------------------------------------------------------------
 // CreateMessage
 //
-/// Given a string representation of a Message, determine the specific 
+/// Given a string representation of a Message, determine the specific
 /// message type to construct and call that type's Create method.
-///  
+///
 /// @param msgStr - the message in string format.
 ///
-/// @returns Message* - pointer to the Message created if successful, NULL 
+/// @returns Message* - pointer to the Message created if successful, NULL
 ///     otherwise.
 // --------------------------------------------------------------------------
 Message* MessageFactory::CreateMessage(std::string& msgStr)
@@ -52,21 +52,20 @@ Message* MessageFactory::CreateMessage(std::string& msgStr)
     size_t rParenIdx = msgStr.find_first_of('}');
 
     // verify basic format
-    if (lParenIdx == std::string::npos || rParenIdx == std::string::npos)
-    {
+    if (lParenIdx == std::string::npos || rParenIdx == std::string::npos) {
         // missing curly braces
         std::stringstream stream;
-        stream << _T("Warning: unable to create message from string:") << std::endl << std::endl 
+        stream << _T("Warning: unable to create message from string:") << std::endl << std::endl
                << msgStr << std::endl
                << _T("Braces ('{}') around the message attributes are missing.") << std::endl
-               << _T("Message string disregarded.") << std::endl 
+               << _T("Message string disregarded.") << std::endl
                << std::endl;
         MessageManager::GetInstance().ReportStatus(stream.str(),ST_WARNING);
         return NULL;
         return NULL;
     }
 
-    // get messge type and body, remove whitespace 
+    // get messge type and body, remove whitespace
     std::string msgType = msgStr.substr(0,lParenIdx);
     Trim(msgType);
     std::string nameValue = msgStr.substr(lParenIdx + 1,rParenIdx - (lParenIdx + 1));
@@ -74,29 +73,25 @@ Message* MessageFactory::CreateMessage(std::string& msgStr)
 
     // find the message type in the creator map and call the creator method
     StringCreatorMap::iterator iter = m_SCMap.find(msgType);
-    if(iter == m_SCMap.end())
-    {
+    if(iter == m_SCMap.end()) {
         // msgType not found
         std::stringstream stream;
-        stream << _T("Warning: unable to create message from string:") << std::endl << std::endl 
+        stream << _T("Warning: unable to create message from string:") << std::endl << std::endl
                << msgStr << std::endl << std::endl
-               << _T("The message type, ") << msgType 
+               << _T("The message type, ") << msgType
                << _T(", cannot be matched to a known message.") << std::endl
-               << _T("Message string disregarded.") << std::endl 
+               << _T("Message string disregarded.") << std::endl
                << std::endl;
         MessageManager::GetInstance().ReportStatus(stream.str(),ST_WARNING);
         return NULL;
-    }
-    else
-    {
+    } else {
         Message* pMsg = iter->second->Create(nameValue);
-        if (pMsg == NULL)
-        {
+        if (pMsg == NULL) {
             // attribute parsing failed
             std::stringstream stream;
-            stream << _T("Unable to create message from string:") << std::endl << std::endl 
+            stream << _T("Unable to create message from string:") << std::endl << std::endl
                    << msgStr << std::endl
-                   << _T("Message string disregarded.") << std::endl 
+                   << _T("Message string disregarded.") << std::endl
                    << std::endl;
             MessageManager::GetInstance().ReportStatus(stream.str(),ST_WARNING);
         }
@@ -107,12 +102,12 @@ Message* MessageFactory::CreateMessage(std::string& msgStr)
 // --------------------------------------------------------------------------
 // CreateMessage
 //
-/// Given a MsgBuf representation of a Message, determine the specific 
+/// Given a MsgBuf representation of a Message, determine the specific
 /// message type to construct and call that type's Create method.
-///  
+///
 /// @param msgBuf - the message in MsgBuf format.
 ///
-/// @returns Message* - pointer to the Message created if successful, NULL 
+/// @returns Message* - pointer to the Message created if successful, NULL
 ///     otherwise.
 // --------------------------------------------------------------------------
 Message* MessageFactory::CreateMessage(MsgBuf& msgBuf)
@@ -129,9 +124,8 @@ Message* MessageFactory::CreateMessage(MsgBuf& msgBuf)
 
     // find the message type in the creator map and call the creator method
     Uint32CreatorMap::iterator iter = m_UCMap.find(msgUID);
-    if(iter == m_UCMap.end())
-    {
-        // msgType not found 
+    if(iter == m_UCMap.end()) {
+        // msgType not found
         std::stringstream stream;
         stream << _T("Warning: unable to create message from MsgBuf:") << std::endl;
         msgBuf.Print(stream);
@@ -140,20 +134,17 @@ Message* MessageFactory::CreateMessage(MsgBuf& msgBuf)
                << _T("  Control Type: ") << (int)ctlType << std::endl
                << _T("  Transaction Id: ") << (int)txId << std::endl
                << _T("  Message Type: ") << (int)msgType << std::endl
-               << _T("Message buffer disregarded.") << std::endl 
+               << _T("Message buffer disregarded.") << std::endl
                << std::endl;
         MessageManager::GetInstance().ReportStatus(stream.str(),ST_WARNING);
         return NULL;
-    }
-    else
-    {
+    } else {
         Message* pMsg = iter->second->Create(msgBuf);
-        if (pMsg == NULL)
-        {
+        if (pMsg == NULL) {
             std::stringstream stream;
             stream << _T("Unable to create message from MsgBuf:") << std::endl;
             msgBuf.Print(stream);
-            stream << _T("Message buffer disregarded.") << std::endl 
+            stream << _T("Message buffer disregarded.") << std::endl
                    << std::endl;
             MessageManager::GetInstance().ReportStatus(stream.str(),ST_WARNING);
         }
@@ -164,9 +155,9 @@ Message* MessageFactory::CreateMessage(MsgBuf& msgBuf)
 // --------------------------------------------------------------------------
 // RegStringCreator
 //
-/// Adds a message creator to the factory's std::string to MessageCreator 
+/// Adds a message creator to the factory's std::string to MessageCreator
 /// map.
-///  
+///
 /// @param msgType - the message type in string format.
 ///
 /// @param IMessageCreator - pointer to the message creator.
@@ -177,17 +168,17 @@ void MessageFactory::RegStringCreator
     IMessageCreator* pCreator
 )
 {
-   bool bSuccess = m_SCMap.insert(SCPair(msgType, pCreator)).second;
-   assert(bSuccess);
+    bool bSuccess = m_SCMap.insert(SCPair(msgType, pCreator)).second;
+    assert(bSuccess);
 }
 
 
 // --------------------------------------------------------------------------
 // UnregStringCreator
 //
-/// Removes a message creator to the factory's std::string to MessageCreator 
+/// Removes a message creator to the factory's std::string to MessageCreator
 /// map.
-///  
+///
 /// @param msgType - the message type in string format.
 ///
 /// @param IMessageCreator - pointer to the message creator.
@@ -198,19 +189,18 @@ void MessageFactory::UnregStringCreator
     IMessageCreator* pCreator
 )
 {
-   StringCreatorMap::iterator iter = m_SCMap.find(msgType);
-   if(iter != m_SCMap.end())
-   {
-      assert(iter->second == pCreator);
-      m_SCMap.erase(iter);
-   }
+    StringCreatorMap::iterator iter = m_SCMap.find(msgType);
+    if(iter != m_SCMap.end()) {
+        assert(iter->second == pCreator);
+        m_SCMap.erase(iter);
+    }
 }
 
 // --------------------------------------------------------------------------
 // RegUint32Creator
 //
 /// Adds a message creator to the factory's uint32 to MessageCreator map.
-///  
+///
 /// @param msgUID - the message type in uint32 format.
 ///
 /// @param IMessageCreator - pointer to the message creator.
@@ -221,17 +211,17 @@ void MessageFactory::RegUint32Creator
     IMessageCreator* pCreator
 )
 {
-   bool bSuccess = m_UCMap.insert(UCPair(msgUID, pCreator)).second;
-   assert(bSuccess);
+    bool bSuccess = m_UCMap.insert(UCPair(msgUID, pCreator)).second;
+    assert(bSuccess);
 }
 
 
 // --------------------------------------------------------------------------
 // UnregUint32Creator
 //
-/// Removes a message creator from the factory's uint32 to MessageCreator 
+/// Removes a message creator from the factory's uint32 to MessageCreator
 /// map.
-///  
+///
 /// @param msgUID - the message type in uint32 format.
 ///
 /// @param IMessageCreator - pointer to the message creator.
@@ -242,10 +232,9 @@ void MessageFactory::UnregUint32Creator
     IMessageCreator* pCreator
 )
 {
-   Uint32CreatorMap::iterator iter = m_UCMap.find(msgUID);
-   if(iter != m_UCMap.end())
-   {
-      assert(iter->second == pCreator);
-      m_UCMap.erase(iter);
-   }
+    Uint32CreatorMap::iterator iter = m_UCMap.find(msgUID);
+    if(iter != m_UCMap.end()) {
+        assert(iter->second == pCreator);
+        m_UCMap.erase(iter);
+    }
 }

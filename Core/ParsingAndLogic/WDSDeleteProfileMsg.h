@@ -23,12 +23,12 @@
 // Unique identifiers for WDSDeleteProfileMsg types
 // --------------------------------------------------------------------------
 static const uint32 WDSDeleteProfileReqUID =
-    (QMUX_TYPE_WDS << 24 | 
-     QMI_CTL_FLAG_TYPE_CMD << 16 | 
+    (QMUX_TYPE_WDS << 24 |
+     QMI_CTL_FLAG_TYPE_CMD << 16 |
      QMI_WDS_DELETE_PROFILE_MSG);
 static const uint32 WDSDeleteProfileRspUID =
-    (QMUX_TYPE_WDS << 24 | 
-     QMI_CTL_FLAG_TYPE_RSP << 16 | 
+    (QMUX_TYPE_WDS << 24 |
+     QMI_CTL_FLAG_TYPE_RSP << 16 |
      QMI_WDS_DELETE_PROFILE_MSG);
 
 // --------------------------------------------------------------------------
@@ -54,11 +54,15 @@ class WDSDeleteProfileReq : public Message
 
 public:
     ~WDSDeleteProfileReq();
-    
+
     virtual void Print(std::ostream& stream);
 
-    virtual uint8 GetProfileType() { return m_profileType; }
-    virtual uint8 GetProfileIndex() { return m_profileIndex; }
+    virtual uint8 GetProfileType() {
+        return m_profileType;
+    }
+    virtual uint8 GetProfileIndex() {
+        return m_profileIndex;
+    }
 
 protected:
     WDSDeleteProfileReq();
@@ -68,7 +72,9 @@ protected:
     virtual bool BuildProfileIndex(std::string& value);
 
     virtual bool BuildMsgBuf();
-    virtual bool Unpack(MsgBuf& msgBuf) { return false; }
+    virtual bool Unpack(MsgBuf& msgBuf) {
+        return false;
+    }
 
 private:
     // Profile Identifier, mandatory tlv 0x01
@@ -96,13 +102,21 @@ public:
 
     virtual void Print(std::ostream& stream);
 
-    virtual uint16 GetResult() { return m_result; }
-    virtual uint16 GetError() { return m_error; }
+    virtual uint16 GetResult() {
+        return m_result;
+    }
+    virtual uint16 GetError() {
+        return m_error;
+    }
 
 protected:
     WDSDeleteProfileRsp();
-    virtual bool Build(std::string& nameValue) { return false; }
-    virtual bool BuildMsgBuf() { return false; }
+    virtual bool Build(std::string& nameValue) {
+        return false;
+    }
+    virtual bool BuildMsgBuf() {
+        return false;
+    }
     virtual bool Unpack(MsgBuf& msgBuf);
     virtual Uint8UnpackerMap& GetUnpackerMap();
     virtual bool UnpackResultCode(MsgBuf& msgBuf);

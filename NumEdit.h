@@ -40,7 +40,7 @@ protected:
     DECLARE_MESSAGE_MAP()
 
 public:
-	bool m_bFlag; //true表示来自电话薄模块的调用，false表示其它模块，默认为false
+    bool m_bFlag; //true表示来自电话薄模块的调用，false表示其它模块，默认为false
 };
 
 /////////////////////////////////////////////////////////////////////////////

@@ -55,7 +55,7 @@ const uint8 WDSCreateProfileReq::USERNAME_TYPE = 0x1B;
 const uint8 WDSCreateProfileReq::PASSWORD_TYPE = 0x1C;
 const uint8 WDSCreateProfileReq::AUTH_PREF_TYPE = 0x1D;
 const uint8 WDSCreateProfileReq::IPV4_ADDR_PREF_TYPE = 0x1E;
-WDSCreateProfileReq::WDSCreateProfileReq() : 
+WDSCreateProfileReq::WDSCreateProfileReq() :
     Message(QMUX_TYPE_WDS,QMI_WDS_CREATE_PROFILE_MSG,QMI_CTL_FLAG_TYPE_CMD),
     m_profileTypeType(TLV_TYPE_INVALID),
     m_profileTypeLen(0),
@@ -164,8 +164,7 @@ bool WDSCreateProfileReq::Build(std::string& nameValue)
 Message::StringBuilderMap& WDSCreateProfileReq::GetBuilderMap()
 {
     static StringBuilderMap SBMap;
-    if (SBMap.empty())
-    {
+    if (SBMap.empty()) {
         bool bSuccess = SBMap.insert(SBPair("ProfileType",(Builder)BuildProfileType)).second;
         assert(bSuccess);
         SBMap.insert(SBPair("ProfileName",(Builder)BuildProfileName)).second;
@@ -274,8 +273,7 @@ bool WDSCreateProfileReq::BuildProfileType(std::string& value)
     sscanf(value.c_str(), "%i", &num);
 
     // validate entry
-    if (num != 0)
-    {
+    if (num != 0) {
         std::stringstream stream;
         stream << _T("Warning: unable to build message:") << std::endl
                << _T("Invalid Profile Type '") << (uint32)num
@@ -310,7 +308,9 @@ bool WDSCreateProfileReq::BuildProfileType(std::string& value)
 bool WDSCreateProfileReq::BuildProfileName(std::string& value)
 {
     // check for null string indication
-    if (value == "NULL") { value = ""; }
+    if (value == "NULL") {
+        value = "";
+    }
 
     // set member data
     m_profileNameType = PROFILE_NAME_TYPE;
@@ -340,8 +340,7 @@ bool WDSCreateProfileReq::BuildPdpType(std::string& value)
     sscanf(value.c_str(), "%i", &num);
 
     // validate entry
-    if (num != 0)
-    {
+    if (num != 0) {
         std::stringstream stream;
         stream << _T("Warning: unable to build message:") << std::endl
                << _T("Invalid PDP Type '") << (uint32)num
@@ -376,7 +375,9 @@ bool WDSCreateProfileReq::BuildPdpType(std::string& value)
 bool WDSCreateProfileReq::BuildApnName(std::string& value)
 {
     // check for null string indication
-    if (value == "NULL") { value = ""; }
+    if (value == "NULL") {
+        value = "";
+    }
 
     // set member data
     m_apnNameType = APN_NAME_TYPE;
@@ -401,8 +402,7 @@ bool WDSCreateProfileReq::BuildApnName(std::string& value)
 // --------------------------------------------------------------------------
 bool WDSCreateProfileReq::BuildPrimaryDnsIpv4AddrPref(std::string& value)
 {
-    if (ExtractIpv4Addr(value,m_primaryDnsIpv4AddrPref))
-    {
+    if (ExtractIpv4Addr(value,m_primaryDnsIpv4AddrPref)) {
         // set member data
         m_primaryDnsIpv4AddrPrefType = PRIMARY_DNS_IPV4_ADDR_PREF_TYPE;
         m_primaryDnsIpv4AddrPrefLen += sizeof(m_primaryDnsIpv4AddrPref);
@@ -427,8 +427,7 @@ bool WDSCreateProfileReq::BuildPrimaryDnsIpv4AddrPref(std::string& value)
 // --------------------------------------------------------------------------
 bool WDSCreateProfileReq::BuildSecondaryDnsIpv4AddrPref(std::string& value)
 {
-    if (ExtractIpv4Addr(value,m_secondaryDnsIpv4AddrPref))
-    {
+    if (ExtractIpv4Addr(value,m_secondaryDnsIpv4AddrPref)) {
         // set member data
         m_secondaryDnsIpv4AddrPrefType = SECONDARY_DNS_IPV4_ADDR_PREF_TYPE;
         m_secondaryDnsIpv4AddrPrefLen += sizeof(m_secondaryDnsIpv4AddrPref);
@@ -458,8 +457,7 @@ bool WDSCreateProfileReq::BuildReqTrafficClass(std::string& value)
     sscanf(value.c_str(), "%i", &num);
 
     // validate entry
-    if (num > 4)
-    {
+    if (num > 4) {
         std::stringstream stream;
         stream << _T("Warning: unable to build message:") << std::endl
                << _T("Invalid Requested Traffic Class '") << (int)num
@@ -493,8 +491,7 @@ bool WDSCreateProfileReq::BuildReqTrafficClass(std::string& value)
 bool WDSCreateProfileReq::BuildReqMaxUplinkBitrate(std::string& value)
 {
     // verify expected previous attribute
-    if (m_prevName.compare("ReqTrafficClass") != 0)
-    {
+    if (m_prevName.compare("ReqTrafficClass") != 0) {
         ReportInvalidSequence("ReqTrafficClass");
         return false;
     }
@@ -525,8 +522,7 @@ bool WDSCreateProfileReq::BuildReqMaxUplinkBitrate(std::string& value)
 bool WDSCreateProfileReq::BuildReqMaxDownlinkBitrate(std::string& value)
 {
     // verify expected previous attribute
-    if (m_prevName.compare("ReqMaxUplinkBitrate") != 0)
-    {
+    if (m_prevName.compare("ReqMaxUplinkBitrate") != 0) {
         ReportInvalidSequence("ReqMaxUplinkBitrate");
         return false;
     }
@@ -557,8 +553,7 @@ bool WDSCreateProfileReq::BuildReqMaxDownlinkBitrate(std::string& value)
 bool WDSCreateProfileReq::BuildReqGtdUplinkBitrate(std::string& value)
 {
     // verify expected previous attribute
-    if (m_prevName.compare("ReqMaxDownlinkBitrate") != 0)
-    {
+    if (m_prevName.compare("ReqMaxDownlinkBitrate") != 0) {
         ReportInvalidSequence("ReqMaxDownlinkBitrate");
         return false;
     }
@@ -589,8 +584,7 @@ bool WDSCreateProfileReq::BuildReqGtdUplinkBitrate(std::string& value)
 bool WDSCreateProfileReq::BuildReqGtdDownlinkBitrate(std::string& value)
 {
     // verify expected previous attribute
-    if (m_prevName.compare("ReqGtdUplinkBitrate") != 0)
-    {
+    if (m_prevName.compare("ReqGtdUplinkBitrate") != 0) {
         ReportInvalidSequence("ReqGtdUplinkBitrate");
         return false;
     }
@@ -621,8 +615,7 @@ bool WDSCreateProfileReq::BuildReqGtdDownlinkBitrate(std::string& value)
 bool WDSCreateProfileReq::BuildReqQosDeliveryOrder(std::string& value)
 {
     // verify expected previous attribute
-    if (m_prevName.compare("ReqGtdDownlinkBitrate") != 0)
-    {
+    if (m_prevName.compare("ReqGtdDownlinkBitrate") != 0) {
         ReportInvalidSequence("ReqGtdDownlinkBitrate");
         return false;
     }
@@ -632,8 +625,7 @@ bool WDSCreateProfileReq::BuildReqQosDeliveryOrder(std::string& value)
     sscanf(value.c_str(), "%i", &num);
 
     // validate entry
-    if (num > 2)
-    {
+    if (num > 2) {
         std::stringstream stream;
         stream << _T("Warning: unable to build message:") << std::endl
                << _T("Invalid Requested QoS Delivery Order '") << (int)num
@@ -666,8 +658,7 @@ bool WDSCreateProfileReq::BuildReqQosDeliveryOrder(std::string& value)
 bool WDSCreateProfileReq::BuildReqMaxSduSize(std::string& value)
 {
     // verify expected previous attribute
-    if (m_prevName.compare("ReqQosDeliveryOrder") != 0)
-    {
+    if (m_prevName.compare("ReqQosDeliveryOrder") != 0) {
         ReportInvalidSequence("ReqQosDeliveryOrder");
         return false;
     }
@@ -698,8 +689,7 @@ bool WDSCreateProfileReq::BuildReqMaxSduSize(std::string& value)
 bool WDSCreateProfileReq::BuildReqSduErrorRatio(std::string& value)
 {
     // verify expected previous attribute
-    if (m_prevName.compare("ReqMaxSduSize") != 0)
-    {
+    if (m_prevName.compare("ReqMaxSduSize") != 0) {
         ReportInvalidSequence("ReqMaxSduSize");
         return false;
     }
@@ -709,8 +699,7 @@ bool WDSCreateProfileReq::BuildReqSduErrorRatio(std::string& value)
     sscanf(value.c_str(), "%i", &num);
 
     // validate entry
-    if (num > 7)
-    {
+    if (num > 7) {
         std::stringstream stream;
         stream << _T("Warning: unable to build message:") << std::endl
                << _T("Invalid Requested SDU Error Ratio '") << (int)num
@@ -743,8 +732,7 @@ bool WDSCreateProfileReq::BuildReqSduErrorRatio(std::string& value)
 bool WDSCreateProfileReq::BuildReqResidualBerRatio(std::string& value)
 {
     // verify expected previous attribute
-    if (m_prevName.compare("ReqSduErrorRatio") != 0)
-    {
+    if (m_prevName.compare("ReqSduErrorRatio") != 0) {
         ReportInvalidSequence("ReqSduErrorRatio");
         return false;
     }
@@ -754,8 +742,7 @@ bool WDSCreateProfileReq::BuildReqResidualBerRatio(std::string& value)
     sscanf(value.c_str(), "%i", &num);
 
     // validate entry
-    if (num > 9)
-    {
+    if (num > 9) {
         std::stringstream stream;
         stream << _T("Warning: unable to build message:") << std::endl
                << _T("Invalid Requested Residual BER Ratio '") << (int)num
@@ -788,8 +775,7 @@ bool WDSCreateProfileReq::BuildReqResidualBerRatio(std::string& value)
 bool WDSCreateProfileReq::BuildReqDeliveryErroneousSdu(std::string& value)
 {
     // verify expected previous attribute
-    if (m_prevName.compare("ReqResidualBerRatio") != 0)
-    {
+    if (m_prevName.compare("ReqResidualBerRatio") != 0) {
         ReportInvalidSequence("ReqResidualBerRatio");
         return false;
     }
@@ -799,8 +785,7 @@ bool WDSCreateProfileReq::BuildReqDeliveryErroneousSdu(std::string& value)
     sscanf(value.c_str(), "%i", &num);
 
     // validate entry
-    if (num > 3)
-    {
+    if (num > 3) {
         std::stringstream stream;
         stream << _T("Warning: unable to build message:") << std::endl
                << _T("Invalid Requested Delivery of Erroneous SDUs '") << (int)num
@@ -833,8 +818,7 @@ bool WDSCreateProfileReq::BuildReqDeliveryErroneousSdu(std::string& value)
 bool WDSCreateProfileReq::BuildReqTransferDelay(std::string& value)
 {
     // verify expected previous attribute
-    if (m_prevName.compare("ReqDeliveryErroneousSdu") != 0)
-    {
+    if (m_prevName.compare("ReqDeliveryErroneousSdu") != 0) {
         ReportInvalidSequence("ReqDeliveryErroneousSdu");
         return false;
     }
@@ -865,8 +849,7 @@ bool WDSCreateProfileReq::BuildReqTransferDelay(std::string& value)
 bool WDSCreateProfileReq::BuildReqTrafficHandlingPriority(std::string& value)
 {
     // verify expected previous attribute
-    if (m_prevName.compare("ReqTransferDelay") != 0)
-    {
+    if (m_prevName.compare("ReqTransferDelay") != 0) {
         ReportInvalidSequence("ReqTransferDelay");
         return false;
     }
@@ -902,8 +885,7 @@ bool WDSCreateProfileReq::BuildMinTrafficClass(std::string& value)
     sscanf(value.c_str(), "%i", &num);
 
     // validate entry
-    if (num > 4)
-    {
+    if (num > 4) {
         std::stringstream stream;
         stream << _T("Warning: unable to build message:") << std::endl
                << _T("Invalid Minimum Traffic Class '") << (int)num
@@ -937,8 +919,7 @@ bool WDSCreateProfileReq::BuildMinTrafficClass(std::string& value)
 bool WDSCreateProfileReq::BuildMinMaxUplinkBitrate(std::string& value)
 {
     // verify expected previous attribute
-    if (m_prevName.compare("MinTrafficClass") != 0)
-    {
+    if (m_prevName.compare("MinTrafficClass") != 0) {
         ReportInvalidSequence("MinTrafficClass");
         return false;
     }
@@ -969,8 +950,7 @@ bool WDSCreateProfileReq::BuildMinMaxUplinkBitrate(std::string& value)
 bool WDSCreateProfileReq::BuildMinMaxDownlinkBitrate(std::string& value)
 {
     // verify expected previous attribute
-    if (m_prevName.compare("MinMaxUplinkBitrate") != 0)
-    {
+    if (m_prevName.compare("MinMaxUplinkBitrate") != 0) {
         ReportInvalidSequence("MinMaxUplinkBitrate");
         return false;
     }
@@ -1001,8 +981,7 @@ bool WDSCreateProfileReq::BuildMinMaxDownlinkBitrate(std::string& value)
 bool WDSCreateProfileReq::BuildMinGtdUplinkBitrate(std::string& value)
 {
     // verify expected previous attribute
-    if (m_prevName.compare("MinMaxDownlinkBitrate") != 0)
-    {
+    if (m_prevName.compare("MinMaxDownlinkBitrate") != 0) {
         ReportInvalidSequence("MinMaxDownlinkBitrate");
         return false;
     }
@@ -1033,8 +1012,7 @@ bool WDSCreateProfileReq::BuildMinGtdUplinkBitrate(std::string& value)
 bool WDSCreateProfileReq::BuildMinGtdDownlinkBitrate(std::string& value)
 {
     // verify expected previous attribute
-    if (m_prevName.compare("MinGtdUplinkBitrate") != 0)
-    {
+    if (m_prevName.compare("MinGtdUplinkBitrate") != 0) {
         ReportInvalidSequence("MinGtdUplinkBitrate");
         return false;
     }
@@ -1065,8 +1043,7 @@ bool WDSCreateProfileReq::BuildMinGtdDownlinkBitrate(std::string& value)
 bool WDSCreateProfileReq::BuildMinQosDeliveryOrder(std::string& value)
 {
     // verify expected previous attribute
-    if (m_prevName.compare("MinGtdDownlinkBitrate") != 0)
-    {
+    if (m_prevName.compare("MinGtdDownlinkBitrate") != 0) {
         ReportInvalidSequence("MinGtdDownlinkBitrate");
         return false;
     }
@@ -1076,8 +1053,7 @@ bool WDSCreateProfileReq::BuildMinQosDeliveryOrder(std::string& value)
     sscanf(value.c_str(), "%i", &num);
 
     // validate entry
-    if (num > 2)
-    {
+    if (num > 2) {
         std::stringstream stream;
         stream << _T("Warning: unable to build message:") << std::endl
                << _T("Invalid Minimum QoS Delivery Order '") << (int)num
@@ -1110,8 +1086,7 @@ bool WDSCreateProfileReq::BuildMinQosDeliveryOrder(std::string& value)
 bool WDSCreateProfileReq::BuildMinMaxSduSize(std::string& value)
 {
     // verify expected previous attribute
-    if (m_prevName.compare("MinQosDeliveryOrder") != 0)
-    {
+    if (m_prevName.compare("MinQosDeliveryOrder") != 0) {
         ReportInvalidSequence("MinQosDeliveryOrder");
         return false;
     }
@@ -1142,8 +1117,7 @@ bool WDSCreateProfileReq::BuildMinMaxSduSize(std::string& value)
 bool WDSCreateProfileReq::BuildMinSduErrorRatio(std::string& value)
 {
     // verify expected previous attribute
-    if (m_prevName.compare("MinMaxSduSize") != 0)
-    {
+    if (m_prevName.compare("MinMaxSduSize") != 0) {
         ReportInvalidSequence("MinMaxSduSize");
         return false;
     }
@@ -1153,8 +1127,7 @@ bool WDSCreateProfileReq::BuildMinSduErrorRatio(std::string& value)
     sscanf(value.c_str(), "%i", &num);
 
     // validate entry
-    if (num > 7)
-    {
+    if (num > 7) {
         std::stringstream stream;
         stream << _T("Warning: unable to build message:") << std::endl
                << _T("Invalid Minimum SDU Error Ratio '") << (int)num
@@ -1187,8 +1160,7 @@ bool WDSCreateProfileReq::BuildMinSduErrorRatio(std::string& value)
 bool WDSCreateProfileReq::BuildMinResidualBerRatio(std::string& value)
 {
     // verify expected previous attribute
-    if (m_prevName.compare("MinSduErrorRatio") != 0)
-    {
+    if (m_prevName.compare("MinSduErrorRatio") != 0) {
         ReportInvalidSequence("MinSduErrorRatio");
         return false;
     }
@@ -1198,8 +1170,7 @@ bool WDSCreateProfileReq::BuildMinResidualBerRatio(std::string& value)
     sscanf(value.c_str(), "%i", &num);
 
     // validate entry
-    if (num > 9)
-    {
+    if (num > 9) {
         std::stringstream stream;
         stream << _T("Warning: unable to build message:") << std::endl
                << _T("Invalid Minimum Residual BER Ratio '") << (int)num
@@ -1232,8 +1203,7 @@ bool WDSCreateProfileReq::BuildMinResidualBerRatio(std::string& value)
 bool WDSCreateProfileReq::BuildMinDeliveryErroneousSdu(std::string& value)
 {
     // verify expected previous attribute
-    if (m_prevName.compare("MinResidualBerRatio") != 0)
-    {
+    if (m_prevName.compare("MinResidualBerRatio") != 0) {
         ReportInvalidSequence("MinResidualBerRatio");
         return false;
     }
@@ -1243,8 +1213,7 @@ bool WDSCreateProfileReq::BuildMinDeliveryErroneousSdu(std::string& value)
     sscanf(value.c_str(), "%i", &num);
 
     // validate entry
-    if (num > 3)
-    {
+    if (num > 3) {
         std::stringstream stream;
         stream << _T("Warning: unable to build message:") << std::endl
                << _T("Invalid Minimum Delivery of Erroneous SDUs '") << (int)num
@@ -1277,8 +1246,7 @@ bool WDSCreateProfileReq::BuildMinDeliveryErroneousSdu(std::string& value)
 bool WDSCreateProfileReq::BuildMinTransferDelay(std::string& value)
 {
     // verify expected previous attribute
-    if (m_prevName.compare("MinDeliveryErroneousSdu") != 0)
-    {
+    if (m_prevName.compare("MinDeliveryErroneousSdu") != 0) {
         ReportInvalidSequence("MinDeliveryErroneousSdu");
         return false;
     }
@@ -1309,8 +1277,7 @@ bool WDSCreateProfileReq::BuildMinTransferDelay(std::string& value)
 bool WDSCreateProfileReq::BuildMinTrafficHandlingPriority(std::string& value)
 {
     // verify expected previous attribute
-    if (m_prevName.compare("MinTransferDelay") != 0)
-    {
+    if (m_prevName.compare("MinTransferDelay") != 0) {
         ReportInvalidSequence("MinTransferDelay");
         return false;
     }
@@ -1346,8 +1313,7 @@ bool WDSCreateProfileReq::BuildReqPrecedenceClass(std::string& value)
     sscanf(value.c_str(), "%i", &num);
 
     // validate entry
-    if (num > 3 && num != 7)
-    {
+    if (num > 3 && num != 7) {
         std::stringstream stream;
         stream << _T("Warning: unable to build message:") << std::endl
                << _T("Invalid Requested Precedence Class '") << (uint32)num
@@ -1381,8 +1347,7 @@ bool WDSCreateProfileReq::BuildReqPrecedenceClass(std::string& value)
 bool WDSCreateProfileReq::BuildReqDelayClass(std::string& value)
 {
     // verify expected previous attribute
-    if (m_prevName.compare("ReqPrecedenceClass") != 0)
-    {
+    if (m_prevName.compare("ReqPrecedenceClass") != 0) {
         ReportInvalidSequence("ReqPrecedenceClass");
         return false;
     }
@@ -1392,8 +1357,7 @@ bool WDSCreateProfileReq::BuildReqDelayClass(std::string& value)
     sscanf(value.c_str(), "%i", &num);
 
     // validate entry
-    if (num > 4 && num != 7)
-    {
+    if (num > 4 && num != 7) {
         std::stringstream stream;
         stream << _T("Warning: unable to build message:") << std::endl
                << _T("Invalid Requested Delay Class '") << (uint32)num
@@ -1426,8 +1390,7 @@ bool WDSCreateProfileReq::BuildReqDelayClass(std::string& value)
 bool WDSCreateProfileReq::BuildReqReliabilityClass(std::string& value)
 {
     // verify expected previous attribute
-    if (m_prevName.compare("ReqDelayClass") != 0)
-    {
+    if (m_prevName.compare("ReqDelayClass") != 0) {
         ReportInvalidSequence("ReqDelayClass");
         return false;
     }
@@ -1437,8 +1400,7 @@ bool WDSCreateProfileReq::BuildReqReliabilityClass(std::string& value)
     sscanf(value.c_str(), "%i", &num);
 
     // validate entry
-    if (num > 5 && num != 7)
-    {
+    if (num > 5 && num != 7) {
         std::stringstream stream;
         stream << _T("Warning: unable to build message:") << std::endl
                << _T("Invalid Requested Reliability Class '") << (uint32)num
@@ -1471,8 +1433,7 @@ bool WDSCreateProfileReq::BuildReqReliabilityClass(std::string& value)
 bool WDSCreateProfileReq::BuildReqPeakThroughputClass(std::string& value)
 {
     // verify expected previous attribute
-    if (m_prevName.compare("ReqReliabilityClass") != 0)
-    {
+    if (m_prevName.compare("ReqReliabilityClass") != 0) {
         ReportInvalidSequence("ReqReliabilityClass");
         return false;
     }
@@ -1482,8 +1443,7 @@ bool WDSCreateProfileReq::BuildReqPeakThroughputClass(std::string& value)
     sscanf(value.c_str(), "%i", &num);
 
     // validate entry
-    if (num > 9 && num != 15)
-    {
+    if (num > 9 && num != 15) {
         std::stringstream stream;
         stream << _T("Warning: unable to build message:") << std::endl
                << _T("Invalid Requested Peak Throughput Class '") << (uint32)num
@@ -1516,8 +1476,7 @@ bool WDSCreateProfileReq::BuildReqPeakThroughputClass(std::string& value)
 bool WDSCreateProfileReq::BuildReqMeanThroughputClass(std::string& value)
 {
     // verify expected previous attribute
-    if (m_prevName.compare("ReqPeakThroughputClass") != 0)
-    {
+    if (m_prevName.compare("ReqPeakThroughputClass") != 0) {
         ReportInvalidSequence("ReqPeakThroughputClass");
         return false;
     }
@@ -1527,8 +1486,7 @@ bool WDSCreateProfileReq::BuildReqMeanThroughputClass(std::string& value)
     sscanf(value.c_str(), "%i", &num);
 
     // validate entry
-    if (num > 18 && num != 30 && num != 31)
-    {
+    if (num > 18 && num != 30 && num != 31) {
         std::stringstream stream;
         stream << _T("Warning: unable to build message:") << std::endl
                << _T("Invalid Requested Mean Throughput Class '") << (uint32)num
@@ -1566,8 +1524,7 @@ bool WDSCreateProfileReq::BuildMinPrecedenceClass(std::string& value)
     sscanf(value.c_str(), "%i", &num);
 
     // validate entry
-    if (num > 3 && num != 7)
-    {
+    if (num > 3 && num != 7) {
         std::stringstream stream;
         stream << _T("Warning: unable to build message:") << std::endl
                << _T("Invalid Minimum Precedence Class '") << (uint32)num
@@ -1601,8 +1558,7 @@ bool WDSCreateProfileReq::BuildMinPrecedenceClass(std::string& value)
 bool WDSCreateProfileReq::BuildMinDelayClass(std::string& value)
 {
     // verify expected previous attribute
-    if (m_prevName.compare("MinPrecedenceClass") != 0)
-    {
+    if (m_prevName.compare("MinPrecedenceClass") != 0) {
         ReportInvalidSequence("MinPrecedenceClass");
         return false;
     }
@@ -1612,8 +1568,7 @@ bool WDSCreateProfileReq::BuildMinDelayClass(std::string& value)
     sscanf(value.c_str(), "%i", &num);
 
     // validate entry
-    if (num > 4 && num != 7)
-    {
+    if (num > 4 && num != 7) {
         std::stringstream stream;
         stream << _T("Warning: unable to build message:") << std::endl
                << _T("Invalid Minimum Delay Class '") << (uint32)num
@@ -1646,8 +1601,7 @@ bool WDSCreateProfileReq::BuildMinDelayClass(std::string& value)
 bool WDSCreateProfileReq::BuildMinReliabilityClass(std::string& value)
 {
     // verify expected previous attribute
-    if (m_prevName.compare("MinDelayClass") != 0)
-    {
+    if (m_prevName.compare("MinDelayClass") != 0) {
         ReportInvalidSequence("MinDelayClass");
         return false;
     }
@@ -1657,8 +1611,7 @@ bool WDSCreateProfileReq::BuildMinReliabilityClass(std::string& value)
     sscanf(value.c_str(), "%i", &num);
 
     // validate entry
-    if (num > 5 && num != 7)
-    {
+    if (num > 5 && num != 7) {
         std::stringstream stream;
         stream << _T("Warning: unable to build message:") << std::endl
                << _T("Invalid Minimum Reliability Class '") << (uint32)num
@@ -1691,8 +1644,7 @@ bool WDSCreateProfileReq::BuildMinReliabilityClass(std::string& value)
 bool WDSCreateProfileReq::BuildMinPeakThroughputClass(std::string& value)
 {
     // verify expected previous attribute
-    if (m_prevName.compare("MinReliabilityClass") != 0)
-    {
+    if (m_prevName.compare("MinReliabilityClass") != 0) {
         ReportInvalidSequence("MinReliabilityClass");
         return false;
     }
@@ -1702,8 +1654,7 @@ bool WDSCreateProfileReq::BuildMinPeakThroughputClass(std::string& value)
     sscanf(value.c_str(), "%i", &num);
 
     // validate entry
-    if (num > 9 && num != 15)
-    {
+    if (num > 9 && num != 15) {
         std::stringstream stream;
         stream << _T("Warning: unable to build message:") << std::endl
                << _T("Invalid Minimum Peak Throughput Class '") << (uint32)num
@@ -1736,8 +1687,7 @@ bool WDSCreateProfileReq::BuildMinPeakThroughputClass(std::string& value)
 bool WDSCreateProfileReq::BuildMinMeanThroughputClass(std::string& value)
 {
     // verify expected previous attribute
-    if (m_prevName.compare("MinPeakThroughputClass") != 0)
-    {
+    if (m_prevName.compare("MinPeakThroughputClass") != 0) {
         ReportInvalidSequence("MinPeakThroughputClass");
         return false;
     }
@@ -1747,8 +1697,7 @@ bool WDSCreateProfileReq::BuildMinMeanThroughputClass(std::string& value)
     sscanf(value.c_str(), "%i", &num);
 
     // validate entry
-    if (num > 18 && num != 30 && num != 31)
-    {
+    if (num > 18 && num != 30 && num != 31) {
         std::stringstream stream;
         stream << _T("Warning: unable to build message:") << std::endl
                << _T("Invalid Minimum Mean Throughput Class '") << (uint32)num
@@ -1782,7 +1731,9 @@ bool WDSCreateProfileReq::BuildMinMeanThroughputClass(std::string& value)
 bool WDSCreateProfileReq::BuildUsername(std::string& value)
 {
     // check for null string indication
-    if (value == "NULL") { value = ""; }
+    if (value == "NULL") {
+        value = "";
+    }
 
     // set member data
     m_usernameType = USERNAME_TYPE;
@@ -1808,7 +1759,9 @@ bool WDSCreateProfileReq::BuildUsername(std::string& value)
 bool WDSCreateProfileReq::BuildPassword(std::string& value)
 {
     // check for null string indication
-    if (value == "NULL") { value = ""; }
+    if (value == "NULL") {
+        value = "";
+    }
 
     // set member data
     m_passwordType = PASSWORD_TYPE;
@@ -1838,8 +1791,7 @@ bool WDSCreateProfileReq::BuildAuthPref(std::string& value)
     sscanf(value.c_str(), "%i", &num);
 
     // validate entry
-    if (num > 3)
-    {
+    if (num > 3) {
         std::stringstream stream;
         stream << _T("Warning: unable to build message:") << std::endl
                << _T("Invalid Authentication Preference '") << (uint32)num
@@ -1873,8 +1825,7 @@ bool WDSCreateProfileReq::BuildAuthPref(std::string& value)
 // --------------------------------------------------------------------------
 bool WDSCreateProfileReq::BuildIpv4AddrPref(std::string& value)
 {
-    if (ExtractIpv4Addr(value,m_ipv4AddrPref))
-    {
+    if (ExtractIpv4Addr(value,m_ipv4AddrPref)) {
         // set member data
         m_ipv4AddrPrefType = IPV4_ADDR_PREF_TYPE;
         m_ipv4AddrPrefLen += sizeof(m_ipv4AddrPref);
@@ -1913,48 +1864,42 @@ bool WDSCreateProfileReq::BuildMsgBuf()
     m_pMsgBuf->PutByte(m_profileType);
 
     // optional tlv, profile name
-    if (m_profileNameType == PROFILE_NAME_TYPE)
-    {
+    if (m_profileNameType == PROFILE_NAME_TYPE) {
         m_pMsgBuf->PutByte(m_profileNameType);
         m_pMsgBuf->PutWord(m_profileNameLen);
         m_pMsgBuf->PutCopy(m_profileName.c_str(),m_profileNameLen);
     }
 
     // optional tlv, pdp type
-    if (m_pdpTypeType == PDP_TYPE_TYPE)
-    {
+    if (m_pdpTypeType == PDP_TYPE_TYPE) {
         m_pMsgBuf->PutByte(m_pdpTypeType);
         m_pMsgBuf->PutWord(m_pdpTypeLen);
         m_pMsgBuf->PutByte(m_pdpType);
     }
 
     // optional tlv, apn name
-    if (m_apnNameType == APN_NAME_TYPE)
-    {
+    if (m_apnNameType == APN_NAME_TYPE) {
         m_pMsgBuf->PutByte(m_apnNameType);
         m_pMsgBuf->PutWord(m_apnNameLen);
         m_pMsgBuf->PutCopy(m_apnName.c_str(),m_apnNameLen);
     }
 
     // optional tlv, primary dns ipv4 address preference
-    if (m_primaryDnsIpv4AddrPrefType == PRIMARY_DNS_IPV4_ADDR_PREF_TYPE)
-    {
+    if (m_primaryDnsIpv4AddrPrefType == PRIMARY_DNS_IPV4_ADDR_PREF_TYPE) {
         m_pMsgBuf->PutByte(m_primaryDnsIpv4AddrPrefType);
         m_pMsgBuf->PutWord(m_primaryDnsIpv4AddrPrefLen);
         m_pMsgBuf->PutDWord(m_primaryDnsIpv4AddrPref);
     }
 
     // optional tlv, secondary dns ipv4 address preference
-    if (m_secondaryDnsIpv4AddrPrefType == SECONDARY_DNS_IPV4_ADDR_PREF_TYPE)
-    {
+    if (m_secondaryDnsIpv4AddrPrefType == SECONDARY_DNS_IPV4_ADDR_PREF_TYPE) {
         m_pMsgBuf->PutByte(m_secondaryDnsIpv4AddrPrefType);
         m_pMsgBuf->PutWord(m_secondaryDnsIpv4AddrPrefLen);
         m_pMsgBuf->PutDWord(m_secondaryDnsIpv4AddrPref);
     }
 
     // optional tlv, umts requested qos
-    if (m_umtsRequestedQosType == UMTS_REQUESTED_QOS_TYPE)
-    {
+    if (m_umtsRequestedQosType == UMTS_REQUESTED_QOS_TYPE) {
         m_pMsgBuf->PutByte(m_umtsRequestedQosType);
         m_pMsgBuf->PutWord(m_umtsRequestedQosLen);
         m_pMsgBuf->PutByte(m_reqTrafficClass);
@@ -1972,8 +1917,7 @@ bool WDSCreateProfileReq::BuildMsgBuf()
     }
 
     // optional tlv, umts minimum qos
-    if (m_umtsMinimumQosType == UMTS_MINIMUM_QOS_TYPE)
-    {
+    if (m_umtsMinimumQosType == UMTS_MINIMUM_QOS_TYPE) {
         m_pMsgBuf->PutByte(m_umtsMinimumQosType);
         m_pMsgBuf->PutWord(m_umtsMinimumQosLen);
         m_pMsgBuf->PutByte(m_minTrafficClass);
@@ -1991,8 +1935,7 @@ bool WDSCreateProfileReq::BuildMsgBuf()
     }
 
     // optional tlv, gprs requested qos
-    if (m_gprsRequestedQosType == GPRS_REQUESTED_QOS_TYPE)
-    {
+    if (m_gprsRequestedQosType == GPRS_REQUESTED_QOS_TYPE) {
         m_pMsgBuf->PutByte(m_gprsRequestedQosType);
         m_pMsgBuf->PutWord(m_gprsRequestedQosLen);
         m_pMsgBuf->PutDWord(m_reqPrecedenceClass);
@@ -2003,8 +1946,7 @@ bool WDSCreateProfileReq::BuildMsgBuf()
     }
 
     // optional tlv, gprs minimum qos
-    if (m_gprsMinimumQosType == GPRS_MINIMUM_QOS_TYPE)
-    {
+    if (m_gprsMinimumQosType == GPRS_MINIMUM_QOS_TYPE) {
         m_pMsgBuf->PutByte(m_gprsMinimumQosType);
         m_pMsgBuf->PutWord(m_gprsMinimumQosLen);
         m_pMsgBuf->PutDWord(m_minPrecedenceClass);
@@ -2015,32 +1957,28 @@ bool WDSCreateProfileReq::BuildMsgBuf()
     }
 
     // optional tlv, username
-    if (m_usernameType == USERNAME_TYPE)
-    {
+    if (m_usernameType == USERNAME_TYPE) {
         m_pMsgBuf->PutByte(m_usernameType);
         m_pMsgBuf->PutWord(m_usernameLen);
         m_pMsgBuf->PutCopy(m_username.c_str(),m_usernameLen);
     }
 
     // optional tlv, password
-    if (m_passwordType == PASSWORD_TYPE)
-    {
+    if (m_passwordType == PASSWORD_TYPE) {
         m_pMsgBuf->PutByte(m_passwordType);
         m_pMsgBuf->PutWord(m_passwordLen);
         m_pMsgBuf->PutCopy(m_password.c_str(),m_passwordLen);
     }
 
     // optional tlv, authentication preference
-    if (m_authPrefType == AUTH_PREF_TYPE)
-    {
+    if (m_authPrefType == AUTH_PREF_TYPE) {
         m_pMsgBuf->PutByte(m_authPrefType);
         m_pMsgBuf->PutWord(m_authPrefLen);
         m_pMsgBuf->PutByte(m_authPref);
     }
 
     // optional tlv, ipv4 address preference
-    if (m_ipv4AddrPrefType == IPV4_ADDR_PREF_TYPE)
-    {
+    if (m_ipv4AddrPrefType == IPV4_ADDR_PREF_TYPE) {
         m_pMsgBuf->PutByte(m_ipv4AddrPrefType);
         m_pMsgBuf->PutWord(m_ipv4AddrPrefLen);
         m_pMsgBuf->PutDWord(m_ipv4AddrPref);
@@ -2063,41 +2001,39 @@ void WDSCreateProfileReq::Print(std::ostream& stream)
            << _T("{") << std::endl
            << _T("  ProfileType ") << (uint32)m_profileType << std::endl;
 
-    if (m_profileNameType == PROFILE_NAME_TYPE)
-    {
+    if (m_profileNameType == PROFILE_NAME_TYPE) {
         std::string profileName = m_profileName;
-        if (profileName == "") { profileName = "NULL"; }
+        if (profileName == "") {
+            profileName = "NULL";
+        }
         stream << _T("  ProfileName ") << profileName << std::endl;
     }
 
-    if (m_pdpTypeType == PDP_TYPE_TYPE)
-    {
+    if (m_pdpTypeType == PDP_TYPE_TYPE) {
         stream << _T("  PdpType ") << (uint32)m_pdpType << std::endl;
     }
 
-    if (m_apnNameType == APN_NAME_TYPE)
-    {
+    if (m_apnNameType == APN_NAME_TYPE) {
         std::string apnName = m_apnName;
-        if (apnName == "") { apnName = "NULL"; }
+        if (apnName == "") {
+            apnName = "NULL";
+        }
         stream << _T("  ApnName ") << apnName << std::endl;
     }
 
-    if (m_primaryDnsIpv4AddrPrefType == PRIMARY_DNS_IPV4_ADDR_PREF_TYPE)
-    {
+    if (m_primaryDnsIpv4AddrPrefType == PRIMARY_DNS_IPV4_ADDR_PREF_TYPE) {
         stream << _T("  PrimaryDnsIpv4AddrPref ");
         PrintIPv4Addr(m_primaryDnsIpv4AddrPref,stream);
         stream << std::endl;
     }
 
-    if (m_secondaryDnsIpv4AddrPrefType == SECONDARY_DNS_IPV4_ADDR_PREF_TYPE)
-    {
+    if (m_secondaryDnsIpv4AddrPrefType == SECONDARY_DNS_IPV4_ADDR_PREF_TYPE) {
         stream << _T("  SecondaryDnsIpv4AddrPref ");
         PrintIPv4Addr(m_secondaryDnsIpv4AddrPref,stream);
         stream << std::endl;
     }
 
-    if (m_umtsRequestedQosType == UMTS_REQUESTED_QOS_TYPE)
-    {
+    if (m_umtsRequestedQosType == UMTS_REQUESTED_QOS_TYPE) {
         stream << _T("  ReqTrafficClass ") << (uint32)m_reqTrafficClass << std::endl
                << _T("  ReqMaxUplinkBitrate ") << (uint32)m_reqMaxUplinkBitrate << std::endl
                << _T("  ReqMaxDownlinkBitrate ") << (uint32)m_reqMaxDownlinkBitrate << std::endl
@@ -2112,8 +2048,7 @@ void WDSCreateProfileReq::Print(std::ostream& stream)
                << _T("  ReqTrafficHandlingPriority ") << (uint32)m_reqTrafficHandlingPriority << std::endl;
     }
 
-    if (m_umtsMinimumQosType == UMTS_MINIMUM_QOS_TYPE)
-    {
+    if (m_umtsMinimumQosType == UMTS_MINIMUM_QOS_TYPE) {
         stream << _T("  MinTrafficClass ") << (uint32)m_minTrafficClass << std::endl
                << _T("  MinMaxUplinkBitrate ") << (uint32)m_minMaxUplinkBitrate << std::endl
                << _T("  MinMaxDownlinkBitrate ") << (uint32)m_minMaxDownlinkBitrate << std::endl
@@ -2128,8 +2063,7 @@ void WDSCreateProfileReq::Print(std::ostream& stream)
                << _T("  MinTrafficHandlingPriority ") << (uint32)m_minTrafficHandlingPriority << std::endl;
     }
 
-    if (m_gprsRequestedQosType == GPRS_REQUESTED_QOS_TYPE)
-    {
+    if (m_gprsRequestedQosType == GPRS_REQUESTED_QOS_TYPE) {
         stream << _T("  ReqPrecedenceClass ") << (uint32)m_reqPrecedenceClass << std::endl
                << _T("  ReqDelayClass ") << (uint32)m_reqDelayClass << std::endl
                << _T("  ReqReliabilityClass ") << (uint32)m_reqReliabilityClass << std::endl
@@ -2137,8 +2071,7 @@ void WDSCreateProfileReq::Print(std::ostream& stream)
                << _T("  ReqMeanThroughputClass ") << (uint32)m_reqMeanThroughputClass << std::endl;
     }
 
-    if (m_gprsMinimumQosType == GPRS_MINIMUM_QOS_TYPE)
-    {
+    if (m_gprsMinimumQosType == GPRS_MINIMUM_QOS_TYPE) {
         stream << _T("  MinPrecedenceClass ") << (uint32)m_minPrecedenceClass << std::endl
                << _T("  MinDelayClass ") << (uint32)m_minDelayClass << std::endl
                << _T("  MinReliabilityClass ") << (uint32)m_minReliabilityClass << std::endl
@@ -2146,32 +2079,32 @@ void WDSCreateProfileReq::Print(std::ostream& stream)
                << _T("  MinMeanThroughputClass ") << (uint32)m_minMeanThroughputClass << std::endl;
     }
 
-    if (m_usernameType == USERNAME_TYPE)
-    {
+    if (m_usernameType == USERNAME_TYPE) {
         std::string username = m_username;
-        if (username == "") { username = "NULL"; }
+        if (username == "") {
+            username = "NULL";
+        }
         stream << _T("  Username ") << username << std::endl;
     }
 
-    if (m_passwordType == PASSWORD_TYPE)
-    {
+    if (m_passwordType == PASSWORD_TYPE) {
         std::string password = m_password;
-        if (password == "") { password = "NULL"; }
+        if (password == "") {
+            password = "NULL";
+        }
         stream << _T("  Password ") << password << std::endl;
     }
 
-    if (m_authPrefType == AUTH_PREF_TYPE)
-    {
+    if (m_authPrefType == AUTH_PREF_TYPE) {
         stream << _T("  AuthPref ") << (uint32)m_authPref << std::endl;
     }
 
-    if (m_ipv4AddrPrefType == IPV4_ADDR_PREF_TYPE)
-    {
+    if (m_ipv4AddrPrefType == IPV4_ADDR_PREF_TYPE) {
         stream << _T("  Ipv4AddrPref ");
         PrintIPv4Addr(m_ipv4AddrPref,stream);
         stream << std::endl;
     }
-           
+
     stream << _T("}") << std::endl << std::endl;
 }
 
@@ -2219,38 +2152,32 @@ WDSCreateProfileRsp::~WDSCreateProfileRsp()
 bool WDSCreateProfileRsp::Unpack(MsgBuf& msgBuf)
 {
     // call the base unpack
-    if (!Message::Unpack(msgBuf))
-    {
+    if (!Message::Unpack(msgBuf)) {
         return false;
     }
-    
+
     // validate message length
-    if (m_result == QMI_RESULT_SUCCESS)
-    {
+    if (m_result == QMI_RESULT_SUCCESS) {
         // mandatory tlvs
-        if (m_length != 12) 
-        {
+        if (m_length != 12) {
             std::stringstream stream;
             stream << _T("Warning: unable to unpack message:") << std::endl
-                << _T("Expected message length is 12 bytes, unpacked length is ")
-                << m_length << _T(" bytes.") << std::endl 
-                << std::endl;
+                   << _T("Expected message length is 12 bytes, unpacked length is ")
+                   << m_length << _T(" bytes.") << std::endl
+                   << std::endl;
             MessageManager::GetInstance().ReportStatus(stream.str(),ST_WARNING);
-            return false; 
+            return false;
         }
-    }
-    else
-    {
+    } else {
         // only result code tlv on failure
-        if (m_length != 7) 
-        {
+        if (m_length != 7) {
             std::stringstream stream;
             stream << _T("Warning: unable to unpack message:") << std::endl
-                << _T("Expected message length is 7 bytes, unpacked length is ")
-                << m_length << _T(" bytes.") << std::endl 
-                << std::endl;
+                   << _T("Expected message length is 7 bytes, unpacked length is ")
+                   << m_length << _T(" bytes.") << std::endl
+                   << std::endl;
             MessageManager::GetInstance().ReportStatus(stream.str(),ST_WARNING);
-            return false; 
+            return false;
         }
     }
 
@@ -2268,8 +2195,7 @@ bool WDSCreateProfileRsp::Unpack(MsgBuf& msgBuf)
 Message::Uint8UnpackerMap& WDSCreateProfileRsp::GetUnpackerMap()
 {
     static Uint8UnpackerMap UUMap;
-    if (UUMap.empty())
-    {
+    if (UUMap.empty()) {
         bool bSuccess = UUMap.insert(UUPair(RESULT_CODE_TYPE,(Unpacker)UnpackResultCode)).second;
         assert(bSuccess);
         bSuccess = UUMap.insert(UUPair(PROFILE_IDENTIFIER_TYPE,(Unpacker)UnpackProfileIdentifier)).second;
@@ -2292,12 +2218,11 @@ bool WDSCreateProfileRsp::UnpackResultCode(MsgBuf& msgBuf)
     m_resultCodeType = RESULT_CODE_TYPE;
 
     m_resultCodeLen = msgBuf.GetWord();
-    if (m_resultCodeLen != 4) 
-    {
+    if (m_resultCodeLen != 4) {
         std::stringstream stream;
         stream << _T("Warning: unable to unpack message:") << std::endl
                << _T("Expected Result Code length is 4 bytes, unpacked length is ")
-               << m_resultCodeLen << _T(" bytes.") << std::endl 
+               << m_resultCodeLen << _T(" bytes.") << std::endl
                << std::endl;
         MessageManager::GetInstance().ReportStatus(stream.str(),ST_WARNING);
         return false;
@@ -2323,12 +2248,11 @@ bool WDSCreateProfileRsp::UnpackProfileIdentifier(MsgBuf& msgBuf)
     m_profileIdentifierType = PROFILE_IDENTIFIER_TYPE;
 
     m_profileIdentifierLen = msgBuf.GetWord();
-    if (m_profileIdentifierLen != 2) 
-    {
+    if (m_profileIdentifierLen != 2) {
         std::stringstream stream;
         stream << _T("Warning: unable to unpack message:") << std::endl
                << _T("Expected Profile Identifier length is 2 bytes, unpacked length is ")
-               << m_profileIdentifierLen << _T(" bytes.") << std::endl 
+               << m_profileIdentifierLen << _T(" bytes.") << std::endl
                << std::endl;
         MessageManager::GetInstance().ReportStatus(stream.str(),ST_WARNING);
         return false;
@@ -2337,8 +2261,7 @@ bool WDSCreateProfileRsp::UnpackProfileIdentifier(MsgBuf& msgBuf)
     m_profileType = msgBuf.GetByte();
     m_profileIndex = msgBuf.GetByte();
 
-    if (!msgBuf.EOB())
-    {
+    if (!msgBuf.EOB()) {
         std::stringstream stream;
         stream << _T("Warning: unable to unpack message:") << std::endl
                << _T("Finished unpacking message but end of buffer not reached")
@@ -2364,8 +2287,7 @@ void WDSCreateProfileRsp::Print(std::ostream& stream)
            << _T("  ResultCode ") << (int)m_result << std::endl
            << _T("  ErrorCode ") << (int)m_error << std::endl;
 
-    if (m_profileIdentifierType == PROFILE_IDENTIFIER_TYPE)
-    {
+    if (m_profileIdentifierType == PROFILE_IDENTIFIER_TYPE) {
         stream << _T("  ProfileType ") << (int)m_profileType << std::endl
                << _T("  ProfileIndex ") << (int)m_profileIndex << std::endl;
     }

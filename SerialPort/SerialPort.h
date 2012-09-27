@@ -15,8 +15,7 @@
 #define SERIAL_RXBUFFERSIZE (4096 * 4)
 #define SERIAL_TXBUFFERSIZE 4096
 
-typedef struct
-{
+typedef struct {
     BYTE RxBuffer[SERIAL_RXBUFFERSIZE];
     BYTE *pRead;
     BYTE *pWrite;
@@ -53,13 +52,13 @@ typedef enum {
                                                  METHOD_BUFFERED,\
                                                  FILE_ANY_ACCESS)
 //串口类
-class CSerialPort  
+class CSerialPort
 {
 public:
     //关闭串口，结束串口线程
-    BOOL StopPort();    
-    
-    //打开串口，启动串口线程    
+    BOOL StopPort();
+
+    //打开串口，启动串口线程
     BOOL StartPort(LPCTSTR lpszCommName, BOOL bCreateThread = TRUE, BOOL bOverlapped = TRUE);
 
 #ifdef FEATURE_SERIAL_ASYNWRITE
@@ -78,7 +77,7 @@ public:
 
     //直接从串口读数据
     DWORD Read(LPVOID lpBuffer, DWORD dwToRead, DWORD dwTimeout = INFINITE);
-    
+
     //直接向串口发送控制命令
     BOOL IoControl(DWORD dwIoControlCode, LPVOID lpInBuffer, DWORD nInBufferSize, LPVOID lpOutBuffer, DWORD nOutBufferSize, LPDWORD lpBytesReturned, DWORD dwTimeout = INFINITE);
 
@@ -106,16 +105,16 @@ public:
 protected:
     //关闭串口
     void Close();
-    
+
     //打开串口
     BOOL Open(LPCTSTR lpCommName, BOOL bOverlapped = FALSE);
 
     //配置串口
     BOOL Config();
-    
+
     //获得上次错误码
     DWORD GetLastError() const;
-    
+
     //获得串口句柄
     HANDLE GetCommHandle() const;
 
@@ -123,7 +122,7 @@ protected:
     BOOL IsOpen() const;
 
 public:
-	BOOL CommIsReady();
+    BOOL CommIsReady();
     EnSerialState SetSerialState(const EnSerialState state);
     EnSerialState GetSerialState() const;
 
@@ -138,7 +137,7 @@ public:
     CWinThread* m_ReadThread;             //读线程指针
     CWinThread* m_DetectThread;           //掉线检测线程指针
 
-#ifdef FEATURE_SERIAL_QUEUE    
+#ifdef FEATURE_SERIAL_QUEUE
     CSerialBufQueue m_ReadBufQueue;        //读缓冲队列
     CSerialBufQueue m_WriteBufQueue;    //写缓冲队列
 #else
@@ -152,10 +151,10 @@ public:
 #endif
 
 private:
-	OVERLAPPED m_ReadOvlp;
-	OVERLAPPED m_WriteOvlp;
-	OVERLAPPED m_WaitOvlp;
-	OVERLAPPED m_IoCtrlOvlp;
+    OVERLAPPED m_ReadOvlp;
+    OVERLAPPED m_WriteOvlp;
+    OVERLAPPED m_WaitOvlp;
+    OVERLAPPED m_IoCtrlOvlp;
     volatile BOOL m_bIsConnect;        //串口是否打开标志
     HANDLE m_hComm;            /* 串行端口句柄 */
     BOOL   m_bOverlapped;    /* I/0 操作方式 (FALSE:同步 TRUE:异步) */

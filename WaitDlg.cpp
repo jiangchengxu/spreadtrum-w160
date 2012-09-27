@@ -22,17 +22,17 @@ CWaitDlg::CWaitDlg(CWnd* pParent /*=NULL*/,int nUpper,int nSetp )
     //{{AFX_DATA_INIT(CWaitDlg)
     m_strPrompt = _T("Transfering ...");
     //}}AFX_DATA_INIT
-   // m_nBkTag = 1;
+    // m_nBkTag = 1;
 
-    m_bSuccess = false;     
+    m_bSuccess = false;
     m_nLower = 0;
     m_nUpper = nUpper;
     m_nSetp  = nSetp;
-    
+
 }
 CWaitDlg::~CWaitDlg()
 {
-	::SetEvent(g_BGPassEvt);
+    ::SetEvent(g_BGPassEvt);
 }
 
 
@@ -51,50 +51,49 @@ BEGIN_MESSAGE_MAP(CWaitDlg, CDialog)
     //{{AFX_MSG_MAP(CWaitDlg)
     ON_MESSAGE(WM_CLOSE,OnClose)
     //}}AFX_MSG_MAP
-	ON_MESSAGE(WM_Wait_ProgressSet,ProgressSet)
-	
+    ON_MESSAGE(WM_Wait_ProgressSet,ProgressSet)
+
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
 // CWaitDlg message handlers
-BOOL CWaitDlg::PreTranslateMessage(MSG* pMsg) 
+BOOL CWaitDlg::PreTranslateMessage(MSG* pMsg)
 {
     // TODO: Add your specialized code here and/or call the base class
-    if(pMsg->message == WM_CLOSE)
-    {
-        return CDialog::PreTranslateMessage(pMsg);        
+    if(pMsg->message == WM_CLOSE) {
+        return CDialog::PreTranslateMessage(pMsg);
     }
     return true;
-    
+
 }
 
-BOOL CWaitDlg::OnInitDialog() 
+BOOL CWaitDlg::OnInitDialog()
 {
     CDialog::OnInitDialog();
 
 //     m_bFirst = TRUE;
-// 
+//
 // 	SetSkin(g_SetData.Setup_nSkinStyle);
 
     // TODO: Add extra initialization here
     SetProgressRange(m_nLower,m_nUpper,m_nSetp);
 
-    
+
     return TRUE;  // return TRUE unless you set the focus to a control
-                  // EXCEPTION: OCX Property Pages should return FALSE
+    // EXCEPTION: OCX Property Pages should return FALSE
 }
 
 
 
 void CWaitDlg::SetProgressRange(int nLower,int nUpper,int nStep)
-{    
-   	m_nLower = nLower;
+{
+    m_nLower = nLower;
     m_nUpper = nUpper;
-    m_nSetp = nStep;  
+    m_nSetp = nStep;
     m_ProgressWait.SetRange(m_nLower, m_nUpper);
     m_ProgressWait.SetStep(m_nSetp);
 
-}	
+}
 
 void CWaitDlg::ProgressCompleted(int nPos)
 {
@@ -110,8 +109,8 @@ LRESULT CWaitDlg::OnClose(WPARAM wParam, LPARAM lParam)
 
 LRESULT CWaitDlg::ProgressSet(WPARAM wParam, LPARAM lParam)
 {
-	int nPos = (int)wParam;
-	m_ProgressWait.SetPos(nPos);
+    int nPos = (int)wParam;
+    m_ProgressWait.SetPos(nPos);
 
-	return 0;
+    return 0;
 }

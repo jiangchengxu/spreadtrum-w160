@@ -22,17 +22,17 @@
 // --------------------------------------------------------------------------
 // Unique identifiers for DMSSetEventReportMsg types
 // --------------------------------------------------------------------------
-static const uint32 DMSSetEventReportReqUID = 
-    (QMUX_TYPE_DMS << 24 | 
-     QMI_CTL_FLAG_TYPE_CMD << 16 | 
+static const uint32 DMSSetEventReportReqUID =
+    (QMUX_TYPE_DMS << 24 |
+     QMI_CTL_FLAG_TYPE_CMD << 16 |
      QMI_DMS_SET_EVENT_REPORT_MSG);
-static const uint32 DMSSetEventReportRspUID = 
-    (QMUX_TYPE_DMS << 24 | 
-     QMI_CTL_FLAG_TYPE_RSP << 16 | 
+static const uint32 DMSSetEventReportRspUID =
+    (QMUX_TYPE_DMS << 24 |
+     QMI_CTL_FLAG_TYPE_RSP << 16 |
      QMI_DMS_SET_EVENT_REPORT_MSG);
-static const uint32 DMSEventReportIndUID = 
-    (QMUX_TYPE_DMS << 24 | 
-     QMI_CTL_FLAG_TYPE_IND << 16 | 
+static const uint32 DMSEventReportIndUID =
+    (QMUX_TYPE_DMS << 24 |
+     QMI_CTL_FLAG_TYPE_IND << 16 |
      QMI_DMS_SET_EVENT_REPORT_MSG);
 
 // --------------------------------------------------------------------------
@@ -50,7 +50,7 @@ typedef TRCPointer<DMSEventReportInd> DMSEventReportIndRCP;
 // DMSSetEventReportReq
 //
 /// This class represents a QMI_DMS_SET_EVENT_REPORT_REQ message which
-/// sets state for reporting conditions for specific parameters. A periodic 
+/// sets state for reporting conditions for specific parameters. A periodic
 /// indication will be sent as per the conditions set in this request.
 // --------------------------------------------------------------------------
 class DMSSetEventReportReq : public Message
@@ -72,7 +72,9 @@ protected:
     virtual bool BuildBatteryLvlLowerLimit(std::string& value);
     virtual bool BuildBatteryLvlUpperLimit(std::string& value);
     virtual bool BuildMsgBuf();
-    virtual bool Unpack(MsgBuf& msgBuf) { return false; }
+    virtual bool Unpack(MsgBuf& msgBuf) {
+        return false;
+    }
 
 private:
     // Power State Reporting Mode, optional tlv 0x10
@@ -91,7 +93,7 @@ private:
 // --------------------------------------------------------------------------
 // DMSSetEventReportRsp
 //
-/// This class represents a QMI_DMS_SET_EVENT_REPORT_RESP message 
+/// This class represents a QMI_DMS_SET_EVENT_REPORT_RESP message
 /// which is the response to the set event report request.
 // --------------------------------------------------------------------------
 class DMSSetEventReportRsp : public Message
@@ -104,13 +106,21 @@ public:
 
     virtual void Print(std::ostream& stream);
 
-    uint16 GetResult() { return m_result; }
-    uint16 GetError() { return m_error; }
+    uint16 GetResult() {
+        return m_result;
+    }
+    uint16 GetError() {
+        return m_error;
+    }
 
 protected:
     DMSSetEventReportRsp();
-    virtual bool Build(std::string& nameValue) { return false; }
-    virtual bool BuildMsgBuf() { return false; }
+    virtual bool Build(std::string& nameValue) {
+        return false;
+    }
+    virtual bool BuildMsgBuf() {
+        return false;
+    }
     virtual bool Unpack(MsgBuf& msgBuf);
     virtual Uint8UnpackerMap& GetUnpackerMap();
     virtual bool UnpackResultCode(MsgBuf& msgBuf);
@@ -127,7 +137,7 @@ private:
 // DMSEventReportInd
 //
 /// This class represents a QMI_DMS_EVENT_REPORT_IND message.
-/// Indication is sent when any of the conditions for reporting set in the 
+/// Indication is sent when any of the conditions for reporting set in the
 /// set event report request become true.
 // --------------------------------------------------------------------------
 
@@ -141,13 +151,21 @@ public:
 
     virtual void Print(std::ostream& stream);
 
-    virtual uint8 GetPowerStatus() { return m_powerStatus; }
-    virtual uint8 GetBatteryLvl() { return m_batteryLvl; }
+    virtual uint8 GetPowerStatus() {
+        return m_powerStatus;
+    }
+    virtual uint8 GetBatteryLvl() {
+        return m_batteryLvl;
+    }
 
 protected:
     DMSEventReportInd();
-    virtual bool Build(std::string& nameValue) { return false; }
-    virtual bool BuildMsgBuf() { return false; }
+    virtual bool Build(std::string& nameValue) {
+        return false;
+    }
+    virtual bool BuildMsgBuf() {
+        return false;
+    }
     virtual bool Unpack(MsgBuf& msgBuf);
     virtual Uint8UnpackerMap& GetUnpackerMap();
     virtual bool UnpackPowerState(MsgBuf& msgBuf);

@@ -19,40 +19,40 @@ class CPBGroupDlg : public CBaseDialog
 {
 // Construction
 public:
-	CPBGroupDlg(CWnd* pParent = NULL);   // standard constructor
+    CPBGroupDlg(CWnd* pParent = NULL);   // standard constructor
 
 // Dialog Data
-	//{{AFX_DATA(CPBGroupDlg)
-	enum { IDD = IDD_DIALOG_PBGROUP };
-		
-	CListBox m_ListGroup;
+    //{{AFX_DATA(CPBGroupDlg)
+    enum { IDD = IDD_DIALOG_PBGROUP };
+
+    CListBox m_ListGroup;
 
 // Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(CPBGroupDlg)
+    // ClassWizard generated virtual function overrides
+    //{{AFX_VIRTUAL(CPBGroupDlg)
 
-  int m_nGroupSelected;
-	protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	//}}AFX_VIRTUAL
- 
+    int m_nGroupSelected;
+protected:
+    virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+    //}}AFX_VIRTUAL
+
 
 // Implementation
 protected:
 
-	virtual BOOL OnInitDialog();
-	afx_msg void OnPaint();
-	afx_msg void OnButtonNewGP();
-	afx_msg void OnButtonEdit();
-	afx_msg void OnButtonDelete();
-	afx_msg virtual void OnCancel();
-		afx_msg LRESULT OnRefreshGroup(WPARAM wParam=0, LPARAM lParam=0);
-	void initGroupList();
+    virtual BOOL OnInitDialog();
+    afx_msg void OnPaint();
+    afx_msg void OnButtonNewGP();
+    afx_msg void OnButtonEdit();
+    afx_msg void OnButtonDelete();
+    afx_msg virtual void OnCancel();
+    afx_msg LRESULT OnRefreshGroup(WPARAM wParam=0, LPARAM lParam=0);
+    void initGroupList();
 
-	DECLARE_MESSAGE_MAP()
+    DECLARE_MESSAGE_MAP()
 
 private:
-	CPbData  *m_pPbData;
+    CPbData  *m_pPbData;
 
 
 };

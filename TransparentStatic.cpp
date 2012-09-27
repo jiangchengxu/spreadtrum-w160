@@ -62,74 +62,73 @@ void CTransparentStatic::OnPaint()
     MAP_STYLE(    SS_PATHELLIPSIS,    DT_PATH_ELLIPSIS            );
 
     NMAP_STYLE(    SS_LEFTNOWORDWRAP |
-                SS_CENTERIMAGE |
-                SS_WORDELLIPSIS |
-                SS_ENDELLIPSIS |
-                SS_PATHELLIPSIS,    DT_WORDBREAK                );
+                   SS_CENTERIMAGE |
+                   SS_WORDELLIPSIS |
+                   SS_ENDELLIPSIS |
+                   SS_PATHELLIPSIS,    DT_WORDBREAK                );
 
     // Set transparent background
     dc.SetBkMode(TRANSPARENT);
 
-    switch(StaticControlStyle)
-    {
-        case ID_STATIC:
-            // Draw the text
-            dc.DrawText(szText, client_rect, dwText);
-            break;
-        case ID_GROUP_BOX:
-            // Draw 3D Ractangle
-            dc.DrawEdge(client_rect,BDR_RAISEDINNER,BF_RECT);
-            // Draw the text
-            HFONT font=CreateFont(
-            12,
-            6,
-            0,
-            1,
-            FW_BOLD,
-            FALSE,
-            FALSE,
-            FALSE,
-            GB2312_CHARSET,
-            OUT_CHARACTER_PRECIS,
-            CLIP_DEFAULT_PRECIS,
-            DEFAULT_QUALITY,
-            FF_DECORATIVE,
-            "宋体"
-            );
-    
-            dc.SelectObject(font);
-            //画背影
-            POINT poin;
-            poin.x=-2;
-            poin.y=-2;
-            dc.SetWindowOrg(poin);
-            dc.SetTextColor(RGB(180,180,180));
-            dc.DrawText(szText, client_rect, dwText);
-            //写正文
-            poin.x=0;
-            poin.y=0;
-            dc.SetWindowOrg(poin);
-            dc.SetTextColor(RGB(0,90,0));
-            dc.DrawText(szText, client_rect, dwText);            
-            break;
+    switch(StaticControlStyle) {
+    case ID_STATIC:
+        // Draw the text
+        dc.DrawText(szText, client_rect, dwText);
+        break;
+    case ID_GROUP_BOX:
+        // Draw 3D Ractangle
+        dc.DrawEdge(client_rect,BDR_RAISEDINNER,BF_RECT);
+        // Draw the text
+        HFONT font=CreateFont(
+                       12,
+                       6,
+                       0,
+                       1,
+                       FW_BOLD,
+                       FALSE,
+                       FALSE,
+                       FALSE,
+                       GB2312_CHARSET,
+                       OUT_CHARACTER_PRECIS,
+                       CLIP_DEFAULT_PRECIS,
+                       DEFAULT_QUALITY,
+                       FF_DECORATIVE,
+                       "宋体"
+                   );
+
+        dc.SelectObject(font);
+        //画背影
+        POINT poin;
+        poin.x=-2;
+        poin.y=-2;
+        dc.SetWindowOrg(poin);
+        dc.SetTextColor(RGB(180,180,180));
+        dc.DrawText(szText, client_rect, dwText);
+        //写正文
+        poin.x=0;
+        poin.y=0;
+        dc.SetWindowOrg(poin);
+        dc.SetTextColor(RGB(0,90,0));
+        dc.DrawText(szText, client_rect, dwText);
+        break;
     }
 
     // Select old font
     dc.SelectObject(pOldFont);
 }
 #endif
-BOOL CTransparentStatic::OnEraseBkgnd(CDC* pDC) 
+BOOL CTransparentStatic::OnEraseBkgnd(CDC* pDC)
 {
     return TRUE;
 }
-HBRUSH CTransparentStatic::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor) 
+HBRUSH CTransparentStatic::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 {
     //HBRUSH hbr = CStatic::OnCtlColor(pDC, pWnd, nCtlColor);
-    
-    if (nCtlColor==CTLCOLOR_STATIC){
+
+    if (nCtlColor==CTLCOLOR_STATIC) {
         UNUSED_ALWAYS(nCtlColor);
         pDC->SetBkMode(TRANSPARENT);
-    }    
+    }
     return ((HBRUSH)GetStockObject(NULL_BRUSH));
     // TODO: Return a different brush if the default is not desired
     //return hbr;

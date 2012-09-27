@@ -11,8 +11,7 @@ int    GetChar( TCHAR ** str )
     if ( !code ) return 0;
 
     (*str) ++;
-    if ( code > 0x0080 )
-    {
+    if ( code > 0x0080 ) {
         code *= 256;
         code += **((TCHAR **)str);
         (*str) ++;
@@ -27,13 +26,10 @@ int SetChar( TCHAR **str, int chr )
     if ( !str ) return 0;
     if ( !*str ) return 0;
 
-    if ( chr < 256 )
-    {
+    if ( chr < 256 ) {
         **((TCHAR **)str) = chr % 256;
         (*str) ++;
-    }
-    else
-    {
+    } else {
         **((TCHAR **)str) = chr / 256;
         (*str) ++;
         **((TCHAR **)str) = chr % 256;
@@ -52,8 +48,7 @@ int PeekChar( TCHAR **str )
     if ( !*str ) return 0;
     if ( !code ) return 0;
 
-    if ( code > 0x0080 )
-    {
+    if ( code > 0x0080 ) {
         code *= 256;
         code += *((TCHAR *)(*str + 1));
     }
@@ -64,8 +59,7 @@ int PeekChar( TCHAR **str )
 int CatChar( TCHAR *str, int cc)
 {
     int len = 0;
-    while( *str ) 
-    {
+    while( *str ) {
         GetChar( &str );
         len++;
     }
@@ -98,8 +92,8 @@ TCHAR *next_token( TCHAR *buf, TCHAR *token, TCHAR *stopchars )
     TCHAR *p = token;
 
     while ( (cc = GetChar(&buf)) && (!wcschr( stopchars, cc))  )
-        SetChar( &token, cc);            
-    SetChar( &token, 0);        
+        SetChar( &token, cc);
+    SetChar( &token, 0);
     trim( p, p );
 
     return buf;
@@ -108,22 +102,22 @@ TCHAR *next_token( TCHAR *buf, TCHAR *token, TCHAR *stopchars )
 
 CString GetPathName( const TCHAR * filename )
 {
-/*
-    CString path = filename;
-    char *file = path.GetBuffer(512);
-    char *p = file + strlen( file );
-    for ( ; *p != '\\' && *p != '/' && p > file; p-- );
-    if ( *p == '\\' || *p == '/') p++;
-    *p = 0;    
-    path.ReleaseBuffer();
-*/
+    /*
+        CString path = filename;
+        char *file = path.GetBuffer(512);
+        char *p = file + strlen( file );
+        for ( ; *p != '\\' && *p != '/' && p > file; p-- );
+        if ( *p == '\\' || *p == '/') p++;
+        *p = 0;
+        path.ReleaseBuffer();
+    */
     TCHAR path[MAX_PATH];
     wcscpy( path, filename );
     TCHAR *p = path + wcslen( path );
     for ( ; *p != '\\' && *p != '/' && p > path; p-- );
     if ( *p == '\\' || *p == '/') p++;
-    *p = 0;        
-    return CString(path);    
+    *p = 0;
+    return CString(path);
 }
 
 ///获取文件扩展名
@@ -140,31 +134,30 @@ const char * GetExt( const char * filename )
 ///获取文件扩展名
 CString GetFileName( const TCHAR * filename, int ext = 0)
 {
-/*
-    CString path = filename;
-    char *file = path.GetBuffer(512);
-    char *p = file + strlen( file );
-    for ( ; *p != '\\' && *p != '/' && p > file; p-- );
-    if ( *p == '\\' || *p == '/') p++;
-    if ( !ext )
-    {
-        char *p1 = p;
-        while( *p1 && *p1 != '.' ) p1++;
-        *p1 = 0;    
-    }
-    path.ReleaseBuffer();
-    return p;    
-*/
+    /*
+        CString path = filename;
+        char *file = path.GetBuffer(512);
+        char *p = file + strlen( file );
+        for ( ; *p != '\\' && *p != '/' && p > file; p-- );
+        if ( *p == '\\' || *p == '/') p++;
+        if ( !ext )
+        {
+            char *p1 = p;
+            while( *p1 && *p1 != '.' ) p1++;
+            *p1 = 0;
+        }
+        path.ReleaseBuffer();
+        return p;
+    */
     TCHAR path[MAX_PATH];
     wcscpy( path, filename );
     TCHAR *p  = path + wcslen(path);
     for ( ; *p != '\\' && *p != '/' && p > path; p-- );
     if ( *p == '\\' || *p == '/') p++;
-    if ( !ext )
-    {
+    if ( !ext ) {
         TCHAR *p1 = p;
         while( *p1 && *p1 != '.' ) p1++;
-        *p1 = 0;    
+        *p1 = 0;
     }
     return CString(p);
 }
@@ -182,14 +175,13 @@ BOOL    RegisterControl( const TCHAR * file, int reg )
         func = (RegFunc)GetProcAddress( hmod, "DllRegisterServer" );
     else
         func = (RegFunc)GetProcAddress( hmod, "DllUnregisterServer" );
-    if ( func )
-    {
+    if ( func ) {
         HRESULT hr = func();
         FreeLibrary( hmod );
         return S_OK == hr;
     }
     FreeLibrary( hmod );
-    return FALSE;    
+    return FALSE;
 }
 
 
@@ -201,29 +193,24 @@ int GetWindowVersion()
 {
     DWORD ret;
     DWORD dwVersion = GetVersion();
-    
+
     // Get the Windows version.
-    
+
     DWORD dwWindowsMajorVersion =  (DWORD)(LOBYTE(LOWORD(dwVersion)));
     DWORD dwWindowsMinorVersion =  (DWORD)(HIBYTE(LOWORD(dwVersion)));
-    
+
     // Get the build number.
     DWORD dwBuild;
-    if (dwVersion < 0x80000000)              // Windows NT/2000/XP
-    {
+    if (dwVersion < 0x80000000) {            // Windows NT/2000/XP
         dwBuild = (DWORD)(HIWORD(dwVersion));
         if ( dwBuild == 5 )
             ret = 2;
         else
             ret = 1;
-    }
-    else if (dwWindowsMajorVersion < 4)      // Win32s
-    {
+    } else if (dwWindowsMajorVersion < 4) {  // Win32s
         dwBuild = (DWORD)(HIWORD(dwVersion) & ~0x8000);
         ret = 3;
-    }
-    else                                     // Windows 95/98/Me
-    {
+    } else {                                 // Windows 95/98/Me
         dwBuild =  0;
         ret = 0;
     }
@@ -235,16 +222,15 @@ CString GetSystemPath()
 {
     CString systempath;
     ::GetWindowsDirectory(systempath.GetBuffer(MAX_PATH), MAX_PATH);
-    systempath.ReleaseBuffer();        
+    systempath.ReleaseBuffer();
     BOOL bWin9x = ( GetWindowVersion() == 0 );
-    if (systempath.Right(1) != _T("\\"))
-    {
+    if (systempath.Right(1) != _T("\\")) {
         //is win9x
         if ( bWin9x )
-            systempath += _T("\\System\\");    
-        else            
-            systempath += _T("\\System32\\");    
-    }    
+            systempath += _T("\\System\\");
+        else
+            systempath += _T("\\System32\\");
+    }
     return systempath;
 }
 
@@ -255,26 +241,22 @@ void RecursiveDelete(CString szPath)
 {
     CFileFind ff;
     CString path = szPath;
-    
+
     if(path.Right(1) != "\\")
         path += "\\";
-    
+
     path += "*.*";
-    
+
     BOOL res = ff.FindFile(path);
-    
+
     ///debug_printf("delete dir!:%s\n", (LPCSTR)szPath);
-    
-    while(res)
-    {
+
+    while(res) {
         res = ff.FindNextFile();
-        if (!ff.IsDots() && !ff.IsDirectory())
-        {
+        if (!ff.IsDots() && !ff.IsDirectory()) {
             DeleteFile(ff.GetFilePath());
-            
-        }
-        else if (ff.IsDirectory() && !ff.IsDots() )
-        {
+
+        } else if (ff.IsDirectory() && !ff.IsDots() ) {
             path = ff.GetFilePath();
             RecursiveDelete(path);
             RemoveDirectory(path);

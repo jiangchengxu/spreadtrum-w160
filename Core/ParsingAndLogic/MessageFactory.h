@@ -32,7 +32,7 @@ class IMessageCreator;
 //
 /// MessageFactory is a globally accessable singleton. The MessageFactory has
 /// two CreateMessage methods that are responsible for determining what
-/// message needs to be built, calls the appropriate Create method and 
+/// message needs to be built, calls the appropriate Create method and
 /// return a pointer to the new Message.
 // --------------------------------------------------------------------------
 class MessageFactory
@@ -45,7 +45,7 @@ public:
     typedef Uint32CreatorMap::value_type UCPair;
 
 public:
-    static MessageFactory& GetInstance(); 
+    static MessageFactory& GetInstance();
     ~MessageFactory() {}
 
     Message* CreateMessage(std::string& msgStr);
@@ -67,7 +67,7 @@ private:
 
 
 // --------------------------------------------------------------------------
-// IMessageCreator    
+// IMessageCreator
 //
 /// A class derived from IMessageCreator knows how to create a specific type
 /// of log Message object.  The derived class may be registered with the
@@ -82,10 +82,10 @@ public:
 
 
 // --------------------------------------------------------------------------
-// MessageCreator    
+// MessageCreator
 //
 /// A standard template for implementing the IMessageCreator interface. The
-/// template parameter T is the class of Message to be created by the 
+/// template parameter T is the class of Message to be created by the
 /// MessageCreator. The constructor automatically registers the creator with
 /// the factory. The create methods are invoked to instantiate a specialized
 /// Message object.
@@ -95,38 +95,30 @@ class MessageCreator : public IMessageCreator
 {
 public:
     // Self-registering Constructor
-    MessageCreator(std::string msgType) : m_msgType(msgType),m_msgUID(0)
-    {
+    MessageCreator(std::string msgType) : m_msgType(msgType),m_msgUID(0) {
         MessageFactory::GetInstance().RegStringCreator(m_msgType, this);
     }
 
     // Self-registering Constructor
-    MessageCreator(uint32 msgUID) : m_msgUID(msgUID)
-    {
+    MessageCreator(uint32 msgUID) : m_msgUID(msgUID) {
         MessageFactory::GetInstance().RegUint32Creator(m_msgUID, this);
     }
-       
-    virtual ~MessageCreator() 
-    {
-        if (m_msgUID == 0)
-        {
+
+    virtual ~MessageCreator() {
+        if (m_msgUID == 0) {
             MessageFactory::GetInstance().UnregStringCreator(m_msgType, this);
-        }
-        else
-        {
+        } else {
             MessageFactory::GetInstance().UnregUint32Creator(m_msgUID, this);
         }
     }
-          
-    virtual Message* Create(std::string& nameValue)
-    {
-		T *dummy = NULL;
+
+    virtual Message* Create(std::string& nameValue) {
+        T *dummy = NULL;
         return Message::Create(nameValue, dummy);
     }
 
-    virtual Message* Create(MsgBuf& msgBuf)
-    {
-		T *dummy = NULL;
+    virtual Message* Create(MsgBuf& msgBuf) {
+        T *dummy = NULL;
         return Message::Create(msgBuf, dummy);
     }
 

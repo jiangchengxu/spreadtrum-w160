@@ -16,30 +16,30 @@ class CPinClckDlg : public CBaseDialog
 {
 public:
 
-	//设置PIN码enalbe或disable时，用于和回调函数同步的事件
-	HANDLE m_hPinEvt;  
-	UINT m_nTag;
-	CPinEx* m_pHandlePin;
-    
+    //设置PIN码enalbe或disable时，用于和回调函数同步的事件
+    HANDLE m_hPinEvt;
+    UINT m_nTag;
+    CPinEx* m_pHandlePin;
+
 // Construction
 public:
     CPinClckDlg(CWnd* pParent = NULL);   // standard constructor
-	CPinClckDlg(CWnd* pParent,UINT tag);
-	~CPinClckDlg();
-	int OnEnablePin();
-	int OnDisablePin();
-	static void AtRespCLCK(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL], WORD wStrNum);
+    CPinClckDlg(CWnd* pParent,UINT tag);
+    ~CPinClckDlg();
+    int OnEnablePin();
+    int OnDisablePin();
+    static void AtRespCLCK(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL], WORD wStrNum);
 // Dialog Data
     //{{AFX_DATA(CPinClckDlg)
-	enum { IDD = IDD_DIALOG_PINCLCK };
-	//CString	m_cPinClckTip;
-	CString	m_cRemainTime;
-	CString	m_valKey;
-	//}}AFX_DATA
+    enum { IDD = IDD_DIALOG_PINCLCK };
+    //CString	m_cPinClckTip;
+    CString	m_cRemainTime;
+    CString	m_valKey;
+    //}}AFX_DATA
 // Overrides
     // ClassWizard generated virtual function overrides
     //{{AFX_VIRTUAL(CPinClckDlg)
-    protected:
+protected:
     virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
     //}}AFX_VIRTUAL
 
@@ -50,9 +50,9 @@ protected:
     //{{AFX_MSG(CPinClckDlg)
     virtual void OnOK();
     virtual BOOL OnInitDialog();
-	afx_msg void OnButtonSubmit();
-	//}}AFX_MSG
-	//afx_msg void OnPaint();
+    afx_msg void OnButtonSubmit();
+    //}}AFX_MSG
+    //afx_msg void OnPaint();
     DECLARE_MESSAGE_MAP()
 };
 

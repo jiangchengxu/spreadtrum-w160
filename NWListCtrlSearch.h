@@ -14,8 +14,8 @@ class CNWListCtrlSearch : public CListCtrl
 {
 // Construction
 public:
-	CHeaderCtrlEx m_headerCtrl;
-	CNWListCtrlSearch();
+    CHeaderCtrlEx m_headerCtrl;
+    CNWListCtrlSearch();
 
 // Attributes
 public:
@@ -24,20 +24,20 @@ public:
 public:
 
 // Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(CNWListCtrlSearch)
-	//}}AFX_VIRTUAL
+    // ClassWizard generated virtual function overrides
+    //{{AFX_VIRTUAL(CNWListCtrlSearch)
+    //}}AFX_VIRTUAL
 
 // Implementation
 public:
-	virtual ~CNWListCtrlSearch();
+    virtual ~CNWListCtrlSearch();
 
-	// Generated message map functions
+    // Generated message map functions
 protected:
-	//{{AFX_MSG(CNWListCtrlSearch)
-		// NOTE - the ClassWizard will add and remove member functions here.
-	//}}AFX_MSG
-	virtual void PreSubclassWindow();
+    //{{AFX_MSG(CNWListCtrlSearch)
+    // NOTE - the ClassWizard will add and remove member functions here.
+    //}}AFX_MSG
+    virtual void PreSubclassWindow();
     DECLARE_MESSAGE_MAP()
 };
 

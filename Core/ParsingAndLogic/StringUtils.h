@@ -21,12 +21,12 @@
 
 //namespace StringUtils
 //{
-    // remove space, newline and tab chars from the left of a string
-    std::string& TrimLeft(std::string& str);
+// remove space, newline and tab chars from the left of a string
+std::string& TrimLeft(std::string& str);
 
-    // remove space, newline and tab chars from the right of a string
-    std::string& TrimRight(std::string& str);
+// remove space, newline and tab chars from the right of a string
+std::string& TrimRight(std::string& str);
 
-    // remove space, newline and tab chars from the left and right of a string
-    std::string& Trim(std::string& str);
+// remove space, newline and tab chars from the left and right of a string
+std::string& Trim(std::string& str);
 //}

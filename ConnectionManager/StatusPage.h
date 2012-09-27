@@ -40,7 +40,7 @@ class ConnectionManagerDlg;
 //
 /// The StatusPage class represents the controls under the status tab of the
 /// ConnectionManager dialog. Input from the user and output to the user
-/// under the status tab is controlled by this class. 
+/// under the status tab is controlled by this class.
 // --------------------------------------------------------------------------
 
 class StatusPage : public CPropertyPage
@@ -64,20 +64,20 @@ public:
     void AddEventMessage(std::string& event,uint8 severity);
 
 protected:
-	virtual void DoDataExchange(CDataExchange* pDX);
-	virtual BOOL OnInitDialog();
+    virtual void DoDataExchange(CDataExchange* pDX);
+    virtual BOOL OnInitDialog();
     std::string BuildDMSGetDeviceMfrString();
     std::string BuildDMSGetDeviceModelIdString();
     std::string BuildDMSGetDeviceRevIdString();
     std::string BuildDMSGetMsisdnString();
     std::string BuildDMSGetDeviceSerialNumbersString();
     std::string BuildDMSGetDeviceCapString();
-	DECLARE_MESSAGE_MAP()
+    DECLARE_MESSAGE_MAP()
 
 private:
 // @@@@@@
 #ifndef OPEN_PAGE_UI
-	CHSDPADlg* m_pCMDlg;
+    CHSDPADlg* m_pCMDlg;
 #else
     ConnectionManagerDlg* m_pCMDlg;
 #endif
@@ -96,7 +96,7 @@ private:
     CStatic m_eventsStatic;
 #endif
 
-	// @@
+    // @@
 #if 0
     CRichEditCtrl m_eventsRichEdit;
 #endif

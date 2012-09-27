@@ -19,10 +19,9 @@
 //VOID CALLBACK InterfaceChanged(int newInterface);
 
 //typedef FARPROC INTERFACECHANCEDPROC;
-typedef struct _TRAFFIC_ENTRY_
-{
-	double value;
-	BOOL connected;
+typedef struct _TRAFFIC_ENTRY_ {
+    double value;
+    BOOL connected;
 } TRAFFICENTRY;
 
 #define PLOTGRANULATRITY 5		// Defines the width of the rectangle representing a bar in the diagram
@@ -47,7 +46,7 @@ class MFTrafficButton : public CButton
 {
 // Construction
 public:
-	MFTrafficButton();
+    MFTrafficButton();
 
 // Attributes
 public:
@@ -56,108 +55,107 @@ public:
 public:
 
 // Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(MFTrafficButton)
-	public:
-	virtual void DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct);
-	protected:
-	virtual void PreSubclassWindow();
-	//}}AFX_VIRTUAL
+    // ClassWizard generated virtual function overrides
+    //{{AFX_VIRTUAL(MFTrafficButton)
+public:
+    virtual void DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct);
+protected:
+    virtual void PreSubclassWindow();
+    //}}AFX_VIRTUAL
 
 // Implementation
 public:
-	void SetAdaptiveScaling(BOOL adaptive);
-	void SetInterfaceNumber(int interfacenumber);
-	enum traffictype
-	{
-		Traffic_Total		= 0,
-		Traffic_Incoming	= 1,
-		Traffic_Outgoing	= 2
-	};
+    void SetAdaptiveScaling(BOOL adaptive);
+    void SetInterfaceNumber(int interfacenumber);
+    enum traffictype {
+        Traffic_Total		= 0,
+        Traffic_Incoming	= 1,
+        Traffic_Outgoing	= 2
+    };
 
-	void SelectTrafficType(int trafficType);
-	void SetInterfaceNumberNotificationFunction(INTERFACECHANCEDPROC callfunct);
-	void SetUpdateSpeed(UINT netspeed, UINT gridspeed);
-	void ReInit(int newInterface);
-	void ReInit(RECT newSize);
-	void setDrawFlag(BOOL);
-	virtual ~MFTrafficButton();
+    void SelectTrafficType(int trafficType);
+    void SetInterfaceNumberNotificationFunction(INTERFACECHANCEDPROC callfunct);
+    void SetUpdateSpeed(UINT netspeed, UINT gridspeed);
+    void ReInit(int newInterface);
+    void ReInit(RECT newSize);
+    void setDrawFlag(BOOL);
+    virtual ~MFTrafficButton();
 
-	BOOL isVista();
+    BOOL isVista();
 
-	// Generated message map functions
+    // Generated message map functions
 protected:
-	//{{AFX_MSG(MFTrafficButton)
-	afx_msg void OnTimer(UINT nIDEvent);
+    //{{AFX_MSG(MFTrafficButton)
+    afx_msg void OnTimer(UINT nIDEvent);
 //	afx_msg void OnRButtonDown(UINT nFlags, CPoint point);
-	//}}AFX_MSG
+    //}}AFX_MSG
 
-	DECLARE_MESSAGE_MAP()
+    DECLARE_MESSAGE_MAP()
 private:
-	void InterfaceHasChanged();
+    void InterfaceHasChanged();
 
-	INTERFACECHANCEDPROC interfaceCallBack;
+    INTERFACECHANCEDPROC interfaceCallBack;
 
-	MFNetTraffic m_cTrafficClass;
+    MFNetTraffic m_cTrafficClass;
 
-	CFont	smallFont;
-	CBrush	colorbrush;
+    CFont	smallFont;
+    CBrush	colorbrush;
 
-	COLORREF red, green, back, cyan, darkblue, darkgray, white, black, lightgreen, darkgreen;
-	CBitmap	colorbrushbmp;
-	CPen	GridPen;
-	CSize	TGSize;
+    COLORREF red, green, back, cyan, darkblue, darkgray, white, black, lightgreen, darkgreen;
+    CBitmap	colorbrushbmp;
+    CPen	GridPen;
+    CSize	TGSize;
 
-	CBrush	greenbrush;
-	CBrush	redbrush;
-	CPoint	orgBrushOrigin; 
+    CBrush	greenbrush;
+    CBrush	redbrush;
+    CPoint	orgBrushOrigin;
 
-	RECT	TrafficDrawRectangle;
-	RECT	TrafficDrawUpdateRectangle;
+    RECT	TrafficDrawRectangle;
+    RECT	TrafficDrawUpdateRectangle;
 
-	
 
-	DWORD	TrafficEntries;
 
-	BOOL	initalized;
-	BOOL	isOnline;
-	BOOL	brushInitalized;
+    DWORD	TrafficEntries;
 
-	CRgn	ShapeWNDRegion;
-	CRgn	ShapeDCRegion;
+    BOOL	initalized;
+    BOOL	isOnline;
+    BOOL	brushInitalized;
 
-	double	MaxTrafficAmount;
-	CString	ToggleStatusText;
+    CRgn	ShapeWNDRegion;
+    CRgn	ShapeDCRegion;
 
-	int SelectedInterface;
+    double	MaxTrafficAmount;
+    CString	ToggleStatusText;
 
-	BOOL useAdaptiveScale;
+    int SelectedInterface;
 
-	TRAFFICENTRY* TrafficStats;
+    BOOL useAdaptiveScale;
 
-	int gridxstartpos;		
-	int gridystartpos;
-	int plotgranularity;
-	BOOL drawFlag;
+    TRAFFICENTRY* TrafficStats;
 
-	// Public modification variables
+    int gridxstartpos;
+    int gridystartpos;
+    int plotgranularity;
+    BOOL drawFlag;
+
+    // Public modification variables
 public:
-	int gridxresolution;		// The size of grid raster
-	int gridyresolution;
-	int gridscrollxspeed;		// Scroll speed of the grid
-	int gridscrollyspeed; 
-	int netupdatespeed;			// Should be set via SetUpdateSpeet method
-	int gridupdatespeed;
-	CString CurrentTraffic;
-	double m_dCurrTraffic;
-	CString MaximalTraffic;
-	CString AllTraffic;
+    int gridxresolution;		// The size of grid raster
+    int gridyresolution;
+    int gridscrollxspeed;		// Scroll speed of the grid
+    int gridscrollyspeed;
+    int netupdatespeed;			// Should be set via SetUpdateSpeet method
+    int gridupdatespeed;
+    CString CurrentTraffic;
+    double m_dCurrTraffic;
+    CString MaximalTraffic;
+    CString AllTraffic;
 
-	CString TotalTraffic;
+    CString TotalTraffic;
 
-	CString CurrentTotalTraffic; //本次连接的总数据流量
-	CDlgConnect* m_pDlgConnect;
-	double currentTotalTraffic;
+    CString CurrentTotalTraffic; //本次连接的总数据流量
+    CDlgConnect* m_pDlgConnect;
+    double currentTotalTraffic;
 
 
 };

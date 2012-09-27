@@ -45,7 +45,7 @@ END_MESSAGE_MAP()
 // --------------------------------------------------------------------------
 // ctor
 // --------------------------------------------------------------------------
-ProfilesPage::ProfilesPage() : 
+ProfilesPage::ProfilesPage() :
     CPropertyPage(IDD_PROFILES_PAGE),
     m_pCMDlg(NULL),
     m_pProfileSheet(NULL),
@@ -76,7 +76,7 @@ void ProfilesPage::SetCMDlg(ConnectionManagerDlg* pCMDlg)
 // --------------------------------------------------------------------------
 void ProfilesPage::DoDataExchange(CDataExchange* pDX)
 {
-	CDialog::DoDataExchange(pDX);
+    CDialog::DoDataExchange(pDX);
 
 // @@@@@@
 #ifdef OPEN_PAGE_UI
@@ -95,10 +95,10 @@ void ProfilesPage::DoDataExchange(CDataExchange* pDX)
 BOOL ProfilesPage::OnInitDialog()
 {
     CPropertyPage::OnInitDialog();
-    
+
     DisableSelectedState();
 
-	return TRUE;  // return TRUE  unless you set the focus to a control
+    return TRUE;  // return TRUE  unless you set the focus to a control
 }
 
 // --------------------------------------------------------------------------
@@ -198,13 +198,12 @@ std::string ProfilesPage::BuildWDSGetProfileSettingsString()
     // get the index of the profile selected
     int result = m_profilesList.GetCurSel();
 
-    if (result != LB_ERR)
-    {
+    if (result != LB_ERR) {
         // get the type/index information stored in item data
 
-		// @@
+        // @@
         //DWORD_PTR itemData = m_profilesList.GetItemData(result);
-		DWORD itemData = m_profilesList.GetItemData(result);
+        DWORD itemData = m_profilesList.GetItemData(result);
 
         int idx = (int)(itemData & 0x0000FFFF);
         int type = (int)(itemData >> 16);
@@ -236,13 +235,12 @@ std::string ProfilesPage::BuildWDSDeleteProfileString()
     // get the index of the profile selected
     int result = m_profilesList.GetCurSel();
 
-    if (result != LB_ERR)
-    {
+    if (result != LB_ERR) {
         // get the type/index information stored in item data
 
         // @@
-		//DWORD_PTR itemData = m_profilesList.GetItemData(result);
-		DWORD itemData = m_profilesList.GetItemData(result);
+        //DWORD_PTR itemData = m_profilesList.GetItemData(result);
+        DWORD itemData = m_profilesList.GetItemData(result);
 
         int idx = (int)(itemData & 0x0000FFFF);
         int type = (int)(itemData >> 16);
@@ -277,27 +275,25 @@ void ProfilesPage::ProcessWDSGetProfileListRsp(WDSGetProfileListRspRCP rspRCP)
     m_deleteButton.EnableWindow(FALSE);
 #endif
     // populate profiles list
-    std::vector<ProfileListInstance*> profileList = 
+    std::vector<ProfileListInstance*> profileList =
         rspRCP->GetProfileListInstances();
 
     size_t numProfiles = profileList.size();
-    for (uint32 i = 0; i < numProfiles; i++)
-    {
+    for (uint32 i = 0; i < numProfiles; i++) {
         int type = profileList[i]->GetProfileType();
         int idx = profileList[i]->GetProfileIndex();
 
         std::stringstream stream;
-        stream << "Index: " << idx 
+        stream << "Index: " << idx
                << "  Type: " << PROFILE_TYPE_STRINGS[type]
                << "  Name: " << profileList[i]->GetProfileName();
-        
+
         int result = m_profilesList.AddString(stream.str().c_str());
 
-        if (result != LB_ERR)
-        {
-			// @@
+        if (result != LB_ERR) {
+            // @@
             //DWORD_PTR itemData = (type << 16) | idx;
-			DWORD itemData = (type << 16) | idx;
+            DWORD itemData = (type << 16) | idx;
 
             // set index as item data
             m_profilesList.SetItemData(result,itemData);
@@ -306,34 +302,26 @@ void ProfilesPage::ProcessWDSGetProfileListRsp(WDSGetProfileListRspRCP rspRCP)
 
     // set selection to last selected, if available
     int listCount = m_profilesList.GetCount();
-    if (listCount > 0)
-    {
-        if (m_listIndex == UNKNOWN)
-        {
+    if (listCount > 0) {
+        if (m_listIndex == UNKNOWN) {
             // when creating list index is unknown, must search
-            for (int i = 0; i < listCount; i++)
-            {
-				// @@
+            for (int i = 0; i < listCount; i++) {
+                // @@
                 //DWORD_PTR itemData = m_profilesList.GetItemData(i);
-				DWORD itemData = m_profilesList.GetItemData(i);
+                DWORD itemData = m_profilesList.GetItemData(i);
 
                 int idx = (int)(itemData & 0x0000FFFF);
                 int type = (int)(itemData >> 16);
-                if (idx == m_profileIndex && type == m_profileType)
-                {
+                if (idx == m_profileIndex && type == m_profileType) {
                     // set list index to new profile location
                     m_profilesList.SetCurSel(i);
                     m_listIndex = i;
                 }
             }
-        }
-        else if (m_listIndex < listCount)
-        {
+        } else if (m_listIndex < listCount) {
             // when modifying and deleting list index is known
             m_profilesList.SetCurSel(m_listIndex);
-        }
-        else
-        {
+        } else {
             // when deleting the last profile list index == list count
             m_profilesList.SetCurSel(listCount - 1);
         }
@@ -369,8 +357,7 @@ void ProfilesPage::ProcessWDSGetDefaultSettingsRsp(WDSGetDefaultSettingsRspRCP r
 // @@@@@@
 #ifdef OPEN_PAGE_UI
     // make sure this response matches the request
-    if (rspRCP->GetTxId() != m_settingsReqTxId)
-    {
+    if (rspRCP->GetTxId() != m_settingsReqTxId) {
         return;
     }
 
@@ -401,8 +388,7 @@ void ProfilesPage::ProcessWDSGetDefaultSettingsRsp(WDSGetDefaultSettingsRspRCP r
 
     INT_PTR result = profileSheet.DoModal();
 
-    if (result == IDOK)
-    {
+    if (result == IDOK) {
         // refresh the profiles list
         m_pCMDlg->SendRequest(BuildWDSGetProfileListString());
     }
@@ -435,8 +421,7 @@ void ProfilesPage::ProcessWDSGetProfileSettingsRsp(WDSGetProfileSettingsRspRCP r
 // @@@@@@
 #ifdef OPEN_PAGE_UI
     // make sure this response matches the request
-    if (rspRCP->GetTxId() != m_settingsReqTxId)
-    {
+    if (rspRCP->GetTxId() != m_settingsReqTxId) {
         return;
     }
 
@@ -467,8 +452,7 @@ void ProfilesPage::ProcessWDSGetProfileSettingsRsp(WDSGetProfileSettingsRspRCP r
 
     INT_PTR result = profileSheet.DoModal();
 
-    if (result == IDOK)
-    {
+    if (result == IDOK) {
         // refresh the profiles list
         m_pCMDlg->SendRequest(BuildWDSGetProfileListString());
     }
@@ -485,22 +469,20 @@ void ProfilesPage::ProcessWDSGetProfileSettingsRsp(WDSGetProfileSettingsRspRCP r
 void ProfilesPage::ProcessWDSCreateProfileRsp(WDSCreateProfileRspRCP rspRCP)
 {
     // verify success
-    if (rspRCP->GetResult() == QMI_RESULT_SUCCESS)
-    {
+    if (rspRCP->GetResult() == QMI_RESULT_SUCCESS) {
         // set to determine list box selection after creation
         m_settingsReqTxId = rspRCP->GetTxId();
         m_profileType = rspRCP->GetProfileType();
         m_profileIndex = rspRCP->GetProfileIndex();
 
         // exit the modal profile sheet dialog
-        if (m_pProfileSheet != NULL)
-        {
+        if (m_pProfileSheet != NULL) {
             m_pProfileSheet->EndDialog(IDOK);
             m_pProfileSheet = NULL;
         }
     }
 
-    // on failure, profile sheet dialog will continue, allowing user to 
+    // on failure, profile sheet dialog will continue, allowing user to
     // make corrections and attempt creating again
 }
 
@@ -514,17 +496,15 @@ void ProfilesPage::ProcessWDSCreateProfileRsp(WDSCreateProfileRspRCP rspRCP)
 void ProfilesPage::ProcessWDSModifyProfileSettingsRsp(WDSModifyProfileSettingsRspRCP rspRCP)
 {
     // verify success
-    if (rspRCP->GetResult() == QMI_RESULT_SUCCESS)
-    {
+    if (rspRCP->GetResult() == QMI_RESULT_SUCCESS) {
         // exit the modal profile sheet dialog
-        if (m_pProfileSheet != NULL)
-        {
+        if (m_pProfileSheet != NULL) {
             m_pProfileSheet->EndDialog(IDOK);
             m_pProfileSheet = NULL;
         }
     }
-    
-    // on failure, profile sheet dialog will continue, allowing user to 
+
+    // on failure, profile sheet dialog will continue, allowing user to
     // make corrections and attempt modifying again
 }
 

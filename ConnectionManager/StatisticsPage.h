@@ -36,7 +36,7 @@ class ConnectionManagerDlg;
 //
 /// The StatisticsPage class represents the controls under the statistics tab
 /// of the ConnectionManager dialog. Input from the user and output to the
-/// user under the status tab is controlled by this class. 
+/// user under the status tab is controlled by this class.
 // --------------------------------------------------------------------------
 
 class StatisticsPage : public CPropertyPage
@@ -57,20 +57,20 @@ public:
     void ProcessWDSGetCurrentChannelRateRsp(WDSGetCurrentChannelRateRspRCP rspRCP);
 
 protected:
-	virtual void DoDataExchange(CDataExchange* pDX);
-	virtual BOOL OnInitDialog();
+    virtual void DoDataExchange(CDataExchange* pDX);
+    virtual BOOL OnInitDialog();
     std::string BuildWDSGetCurrentChannelRateString();
     std::string BuildWDSEventReportString(/*!!!start/stop?*/);
-	DECLARE_MESSAGE_MAP()
+    DECLARE_MESSAGE_MAP()
 
 private:
 // @@@@@@
 #ifndef OPEN_PAGE_UI
-	CHSDPADlg* m_pCMDlg;
+    CHSDPADlg* m_pCMDlg;
 #else
     ConnectionManagerDlg* m_pCMDlg;
 #endif
-    
+
 // @@@@@@
 #ifdef OPEN_PAGE_UI
     CStatic m_txGroup;

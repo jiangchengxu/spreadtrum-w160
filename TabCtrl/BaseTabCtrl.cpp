@@ -28,7 +28,7 @@ CBaseTabCtrl::~CBaseTabCtrl()
 
 BEGIN_MESSAGE_MAP(CBaseTabCtrl, CTabCtrl)
     //{{AFX_MSG_MAP(CBaseTabCtrl)
-        // NOTE - the ClassWizard will add and remove mapping macros here.
+    // NOTE - the ClassWizard will add and remove mapping macros here.
     //}}AFX_MSG_MAP
     ON_WM_ERASEBKGND()
     ON_WM_PAINT()
@@ -56,9 +56,8 @@ BOOL CBaseTabCtrl::EnableDraw(int nType)
 
     m_nDrawType = nType;
 
-    if (GetSafeHwnd())
-    {
-        if (m_nDrawType != BTC_NONE) 
+    if (GetSafeHwnd()) {
+        if (m_nDrawType != BTC_NONE)
             ModifyStyle(0, TCS_OWNERDRAWFIXED);
         else
             ModifyStyle(TCS_OWNERDRAWFIXED, 0);
@@ -94,15 +93,15 @@ COLORREF CBaseTabCtrl::GetTabTextColor(BOOL /*bSelected*/)
     return ::GetSysColor(COLOR_WINDOWTEXT);
 }
 
-void CBaseTabCtrl::PreSubclassWindow() 
+void CBaseTabCtrl::PreSubclassWindow()
 {
     CTabCtrl::PreSubclassWindow();
 
-    if (m_nDrawType != BTC_NONE) 
+    if (m_nDrawType != BTC_NONE)
         ModifyStyle(0, TCS_OWNERDRAWFIXED);
 }
 
-BOOL CBaseTabCtrl::OnEraseBkgnd(CDC* pDC) 
+BOOL CBaseTabCtrl::OnEraseBkgnd(CDC* pDC)
 {
     CRect rClient, rTab, rTotalTab, rBkgnd, rEdge;
     COLORREF crBack;
@@ -115,8 +114,7 @@ BOOL CBaseTabCtrl::OnEraseBkgnd(CDC* pDC)
     nTab = GetItemCount();
     rTotalTab.SetRectEmpty();
 
-    while (nTab--)
-    {
+    while (nTab--) {
         GetItemRect(nTab, rTab);
         rTotalTab.UnionRect(rTab, rTotalTab);
     }
@@ -135,19 +133,19 @@ BOOL CBaseTabCtrl::OnEraseBkgnd(CDC* pDC)
     // so we must only paint the background color where we need to, which is that
     // portion of the tab area not excluded by the tabs themselves
     crBack = (m_crBack == -1) ? ::GetSysColor(COLOR_3DFACE) : m_crBack;
-    
+
     // full width of tab ctrl above top of tabs
     rBkgnd = rClient;
     rBkgnd.bottom = rTotalTab.top + 3;
     pDC->SetBkColor(crBack);
     pDC->ExtTextOut(rBkgnd.left, rBkgnd.top, ETO_CLIPPED | ETO_OPAQUE, rBkgnd, "", NULL);
-    
+
     // width of tab ctrl visible bkgnd including bottom pixel of tabs to left of tabs
     rBkgnd = rClient;
     rBkgnd.right = 2;
     rBkgnd.bottom = rBkgnd.top + (nTabHeight + 2);
     pDC->ExtTextOut(rBkgnd.left, rBkgnd.top, ETO_CLIPPED | ETO_OPAQUE, rBkgnd, "", NULL);
-    
+
     // to right of tabs
     rBkgnd = rClient;
     rBkgnd.left += rTotalTab.Width() - 2;
@@ -157,19 +155,14 @@ BOOL CBaseTabCtrl::OnEraseBkgnd(CDC* pDC)
     return TRUE;
 }
 
-void CBaseTabCtrl::OnPaint() 
+void CBaseTabCtrl::OnPaint()
 {
-    if (m_nDrawType == BTC_NONE)
-    {
+    if (m_nDrawType == BTC_NONE) {
         Default();
-    }
-    else if (m_nDrawType == BTC_TABS)
-    {
+    } else if (m_nDrawType == BTC_TABS) {
         ASSERT (GetStyle() & TCS_OWNERDRAWFIXED);
         Default();
-    }
-    else // all
-    {
+    } else { // all
         CPaintDC dc(this); // device context for painting
 
         // prepare dc
@@ -198,10 +191,8 @@ void CBaseTabCtrl::OnPaint()
         if (!nTab) // no pages added
             return;
 
-        while (nTab--)
-        {
-            if (nTab != nSel)
-            {
+        while (nTab--) {
+            if (nTab != nSel) {
                 dis.itemID = nTab;
                 dis.itemState = 0;
 

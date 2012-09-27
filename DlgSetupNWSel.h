@@ -22,68 +22,68 @@ class CDlgSetupNWSel : public CBaseDialog
 // Construction
 public:
 //	bool CopsState;
-	int m_nMsgBeat;
-	int nSetPREFOK;	//0:not refresh
-					//1:need refresh, before PREF
-					//2:PREF ok, before COPS
+    int m_nMsgBeat;
+    int nSetPREFOK;	//0:not refresh
+    //1:need refresh, before PREF
+    //2:PREF ok, before COPS
 
-	int nCOPSType;	//0:cops set, 1:cops?, 2:cops=?
+    int nCOPSType;	//0:cops set, 1:cops?, 2:cops=?
 
-	
 
-	int nNWnumber;
-	bool bSetNWSucc;  //set network succ
+
+    int nNWnumber;
+    bool bSetNWSucc;  //set network succ
 //	CDlgMsg* pdlgMsg;
     CDlgSetupNWSelMode m_dlgSetupNWSelMode;//networktab
-	CDlgSetupNWSelSearch m_dlgSetupNWSelSearch;
+    CDlgSetupNWSelSearch m_dlgSetupNWSelSearch;
 //	BOOL InitData();
 //	int AnalyseNWList(CString strNWList);
-	CDlgSetupNWSel(CWnd* pParent = NULL);   // standard constructor
-	~CDlgSetupNWSel();
+    CDlgSetupNWSel(CWnd* pParent = NULL);   // standard constructor
+    ~CDlgSetupNWSel();
 
-	StNetWork* pstNetWork;
-	//PHPREF 
+    StNetWork* pstNetWork;
+    //PHPREF
 //	static void RspAtPHPREF(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL], WORD wStrNum);
 //	BOOL SndAtPHPREF(CString strPHPREF);
-	//COPS 
+    //COPS
 //	static void RspAtCOPS(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL], WORD wStrNum);
 //	BOOL SndAtCOPS(CString strCOPS);
 
 //	void GetCurAutoPrefer();
 //	void ManualUpdateIcon();
 
-	void InitTabCtrl();
+    void InitTabCtrl();
 // Dialog Data
-	//{{AFX_DATA(CDlgSetupNWSel)
-	enum { IDD = IDD_DIALOG_SETUP_NWSEL };
-	CNWListCtrl	m_lstNW;
-	int		m_nSelMode;
-	int		m_nAutoMode;
-	CEnTabCtrl  m_tabHistNW;
-	//}}AFX_DATA
+    //{{AFX_DATA(CDlgSetupNWSel)
+    enum { IDD = IDD_DIALOG_SETUP_NWSEL };
+    CNWListCtrl	m_lstNW;
+    int		m_nSelMode;
+    int		m_nAutoMode;
+    CEnTabCtrl  m_tabHistNW;
+    //}}AFX_DATA
 
 
 // Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(CDlgSetupNWSel)
-	protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	//}}AFX_VIRTUAL
+    // ClassWizard generated virtual function overrides
+    //{{AFX_VIRTUAL(CDlgSetupNWSel)
+protected:
+    virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+    //}}AFX_VIRTUAL
 
 // Implementation
 protected:
 
-	CImageList m_ilTabs;
+    CImageList m_ilTabs;
 
-	// Generated message map functions
-	//{{AFX_MSG(CDlgSetupNWSel)
-	virtual void OnOK();
+    // Generated message map functions
+    //{{AFX_MSG(CDlgSetupNWSel)
+    virtual void OnOK();
     virtual void OnCancel();
-	afx_msg void OnSelchangeTabHistNW(NMHDR* pNMHDR, LRESULT* pResult);
-	virtual BOOL OnInitDialog();
+    afx_msg void OnSelchangeTabHistNW(NMHDR* pNMHDR, LRESULT* pResult);
+    virtual BOOL OnInitDialog();
 
-	//}}AFX_MSG
-	DECLARE_MESSAGE_MAP()
+    //}}AFX_MSG
+    DECLARE_MESSAGE_MAP()
 };
 
 //{{AFX_INSERT_LOCATION}}

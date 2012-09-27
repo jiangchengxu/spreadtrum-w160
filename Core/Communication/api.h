@@ -26,17 +26,16 @@
 #include <winioctl.h>
 #include "UndefUnicode.h"
 
-typedef enum _QMI_SERVICE_TYPE
-{
-   QMUX_TYPE_CTL  = 0x00,
-   QMUX_TYPE_WDS  = 0x01,
-   QMUX_TYPE_DMS  = 0x02,
-   QMUX_TYPE_NAS  = 0x03,
-   QMUX_TYPE_MAX,
-   QMUX_TYPE_ALL  = 0xFF
+typedef enum _QMI_SERVICE_TYPE {
+    QMUX_TYPE_CTL  = 0x00,
+    QMUX_TYPE_WDS  = 0x01,
+    QMUX_TYPE_DMS  = 0x02,
+    QMUX_TYPE_NAS  = 0x03,
+    QMUX_TYPE_MAX,
+    QMUX_TYPE_ALL  = 0xFF
 } QMI_SERVICE_TYPE;
 
-#define SERVICE_FILE_BUF_LEN      256 
+#define SERVICE_FILE_BUF_LEN      256
 #define QMUX_NUM_THREADS  3
 #define QMUX_MAX_DATA_LEN 2048
 #define QMUX_MAX_CMD_LEN  2048
@@ -76,10 +75,9 @@ typedef enum _QMI_SERVICE_TYPE
 
 typedef VOID (_stdcall *NOTIFICATION_CALLBACK)(HANDLE, ULONG);
 
-typedef struct _NOTIFICATION_CONTEXT
-{
-   HANDLE                ServiceHandle;
-   NOTIFICATION_CALLBACK CallBack;
+typedef struct _NOTIFICATION_CONTEXT {
+    HANDLE                ServiceHandle;
+    NOTIFICATION_CALLBACK CallBack;
 } NOTIFICATION_CONTEXT, *PNOTIFICATION_CONTEXT;
 
 // Function Prototypes
@@ -90,65 +88,65 @@ VOID QCWWAN_ReleaseResources(VOID);
 
 HANDLE QCWWAN_OpenService
 (
-   IN PCHAR DeviceFriendlyName,
-   IN UCHAR ServiceType
+    IN PCHAR DeviceFriendlyName,
+    IN UCHAR ServiceType
 );
 
 BOOL QCWWAN_CloseService
 (
-   IN HANDLE ServiceHandle
+    IN HANDLE ServiceHandle
 );
 
 BOOL QCWWAN_Cleanup
 (
-   IN HANDLE ServiceHandle
+    IN HANDLE ServiceHandle
 );
 
 HANDLE QCWWAN_RegisterDeviceNotification
 (
-   HANDLE                ServiceHandle,
-   NOTIFICATION_CALLBACK CallBack
+    HANDLE                ServiceHandle,
+    NOTIFICATION_CALLBACK CallBack
 );
 
 BOOL QCWWAN_ReadRaw
 (
-   IN  HANDLE ServiceHandle,
-   OUT PCHAR  ReceiveBuffer,
-   IN  ULONG  ReceiveBufferSize,
-   OUT PULONG BytesRead
+    IN  HANDLE ServiceHandle,
+    OUT PCHAR  ReceiveBuffer,
+    IN  ULONG  ReceiveBufferSize,
+    OUT PULONG BytesRead
 );
 
 BOOL QCWWAN_SendRaw
 (
-   IN  HANDLE ServiceHandle,
-   IN  PCHAR  SendBuffer,
-   IN  ULONG  SendLength,
-   OUT PULONG BytesWritten
+    IN  HANDLE ServiceHandle,
+    IN  PCHAR  SendBuffer,
+    IN  ULONG  SendLength,
+    OUT PULONG BytesWritten
 );
 
 BOOL QCWWAN_TextMessageToBinary
 (
-   IN  PCHAR  Text,
-   OUT PCHAR  BinaryBuffer,
-   IN  ULONG  BinaryBufferSize,
-   OUT PULONG ReturnedBinaryLength
+    IN  PCHAR  Text,
+    OUT PCHAR  BinaryBuffer,
+    IN  ULONG  BinaryBufferSize,
+    OUT PULONG ReturnedBinaryLength
 );
 
 BOOL QCWWAN_BinaryMessageToText
 (
-   IN  HANDLE ServiceHandle,
-   IN  PCHAR  BinaryMessage,
-   IN  ULONG  BinaryLength,
-   OUT PCHAR  TextBuffer,
-   IN  ULONG  TextBufferSize
+    IN  HANDLE ServiceHandle,
+    IN  PCHAR  BinaryMessage,
+    IN  ULONG  BinaryLength,
+    OUT PCHAR  TextBuffer,
+    IN  ULONG  TextBufferSize
 );
 
 USHORT QCWWAN_GenerateTransactionId(VOID);
 
 BOOL WINAPI QCWWAN_GetClientId
 (
-   HANDLE ServiceHandle,
-   PUCHAR ClientId
+    HANDLE ServiceHandle,
+    PUCHAR ClientId
 );
 
 #endif // API_H

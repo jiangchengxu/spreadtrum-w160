@@ -40,14 +40,14 @@ public:
     void SetTextColor(COLORREF crTextColor);
     void SetTextRect(CRect& rcText);
     void SetTextFormat(UINT uTextFormat);
-    
-protected:    
+
+protected:
     FN_ANIMATE_WINDOW m_fnAnimateWindow;
     CWnd *m_pWndParent;
     CBitmap m_bitmap;
     CFont m_myFont;
     HRGN m_hRegion;
-    
+
     DWORD m_dwStyle;
     DWORD m_dwTimeout;
     CString m_strText;
@@ -59,7 +59,7 @@ protected:
     int m_nBitmapHeight;
     int m_nxPos;
     int m_nyPos;
-        
+
     HRGN CreateRgnFromBitmap(HBITMAP hBmp, COLORREF color);
     void DrawWindow(CDC *pDC);
 

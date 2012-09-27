@@ -10,11 +10,11 @@
 #define HDCTRL_BK_COLOR (RGB(233,230,213))//定义Tablist控件标题栏的颜色  modify by liubs
 namespace ItemCompareFunc
 {
-    BOOL IsDecNumber(const CString& str, double& f);
-    int DecNumberCompare(double f1, double f2);
-    
-    BOOL IsDate(const CString& str, COleDateTime& date);
-    int DateCompare(const COleDateTime& date1, const COleDateTime& date2);
+BOOL IsDecNumber(const CString& str, double& f);
+int DecNumberCompare(double f1, double f2);
+
+BOOL IsDate(const CString& str, COleDateTime& date);
+int DateCompare(const COleDateTime& date1, const COleDateTime& date2);
 }
 /////////////////////////////////////////////////////////////////////////////
 // CHeaderCtrlEx window
@@ -41,9 +41,9 @@ public:
 // Overrides
     // ClassWizard generated virtual function overrides
     //{{AFX_VIRTUAL(CHeaderCtrlEx)
-	public:
+public:
     virtual void DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct);
-	//}}AFX_VIRTUAL
+    //}}AFX_VIRTUAL
 
 // Implementation
 public:

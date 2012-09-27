@@ -15,41 +15,41 @@ class CDlgEditGPMember : public CBaseDialog
 {
 // Construction
 public:
-	CDlgEditGPMember(CWnd* pParent = NULL, CString groupName=_T(""));   // standard constructor
+    CDlgEditGPMember(CWnd* pParent = NULL, CString groupName=_T(""));   // standard constructor
 
 
-	enum { IDD = IDD_DIALOG_GPMEMBER };
+    enum { IDD = IDD_DIALOG_GPMEMBER };
 
-	protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+protected:
+    virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 
-	CString m_strGroupName;
-	CMyListCtrl m_ListPhoneBook;
-	CMyListCtrl m_ListGPMember;
+    CString m_strGroupName;
+    CMyListCtrl m_ListPhoneBook;
+    CMyListCtrl m_ListGPMember;
 
 
 protected:
 
-	// Generated message map functions
-	//{{AFX_MSG(CDlgEditGPMember)
-		// NOTE: the ClassWizard will add member functions here
-	//}}AFX_MSG
-	DECLARE_MESSAGE_MAP()
+    // Generated message map functions
+    //{{AFX_MSG(CDlgEditGPMember)
+    // NOTE: the ClassWizard will add member functions here
+    //}}AFX_MSG
+    DECLARE_MESSAGE_MAP()
 
 public:
-	virtual BOOL OnInitDialog();
-	void InitListPhoneBook();
-	void InitListGPMember();
-	void OnButtonToRight();
-	void OnButtonToLeft();
-	void OnButtonOK();
-	void OnButtonView();
-	LRESULT OnDblclkListPhonebook(WPARAM wParam, LPARAM lParam);
-	LRESULT OnDblclkListGPMember(WPARAM wParam, LPARAM lParam);
+    virtual BOOL OnInitDialog();
+    void InitListPhoneBook();
+    void InitListGPMember();
+    void OnButtonToRight();
+    void OnButtonToLeft();
+    void OnButtonOK();
+    void OnButtonView();
+    LRESULT OnDblclkListPhonebook(WPARAM wParam, LPARAM lParam);
+    LRESULT OnDblclkListGPMember(WPARAM wParam, LPARAM lParam);
 
-		int m_nGroupSelected;
+    int m_nGroupSelected;
 private:
-	CPbData  *m_pPbData;
+    CPbData  *m_pPbData;
 };
 
 //{{AFX_INSERT_LOCATION}}

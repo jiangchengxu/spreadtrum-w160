@@ -65,8 +65,7 @@
 const static uint16 WM_NEW_NOTICE = 0x0401;
 
 // constants used to determine whether or not to display an AfxMsgBox
-enum
-{
+enum {
     NO_MSG_BOX = 0,
     MSG_BOX = 1
 };
@@ -78,7 +77,7 @@ enum
 ConnectionManagerDlg::ConnectionManagerDlg(CWnd* pParent /*=NULL*/)	:
     CDialog(ConnectionManagerDlg::IDD, pParent)
 {
-	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
+    m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 }
 
 // --------------------------------------------------------------------------
@@ -95,15 +94,15 @@ ConnectionManagerDlg::~ConnectionManagerDlg()
 // --------------------------------------------------------------------------
 void ConnectionManagerDlg::DoDataExchange(CDataExchange* pDX)
 {
-	CDialog::DoDataExchange(pDX);
+    CDialog::DoDataExchange(pDX);
 }
 
 BEGIN_MESSAGE_MAP(ConnectionManagerDlg, CDialog)
-	ON_WM_SYSCOMMAND()
-	ON_WM_PAINT()
-	ON_WM_QUERYDRAGICON()
+    ON_WM_SYSCOMMAND()
+    ON_WM_PAINT()
+    ON_WM_QUERYDRAGICON()
     ON_MESSAGE(WM_NEW_NOTICE,OnNewNotice)
-	//}}AFX_MSG_MAP
+    //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 // --------------------------------------------------------------------------
@@ -111,48 +110,44 @@ END_MESSAGE_MAP()
 // --------------------------------------------------------------------------
 BOOL ConnectionManagerDlg::OnInitDialog()
 {
-	CDialog::OnInitDialog();
+    CDialog::OnInitDialog();
 
-	// Add "About..." menu item to system menu.
+    // Add "About..." menu item to system menu.
 
-	// IDM_ABOUTBOX must be in the system command range.
-	ASSERT((IDM_ABOUTBOX & 0xFFF0) == IDM_ABOUTBOX);
-	ASSERT(IDM_ABOUTBOX < 0xF000);
+    // IDM_ABOUTBOX must be in the system command range.
+    ASSERT((IDM_ABOUTBOX & 0xFFF0) == IDM_ABOUTBOX);
+    ASSERT(IDM_ABOUTBOX < 0xF000);
 
-	CMenu* pSysMenu = GetSystemMenu(FALSE);
-	if (pSysMenu != NULL)
-	{
+    CMenu* pSysMenu = GetSystemMenu(FALSE);
+    if (pSysMenu != NULL) {
         CString strUsersGuideMenu;
-		strUsersGuideMenu.LoadString(IDS_USER_GUIDE);
-		CString strAboutMenu;
-		strAboutMenu.LoadString(IDS_ABOUTBOX);
+        strUsersGuideMenu.LoadString(IDS_USER_GUIDE);
+        CString strAboutMenu;
+        strAboutMenu.LoadString(IDS_ABOUTBOX);
 
-        if (!strAboutMenu.IsEmpty() || !strUsersGuideMenu.IsEmpty())
-		{
-			pSysMenu->AppendMenu(MF_SEPARATOR);
+        if (!strAboutMenu.IsEmpty() || !strUsersGuideMenu.IsEmpty()) {
+            pSysMenu->AppendMenu(MF_SEPARATOR);
         }
 
-        if (!strAboutMenu.IsEmpty())
-		{
-			// @@
+        if (!strAboutMenu.IsEmpty()) {
+            // @@
 #if 0
-			pSysMenu->AppendMenu(MF_STRING, IDM_USER_GUIDE, strUsersGuideMenu);
+            pSysMenu->AppendMenu(MF_STRING, IDM_USER_GUIDE, strUsersGuideMenu);
 #else
-			#define IDM_USER_GUIDE                  0x0020
-			pSysMenu->AppendMenu(MF_STRING, IDM_USER_GUIDE, strUsersGuideMenu);
+#define IDM_USER_GUIDE                  0x0020
+            pSysMenu->AppendMenu(MF_STRING, IDM_USER_GUIDE, strUsersGuideMenu);
 #endif
-		}
+        }
 
-		if (!strAboutMenu.IsEmpty())
-		{
-			pSysMenu->AppendMenu(MF_STRING, IDM_ABOUTBOX, strAboutMenu);
-		}
-	}
+        if (!strAboutMenu.IsEmpty()) {
+            pSysMenu->AppendMenu(MF_STRING, IDM_ABOUTBOX, strAboutMenu);
+        }
+    }
 
-	// Set the icon for this dialog.  The framework does this automatically
-	//  when the application's main window is not a dialog
-	SetIcon(m_hIcon, TRUE);			// Set big icon
-	SetIcon(m_hIcon, FALSE);		// Set small icon
+    // Set the icon for this dialog.  The framework does this automatically
+    //  when the application's main window is not a dialog
+    SetIcon(m_hIcon, TRUE);			// Set big icon
+    SetIcon(m_hIcon, FALSE);		// Set small icon
 
 // @@@@@@
 #ifdef OPEN_PAGE_UI
@@ -161,7 +156,7 @@ BOOL ConnectionManagerDlg::OnInitDialog()
     m_statisticsPage.SetCMDlg(this);
     m_statusPage.SetCMDlg(this);
 
-	// add pages to sheet
+    // add pages to sheet
     m_propSheet.AddPage(&m_connectionPage);
     m_propSheet.AddPage(&m_profilesPage);
 // !!!    m_propSheet.AddPage(&m_simPage);
@@ -184,7 +179,7 @@ BOOL ConnectionManagerDlg::OnInitDialog()
     MessageManager::GetInstance().StartMessageManager();
 #endif
 
-	return TRUE;  // return TRUE  unless you set the focus to a control
+    return TRUE;  // return TRUE  unless you set the focus to a control
 }
 
 // --------------------------------------------------------------------------
@@ -205,29 +200,24 @@ void ConnectionManagerDlg::OnSysCommand(UINT nID, LPARAM lParam)
 {
 // @@
 #if 0
-	if ((nID & 0xFFF0) == IDM_ABOUTBOX)
-	{
-		AboutDlg dlgAbout;
-		dlgAbout.DoModal();
-	}
-    else if ((nID & 0xFFF0) == IDM_USER_GUIDE)
+    if ((nID & 0xFFF0) == IDM_ABOUTBOX) {
+        AboutDlg dlgAbout;
+        dlgAbout.DoModal();
+    } else if ((nID & 0xFFF0) == IDM_USER_GUIDE)
 #else
-	if ((nID & 0xFFF0) == IDM_USER_GUIDE)
+    if ((nID & 0xFFF0) == IDM_USER_GUIDE)
 #endif
-	{
+    {
         // try to open in production path
         if(OpenUserGuide("\\QMICMUserGuide.pdf")) return;
 
         // try to open in perforce path
-        if (!OpenUserGuide("..\\..\\Documents\\QMICMUserGuide.pdf"))
-        {
+        if (!OpenUserGuide("..\\..\\Documents\\QMICMUserGuide.pdf")) {
             AfxMessageBox(_T("QMICM User Guide Unavailable"));
         }
-	}
-	else
-	{
-		CDialog::OnSysCommand(nID, lParam);
-	}
+    } else {
+        CDialog::OnSysCommand(nID, lParam);
+    }
 }
 
 // --------------------------------------------------------------------------
@@ -248,17 +238,14 @@ bool ConnectionManagerDlg::OpenUserGuide(const char* relativePath)
     // get the path to the exe
 
 
-	char filePath[MAX_PATH];
+    char filePath[MAX_PATH];
 
     ::GetModuleFileNameA(NULL, filePath, MAX_PATH);
     // get the long path to the exe
     char longPath[MAX_PATH];
-    if(0 < ::GetLongPathNameA(filePath, longPath, MAX_PATH))
-    {
+    if(0 < ::GetLongPathNameA(filePath, longPath, MAX_PATH)) {
         temp = longPath;
-    }
-    else
-    {
+    } else {
         temp =  filePath;
     }
 
@@ -267,8 +254,7 @@ bool ConnectionManagerDlg::OpenUserGuide(const char* relativePath)
     path = modulePath =  temp.substr(0, temp.find_last_of("\\/"));
 
     // make sure we have a separator
-    if(relativePath[0] != '\\')
-    {
+    if(relativePath[0] != '\\') {
         path += '\\';
     }
 
@@ -278,16 +264,16 @@ bool ConnectionManagerDlg::OpenUserGuide(const char* relativePath)
     // open the qmicm user guide
 
     int result = (int)ShellExecuteA(AfxGetMainWnd()->m_hWnd,
-                                  "open",
-                                  path.c_str(),
-                                  NULL,
-                                  modulePath.c_str(),
-                                  SW_SHOWNORMAL);
+                                    "open",
+                                    path.c_str(),
+                                    NULL,
+                                    modulePath.c_str(),
+                                    SW_SHOWNORMAL);
 
     // greater than 32 if successful
 
     return (result > 32);
-	
+
 
 }
 
@@ -298,29 +284,26 @@ bool ConnectionManagerDlg::OpenUserGuide(const char* relativePath)
 // to draw the icon.  For MFC applications using the document/view model,
 // this is automatically done for you by the framework.
 // --------------------------------------------------------------------------
-void ConnectionManagerDlg::OnPaint() 
+void ConnectionManagerDlg::OnPaint()
 {
-	if (IsIconic())
-	{
-		CPaintDC dc(this); // device context for painting
+    if (IsIconic()) {
+        CPaintDC dc(this); // device context for painting
 
-		SendMessage(WM_ICONERASEBKGND, reinterpret_cast<WPARAM>(dc.GetSafeHdc()), 0);
+        SendMessage(WM_ICONERASEBKGND, reinterpret_cast<WPARAM>(dc.GetSafeHdc()), 0);
 
-		// Center icon in client rectangle
-		int cxIcon = GetSystemMetrics(SM_CXICON);
-		int cyIcon = GetSystemMetrics(SM_CYICON);
-		CRect rect;
-		GetClientRect(&rect);
-		int x = (rect.Width() - cxIcon + 1) / 2;
-		int y = (rect.Height() - cyIcon + 1) / 2;
+        // Center icon in client rectangle
+        int cxIcon = GetSystemMetrics(SM_CXICON);
+        int cyIcon = GetSystemMetrics(SM_CYICON);
+        CRect rect;
+        GetClientRect(&rect);
+        int x = (rect.Width() - cxIcon + 1) / 2;
+        int y = (rect.Height() - cyIcon + 1) / 2;
 
-		// Draw the icon
-		dc.DrawIcon(x, y, m_hIcon);
-	}
-	else
-	{
-		CDialog::OnPaint();
-	}
+        // Draw the icon
+        dc.DrawIcon(x, y, m_hIcon);
+    } else {
+        CDialog::OnPaint();
+    }
 }
 
 // --------------------------------------------------------------------------
@@ -331,7 +314,7 @@ void ConnectionManagerDlg::OnPaint()
 // --------------------------------------------------------------------------
 HCURSOR ConnectionManagerDlg::OnQueryDragIcon()
 {
-	return static_cast<HCURSOR>(m_hIcon);
+    return static_cast<HCURSOR>(m_hIcon);
 }
 
 // --------------------------------------------------------------------------
@@ -363,7 +346,7 @@ void ConnectionManagerDlg::DeselectDevice()
 // --------------------------------------------------------------------------
 // SendRequest
 //
-/// SendRequest takes a string representation of a Message and coordinates 
+/// SendRequest takes a string representation of a Message and coordinates
 /// with the MessageManager to send the request to the device.
 ///
 /// @param msgStr - string representation of a Message.
@@ -371,8 +354,7 @@ void ConnectionManagerDlg::DeselectDevice()
 void ConnectionManagerDlg::SendRequest(std::string& msgStr)
 {
     // send request to MessageManager
-    if (!msgStr.empty())
-    {
+    if (!msgStr.empty()) {
         MessageManager::GetInstance().SendMessage(msgStr);
     }
 }
@@ -383,7 +365,7 @@ void ConnectionManagerDlg::SendRequest(std::string& msgStr)
 /// Actions to take when a NoticeRCP is received from a NoticePublisher. Put
 /// the NoticeRCP on the notice queue and post a message that a new notice
 /// has been received. Notices can be sent from multiple threads and the
-/// queue/post paradigm ensures that only the main thread processes notices. 
+/// queue/post paradigm ensures that only the main thread processes notices.
 // --------------------------------------------------------------------------
 void ConnectionManagerDlg::OnPublisherNotify
 (
@@ -412,25 +394,23 @@ LRESULT ConnectionManagerDlg::OnNewNotice(WPARAM wParam,LPARAM lParam)
     uint8 noticeType = noticeRCP->GetNoticeType();
 
 
-    switch(noticeType)
-    {
-        case NT_MESSAGE:
-            {
-            ProcessMsgNotice(noticeRCP);
-            break;
-            }
-        case NT_STATUS:
-            ProcessStatusNotice(noticeRCP);
-            break;
-        case NT_DEVICE:
-            ProcessDeviceNotice(noticeRCP);
-            break;
-        default:
-            std::stringstream stream;
- USES_CONVERSION;
-			stream << "Error: Unknown notice type received:" << std::endl
-                   << "  Notice Type: " << (int)noticeType << std::endl;
-            AfxMessageBox(A2W(stream.str().c_str()));
+    switch(noticeType) {
+    case NT_MESSAGE: {
+        ProcessMsgNotice(noticeRCP);
+        break;
+    }
+    case NT_STATUS:
+        ProcessStatusNotice(noticeRCP);
+        break;
+    case NT_DEVICE:
+        ProcessDeviceNotice(noticeRCP);
+        break;
+    default:
+        std::stringstream stream;
+        USES_CONVERSION;
+        stream << "Error: Unknown notice type received:" << std::endl
+               << "  Notice Type: " << (int)noticeType << std::endl;
+        AfxMessageBox(A2W(stream.str().c_str()));
     }
 
     return NULL;
@@ -458,31 +438,30 @@ void ConnectionManagerDlg::ProcessMsgNotice(NoticeRCP noticeRCP)
     uint32 msgUID = (svcType << 24 | ctlType << 16 | msgType);
 
     // switch on control type
-    switch (ctlType)
-    {
-        case QMI_CTL_FLAG_TYPE_CMD:
-            ProcessReqMsgNotice(msgRCP,msgUID);
-            break;
-        case QMI_CTL_FLAG_TYPE_RSP:
-            ProcessRspMsgNotice(msgRCP,msgUID);
-            break;
-        case QMI_CTL_FLAG_TYPE_IND:
-            ProcessIndMsgNotice(msgRCP,msgUID);
-            break;
-        default:
-            // control type not recognized
+    switch (ctlType) {
+    case QMI_CTL_FLAG_TYPE_CMD:
+        ProcessReqMsgNotice(msgRCP,msgUID);
+        break;
+    case QMI_CTL_FLAG_TYPE_RSP:
+        ProcessRspMsgNotice(msgRCP,msgUID);
+        break;
+    case QMI_CTL_FLAG_TYPE_IND:
+        ProcessIndMsgNotice(msgRCP,msgUID);
+        break;
+    default:
+        // control type not recognized
 
-            std::stringstream stream;
-            stream.str("");
-            stream << "Error: Unknown message control type received:" << std::endl
-                   << "  Control Type: " << (int)ctlType << std::endl
-                   << std::endl;         
-			USES_CONVERSION;
+        std::stringstream stream;
+        stream.str("");
+        stream << "Error: Unknown message control type received:" << std::endl
+               << "  Control Type: " << (int)ctlType << std::endl
+               << std::endl;
+        USES_CONVERSION;
 
-            AfxMessageBox(A2W(stream.str().c_str()));
-            m_statusPage.AddEventMessage(stream.str(),ST_ERROR);
+        AfxMessageBox(A2W(stream.str().c_str()));
+        m_statusPage.AddEventMessage(stream.str(),ST_ERROR);
 
-            break;
+        break;
     }
 }
 
@@ -496,30 +475,29 @@ void ConnectionManagerDlg::ProcessMsgNotice(NoticeRCP noticeRCP)
 void ConnectionManagerDlg::ProcessReqMsgNotice(MessageRCP msgRCP,uint32 msgUID)
 {
     // switch on unique message id
-    switch (msgUID)
-    {
-        case WDSStartNetworkInterfaceReqUID:
-            ProcessWDSStartReq(msgRCP);
-            break;
-        case WDSDeleteProfileReqUID:
-            ProcessWDSDeleteProfileReq(msgRCP);
-            break;
-        case WDSGetProfileSettingsReqUID:
-            ProcessWDSGetProfileSettingsReq(msgRCP);
-            break;
-        case WDSGetDefaultSettingsReqUID:
-            ProcessWDSGetDefaultSettingsReq(msgRCP);
-            break;
-        default:
-            // most requests do not need processing
-            break;
+    switch (msgUID) {
+    case WDSStartNetworkInterfaceReqUID:
+        ProcessWDSStartReq(msgRCP);
+        break;
+    case WDSDeleteProfileReqUID:
+        ProcessWDSDeleteProfileReq(msgRCP);
+        break;
+    case WDSGetProfileSettingsReqUID:
+        ProcessWDSGetProfileSettingsReq(msgRCP);
+        break;
+    case WDSGetDefaultSettingsReqUID:
+        ProcessWDSGetDefaultSettingsReq(msgRCP);
+        break;
+    default:
+        // most requests do not need processing
+        break;
     }
 }
 
 // --------------------------------------------------------------------------
 // ProcessRspMsgNotice
 //
-/// Actions to take when a response message is received from the 
+/// Actions to take when a response message is received from the
 /// MessageManager.
 ///
 /// @params msgRCP - Notice reference counted pointer to process.
@@ -527,94 +505,93 @@ void ConnectionManagerDlg::ProcessReqMsgNotice(MessageRCP msgRCP,uint32 msgUID)
 void ConnectionManagerDlg::ProcessRspMsgNotice(MessageRCP msgRCP,uint32 msgUID)
 {
     // switch on unique message id
-    switch (msgUID)
-    {
-        case WDSSetEventReportRspUID:
-            ProcessWDSSetEventReportRsp(msgRCP);
-            break;
-        case DMSSetEventReportRspUID:
-            ProcessDMSSetEventReportRsp(msgRCP);
-            break;
-        case NASSetEventReportRspUID:
-            ProcessNASSetEventReportRsp(msgRCP);
-            break;
-        case DMSGetPowerStateRspUID:
-            ProcessDMSGetPowerStateRsp(msgRCP);
-            break;
-        case DMSGetDeviceMfrRspUID:
-            ProcessDMSGetDeviceMfrRsp(msgRCP);
-            break;
-        case DMSGetDeviceModelIdRspUID:
-            ProcessDMSGetDeviceModelIdRsp(msgRCP);
-            break;
-        case DMSGetDeviceRevIdRspUID:
-            ProcessDMSGetDeviceRevIdRsp(msgRCP);
-            break;
-        case DMSGetMsisdnRspUID:
-            ProcessDMSGetMsisdnRsp(msgRCP);
-            break;
-        case DMSGetDeviceSerialNumbersRspUID:
-            ProcessDMSGetDeviceSerialNumbersRsp(msgRCP);
-            break;
-        case DMSGetDeviceCapRspUID:
-            ProcessDMSGetDeviceCapRsp(msgRCP);
-            break;
-        case NASGetSignalStrengthRspUID:
-            ProcessNASGetSignalStrengthRsp(msgRCP);
-            break;
-        case NASGetServingSystemRspUID:
-            ProcessNASGetServingSystemRsp(msgRCP);
-            break;
-        case WDSAbortRspUID:
-            ProcessWDSAbortRsp(msgRCP);
-            break;
-        case WDSStartNetworkInterfaceRspUID:
-            ProcessWDSStartRsp(msgRCP);
-            break;
-        case WDSStopNetworkInterfaceRspUID:
-            ProcessWDSStopRsp(msgRCP);
-            break;
-        case WDSGetCurrentChannelRateRspUID:
-            ProcessWDSGetCurrentChannelRateRsp(msgRCP);
-            break;
-        case WDSCreateProfileRspUID:
-            ProcessWDSCreateProfileRsp(msgRCP);
-            break;
-        case WDSModifyProfileSettingsRspUID:
-            ProcessWDSModifyProfileSettingsRsp(msgRCP);
-            break;
-        case WDSDeleteProfileRspUID:
-            ProcessWDSDeleteProfileRsp(msgRCP);
-            break;
-        case WDSGetProfileListRspUID:
-            ProcessWDSGetProfileListRsp(msgRCP);
-            break;
-        case WDSGetProfileSettingsRspUID:
-            ProcessWDSGetProfileSettingsRsp(msgRCP);
-            break;
-        case WDSGetDefaultSettingsRspUID:
-            ProcessWDSGetDefaultSettingsRsp(msgRCP);
-            break;
-        default:
-            // msgUID not recognized, details in status
-USES_CONVERSION;
-            std::stringstream stream;
-            stream << "Error: Unknown message type received:" << std::endl
-                   << "  Service Type: " << SERVICE_TYPE_STRINGS[msgRCP->GetSvcType()] << std::endl
-                   << "  Control Type: " << (int)msgRCP->GetCtlType() << std::endl
-                   << "  Message Type: " << (int)msgRCP->GetMsgType() << std::endl
-                   << std::endl;                   
-            AfxMessageBox(A2W(stream.str().c_str()));
-            m_statusPage.AddEventMessage(stream.str(),ST_ERROR);
+    switch (msgUID) {
+    case WDSSetEventReportRspUID:
+        ProcessWDSSetEventReportRsp(msgRCP);
+        break;
+    case DMSSetEventReportRspUID:
+        ProcessDMSSetEventReportRsp(msgRCP);
+        break;
+    case NASSetEventReportRspUID:
+        ProcessNASSetEventReportRsp(msgRCP);
+        break;
+    case DMSGetPowerStateRspUID:
+        ProcessDMSGetPowerStateRsp(msgRCP);
+        break;
+    case DMSGetDeviceMfrRspUID:
+        ProcessDMSGetDeviceMfrRsp(msgRCP);
+        break;
+    case DMSGetDeviceModelIdRspUID:
+        ProcessDMSGetDeviceModelIdRsp(msgRCP);
+        break;
+    case DMSGetDeviceRevIdRspUID:
+        ProcessDMSGetDeviceRevIdRsp(msgRCP);
+        break;
+    case DMSGetMsisdnRspUID:
+        ProcessDMSGetMsisdnRsp(msgRCP);
+        break;
+    case DMSGetDeviceSerialNumbersRspUID:
+        ProcessDMSGetDeviceSerialNumbersRsp(msgRCP);
+        break;
+    case DMSGetDeviceCapRspUID:
+        ProcessDMSGetDeviceCapRsp(msgRCP);
+        break;
+    case NASGetSignalStrengthRspUID:
+        ProcessNASGetSignalStrengthRsp(msgRCP);
+        break;
+    case NASGetServingSystemRspUID:
+        ProcessNASGetServingSystemRsp(msgRCP);
+        break;
+    case WDSAbortRspUID:
+        ProcessWDSAbortRsp(msgRCP);
+        break;
+    case WDSStartNetworkInterfaceRspUID:
+        ProcessWDSStartRsp(msgRCP);
+        break;
+    case WDSStopNetworkInterfaceRspUID:
+        ProcessWDSStopRsp(msgRCP);
+        break;
+    case WDSGetCurrentChannelRateRspUID:
+        ProcessWDSGetCurrentChannelRateRsp(msgRCP);
+        break;
+    case WDSCreateProfileRspUID:
+        ProcessWDSCreateProfileRsp(msgRCP);
+        break;
+    case WDSModifyProfileSettingsRspUID:
+        ProcessWDSModifyProfileSettingsRsp(msgRCP);
+        break;
+    case WDSDeleteProfileRspUID:
+        ProcessWDSDeleteProfileRsp(msgRCP);
+        break;
+    case WDSGetProfileListRspUID:
+        ProcessWDSGetProfileListRsp(msgRCP);
+        break;
+    case WDSGetProfileSettingsRspUID:
+        ProcessWDSGetProfileSettingsRsp(msgRCP);
+        break;
+    case WDSGetDefaultSettingsRspUID:
+        ProcessWDSGetDefaultSettingsRsp(msgRCP);
+        break;
+    default:
+        // msgUID not recognized, details in status
+        USES_CONVERSION;
+        std::stringstream stream;
+        stream << "Error: Unknown message type received:" << std::endl
+               << "  Service Type: " << SERVICE_TYPE_STRINGS[msgRCP->GetSvcType()] << std::endl
+               << "  Control Type: " << (int)msgRCP->GetCtlType() << std::endl
+               << "  Message Type: " << (int)msgRCP->GetMsgType() << std::endl
+               << std::endl;
+        AfxMessageBox(A2W(stream.str().c_str()));
+        m_statusPage.AddEventMessage(stream.str(),ST_ERROR);
 
-            break;
+        break;
     }
 }
 
 // --------------------------------------------------------------------------
 // ProcessIndMsgNotice
 //
-/// Actions to take when an indicator message is received from the 
+/// Actions to take when an indicator message is received from the
 /// MessageManager.
 ///
 /// @params msgRCP - Notice reference counted pointer to process.
@@ -622,37 +599,36 @@ USES_CONVERSION;
 void ConnectionManagerDlg::ProcessIndMsgNotice(MessageRCP msgRCP,uint32 msgUID)
 {
     // switch on unique message id
-    switch (msgUID)
-    {
-        case WDSEventReportIndUID:
-            ProcessWDSEventReportInd(msgRCP);
-            break;
-        case DMSEventReportIndUID:
-            ProcessDMSEventReportInd(msgRCP);
-            break;
-        case NASEventReportIndUID:
-            ProcessNASEventReportInd(msgRCP);
-            break;
-        case NASServingSystemIndUID:
-            ProcessNASServingSystemInd(msgRCP);
-            break;
-        case WDSPktSrvcStatusIndUID:
-            ProcessWDSPktSrvcStatusInd(msgRCP);
-            break; 
-        default:
-            // msgUID not recognized, details in status
+    switch (msgUID) {
+    case WDSEventReportIndUID:
+        ProcessWDSEventReportInd(msgRCP);
+        break;
+    case DMSEventReportIndUID:
+        ProcessDMSEventReportInd(msgRCP);
+        break;
+    case NASEventReportIndUID:
+        ProcessNASEventReportInd(msgRCP);
+        break;
+    case NASServingSystemIndUID:
+        ProcessNASServingSystemInd(msgRCP);
+        break;
+    case WDSPktSrvcStatusIndUID:
+        ProcessWDSPktSrvcStatusInd(msgRCP);
+        break;
+    default:
+        // msgUID not recognized, details in status
 
-            std::stringstream stream;
-            stream << "Error: Unknown message type received:" << std::endl
-                   << "  Service Type: " << SERVICE_TYPE_STRINGS[msgRCP->GetSvcType()] << std::endl
-                   << "  Control Type: " << (int)msgRCP->GetCtlType() << std::endl
-                   << "  Message Type: " << (int)msgRCP->GetMsgType() << std::endl
-                   << std::endl;     
-			USES_CONVERSION;
-            AfxMessageBox(A2W(stream.str().c_str()));
-            m_statusPage.AddEventMessage(stream.str(),ST_ERROR);
+        std::stringstream stream;
+        stream << "Error: Unknown message type received:" << std::endl
+               << "  Service Type: " << SERVICE_TYPE_STRINGS[msgRCP->GetSvcType()] << std::endl
+               << "  Control Type: " << (int)msgRCP->GetCtlType() << std::endl
+               << "  Message Type: " << (int)msgRCP->GetMsgType() << std::endl
+               << std::endl;
+        USES_CONVERSION;
+        AfxMessageBox(A2W(stream.str().c_str()));
+        m_statusPage.AddEventMessage(stream.str(),ST_ERROR);
 
-            break;
+        break;
     }
 }
 
@@ -665,7 +641,7 @@ void ConnectionManagerDlg::ProcessIndMsgNotice(MessageRCP msgRCP,uint32 msgUID)
 // --------------------------------------------------------------------------
 void ConnectionManagerDlg::ProcessWDSStartReq(MessageRCP msgRCP)
 {
-    WDSStartNetworkInterfaceReqRCP reqRCP = 
+    WDSStartNetworkInterfaceReqRCP reqRCP =
         rcp_cast<WDSStartNetworkInterfaceReq*>(msgRCP);
 
     // set the start message transaction id in connection page (for abort)
@@ -696,7 +672,7 @@ void ConnectionManagerDlg::ProcessWDSDeleteProfileReq(MessageRCP msgRCP)
 // --------------------------------------------------------------------------
 void ConnectionManagerDlg::ProcessWDSGetProfileSettingsReq(MessageRCP msgRCP)
 {
-    WDSGetProfileSettingsReqRCP reqRCP = 
+    WDSGetProfileSettingsReqRCP reqRCP =
         rcp_cast<WDSGetProfileSettingsReq*>(msgRCP);
 
     // call ProfilesPage process method
@@ -712,7 +688,7 @@ void ConnectionManagerDlg::ProcessWDSGetProfileSettingsReq(MessageRCP msgRCP)
 // --------------------------------------------------------------------------
 void ConnectionManagerDlg::ProcessWDSGetDefaultSettingsReq(MessageRCP msgRCP)
 {
-    WDSGetDefaultSettingsReqRCP reqRCP = 
+    WDSGetDefaultSettingsReqRCP reqRCP =
         rcp_cast<WDSGetDefaultSettingsReq*>(msgRCP);
 
     // call ProfilesPage process method
@@ -732,8 +708,7 @@ void ConnectionManagerDlg::ProcessWDSSetEventReportRsp(MessageRCP msgRCP)
 
     // verify msg successful
 
-    if (rspRCP->GetResult() != QMI_RESULT_SUCCESS)
-    {
+    if (rspRCP->GetResult() != QMI_RESULT_SUCCESS) {
         ReportMsgFailed("WDSSetEventReportReq",rspRCP->GetError(),NO_MSG_BOX);
     }
 }
@@ -751,8 +726,7 @@ void ConnectionManagerDlg::ProcessDMSSetEventReportRsp(MessageRCP msgRCP)
 
     // verify msg successful
 
-    if (rspRCP->GetResult() != QMI_RESULT_SUCCESS)
-    {
+    if (rspRCP->GetResult() != QMI_RESULT_SUCCESS) {
         ReportMsgFailed("DMSSetEventReportReq",rspRCP->GetError(),NO_MSG_BOX);
     }
 
@@ -770,8 +744,7 @@ void ConnectionManagerDlg::ProcessNASSetEventReportRsp(MessageRCP msgRCP)
     NASSetEventReportRspRCP rspRCP = rcp_cast<NASSetEventReportRsp*>(msgRCP);
 
     // verify msg successful
-    if (rspRCP->GetResult() != QMI_RESULT_SUCCESS)
-    {
+    if (rspRCP->GetResult() != QMI_RESULT_SUCCESS) {
         ReportMsgFailed("NASSetEventReportReq",rspRCP->GetError(),NO_MSG_BOX);
     }
 }
@@ -833,8 +806,7 @@ void ConnectionManagerDlg::ProcessDMSGetPowerStateRsp(MessageRCP msgRCP)
     DMSGetPowerStateRspRCP rspRCP = rcp_cast<DMSGetPowerStateRsp*>(msgRCP);
 
     // verify message was successful
-    if (rspRCP->GetResult() != QMI_RESULT_SUCCESS)
-    {
+    if (rspRCP->GetResult() != QMI_RESULT_SUCCESS) {
         ReportMsgFailed("DMSGetPowerStateReq",rspRCP->GetError(),NO_MSG_BOX);
         return;
     }
@@ -855,8 +827,7 @@ void ConnectionManagerDlg::ProcessDMSGetDeviceMfrRsp(MessageRCP msgRCP)
     DMSGetDeviceMfrRspRCP rspRCP = rcp_cast<DMSGetDeviceMfrRsp*>(msgRCP);
 
     // verify message was successful
-    if (rspRCP->GetResult() != QMI_RESULT_SUCCESS)
-    {
+    if (rspRCP->GetResult() != QMI_RESULT_SUCCESS) {
         ReportMsgFailed("DMSGetDeviceMfrReq",rspRCP->GetError(),NO_MSG_BOX);
         return;
     }
@@ -877,8 +848,7 @@ void ConnectionManagerDlg::ProcessDMSGetDeviceModelIdRsp(MessageRCP msgRCP)
     DMSGetDeviceModelIdRspRCP rspRCP = rcp_cast<DMSGetDeviceModelIdRsp*>(msgRCP);
 
     // verify message was successful
-    if (rspRCP->GetResult() != QMI_RESULT_SUCCESS)
-    {
+    if (rspRCP->GetResult() != QMI_RESULT_SUCCESS) {
         ReportMsgFailed("DMSGetDeviceModelIdReq",rspRCP->GetError(),NO_MSG_BOX);
         return;
     }
@@ -899,8 +869,7 @@ void ConnectionManagerDlg::ProcessDMSGetDeviceRevIdRsp(MessageRCP msgRCP)
     DMSGetDeviceRevIdRspRCP rspRCP = rcp_cast<DMSGetDeviceRevIdRsp*>(msgRCP);
 
     // verify message was successful
-    if (rspRCP->GetResult() != QMI_RESULT_SUCCESS)
-    {
+    if (rspRCP->GetResult() != QMI_RESULT_SUCCESS) {
         ReportMsgFailed("DMSGetDeviceRevIdReq",rspRCP->GetError(),NO_MSG_BOX);
         return;
     }
@@ -921,8 +890,7 @@ void ConnectionManagerDlg::ProcessDMSGetMsisdnRsp(MessageRCP msgRCP)
     DMSGetMsisdnRspRCP rspRCP = rcp_cast<DMSGetMsisdnRsp*>(msgRCP);
 
     // verify message was successful
-    if (rspRCP->GetResult() != QMI_RESULT_SUCCESS)
-    {
+    if (rspRCP->GetResult() != QMI_RESULT_SUCCESS) {
         ReportMsgFailed("DMSGetMsisdnReq",rspRCP->GetError(),NO_MSG_BOX);
         return;
     }
@@ -943,8 +911,7 @@ void ConnectionManagerDlg::ProcessDMSGetDeviceSerialNumbersRsp(MessageRCP msgRCP
     DMSGetDeviceSerialNumbersRspRCP rspRCP = rcp_cast<DMSGetDeviceSerialNumbersRsp*>(msgRCP);
 
     // verify message was successful
-    if (rspRCP->GetResult() != QMI_RESULT_SUCCESS)
-    {
+    if (rspRCP->GetResult() != QMI_RESULT_SUCCESS) {
         ReportMsgFailed("DMSGetDeviceSerialNumbersReq",rspRCP->GetError(),NO_MSG_BOX);
         return;
     }
@@ -965,8 +932,7 @@ void ConnectionManagerDlg::ProcessDMSGetDeviceCapRsp(MessageRCP msgRCP)
     DMSGetDeviceCapRspRCP rspRCP = rcp_cast<DMSGetDeviceCapRsp*>(msgRCP);
 
     // verify message was successful
-    if (rspRCP->GetResult() != QMI_RESULT_SUCCESS)
-    {
+    if (rspRCP->GetResult() != QMI_RESULT_SUCCESS) {
         ReportMsgFailed("DMSGetDeviceCapReq",rspRCP->GetError(),NO_MSG_BOX);
         return;
     }
@@ -987,8 +953,7 @@ void ConnectionManagerDlg::ProcessNASGetSignalStrengthRsp(MessageRCP msgRCP)
     NASGetSignalStrengthRspRCP rspRCP = rcp_cast<NASGetSignalStrengthRsp*>(msgRCP);
 
     // verify message was successful
-    if (rspRCP->GetResult() != QMI_RESULT_SUCCESS)
-    {
+    if (rspRCP->GetResult() != QMI_RESULT_SUCCESS) {
         ReportMsgFailed("NASGetSignalStrengthReq",rspRCP->GetError(),NO_MSG_BOX);
         return;
     }
@@ -1009,8 +974,7 @@ void ConnectionManagerDlg::ProcessNASGetServingSystemRsp(MessageRCP msgRCP)
     NASGetServingSystemRspRCP rspRCP = rcp_cast<NASGetServingSystemRsp*>(msgRCP);
 
     // verify message was successful
-    if (rspRCP->GetResult() != QMI_RESULT_SUCCESS)
-    {
+    if (rspRCP->GetResult() != QMI_RESULT_SUCCESS) {
         ReportMsgFailed("NASGetServingSystemReq",rspRCP->GetError(),NO_MSG_BOX);
         return;
     }
@@ -1046,8 +1010,7 @@ void ConnectionManagerDlg::ProcessWDSAbortRsp(MessageRCP msgRCP)
     WDSAbortRspRCP rspRCP = rcp_cast<WDSAbortRsp*>(msgRCP);
 
     // verify message was successful
-    if (rspRCP->GetResult() != QMI_RESULT_SUCCESS)
-    {
+    if (rspRCP->GetResult() != QMI_RESULT_SUCCESS) {
         ReportMsgFailed("WDSAbortReq",rspRCP->GetError(),MSG_BOX);
         return;
     }
@@ -1065,12 +1028,11 @@ void ConnectionManagerDlg::ProcessWDSAbortRsp(MessageRCP msgRCP)
 // --------------------------------------------------------------------------
 void ConnectionManagerDlg::ProcessWDSStartRsp(MessageRCP msgRCP)
 {
-    WDSStartNetworkInterfaceRspRCP rspRCP = 
+    WDSStartNetworkInterfaceRspRCP rspRCP =
         rcp_cast<WDSStartNetworkInterfaceRsp*>(msgRCP);
 
     // verify message was successful
-    if (rspRCP->GetResult() != QMI_RESULT_SUCCESS)
-    {
+    if (rspRCP->GetResult() != QMI_RESULT_SUCCESS) {
         ReportMsgFailed("WDSStartNetworkInterfaceReq",rspRCP->GetError(),MSG_BOX);
 
         // call Page disable methods
@@ -1092,12 +1054,11 @@ void ConnectionManagerDlg::ProcessWDSStartRsp(MessageRCP msgRCP)
 // --------------------------------------------------------------------------
 void ConnectionManagerDlg::ProcessWDSStopRsp(MessageRCP msgRCP)
 {
-    WDSStopNetworkInterfaceRspRCP rspRCP = 
+    WDSStopNetworkInterfaceRspRCP rspRCP =
         rcp_cast<WDSStopNetworkInterfaceRsp*>(msgRCP);
 
     // verify message was successful
-    if (rspRCP->GetResult() != QMI_RESULT_SUCCESS)
-    {
+    if (rspRCP->GetResult() != QMI_RESULT_SUCCESS) {
         ReportMsgFailed("WDSStopNetworkInterfaceReq",rspRCP->GetError(),MSG_BOX);
         return;
     }
@@ -1105,7 +1066,7 @@ void ConnectionManagerDlg::ProcessWDSStopRsp(MessageRCP msgRCP)
     // call Page disable methods
     m_connectionPage.DisableConnectedState();
     m_statisticsPage.DisableConnectedState();
-    
+
     // !!! call msgs to end receiving stats, have stats page handle?
 }
 
@@ -1133,12 +1094,11 @@ void ConnectionManagerDlg::ProcessWDSPktSrvcStatusInd(MessageRCP msgRCP)
 // --------------------------------------------------------------------------
 void ConnectionManagerDlg::ProcessWDSGetCurrentChannelRateRsp(MessageRCP msgRCP)
 {
-    WDSGetCurrentChannelRateRspRCP rspRCP = 
+    WDSGetCurrentChannelRateRspRCP rspRCP =
         rcp_cast<WDSGetCurrentChannelRateRsp*>(msgRCP);
 
     // verify message was successful
-    if (rspRCP->GetResult() != QMI_RESULT_SUCCESS)
-    {
+    if (rspRCP->GetResult() != QMI_RESULT_SUCCESS) {
         ReportMsgFailed("WDSGetCurrentChannelRateReq",rspRCP->GetError(),NO_MSG_BOX);
         return;
     }
@@ -1159,8 +1119,7 @@ void ConnectionManagerDlg::ProcessWDSCreateProfileRsp(MessageRCP msgRCP)
     WDSCreateProfileRspRCP rspRCP = rcp_cast<WDSCreateProfileRsp*>(msgRCP);
 
     // verify message was successful
-    if (rspRCP->GetResult() != QMI_RESULT_SUCCESS)
-    {
+    if (rspRCP->GetResult() != QMI_RESULT_SUCCESS) {
         ReportMsgFailed("WDSCreateProfileReq",rspRCP->GetError(),MSG_BOX);
     }
 
@@ -1177,12 +1136,11 @@ void ConnectionManagerDlg::ProcessWDSCreateProfileRsp(MessageRCP msgRCP)
 // --------------------------------------------------------------------------
 void ConnectionManagerDlg::ProcessWDSModifyProfileSettingsRsp(MessageRCP msgRCP)
 {
-    WDSModifyProfileSettingsRspRCP rspRCP = 
+    WDSModifyProfileSettingsRspRCP rspRCP =
         rcp_cast<WDSModifyProfileSettingsRsp*>(msgRCP);
 
     // verify message was successful
-    if (rspRCP->GetResult() != QMI_RESULT_SUCCESS)
-    {
+    if (rspRCP->GetResult() != QMI_RESULT_SUCCESS) {
         ReportMsgFailed("WDSModifyProfileSettingsReq",rspRCP->GetError(),MSG_BOX);
     }
 
@@ -1202,8 +1160,7 @@ void ConnectionManagerDlg::ProcessWDSDeleteProfileRsp(MessageRCP msgRCP)
     WDSDeleteProfileRspRCP rspRCP = rcp_cast<WDSDeleteProfileRsp*>(msgRCP);
 
     // verify message was successful
-    if (rspRCP->GetResult() != QMI_RESULT_SUCCESS)
-    {
+    if (rspRCP->GetResult() != QMI_RESULT_SUCCESS) {
         ReportMsgFailed("WDSDeleteProfileReq",rspRCP->GetError(),MSG_BOX);
         return;
     }
@@ -1224,8 +1181,7 @@ void ConnectionManagerDlg::ProcessWDSGetProfileListRsp(MessageRCP msgRCP)
     WDSGetProfileListRspRCP rspRCP = rcp_cast<WDSGetProfileListRsp*>(msgRCP);
 
     // verify message was successful
-    if (rspRCP->GetResult() != QMI_RESULT_SUCCESS)
-    {
+    if (rspRCP->GetResult() != QMI_RESULT_SUCCESS) {
         ReportMsgFailed("WDSGetProfileListReq",rspRCP->GetError(),NO_MSG_BOX);
         return;
     }
@@ -1244,12 +1200,11 @@ void ConnectionManagerDlg::ProcessWDSGetProfileListRsp(MessageRCP msgRCP)
 // --------------------------------------------------------------------------
 void ConnectionManagerDlg::ProcessWDSGetProfileSettingsRsp(MessageRCP msgRCP)
 {
-    WDSGetProfileSettingsRspRCP rspRCP = 
+    WDSGetProfileSettingsRspRCP rspRCP =
         rcp_cast<WDSGetProfileSettingsRsp*>(msgRCP);
 
     // verify message was successful
-    if (rspRCP->GetResult() != QMI_RESULT_SUCCESS)
-    {
+    if (rspRCP->GetResult() != QMI_RESULT_SUCCESS) {
         ReportMsgFailed("WDSGetProfileSettingsReq",rspRCP->GetError(),MSG_BOX);
         return;
     }
@@ -1267,12 +1222,11 @@ void ConnectionManagerDlg::ProcessWDSGetProfileSettingsRsp(MessageRCP msgRCP)
 // --------------------------------------------------------------------------
 void ConnectionManagerDlg::ProcessWDSGetDefaultSettingsRsp(MessageRCP msgRCP)
 {
-    WDSGetDefaultSettingsRspRCP rspRCP = 
+    WDSGetDefaultSettingsRspRCP rspRCP =
         rcp_cast<WDSGetDefaultSettingsRsp*>(msgRCP);
 
     // verify message was successful
-    if (rspRCP->GetResult() != QMI_RESULT_SUCCESS)
-    {
+    if (rspRCP->GetResult() != QMI_RESULT_SUCCESS) {
         ReportMsgFailed("WDSGetDefaultSettingsReq",rspRCP->GetError(),MSG_BOX);
         return;
     }
@@ -1292,18 +1246,17 @@ void ConnectionManagerDlg::ProcessStatusNotice(NoticeRCP noticeRCP)
 {
     StatusNoticeRCP statusNoticeRCP = rcp_cast<StatusNotice*>(noticeRCP);
     uint8 severity = statusNoticeRCP->GetSeverity();
-USES_CONVERSION;
-    if (severity == ST_ERROR)
-    {
+    USES_CONVERSION;
+    if (severity == ST_ERROR) {
         AfxMessageBox(A2W(statusNoticeRCP->GetEvent().c_str()));
     }
 
     // pass to status page for processing
     m_statusPage.AddEventMessage
-                 (
-                     statusNoticeRCP->GetEvent(),
-                     statusNoticeRCP->GetSeverity()
-                 );
+    (
+        statusNoticeRCP->GetEvent(),
+        statusNoticeRCP->GetSeverity()
+    );
 }
 
 // --------------------------------------------------------------------------
@@ -1321,95 +1274,92 @@ void ConnectionManagerDlg::ProcessDeviceNotice(NoticeRCP noticeRCP)
     std::vector<std::string> networkAdapters = deviceNoticeRCP->GetNetworkAdapters();
     int size = (int)networkAdapters.size();
 
-	// @@
-	int i = 0;
-	USES_CONVERSION;
+    // @@
+    int i = 0;
+    USES_CONVERSION;
 
-    switch (type)
-    {
-        case DT_AVAILABLE:
-            stream.str("");
-            stream << _T("Attached Network Adapters: ") << std::endl;
+    switch (type) {
+    case DT_AVAILABLE:
+        stream.str("");
+        stream << _T("Attached Network Adapters: ") << std::endl;
 
-            if (size == 0)
-            {
-                stream << _T("None Detected") << std::endl;
-            }
+        if (size == 0) {
+            stream << _T("None Detected") << std::endl;
+        }
 
-            for (/* @@ int */ i = 0; i < size; i++)
-            {
-                stream << networkAdapters[i] << std::endl;
-            }
+        for (/* @@ int */ i = 0; i < size; i++) {
+            stream << networkAdapters[i] << std::endl;
+        }
 
-            stream << std::endl;
-            m_statusPage.AddEventMessage(stream.str(),ST_INFORMATION);
+        stream << std::endl;
+        m_statusPage.AddEventMessage(stream.str(),ST_INFORMATION);
 
-            // update the available devices
-            m_connectionPage.PopulateDeviceNames(networkAdapters);
-            break;
+        // update the available devices
+        m_connectionPage.PopulateDeviceNames(networkAdapters);
+        break;
 
-        case DT_CONNECT:
-            // add event to status page
-            m_statusPage.AddEventMessage(deviceNoticeRCP->GetReason(),ST_INFORMATION);
-            
-            // direct pages to enable appropriate fields
-            m_connectionPage.EnableSelectedState();
-            m_profilesPage.EnableSelectedState();
-            m_statisticsPage.EnableSelectedState();
-            m_statusPage.EnableSelectedState();
+    case DT_CONNECT:
+        // add event to status page
+        m_statusPage.AddEventMessage(deviceNoticeRCP->GetReason(),ST_INFORMATION);
 
-            EndWaitCursor();
-            break;
+        // direct pages to enable appropriate fields
+        m_connectionPage.EnableSelectedState();
+        m_profilesPage.EnableSelectedState();
+        m_statisticsPage.EnableSelectedState();
+        m_statusPage.EnableSelectedState();
 
-        case DT_CONNECT_FAIL:
-            m_statusPage.AddEventMessage(deviceNoticeRCP->GetReason(),ST_ERROR);
+        EndWaitCursor();
+        break;
 
-            // direct pages to disable appropriate fields
-            m_connectionPage.DisableSelectedState();
-            m_profilesPage.DisableSelectedState();
-            m_statisticsPage.DisableSelectedState();
-            m_statusPage.DisableSelectedState();
+    case DT_CONNECT_FAIL:
+        m_statusPage.AddEventMessage(deviceNoticeRCP->GetReason(),ST_ERROR);
 
-            EndWaitCursor();
+        // direct pages to disable appropriate fields
+        m_connectionPage.DisableSelectedState();
+        m_profilesPage.DisableSelectedState();
+        m_statisticsPage.DisableSelectedState();
+        m_statusPage.DisableSelectedState();
 
-            // do all work before displaying message box
-           
-            AfxMessageBox(A2W(deviceNoticeRCP->GetReason().c_str()));
+        EndWaitCursor();
 
-            break;
+        // do all work before displaying message box
 
-        case DT_DISCONNECT:
-            m_statusPage.AddEventMessage(deviceNoticeRCP->GetReason(),ST_INFORMATION);
+        AfxMessageBox(A2W(deviceNoticeRCP->GetReason().c_str()));
 
-            // direct pages to disable appropriate fields
-            m_connectionPage.DisableSelectedState();
-            m_profilesPage.DisableSelectedState();
-            m_statisticsPage.DisableSelectedState();
-            m_statusPage.DisableSelectedState();
+        break;
 
-            EndWaitCursor();
-            break;
+    case DT_DISCONNECT:
+        m_statusPage.AddEventMessage(deviceNoticeRCP->GetReason(),ST_INFORMATION);
 
-        case DT_DETACH:
-            m_statusPage.AddEventMessage(deviceNoticeRCP->GetReason(),ST_WARNING);
+        // direct pages to disable appropriate fields
+        m_connectionPage.DisableSelectedState();
+        m_profilesPage.DisableSelectedState();
+        m_statisticsPage.DisableSelectedState();
+        m_statusPage.DisableSelectedState();
 
-            // update the available devices
-            m_connectionPage.PopulateDeviceNames(networkAdapters);
-            
-            // direct pages to disable appropriate fields
-            m_connectionPage.DisableSelectedState();
-            m_profilesPage.DisableSelectedState();
-            m_statisticsPage.DisableSelectedState();
-            m_statusPage.DisableSelectedState();
+        EndWaitCursor();
+        break;
 
-            // do all work before displaying message box
+    case DT_DETACH:
+        m_statusPage.AddEventMessage(deviceNoticeRCP->GetReason(),ST_WARNING);
 
-            AfxMessageBox(A2W(deviceNoticeRCP->GetReason().c_str()));
+        // update the available devices
+        m_connectionPage.PopulateDeviceNames(networkAdapters);
 
-            break;
+        // direct pages to disable appropriate fields
+        m_connectionPage.DisableSelectedState();
+        m_profilesPage.DisableSelectedState();
+        m_statisticsPage.DisableSelectedState();
+        m_statusPage.DisableSelectedState();
 
-        default:
-            AfxMessageBox(_T("Error: Unknown device notice received."));
+        // do all work before displaying message box
+
+        AfxMessageBox(A2W(deviceNoticeRCP->GetReason().c_str()));
+
+        break;
+
+    default:
+        AfxMessageBox(_T("Error: Unknown device notice received."));
     }
 }
 
@@ -1447,28 +1397,26 @@ void ConnectionManagerDlg::LogMessage(MessageRCP msgRCP)
 void ConnectionManagerDlg::ReportMsgFailed(std::string name,uint16 error,bool isMsgBox)
 {
     std::stringstream stream;
-	USES_CONVERSION;
+    USES_CONVERSION;
     stream << _T("Error: ") << name << _T(" failed with error '")
            << ERROR_STRINGS[error] << _T("'.")<< std::endl;
-    
-    if (isMsgBox) 
-	{
-		/*modify by GL on 2008-03-24 begin*/
 
-	CStdioFile file;
-	if(file.Open(_T("NDISErrDebug.log"), CFile::modeReadWrite))
-	{
-		
-		DWORD dwActual = file.SeekToEnd();
-		file.WriteString(A2W(stream.str().c_str()));
-		file.Close();		
-	}
+    if (isMsgBox) {
+        /*modify by GL on 2008-03-24 begin*/
 
-		
-		//AfxMessageBox(stream.str().c_str()); 
-		/*modify by GL on 2008-03-24 begin*/
-	}
-    
+        CStdioFile file;
+        if(file.Open(_T("NDISErrDebug.log"), CFile::modeReadWrite)) {
+
+            DWORD dwActual = file.SeekToEnd();
+            file.WriteString(A2W(stream.str().c_str()));
+            file.Close();
+        }
+
+
+        //AfxMessageBox(stream.str().c_str());
+        /*modify by GL on 2008-03-24 begin*/
+    }
+
     stream << std::endl << std::endl;
     m_statusPage.AddEventMessage(stream.str(),ST_ERROR);
 }

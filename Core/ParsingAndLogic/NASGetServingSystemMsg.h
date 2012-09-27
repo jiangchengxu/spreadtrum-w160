@@ -25,17 +25,17 @@
 // --------------------------------------------------------------------------
 // Unique identifiers for NASSetEventReportMsg types
 // --------------------------------------------------------------------------
-static const uint32 NASGetServingSystemReqUID = 
-    (QMUX_TYPE_NAS << 24 | 
-     QMI_CTL_FLAG_TYPE_CMD << 16 | 
+static const uint32 NASGetServingSystemReqUID =
+    (QMUX_TYPE_NAS << 24 |
+     QMI_CTL_FLAG_TYPE_CMD << 16 |
      QMI_NAS_GET_SERVING_SYSTEM_MSG);
-static const uint32 NASGetServingSystemRspUID = 
-    (QMUX_TYPE_NAS << 24 | 
-     QMI_CTL_FLAG_TYPE_RSP << 16 | 
+static const uint32 NASGetServingSystemRspUID =
+    (QMUX_TYPE_NAS << 24 |
+     QMI_CTL_FLAG_TYPE_RSP << 16 |
      QMI_NAS_GET_SERVING_SYSTEM_MSG);
-static const uint32 NASServingSystemIndUID = 
-    (QMUX_TYPE_NAS << 24 | 
-     QMI_CTL_FLAG_TYPE_IND << 16 | 
+static const uint32 NASServingSystemIndUID =
+    (QMUX_TYPE_NAS << 24 |
+     QMI_CTL_FLAG_TYPE_IND << 16 |
      QMI_NAS_GET_SERVING_SYSTEM_MSG);
 
 
@@ -67,14 +67,16 @@ public:
 protected:
     NASGetServingSystemReq();
     virtual bool BuildMsgBuf();
-    virtual bool Unpack(MsgBuf& msgBuf) { return false; }
+    virtual bool Unpack(MsgBuf& msgBuf) {
+        return false;
+    }
 };
 
 
 // --------------------------------------------------------------------------
 // NASGetServingSystemRsp
 //
-/// This class represents a QMI_NAS_GET_SERVING_SYSTEM_RESP message 
+/// This class represents a QMI_NAS_GET_SERVING_SYSTEM_RESP message
 /// which is the response to the get serving system request.
 // --------------------------------------------------------------------------
 
@@ -91,27 +93,63 @@ public:
 
     virtual void Print(std::ostream& stream);
 
-    uint16 GetResult() { return m_result; }
-    uint16 GetError() { return m_error; }
-    bool IsServingSystem() { return m_servingSystemType == SERVING_SYSTEM_TYPE; }
-    int8 GetRegistrationState() { return m_registrationState; }
-    uint8 GetCsAttachState() { return m_csAttachState; }
-    uint8 GetPsAttachState() { return m_psAttachState; }
-    uint8 GetRegisteredNetwork() { return m_registeredNetwork; }
-    uint8 GetNumRadioIfs() { return m_numRadioIfs; }
-    std::vector<uint8> GetRadioIfs() { return m_radioIfs; }
-    bool IsRoamingIndicator() { return m_roamingIndicatorType == ROAMING_INDICATOR_TYPE; }
-    uint8 GetRoamingIndicator() { return m_roamingIndicator; }
-    bool IsCurrentPlmn() { return m_currentPlmnType == CURRENT_PLMN_TYPE; }
-    uint16 GetMobileCountryCode() { return m_mobileCountryCode; }
-    uint16 GetMobileNetworkCode() { return m_mobileNetworkCode; }
-    uint8 GetNetworkDescLen() { return m_networkDescLen; }
-    std::string GetNetworkDesc() { return m_networkDesc; }
+    uint16 GetResult() {
+        return m_result;
+    }
+    uint16 GetError() {
+        return m_error;
+    }
+    bool IsServingSystem() {
+        return m_servingSystemType == SERVING_SYSTEM_TYPE;
+    }
+    int8 GetRegistrationState() {
+        return m_registrationState;
+    }
+    uint8 GetCsAttachState() {
+        return m_csAttachState;
+    }
+    uint8 GetPsAttachState() {
+        return m_psAttachState;
+    }
+    uint8 GetRegisteredNetwork() {
+        return m_registeredNetwork;
+    }
+    uint8 GetNumRadioIfs() {
+        return m_numRadioIfs;
+    }
+    std::vector<uint8> GetRadioIfs() {
+        return m_radioIfs;
+    }
+    bool IsRoamingIndicator() {
+        return m_roamingIndicatorType == ROAMING_INDICATOR_TYPE;
+    }
+    uint8 GetRoamingIndicator() {
+        return m_roamingIndicator;
+    }
+    bool IsCurrentPlmn() {
+        return m_currentPlmnType == CURRENT_PLMN_TYPE;
+    }
+    uint16 GetMobileCountryCode() {
+        return m_mobileCountryCode;
+    }
+    uint16 GetMobileNetworkCode() {
+        return m_mobileNetworkCode;
+    }
+    uint8 GetNetworkDescLen() {
+        return m_networkDescLen;
+    }
+    std::string GetNetworkDesc() {
+        return m_networkDesc;
+    }
 
 protected:
     NASGetServingSystemRsp();
-    virtual bool Build(std::string& nameValue) { return false; }
-    virtual bool BuildMsgBuf() { return false; }
+    virtual bool Build(std::string& nameValue) {
+        return false;
+    }
+    virtual bool BuildMsgBuf() {
+        return false;
+    }
     virtual bool Unpack(MsgBuf& msgBuf);
     virtual Uint8UnpackerMap& GetUnpackerMap();
     virtual bool UnpackResultCode(MsgBuf& msgBuf);
@@ -153,8 +191,8 @@ private:
 // --------------------------------------------------------------------------
 // NASServingSystemInd
 //
-/// This class represents a QMI_NAS_GET_SERVING_SYSTEM_IND message. 
-/// Indication is sent when there is a change in the current serving system 
+/// This class represents a QMI_NAS_GET_SERVING_SYSTEM_IND message.
+/// Indication is sent when there is a change in the current serving system
 /// registration state and/or radio technology.
 // --------------------------------------------------------------------------
 
@@ -170,25 +208,57 @@ public:
 
     virtual void Print(std::ostream& stream);
 
-    bool IsServingSystem() { return m_servingSystemType == SERVING_SYSTEM_TYPE; }
-    int8 GetRegistrationState() { return m_registrationState; }
-    uint8 GetCsAttachState() { return m_csAttachState; }
-    uint8 GetPsAttachState() { return m_psAttachState; }
-    uint8 GetRegisteredNetwork() { return m_registeredNetwork; }
-    uint8 GetNumRadioIfs() { return m_numRadioIfs; }
-    std::vector<uint8> GetRadioIfs() { return m_radioIfs; }
-    bool IsRoamingIndicator() { return m_roamingIndicatorType == ROAMING_INDICATOR_TYPE; }
-    uint8 GetRoamingIndicator() { return m_roamingIndicator; }
-    bool IsCurrentPlmn() { return m_currentPlmnType == CURRENT_PLMN_TYPE; }
-    uint16 GetMobileCountryCode() { return m_mobileCountryCode; }
-    uint16 GetMobileNetworkCode() { return m_mobileNetworkCode; }
-    uint8 GetNetworkDescLen() { return m_networkDescLen; }
-    std::string GetNetworkDesc() { return m_networkDesc; }
+    bool IsServingSystem() {
+        return m_servingSystemType == SERVING_SYSTEM_TYPE;
+    }
+    int8 GetRegistrationState() {
+        return m_registrationState;
+    }
+    uint8 GetCsAttachState() {
+        return m_csAttachState;
+    }
+    uint8 GetPsAttachState() {
+        return m_psAttachState;
+    }
+    uint8 GetRegisteredNetwork() {
+        return m_registeredNetwork;
+    }
+    uint8 GetNumRadioIfs() {
+        return m_numRadioIfs;
+    }
+    std::vector<uint8> GetRadioIfs() {
+        return m_radioIfs;
+    }
+    bool IsRoamingIndicator() {
+        return m_roamingIndicatorType == ROAMING_INDICATOR_TYPE;
+    }
+    uint8 GetRoamingIndicator() {
+        return m_roamingIndicator;
+    }
+    bool IsCurrentPlmn() {
+        return m_currentPlmnType == CURRENT_PLMN_TYPE;
+    }
+    uint16 GetMobileCountryCode() {
+        return m_mobileCountryCode;
+    }
+    uint16 GetMobileNetworkCode() {
+        return m_mobileNetworkCode;
+    }
+    uint8 GetNetworkDescLen() {
+        return m_networkDescLen;
+    }
+    std::string GetNetworkDesc() {
+        return m_networkDesc;
+    }
 
 protected:
     NASServingSystemInd();
-    virtual bool Build(std::string& nameValue) { return false; }
-    virtual bool BuildMsgBuf() { return false; }
+    virtual bool Build(std::string& nameValue) {
+        return false;
+    }
+    virtual bool BuildMsgBuf() {
+        return false;
+    }
     virtual bool Unpack(MsgBuf& msgBuf);
     virtual Uint8UnpackerMap& GetUnpackerMap();
     virtual bool UnpackServingSystem(MsgBuf& msgBuf);

@@ -22,17 +22,17 @@
 // --------------------------------------------------------------------------
 // Unique identifiers for WDSGetPktSrvcStatusMsg types
 // --------------------------------------------------------------------------
-static const uint32 WDSGetPktSrvcStatusReqUID = 
-    (QMUX_TYPE_WDS << 24 | 
-     QMI_CTL_FLAG_TYPE_CMD << 16 | 
+static const uint32 WDSGetPktSrvcStatusReqUID =
+    (QMUX_TYPE_WDS << 24 |
+     QMI_CTL_FLAG_TYPE_CMD << 16 |
      QMI_WDS_GET_PKT_SRVC_STATUS_MSG);
-static const uint32 WDSGetPktSrvcStatusRspUID = 
-    (QMUX_TYPE_WDS << 24 | 
-     QMI_CTL_FLAG_TYPE_RSP << 16 | 
+static const uint32 WDSGetPktSrvcStatusRspUID =
+    (QMUX_TYPE_WDS << 24 |
+     QMI_CTL_FLAG_TYPE_RSP << 16 |
      QMI_WDS_GET_PKT_SRVC_STATUS_MSG);
-static const uint32 WDSPktSrvcStatusIndUID = 
-    (QMUX_TYPE_WDS << 24 | 
-     QMI_CTL_FLAG_TYPE_IND << 16 | 
+static const uint32 WDSPktSrvcStatusIndUID =
+    (QMUX_TYPE_WDS << 24 |
+     QMI_CTL_FLAG_TYPE_IND << 16 |
      QMI_WDS_GET_PKT_SRVC_STATUS_MSG);
 
 // --------------------------------------------------------------------------
@@ -49,7 +49,7 @@ typedef TRCPointer<WDSPktSrvcStatusInd> WDSPktSrvcStatusIndRCP;
 // --------------------------------------------------------------------------
 // WDSGetPktSrvcStatusReq
 //
-/// This class represents a QMI_WDS_GET_PKT_SRVC_STATUS_REQ message which 
+/// This class represents a QMI_WDS_GET_PKT_SRVC_STATUS_REQ message which
 /// queries the current packet data connection status.
 // --------------------------------------------------------------------------
 class WDSGetPktSrvcStatusReq : public Message
@@ -62,17 +62,19 @@ public:
 protected:
     WDSGetPktSrvcStatusReq();
     virtual bool BuildMsgBuf();
-    virtual bool Unpack(MsgBuf& msgBuf) { return false; }
+    virtual bool Unpack(MsgBuf& msgBuf) {
+        return false;
+    }
 };
 
 
 // --------------------------------------------------------------------------
 // WDSGetPktSrvcStatusRsp
 //
-/// This class represents a QMI_WDS_GET_PKT_SRVC_STATUS_RESP message 
+/// This class represents a QMI_WDS_GET_PKT_SRVC_STATUS_RESP message
 /// which is the response to the get packet service status request.
 // --------------------------------------------------------------------------
-    // define tlv types
+// define tlv types
 
 class WDSGetPktSrvcStatusRsp : public Message
 {
@@ -85,15 +87,25 @@ public:
 
     virtual void Print(std::ostream& stream);
 
-    uint16 GetResult() { return m_result; }
-    uint16 GetError() { return m_error; }
+    uint16 GetResult() {
+        return m_result;
+    }
+    uint16 GetError() {
+        return m_error;
+    }
 
-    uint32 GetConnectionStatus() { return m_connectionStatus; }
+    uint32 GetConnectionStatus() {
+        return m_connectionStatus;
+    }
 
 protected:
     WDSGetPktSrvcStatusRsp();
-    virtual bool Build(std::string& nameValue) { return false; }
-    virtual bool BuildMsgBuf() { return false; }
+    virtual bool Build(std::string& nameValue) {
+        return false;
+    }
+    virtual bool BuildMsgBuf() {
+        return false;
+    }
     virtual bool Unpack(MsgBuf& msgBuf);
     virtual Uint8UnpackerMap& GetUnpackerMap();
     virtual bool UnpackResultCode(MsgBuf& msgBuf);
@@ -130,13 +142,21 @@ public:
 
     virtual void Print(std::ostream& stream);
 
-    virtual uint8 GetConnectionStatus() { return m_connectionStatus; }
-    virtual uint8 GetReconfigurationRequired() { return m_reconfigurationRequired; }
+    virtual uint8 GetConnectionStatus() {
+        return m_connectionStatus;
+    }
+    virtual uint8 GetReconfigurationRequired() {
+        return m_reconfigurationRequired;
+    }
 
 protected:
     WDSPktSrvcStatusInd();
-    virtual bool Build(std::string& nameValue) { return false; }
-    virtual bool BuildMsgBuf() { return false; }
+    virtual bool Build(std::string& nameValue) {
+        return false;
+    }
+    virtual bool BuildMsgBuf() {
+        return false;
+    }
     virtual bool Unpack(MsgBuf& msgBuf);
     virtual Uint8UnpackerMap& GetUnpackerMap();
     virtual bool UnpackPacketServiceStatus(MsgBuf& msgBuf);

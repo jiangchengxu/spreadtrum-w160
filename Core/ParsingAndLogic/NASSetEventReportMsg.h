@@ -24,17 +24,17 @@
 // --------------------------------------------------------------------------
 // Unique identifiers for NASSetEventReportMsg types
 // --------------------------------------------------------------------------
-static const uint32 NASSetEventReportReqUID = 
-    (QMUX_TYPE_NAS << 24 | 
-     QMI_CTL_FLAG_TYPE_CMD << 16 | 
+static const uint32 NASSetEventReportReqUID =
+    (QMUX_TYPE_NAS << 24 |
+     QMI_CTL_FLAG_TYPE_CMD << 16 |
      QMI_NAS_SET_EVENT_REPORT_MSG);
-static const uint32 NASSetEventReportRspUID = 
-    (QMUX_TYPE_NAS << 24 | 
-     QMI_CTL_FLAG_TYPE_RSP << 16 | 
+static const uint32 NASSetEventReportRspUID =
+    (QMUX_TYPE_NAS << 24 |
+     QMI_CTL_FLAG_TYPE_RSP << 16 |
      QMI_NAS_SET_EVENT_REPORT_MSG);
-static const uint32 NASEventReportIndUID = 
-    (QMUX_TYPE_NAS << 24 | 
-     QMI_CTL_FLAG_TYPE_IND << 16 | 
+static const uint32 NASEventReportIndUID =
+    (QMUX_TYPE_NAS << 24 |
+     QMI_CTL_FLAG_TYPE_IND << 16 |
      QMI_NAS_SET_EVENT_REPORT_MSG);
 
 // --------------------------------------------------------------------------
@@ -52,7 +52,7 @@ typedef TRCPointer<NASEventReportInd> NASEventReportIndRCP;
 // NASSetEventReportReq
 //
 /// This class represents a QMI_NAS_SET_EVENT_REPORT_REQ message which
-/// sets state for reporting conditions for specific parameters. A periodic 
+/// sets state for reporting conditions for specific parameters. A periodic
 /// indication will be sent as per the conditions set in this request.
 // --------------------------------------------------------------------------
 
@@ -73,7 +73,9 @@ protected:
     virtual bool BuildReportSigStrength(std::string& value);
     virtual bool BuildRangeLimit(std::string& value);
     virtual bool BuildMsgBuf();
-    virtual bool Unpack(MsgBuf& msgBuf) { return false; }
+    virtual bool Unpack(MsgBuf& msgBuf) {
+        return false;
+    }
 
 private:
     // Signal Strength Indicator, optional tlv 0x10
@@ -88,7 +90,7 @@ private:
 // --------------------------------------------------------------------------
 // NASSetEventReportRsp
 //
-/// This class represents a QMI_NAS_SET_EVENT_REPORT_RESP message 
+/// This class represents a QMI_NAS_SET_EVENT_REPORT_RESP message
 /// which is the response to the set event report request.
 // --------------------------------------------------------------------------
 
@@ -102,13 +104,21 @@ public:
 
     virtual void Print(std::ostream& stream);
 
-    uint16 GetResult() { return m_result; }
-    uint16 GetError() { return m_error; }
+    uint16 GetResult() {
+        return m_result;
+    }
+    uint16 GetError() {
+        return m_error;
+    }
 
 protected:
     NASSetEventReportRsp();
-    virtual bool Build(std::string& nameValue) { return false; }
-    virtual bool BuildMsgBuf() { return false; }
+    virtual bool Build(std::string& nameValue) {
+        return false;
+    }
+    virtual bool BuildMsgBuf() {
+        return false;
+    }
     virtual bool Unpack(MsgBuf& msgBuf);
     virtual Uint8UnpackerMap& GetUnpackerMap();
     virtual bool UnpackResultCode(MsgBuf& msgBuf);
@@ -125,7 +135,7 @@ private:
 // NASEventReportInd
 //
 /// This class represents a QMI_NAS_EVENT_REPORT_IND message.
-/// Indication is sent when any of the conditions for reporting set in the 
+/// Indication is sent when any of the conditions for reporting set in the
 /// set event report request become true.
 // --------------------------------------------------------------------------
 
@@ -139,13 +149,21 @@ public:
 
     virtual void Print(std::ostream& stream);
 
-    int8 GetSignalStrength() { return m_signalStrength; }
-    uint8 GetRadioIf() { return m_radioIf; }
+    int8 GetSignalStrength() {
+        return m_signalStrength;
+    }
+    uint8 GetRadioIf() {
+        return m_radioIf;
+    }
 
 protected:
     NASEventReportInd();
-    virtual bool Build(std::string& nameValue) { return false; }
-    virtual bool BuildMsgBuf() { return false; }
+    virtual bool Build(std::string& nameValue) {
+        return false;
+    }
+    virtual bool BuildMsgBuf() {
+        return false;
+    }
     virtual bool Unpack(MsgBuf& msgBuf);
     virtual Uint8UnpackerMap& GetUnpackerMap();
     virtual bool UnpackSignalStrength(MsgBuf& msgBuf);

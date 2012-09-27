@@ -17,7 +17,7 @@ static char THIS_FILE[] = __FILE__;
 CSmsListCtrl::CSmsListCtrl(BOOL bEnableRB) : m_bEnableRB(bEnableRB)
 {
     m_DispFilter = SMS_TYPE_INBOX;
-	loctype = LOC_PC;
+    loctype = LOC_PC;
 }
 
 CSmsListCtrl::~CSmsListCtrl()
@@ -34,7 +34,7 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // CSmsListCtrl message handlers
 
-void CSmsListCtrl::OnContextMenu(CWnd* pWnd, CPoint point) 
+void CSmsListCtrl::OnContextMenu(CWnd* pWnd, CPoint point)
 {
     if(GetNextItem(-1, LVNI_SELECTED) == -1)
         return;
@@ -46,83 +46,78 @@ void CSmsListCtrl::OnContextMenu(CWnd* pWnd, CPoint point)
     CMenu menu;
     menu.CreatePopupMenu();
 
-	
+
 
     //strItemText.LoadString(IDS_SMS_READ);   //del by liub 1103 for SMS
     //menu.AppendMenu(MF_ENABLED, IDC_BUTTON_SMS_READ, strItemText);   //del by liub 1103 for SMS
 
     strItemText.LoadString(IDS_SMS_NEW);
     menu.AppendMenu(MF_ENABLED, IDC_BUTTON_SMS_NEW, strItemText);
-	menu.AppendMenu(MF_SEPARATOR);
-    if(m_DispFilter == SMS_TYPE_INBOX && loctype == LOC_PC)
-    {
-        strItemText.LoadString(IDS_SMS_REPLY);        
+    menu.AppendMenu(MF_SEPARATOR);
+    if(m_DispFilter == SMS_TYPE_INBOX && loctype == LOC_PC) {
+        strItemText.LoadString(IDS_SMS_REPLY);
         menu.AppendMenu(MF_ENABLED, IDC_BUTTON_SMS_REPLY, strItemText);
-		strItemText.LoadString(IDS_SMS_FORWARD);
-		menu.AppendMenu(MF_ENABLED, IDC_BUTTON_SMS_FORWARD, strItemText);
+        strItemText.LoadString(IDS_SMS_FORWARD);
+        menu.AppendMenu(MF_ENABLED, IDC_BUTTON_SMS_FORWARD, strItemText);
         strItemText.LoadString(IDS_SMS_ABSTRACT);
-		menu.AppendMenu(MF_ENABLED, IDC_BUTTON_SMS_ABSTRACT, strItemText);
+        menu.AppendMenu(MF_ENABLED, IDC_BUTTON_SMS_ABSTRACT, strItemText);
         strItemText.LoadString(IDS_SMS_DELETE);
-		menu.AppendMenu(MF_ENABLED, IDC_BUTTON_SMS_DELETE, strItemText);
-		menu.AppendMenu(MF_SEPARATOR);
+        menu.AppendMenu(MF_ENABLED, IDC_BUTTON_SMS_DELETE, strItemText);
+        menu.AppendMenu(MF_SEPARATOR);
         strItemText.LoadString(IDS_SMS_ARCHIVE);
-		menu.AppendMenu(MF_ENABLED, IDC_BUTTON_SMS_ARCHIVE, strItemText);
-		strItemText.LoadString(IDS_SMS_DIAL);
-		menu.AppendMenu(MF_ENABLED, IDC_BUTTON_SMS_DIAL, strItemText);
+        menu.AppendMenu(MF_ENABLED, IDC_BUTTON_SMS_ARCHIVE, strItemText);
+        strItemText.LoadString(IDS_SMS_DIAL);
+        menu.AppendMenu(MF_ENABLED, IDC_BUTTON_SMS_DIAL, strItemText);
 //         strItemText.LoadString(IDS_SMS_SEARCH);
 // 		menu.AppendMenu(MF_ENABLED, IDC_BUTTON_SMS_SEARCH, strItemText);
-	}
-	if (m_DispFilter == SMS_TYPE_OUTBOX && loctype == LOC_PC)
-	{
-		strItemText.LoadString(IDS_SMS_EDIT);
+    }
+    if (m_DispFilter == SMS_TYPE_OUTBOX && loctype == LOC_PC) {
+        strItemText.LoadString(IDS_SMS_EDIT);
         menu.AppendMenu(MF_ENABLED, IDC_BUTTON_SMS_EDIT, strItemText);
         strItemText.LoadString(IDS_SMS_FORWARD);
-		menu.AppendMenu(MF_ENABLED, IDC_BUTTON_SMS_FORWARD, strItemText);
+        menu.AppendMenu(MF_ENABLED, IDC_BUTTON_SMS_FORWARD, strItemText);
         strItemText.LoadString(IDS_SMS_ABSTRACT);
-		menu.AppendMenu(MF_ENABLED, IDC_BUTTON_SMS_ABSTRACT, strItemText);
+        menu.AppendMenu(MF_ENABLED, IDC_BUTTON_SMS_ABSTRACT, strItemText);
         strItemText.LoadString(IDS_SMS_DELETE);
-		menu.AppendMenu(MF_ENABLED, IDC_BUTTON_SMS_DELETE, strItemText);
-		menu.AppendMenu(MF_SEPARATOR);
+        menu.AppendMenu(MF_ENABLED, IDC_BUTTON_SMS_DELETE, strItemText);
+        menu.AppendMenu(MF_SEPARATOR);
 //         strItemText.LoadString(IDS_SMS_SEARCH);
 // 		menu.AppendMenu(MF_ENABLED, IDC_BUTTON_SMS_SEARCH, strItemText);
-	}
-	if (m_DispFilter == SMS_TYPE_DRAFT && loctype == LOC_PC)
-	{
-		strItemText.LoadString(IDS_SMS_EDIT);
+    }
+    if (m_DispFilter == SMS_TYPE_DRAFT && loctype == LOC_PC) {
+        strItemText.LoadString(IDS_SMS_EDIT);
         menu.AppendMenu(MF_ENABLED, IDC_BUTTON_SMS_EDIT, strItemText);
         strItemText.LoadString(IDS_SMS_DELETE);
-		menu.AppendMenu(MF_ENABLED, IDC_BUTTON_SMS_DELETE, strItemText);
+        menu.AppendMenu(MF_ENABLED, IDC_BUTTON_SMS_DELETE, strItemText);
 //         strItemText.LoadString(IDS_SMS_SEARCH);
 // 		menu.AppendMenu(MF_ENABLED, IDC_BUTTON_SMS_SEARCH, strItemText);
 
-	}
-	if (m_DispFilter == SMS_TYPE_ARCHIVE && loctype == LOC_PC)
-	{
-		strItemText.LoadString(IDS_SMS_RESUME);
-		menu.AppendMenu(MF_ENABLED, IDC_BUTTON_SMS_RESUME, strItemText);
+    }
+    if (m_DispFilter == SMS_TYPE_ARCHIVE && loctype == LOC_PC) {
+        strItemText.LoadString(IDS_SMS_RESUME);
+        menu.AppendMenu(MF_ENABLED, IDC_BUTTON_SMS_RESUME, strItemText);
         strItemText.LoadString(IDS_SMS_DELETE);
-		menu.AppendMenu(MF_ENABLED, IDC_BUTTON_SMS_DELETE, strItemText);
+        menu.AppendMenu(MF_ENABLED, IDC_BUTTON_SMS_DELETE, strItemText);
 //         strItemText.LoadString(IDS_SMS_SEARCH);
 // 		menu.AppendMenu(MF_ENABLED, IDC_BUTTON_SMS_SEARCH, strItemText);
-	}
-	if (loctype == LOC_ME || loctype == LOC_UIM)
-	{
-        strItemText.LoadString(IDS_SMS_REPLY);        
+    }
+    if (loctype == LOC_ME || loctype == LOC_UIM) {
+        strItemText.LoadString(IDS_SMS_REPLY);
         menu.AppendMenu(MF_ENABLED, IDC_BUTTON_SMS_REPLY, strItemText);
-		strItemText.LoadString(IDS_SMS_FORWARD);
-		menu.AppendMenu(MF_ENABLED, IDC_BUTTON_SMS_FORWARD, strItemText);
+        strItemText.LoadString(IDS_SMS_FORWARD);
+        menu.AppendMenu(MF_ENABLED, IDC_BUTTON_SMS_FORWARD, strItemText);
         strItemText.LoadString(IDS_SMS_ABSTRACT);
-		menu.AppendMenu(MF_ENABLED, IDC_BUTTON_SMS_ABSTRACT, strItemText);
-		menu.AppendMenu(MF_SEPARATOR);
-		strItemText.LoadString(IDS_SMS_DIAL);
-		menu.AppendMenu(MF_ENABLED, IDC_BUTTON_SMS_DIAL, strItemText);
-		strItemText.LoadString(IDS_SMS_DELETE);
-		menu.AppendMenu(MF_ENABLED, IDC_BUTTON_SMS_DELETE, strItemText);
+        menu.AppendMenu(MF_ENABLED, IDC_BUTTON_SMS_ABSTRACT, strItemText);
+        menu.AppendMenu(MF_SEPARATOR);
+        strItemText.LoadString(IDS_SMS_DIAL);
+        menu.AppendMenu(MF_ENABLED, IDC_BUTTON_SMS_DIAL, strItemText);
+        strItemText.LoadString(IDS_SMS_DELETE);
+        menu.AppendMenu(MF_ENABLED, IDC_BUTTON_SMS_DELETE, strItemText);
 
-	}
+    }
     menu.SetDefaultItem(IDC_BUTTON_SMS_READ, FALSE);
     GetCursorPos(&point);
-    menu.TrackPopupMenu(TPM_LEFTALIGN|TPM_RIGHTBUTTON, point.x, point.y, this);    
+    menu.TrackPopupMenu(TPM_LEFTALIGN|TPM_RIGHTBUTTON, point.x, point.y, this);
 }
 
 void CSmsListCtrl::OnButtonClicked(UINT nID)
@@ -142,13 +137,13 @@ void CSmsListCtrl::SetDspFilter(EnSmsType type)
 
 void CSmsListCtrl::SetLocType(EnLocType LocNow)
 {
-	ASSERT(LocNow >= LOC_PC && LocNow < LOC_MAX);
-    
-	loctype = LocNow;
+    ASSERT(LocNow >= LOC_PC && LocNow < LOC_MAX);
+
+    loctype = LocNow;
 
 }
 
-void CSmsListCtrl::PreSubclassWindow() 
+void CSmsListCtrl::PreSubclassWindow()
 {
     // TODO: Add your specialized code here and/or call the base class
     m_headerCtrl.SubclassWindow(GetDlgItem(0)->GetSafeHwnd());

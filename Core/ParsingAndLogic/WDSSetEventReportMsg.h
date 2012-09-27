@@ -22,17 +22,17 @@
 // --------------------------------------------------------------------------
 // Unique identifiers for WDSResetMsg types
 // --------------------------------------------------------------------------
-static const uint32 WDSSetEventReportReqUID = 
-    (QMUX_TYPE_WDS << 24 | 
-     QMI_CTL_FLAG_TYPE_CMD << 16 | 
+static const uint32 WDSSetEventReportReqUID =
+    (QMUX_TYPE_WDS << 24 |
+     QMI_CTL_FLAG_TYPE_CMD << 16 |
      QMI_WDS_SET_EVENT_REPORT_MSG);
-static const uint32 WDSSetEventReportRspUID = 
-    (QMUX_TYPE_WDS << 24 | 
-     QMI_CTL_FLAG_TYPE_RSP << 16 | 
+static const uint32 WDSSetEventReportRspUID =
+    (QMUX_TYPE_WDS << 24 |
+     QMI_CTL_FLAG_TYPE_RSP << 16 |
      QMI_WDS_SET_EVENT_REPORT_MSG);
-static const uint32 WDSEventReportIndUID = 
-    (QMUX_TYPE_WDS << 24 | 
-     QMI_CTL_FLAG_TYPE_IND << 16 | 
+static const uint32 WDSEventReportIndUID =
+    (QMUX_TYPE_WDS << 24 |
+     QMI_CTL_FLAG_TYPE_IND << 16 |
      QMI_WDS_SET_EVENT_REPORT_MSG);
 
 // --------------------------------------------------------------------------
@@ -74,7 +74,9 @@ protected:
     virtual bool BuildStatsMask(std::string& value);
     virtual bool BuildReportDataBearerTech(std::string& value);
     virtual bool BuildMsgBuf();
-    virtual bool Unpack(MsgBuf& msgBuf) { return false; }
+    virtual bool Unpack(MsgBuf& msgBuf) {
+        return false;
+    }
 
 private:
     // Current Channel Rate Indicator, optional tlv 0x10
@@ -98,7 +100,7 @@ private:
 // --------------------------------------------------------------------------
 // WDSSetEventReportRsp
 //
-/// This class represents a QMI_WDS_SET_EVENT_REPORT_RESP message 
+/// This class represents a QMI_WDS_SET_EVENT_REPORT_RESP message
 /// which is the response to the set event report request.
 // --------------------------------------------------------------------------
 
@@ -112,13 +114,21 @@ public:
 
     virtual void Print(std::ostream& stream);
 
-    uint16 GetResult() { return m_result; }
-    uint16 GetError() { return m_error; }
+    uint16 GetResult() {
+        return m_result;
+    }
+    uint16 GetError() {
+        return m_error;
+    }
 
 protected:
     WDSSetEventReportRsp();
-    virtual bool Build(std::string& nameValue) { return false; }
-    virtual bool BuildMsgBuf() { return false; }
+    virtual bool Build(std::string& nameValue) {
+        return false;
+    }
+    virtual bool BuildMsgBuf() {
+        return false;
+    }
     virtual bool Unpack(MsgBuf& msgBuf);
     virtual Uint8UnpackerMap& GetUnpackerMap();
     virtual bool UnpackResultCode(MsgBuf& msgBuf);
@@ -135,7 +145,7 @@ private:
 // WDSEventReportInd
 //
 /// This class represents a QMI_WDS_EVENT_REPORT_IND message.
-/// Indication is sent when any of the conditions for reporting set in the 
+/// Indication is sent when any of the conditions for reporting set in the
 /// set event report request become true.
 // --------------------------------------------------------------------------
 
@@ -156,29 +166,67 @@ public:
 
     virtual void Print(std::ostream& stream);
 
-    virtual bool IsTxOkCount() { return m_txPacketsOkType == TX_PACKETS_OK_TYPE; }
-    virtual bool IsRxOkCount() { return m_rxPacketsOkType == RX_PACKETS_OK_TYPE; }
-    virtual bool IsTxErrCount() { return m_txPacketErrorsType == TX_PACKET_ERRORS_TYPE; }
-    virtual bool IsRxErrCount() { return m_rxPacketErrorsType == RX_PACKET_ERRORS_TYPE; }
-    virtual bool IsTxOflCount() { return m_txOverflowsType == TX_OVERFOLWS_TYPE; }
-    virtual bool IsRxOflCount() { return m_rxOverflowsType == RX_OVERFOLWS_TYPE; }
-    virtual bool IsCurrentChannelRate() { return m_channelRateType == CHANNEL_RATE_TYPE; }
-    virtual bool IsDataBearerTech() { return m_dataBearerTechType == DATA_BEARER_TECH_TYPE; }
+    virtual bool IsTxOkCount() {
+        return m_txPacketsOkType == TX_PACKETS_OK_TYPE;
+    }
+    virtual bool IsRxOkCount() {
+        return m_rxPacketsOkType == RX_PACKETS_OK_TYPE;
+    }
+    virtual bool IsTxErrCount() {
+        return m_txPacketErrorsType == TX_PACKET_ERRORS_TYPE;
+    }
+    virtual bool IsRxErrCount() {
+        return m_rxPacketErrorsType == RX_PACKET_ERRORS_TYPE;
+    }
+    virtual bool IsTxOflCount() {
+        return m_txOverflowsType == TX_OVERFOLWS_TYPE;
+    }
+    virtual bool IsRxOflCount() {
+        return m_rxOverflowsType == RX_OVERFOLWS_TYPE;
+    }
+    virtual bool IsCurrentChannelRate() {
+        return m_channelRateType == CHANNEL_RATE_TYPE;
+    }
+    virtual bool IsDataBearerTech() {
+        return m_dataBearerTechType == DATA_BEARER_TECH_TYPE;
+    }
 
-    virtual uint32 GetTxOkCount() { return m_txOkCount; }
-    virtual uint32 GetRxOkCount() { return m_rxOkCount; }
-    virtual uint32 GetTxErrCount() { return m_txErrCount; }
-    virtual uint32 GetRxErrCount() { return m_rxErrCount; }
-    virtual uint32 GetTxOflCount() { return m_txOflCount; }
-    virtual uint32 GetRxOflCount() { return m_rxOflCount; }
-    virtual uint32 GetCurrentChannelTxRate() { return m_currentChannelTxRate; }
-    virtual uint32 GetCurrentChannelRxRate() { return m_currentChannelRxRate; }
-    virtual uint8 GetDataBearerTech() { return m_dataBearerTech; }
+    virtual uint32 GetTxOkCount() {
+        return m_txOkCount;
+    }
+    virtual uint32 GetRxOkCount() {
+        return m_rxOkCount;
+    }
+    virtual uint32 GetTxErrCount() {
+        return m_txErrCount;
+    }
+    virtual uint32 GetRxErrCount() {
+        return m_rxErrCount;
+    }
+    virtual uint32 GetTxOflCount() {
+        return m_txOflCount;
+    }
+    virtual uint32 GetRxOflCount() {
+        return m_rxOflCount;
+    }
+    virtual uint32 GetCurrentChannelTxRate() {
+        return m_currentChannelTxRate;
+    }
+    virtual uint32 GetCurrentChannelRxRate() {
+        return m_currentChannelRxRate;
+    }
+    virtual uint8 GetDataBearerTech() {
+        return m_dataBearerTech;
+    }
 
 protected:
     WDSEventReportInd();
-    virtual bool Build(std::string& nameValue) { return false; }
-    virtual bool BuildMsgBuf() { return false; }
+    virtual bool Build(std::string& nameValue) {
+        return false;
+    }
+    virtual bool BuildMsgBuf() {
+        return false;
+    }
     virtual bool Unpack(MsgBuf& msgBuf);
     virtual Uint8UnpackerMap& GetUnpackerMap();
     virtual bool UnpackTxPacketsOk(MsgBuf& msgBuf);

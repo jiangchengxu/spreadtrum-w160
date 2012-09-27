@@ -11,14 +11,14 @@
 
 #define SERIAL_BUFFERSIZE  1024        //串口读写缓冲区大小
 
-class CSerialBuffer  
+class CSerialBuffer
 {
 public:
     CSerialBuffer();
     virtual ~CSerialBuffer();
 public:
     CSerialBuffer *next;                    //指向缓冲区队列的下一个结点
-    DWORD   m_dwBytes;                        //从串口读取的字节数或准备向串口发送的字节数    
+    DWORD   m_dwBytes;                        //从串口读取的字节数或准备向串口发送的字节数
     BYTE    m_szBuffer[SERIAL_BUFFERSIZE];    //串口读写缓存
 };
 

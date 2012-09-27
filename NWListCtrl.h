@@ -14,8 +14,8 @@ class CNWListCtrl : public CListCtrl
 {
 // Construction
 public:
-	CHeaderCtrlEx m_headerCtrl;
-	CNWListCtrl();
+    CHeaderCtrlEx m_headerCtrl;
+    CNWListCtrl();
 
 // Attributes
 public:
@@ -24,21 +24,21 @@ public:
 public:
 
 // Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(CNWListCtrl)
-	//}}AFX_VIRTUAL
+    // ClassWizard generated virtual function overrides
+    //{{AFX_VIRTUAL(CNWListCtrl)
+    //}}AFX_VIRTUAL
 
 // Implementation
 public:
-	virtual ~CNWListCtrl();
+    virtual ~CNWListCtrl();
 
-	// Generated message map functions
+    // Generated message map functions
 protected:
-	//{{AFX_MSG(CNWListCtrl)
-		// NOTE - the ClassWizard will add and remove member functions here.
-	//}}AFX_MSG
-	virtual void PreSubclassWindow();
-	DECLARE_MESSAGE_MAP()
+    //{{AFX_MSG(CNWListCtrl)
+    // NOTE - the ClassWizard will add and remove member functions here.
+    //}}AFX_MSG
+    virtual void PreSubclassWindow();
+    DECLARE_MESSAGE_MAP()
 };
 
 /////////////////////////////////////////////////////////////////////////////

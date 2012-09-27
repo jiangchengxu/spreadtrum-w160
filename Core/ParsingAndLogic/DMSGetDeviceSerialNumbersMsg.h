@@ -23,9 +23,9 @@
 // --------------------------------------------------------------------------
 // Unique identifiers for DMSGetDeviceSerialNumbersMsg types
 // --------------------------------------------------------------------------
-static const uint32 DMSGetDeviceSerialNumbersReqUID = 
+static const uint32 DMSGetDeviceSerialNumbersReqUID =
     (QMUX_TYPE_DMS << 24 | QMI_CTL_FLAG_TYPE_CMD << 16 | QMI_DMS_GET_DEVICE_SERIAL_NUMBERS_MSG);
-static const uint32 DMSGetDeviceSerialNumbersRspUID = 
+static const uint32 DMSGetDeviceSerialNumbersRspUID =
     (QMUX_TYPE_DMS << 24 | QMI_CTL_FLAG_TYPE_RSP << 16 | QMI_DMS_GET_DEVICE_SERIAL_NUMBERS_MSG);
 
 // --------------------------------------------------------------------------
@@ -53,7 +53,9 @@ public:
 protected:
     DMSGetDeviceSerialNumbersReq();
     virtual bool BuildMsgBuf();
-    virtual bool Unpack(MsgBuf& msgBuf) { return false; }
+    virtual bool Unpack(MsgBuf& msgBuf) {
+        return false;
+    }
 };
 
 
@@ -61,7 +63,7 @@ protected:
 // DMSGetDeviceSerialNumbersRsp
 //
 /// This class represents a QMI_DMS_GET_DEVICE_SERIAL_NUMBERS_RESP message which is the
-/// response to a request for the device serial number from the service. 
+/// response to a request for the device serial number from the service.
 // --------------------------------------------------------------------------
 
 class DMSGetDeviceSerialNumbersRsp : public Message
@@ -77,21 +79,41 @@ public:
 
     virtual void Print(std::ostream& stream);
 
-    virtual uint16 GetResult() { return m_result; }
-    virtual uint16 GetError() { return m_error; }
+    virtual uint16 GetResult() {
+        return m_result;
+    }
+    virtual uint16 GetError() {
+        return m_error;
+    }
 
-    virtual bool IsEsn() { return m_esnType == ESN_TYPE; }
-    virtual bool IsImei() { return m_imeiType == IMEI_TYPE; }
-    virtual bool IsMeid() { return m_meidType == MEID_TYPE; }
+    virtual bool IsEsn() {
+        return m_esnType == ESN_TYPE;
+    }
+    virtual bool IsImei() {
+        return m_imeiType == IMEI_TYPE;
+    }
+    virtual bool IsMeid() {
+        return m_meidType == MEID_TYPE;
+    }
 
-    virtual const std::string& GetEsn() { return m_esn; }
-    virtual const std::string& GetImei() { return m_imei; }
-    virtual const std::string& GetMeid() { return m_meid; }
+    virtual const std::string& GetEsn() {
+        return m_esn;
+    }
+    virtual const std::string& GetImei() {
+        return m_imei;
+    }
+    virtual const std::string& GetMeid() {
+        return m_meid;
+    }
 
 protected:
     DMSGetDeviceSerialNumbersRsp();
-    virtual bool Build(std::string& nameValue) { return false; }
-    virtual bool BuildMsgBuf() { return false; }
+    virtual bool Build(std::string& nameValue) {
+        return false;
+    }
+    virtual bool BuildMsgBuf() {
+        return false;
+    }
     virtual bool Unpack(MsgBuf& msgBuf);
     virtual Uint8UnpackerMap& GetUnpackerMap();
     virtual bool UnpackResultCode(MsgBuf& msgBuf);

@@ -26,9 +26,9 @@
 // Function prototypes
 BOOL WINAPI GetServiceFile
 (
-   HANDLE hd,
-   PCHAR  ServiceFileName,
-   UCHAR  ServiceType
+    HANDLE hd,
+    PCHAR  ServiceFileName,
+    UCHAR  ServiceType
 );
 
 DWORD WINAPI RegisterNotification(PVOID Context);
@@ -37,10 +37,10 @@ VOID USBUTL_PrintBytes(PVOID Buf, ULONG len, ULONG PktLen, char *info);
 
 PCHAR GetCharArray
 (
-   PCHAR  InBuffer,
-   PCHAR  CharArray,
-   UCHAR  MaxElements,
-   PUCHAR ActualElements
+    PCHAR  InBuffer,
+    PCHAR  CharArray,
+    UCHAR  MaxElements,
+    PUCHAR ActualElements
 );
 
 #endif // UTILS_H

@@ -1,14 +1,14 @@
 ///////////////////////////////////////////////////////////////////////////
-//                                                                         
-// FILE NAME                                                               
-//                                                                         
+//
+// FILE NAME
+//
 //        XInfoTip.h
-//                                                                         
-// COMPONENT                                                               
-//                                                                         
+//
+// COMPONENT
+//
 //        CXInfoTip class interface
-//                                                                         
-// DESCRIPTION                                                             
+//
+// DESCRIPTION
 //
 //        This tooltip control implements:
 //
@@ -38,12 +38,12 @@
 //        Mark Bozeman        09-16-2001
 //
 ///////////////////////////////////////////////////////////////////////////
-// This software is released into the public domain.  
+// This software is released into the public domain.
 // You are free to use it in any way you like.
 //
-// This software is provided "as is" with no expressed 
-// or implied warranty.  I accept no liability for any 
-// damage or loss of business that this software may cause. 
+// This software is provided "as is" with no expressed
+// or implied warranty.  I accept no liability for any
+// damage or loss of business that this software may cause.
 ///////////////////////////////////////////////////////////////////////////
 
 #ifndef _XPOPUPTIP_H_INCLUDE_
@@ -59,15 +59,13 @@ protected:
     ///////////////////////////////////////////////////////////////////////////
     // Tool information structure
     ///////////////////////////////////////////////////////////////////////////
-    typedef struct
-    {
+    typedef struct {
         CString    szText;                                            // Tooltip text
         HICON    hIcon;                                            // Tooltip icon
     } TipToolInfo;
 
     // Timer identifiers
-    enum
-    {
+    enum {
         timerShow            = 100,                                // Show timer
         timerHide            = 101                                // Hide timer
     };
@@ -99,17 +97,20 @@ public:
     void RemoveTool(CWnd *pWnd);
 
     void Show(CString szText, CPoint *pt = NULL);
-    void Hide() { ShowWindow(SW_HIDE); };
+    void Hide() {
+        ShowWindow(SW_HIDE);
+    };
 
     // Sets the delay for the tooltip
-    void SetShowDelay(int nDelay) { m_nShowDelay = nDelay; };
+    void SetShowDelay(int nDelay) {
+        m_nShowDelay = nDelay;
+    };
 
     void SetIcon(HICON hIcon);
 
     // Sets the tooltip font
-    void SetFont(CFont *pFont) 
-    { 
-        m_pFont = pFont; 
+    void SetFont(CFont *pFont) {
+        m_pFont = pFont;
         if (IsWindow(m_hWnd))
             RedrawWindow();
     };
@@ -134,4 +135,4 @@ protected:
 //{{AFX_INSERT_LOCATION}}
 // Microsoft Developer Studio will insert additional declarations immediately before the previous line.
 
-#endif 
+#endif

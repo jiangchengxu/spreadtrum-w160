@@ -28,7 +28,7 @@ static char THIS_FILE[] = __FILE__;
 //
 //		It is very important that this macro appear in each
 //		function, prior to any calls into MFC.  This means that
-//		it must appear as the first statement within the 
+//		it must appear as the first statement within the
 //		function, even before any object variable declarations
 //		as their constructors may generate calls into the MFC
 //		DLL.
@@ -41,9 +41,9 @@ static char THIS_FILE[] = __FILE__;
 // CCommonApp
 
 BEGIN_MESSAGE_MAP(CCommonApp, CWinApp)
-	//{{AFX_MSG_MAP(CCommonApp)
+    //{{AFX_MSG_MAP(CCommonApp)
 
-	//}}AFX_MSG_MAP
+    //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -51,8 +51,8 @@ END_MESSAGE_MAP()
 
 CCommonApp::CCommonApp()
 {
-	// TODO: add construction code here,
-	// Place all significant initialization in InitInstance
+    // TODO: add construction code here,
+    // Place all significant initialization in InitInstance
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -64,17 +64,17 @@ CCommonApp theApp;
 
 int GetFuncCall()
 {
-	return FUNC_NOCALL;
+    return FUNC_NOCALL;
 }
 
 int GetLang()
 {
-	return LANG_ARABIC;
+    return LANG_ARABIC;
 }
 
 int GetComp()
 {
-	return COMP_Common_DataCrad;
+    return COMP_Common_DataCrad;
 }
 
 

@@ -21,7 +21,7 @@
 // ProfileSheetPage
 //
 /// The ProfileSheetPage class represents the kind of CPropertyPage that can
-/// be added as tabs in a ProfileSheet. This is an abstract base class that 
+/// be added as tabs in a ProfileSheet. This is an abstract base class that
 /// provides an interface for all pages that reside in a ProfileSheet.
 // --------------------------------------------------------------------------
 

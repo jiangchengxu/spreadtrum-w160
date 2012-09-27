@@ -37,7 +37,7 @@ void CSmsSendDlg::DoDataExchange(CDataExchange* pDX)
 
 BEGIN_MESSAGE_MAP(CSmsSendDlg, CDialog)
     //{{AFX_MSG_MAP(CSmsSendDlg)
-        // NOTE: the ClassWizard will add message map macros here
+    // NOTE: the ClassWizard will add message map macros here
     //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 

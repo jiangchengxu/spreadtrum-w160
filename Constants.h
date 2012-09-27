@@ -25,9 +25,9 @@ const int BUTTON_WIDTH = 75;
 const int BUTTON_HEIGHT = 80;
 
 #ifdef FEATURE_VERSION_NOMENU
-	const int MENU_HEIGHT = 0;  
+const int MENU_HEIGHT = 0;
 #else
-	const int MENU_HEIGHT = 24;  
+const int MENU_HEIGHT = 24;
 #endif
 
 //PhoneBook Constants

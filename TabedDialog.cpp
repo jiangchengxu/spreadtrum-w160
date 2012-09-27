@@ -1,5 +1,5 @@
 /*
-File: HSDPADlg.cpp 
+File: HSDPADlg.cpp
 Desc:
     所有附着在TABDIALOG上的DIALOG父类，用来规范这些窗口的行为和属性
     如：是否可以进行切换：在通话和数据通讯时，窗口不可以切换。
@@ -26,7 +26,7 @@ CTabedDialog::CTabedDialog(UINT nIDTemplate, CWnd* pParent /*=NULL*/)
     : CBaseDialog(nIDTemplate, pParent)
 {
     //{{AFX_DATA_INIT(CTabedDialog)
-        // NOTE: the ClassWizard will add member initialization here
+    // NOTE: the ClassWizard will add member initialization here
     //}}AFX_DATA_INIT
     // Note that LoadIcon does not require a subsequent DestroyIcon in Win32
     m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
@@ -48,8 +48,8 @@ void CTabedDialog::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(CTabedDialog, CBaseDialog)
     //{{AFX_MSG_MAP(CTabedDialog)
     ON_WM_DESTROY()
-    ON_WM_QUERYDRAGICON()    
-    //}}AFX_MSG_MAP    
+    ON_WM_QUERYDRAGICON()
+    //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -57,10 +57,10 @@ END_MESSAGE_MAP()
 
 BOOL CTabedDialog::OnInitDialog()
 {
-    
+
     CBaseDialog::OnInitDialog();
     //SetWindowLong(m_hWnd, GWL_STYLE, GetWindowLong(m_hWnd, GWL_STYLE) & (~(WS_CAPTION | WS_BORDER)));
-	/*
+    /*
     // Add "About..." menu item to system menu.
 
     // IDM_ABOUTBOX must be in the system command range.
@@ -78,13 +78,13 @@ BOOL CTabedDialog::OnInitDialog()
             pSysMenu->AppendMenu(MF_STRING, IDM_ABOUTBOX, strAboutMenu);
         }
     }
-	*/
+    */
     // Set the icon for this dialog.  The framework does this automatically
     //  when the application's main window is not a dialog
     SetIcon(m_hIcon, TRUE);            // Set big icon
     SetIcon(m_hIcon, FALSE);        // Set small icon
-    
-    
+
+
     return TRUE;  // return TRUE  unless you set the focus to a control
 }
 
@@ -95,7 +95,7 @@ void CTabedDialog::OnDestroy()
 {
     WinHelp(0L, HELP_QUIT);
 
-	//wyw_0104   CBaseDialog::OnDestroy()已Destroy
+    //wyw_0104   CBaseDialog::OnDestroy()已Destroy
     //::DestroyIcon(m_hIconInfo);
 
     CBaseDialog::OnDestroy();
@@ -113,7 +113,7 @@ HCURSOR CTabedDialog::OnQueryDragIcon()
 /*
 Name:    CanSwitchMe
 Desc:    是否可以切换窗口
-Param:    
+Param:
 
 Return:     TRUE:可以
          FALSE：不可以
@@ -137,16 +137,16 @@ void CTabedDialog::SetButton(CShadeButtonST *pButton)
     m_pButton = pButton;
 }
 
-void CTabedDialog::OnCancel() 
+void CTabedDialog::OnCancel()
 {
-	// TODO: Add extra cleanup here
-	
+    // TODO: Add extra cleanup here
+
 //	CBaseDialog::OnCancel();
 }
 
-void CTabedDialog::OnOK() 
+void CTabedDialog::OnOK()
 {
-	// TODO: Add extra cleanup here
-	
+    // TODO: Add extra cleanup here
+
 //	CBaseDialog::OnOK();
 }

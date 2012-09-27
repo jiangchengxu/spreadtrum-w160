@@ -41,7 +41,7 @@ static MessageCreator<DMSGetPowerStateRsp> RspUint32Creator(DMSGetPowerStateRspU
 //
 /// Constructor for DMSGetPowerStateReq.
 // --------------------------------------------------------------------------
-DMSGetPowerStateReq::DMSGetPowerStateReq() : 
+DMSGetPowerStateReq::DMSGetPowerStateReq() :
     Message(QMUX_TYPE_DMS,QMI_DMS_GET_POWER_STATE_MSG,QMI_CTL_FLAG_TYPE_CMD)
 {}
 
@@ -133,38 +133,32 @@ DMSGetPowerStateRsp::~DMSGetPowerStateRsp()
 bool DMSGetPowerStateRsp::Unpack(MsgBuf& msgBuf)
 {
     // call the base unpack
-    if (!Message::Unpack(msgBuf))
-    {
+    if (!Message::Unpack(msgBuf)) {
         return false;
     }
-    
+
     // validate message length
-    if (m_result == QMI_RESULT_SUCCESS)
-    {
+    if (m_result == QMI_RESULT_SUCCESS) {
         // mandatory tlvs
-        if (m_length != 12) 
-        {
+        if (m_length != 12) {
             std::stringstream stream;
             stream << _T("Warning: unable to unpack message:") << std::endl
-                << _T("Expected message length is 12 bytes, unpacked length is ")
-                << m_length << _T(" bytes.") << std::endl 
-                << std::endl;
+                   << _T("Expected message length is 12 bytes, unpacked length is ")
+                   << m_length << _T(" bytes.") << std::endl
+                   << std::endl;
             MessageManager::GetInstance().ReportStatus(stream.str(),ST_WARNING);
-            return false; 
+            return false;
         }
-    }
-    else
-    {
+    } else {
         // only result code tlv on failure
-        if (m_length != 7) 
-        {
+        if (m_length != 7) {
             std::stringstream stream;
             stream << _T("Warning: unable to unpack message:") << std::endl
-                << _T("Expected message length is 7 bytes, unpacked length is ")
-                << m_length << _T(" bytes.") << std::endl 
-                << std::endl;
+                   << _T("Expected message length is 7 bytes, unpacked length is ")
+                   << m_length << _T(" bytes.") << std::endl
+                   << std::endl;
             MessageManager::GetInstance().ReportStatus(stream.str(),ST_WARNING);
-            return false; 
+            return false;
         }
     }
 
@@ -182,8 +176,7 @@ bool DMSGetPowerStateRsp::Unpack(MsgBuf& msgBuf)
 Message::Uint8UnpackerMap& DMSGetPowerStateRsp::GetUnpackerMap()
 {
     static Uint8UnpackerMap UUMap;
-    if (UUMap.empty())
-    {
+    if (UUMap.empty()) {
         bool bSuccess = UUMap.insert(UUPair(RESULT_CODE_TYPE,(Unpacker)UnpackResultCode)).second;
         assert(bSuccess);
         bSuccess = UUMap.insert(UUPair(POWER_STATE_TYPE,(Unpacker)UnpackPowerState)).second;
@@ -206,12 +199,11 @@ bool DMSGetPowerStateRsp::UnpackResultCode(MsgBuf& msgBuf)
     m_resultCodeType = RESULT_CODE_TYPE;
 
     m_resultCodeLen = msgBuf.GetWord();
-    if (m_resultCodeLen != 4) 
-    {
+    if (m_resultCodeLen != 4) {
         std::stringstream stream;
         stream << _T("Warning: unable to unpack message:") << std::endl
                << _T("Expected Result Code length is 4 bytes, unpacked length is ")
-               << m_resultCodeLen << _T(" bytes.") << std::endl 
+               << m_resultCodeLen << _T(" bytes.") << std::endl
                << std::endl;
         MessageManager::GetInstance().ReportStatus(stream.str(),ST_WARNING);
         return false;
@@ -221,8 +213,7 @@ bool DMSGetPowerStateRsp::UnpackResultCode(MsgBuf& msgBuf)
     m_error = msgBuf.GetWord();
 
     // should be at the end of buffer on failure
-    if (m_result == QMI_RESULT_FAILURE && !msgBuf.EOB())
-    {
+    if (m_result == QMI_RESULT_FAILURE && !msgBuf.EOB()) {
         std::stringstream stream;
         stream << _T("Warning: unable to unpack message:") << std::endl
                << _T("Finished unpacking message but end of buffer not reached")
@@ -249,20 +240,18 @@ bool DMSGetPowerStateRsp::UnpackPowerState(MsgBuf& msgBuf)
     m_powerStateType = POWER_STATE_TYPE;
 
     m_powerStateLen = msgBuf.GetWord();
-    if (m_powerStateLen != 2) 
-    {
+    if (m_powerStateLen != 2) {
         std::stringstream stream;
         stream << _T("Warning: unable to unpack message:") << std::endl
                << _T("Expected Power State length is 2 bytes, unpacked length is ")
-               << m_powerStateLen << _T(" bytes.") << std::endl 
+               << m_powerStateLen << _T(" bytes.") << std::endl
                << std::endl;
         MessageManager::GetInstance().ReportStatus(stream.str(),ST_WARNING);
         return false;
     }
 
     m_powerStatus = msgBuf.GetByte();
-    if (m_powerStatus > 15)
-    {
+    if (m_powerStatus > 15) {
         std::stringstream stream;
         stream << _T("Warning: unable to unpack message:") << std::endl
                << _T("Unexpected use of 4 most significant bits in Power Status byte.")
@@ -272,20 +261,18 @@ bool DMSGetPowerStateRsp::UnpackPowerState(MsgBuf& msgBuf)
     }
 
     m_batteryLvl = msgBuf.GetByte();
-    if (m_batteryLvl > 100)
-    {
+    if (m_batteryLvl > 100) {
         std::stringstream stream;
         stream << _T("Warning: unable to unpack message:") << std::endl
                << _T("Valid Battery Level values are 0 - 100 , unpacked value is ")
-               << m_batteryLvl << _T(" .") << std::endl 
+               << m_batteryLvl << _T(" .") << std::endl
                << std::endl;
         MessageManager::GetInstance().ReportStatus(stream.str(),ST_WARNING);
         return false;
     }
 
     // should be at end of buffer
-    if (!msgBuf.EOB())
-    {
+    if (!msgBuf.EOB()) {
         std::stringstream stream;
         stream << _T("Warning: unable to unpack message:") << std::endl
                << _T("Finished unpacking message but end of buffer not reached")
@@ -311,8 +298,7 @@ void DMSGetPowerStateRsp::Print(std::ostream& stream)
            << _T("  ResultCode ") << (int)m_result << std::endl
            << _T("  ErrorCode ") << (int)m_error << std::endl;
 
-    if (m_powerStateType == POWER_STATE_TYPE)
-    {
+    if (m_powerStateType == POWER_STATE_TYPE) {
         stream << _T("  PowerStatus ") << (int)m_powerStatus << std::endl
                << _T("  BatteryLvl ") << (int)m_batteryLvl << std::endl;
     }

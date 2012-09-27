@@ -24,49 +24,68 @@
 // TextProgressCtrl class declaration
 ///
 /// The TextProgressCtrl is an extension of the CProgressCtrl common control
-/// that allows user defined text to be placed in the progress bar that 
+/// that allows user defined text to be placed in the progress bar that
 /// inverts in areas where the bar covers it.
 // --------------------------------------------------------------------------
 class TextProgressCtrl : public CProgressCtrl
 {
 public:
-   TextProgressCtrl();
-   virtual ~TextProgressCtrl();
+    TextProgressCtrl();
+    virtual ~TextProgressCtrl();
 
 public:
-   int SetPos(int nPos);
-   int OffsetPos(int nPos);
-   int SetStep(int nStep);
-   int StepIt();
+    int SetPos(int nPos);
+    int OffsetPos(int nPos);
+    int SetStep(int nStep);
+    int StepIt();
 
-   void SetText(CString text) { m_oldText = m_text; m_text = text; }
-   COLORREF GetBarFgColour() { return m_barFg; }
-   COLORREF GetBarBgColour() { return m_barBg; }
-   COLORREF GetTextFgColour() { return m_textFg; }
-   COLORREF GetTextBgColour() { return m_textBg; }
-   void SetBarFgColour(COLORREF color) { m_barFg = color; }
-   void SetBarBgColour(COLORREF color) { m_barBg = color; }
-   void SetTextFgColour(COLORREF color) { m_textFg = color; }
-   void SetTextBgColour(COLORREF color) { m_textBg = color; }
+    void SetText(CString text) {
+        m_oldText = m_text;
+        m_text = text;
+    }
+    COLORREF GetBarFgColour() {
+        return m_barFg;
+    }
+    COLORREF GetBarBgColour() {
+        return m_barBg;
+    }
+    COLORREF GetTextFgColour() {
+        return m_textFg;
+    }
+    COLORREF GetTextBgColour() {
+        return m_textBg;
+    }
+    void SetBarFgColour(COLORREF color) {
+        m_barFg = color;
+    }
+    void SetBarBgColour(COLORREF color) {
+        m_barBg = color;
+    }
+    void SetTextFgColour(COLORREF color) {
+        m_textFg = color;
+    }
+    void SetTextBgColour(COLORREF color) {
+        m_textBg = color;
+    }
 
 private:
-   int m_pos;
-   int m_stepSize;
-   CString m_text;
-   CString m_oldText;
-   int m_barWidth;
-   COLORREF m_barFg;
-   COLORREF m_barBg;
-   COLORREF m_textFg;
-   COLORREF m_textBg;
+    int m_pos;
+    int m_stepSize;
+    CString m_text;
+    CString m_oldText;
+    int m_barWidth;
+    COLORREF m_barFg;
+    COLORREF m_barBg;
+    COLORREF m_textFg;
+    COLORREF m_textBg;
 
-   //{{AFX_MSG(TextProgressCtrl)
-   afx_msg BOOL OnEraseBkgnd(CDC* pDC);
-   afx_msg void OnPaint();
-   afx_msg void OnSize(UINT nType, int cx, int cy);
-   //}}AFX_MSG
+    //{{AFX_MSG(TextProgressCtrl)
+    afx_msg BOOL OnEraseBkgnd(CDC* pDC);
+    afx_msg void OnPaint();
+    afx_msg void OnSize(UINT nType, int cx, int cy);
+    //}}AFX_MSG
 
-   DECLARE_MESSAGE_MAP()
+    DECLARE_MESSAGE_MAP()
 };
 
 //{{AFX_INSERT_LOCATION}}

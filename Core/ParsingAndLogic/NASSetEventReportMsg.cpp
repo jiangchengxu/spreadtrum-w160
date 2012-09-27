@@ -46,7 +46,7 @@ static MessageCreator<NASEventReportInd> IndUint32Creator(NASEventReportIndUID);
 /// Constructor for NASSetEventReportReq.
 // --------------------------------------------------------------------------
 const uint8 NASSetEventReportReq::SIGNAL_STRENGTH_INDICATOR_TYPE = 0x10;
-NASSetEventReportReq::NASSetEventReportReq() : 
+NASSetEventReportReq::NASSetEventReportReq() :
     Message(QMUX_TYPE_NAS,QMI_NAS_SET_EVENT_REPORT_MSG,QMI_CTL_FLAG_TYPE_CMD),
     m_signalStrengthIndicatorType(TLV_TYPE_INVALID),
     m_signalStrengthIndicatorLen(0),
@@ -74,16 +74,14 @@ NASSetEventReportReq::~NASSetEventReportReq()
 bool NASSetEventReportReq::Build(std::string& nameValue)
 {
     // call the base build function
-    if (Message::Build(nameValue))
-    {
+    if (Message::Build(nameValue)) {
         // at least one optional tlv must be present
-        if (m_signalStrengthIndicatorType != SIGNAL_STRENGTH_INDICATOR_TYPE)
-        {
+        if (m_signalStrengthIndicatorType != SIGNAL_STRENGTH_INDICATOR_TYPE) {
             std::stringstream stream;
             stream << _T("Warning: unable to unpack message:") << std::endl
-                << _T("At least one of the following optional tlv's must be present:") << std::endl 
-                << _T("  Signal Strength Indicator") << std::endl
-                << std::endl;
+                   << _T("At least one of the following optional tlv's must be present:") << std::endl
+                   << _T("  Signal Strength Indicator") << std::endl
+                   << std::endl;
             MessageManager::GetInstance().ReportStatus(stream.str(),ST_WARNING);
             return false;
         }
@@ -102,8 +100,7 @@ bool NASSetEventReportReq::Build(std::string& nameValue)
 Message::StringBuilderMap& NASSetEventReportReq::GetBuilderMap()
 {
     static StringBuilderMap SBMap;
-    if (SBMap.empty())
-    {
+    if (SBMap.empty()) {
         bool bSuccess = SBMap.insert(SBPair("ReportSigStrength",(Builder)BuildReportSigStrength)).second;
         assert(bSuccess);
         bSuccess = SBMap.insert(SBPair("RangeLimit",(Builder)BuildRangeLimit)).second;
@@ -129,8 +126,7 @@ bool NASSetEventReportReq::BuildReportSigStrength(std::string& value)
     sscanf(value.c_str(), "%i", &num);
 
     // validate entry
-    if (num != 0 && num != 1)
-    {
+    if (num != 0 && num != 1) {
         // report invalid profile type
         std::stringstream stream;
         stream << _T("Warning: unable to build message:") << std::endl
@@ -170,8 +166,7 @@ bool NASSetEventReportReq::BuildRangeLimit(std::string& value)
     sscanf(value.c_str(), "%i", &num);
 
     // validate entry
-    if (num < -128 || num > 127)
-    {
+    if (num < -128 || num > 127) {
         // report invalid profile type
         std::stringstream stream;
         stream << _T("Warning: unable to build message:") << std::endl
@@ -215,14 +210,12 @@ bool NASSetEventReportReq::BuildMsgBuf()
     m_pMsgBuf->PutWord(m_length);
 
     // optional tlv, power state reporting mode
-    if (m_signalStrengthIndicatorType == SIGNAL_STRENGTH_INDICATOR_TYPE)
-    {
+    if (m_signalStrengthIndicatorType == SIGNAL_STRENGTH_INDICATOR_TYPE) {
         m_pMsgBuf->PutByte(m_signalStrengthIndicatorType);
         m_pMsgBuf->PutWord(m_signalStrengthIndicatorLen);
         m_pMsgBuf->PutByte(m_reportSigStrength);
         m_pMsgBuf->PutByte(m_numRangeLimits);
-        for (int i = 0; i < m_numRangeLimits; i++)
-        {
+        for (int i = 0; i < m_numRangeLimits; i++) {
             m_pMsgBuf->PutByte(m_rangeLimits[i]);
         }
     }
@@ -242,13 +235,11 @@ void NASSetEventReportReq::Print(std::ostream& stream)
 {
     stream << "QMI_NAS_SET_EVENT_REPORT_REQ" << std::endl
            << _T("{") << std::endl;
-    
-    if (m_signalStrengthIndicatorType == SIGNAL_STRENGTH_INDICATOR_TYPE)
-    {
+
+    if (m_signalStrengthIndicatorType == SIGNAL_STRENGTH_INDICATOR_TYPE) {
         stream << _T("  ReportSigStrength ") << (int)m_reportSigStrength << std::endl;
-         
-        for (int i = 0; i < m_numRangeLimits; i++)
-        {
+
+        for (int i = 0; i < m_numRangeLimits; i++) {
             stream << _T("  RangeLimit ") << (int)m_rangeLimits[i] << std::endl;
         }
     }
@@ -295,21 +286,19 @@ NASSetEventReportRsp::~NASSetEventReportRsp()
 bool NASSetEventReportRsp::Unpack(MsgBuf& msgBuf)
 {
     // call the base unpack
-    if (!Message::Unpack(msgBuf))
-    {
+    if (!Message::Unpack(msgBuf)) {
         return false;
     }
-    
+
     // validate message length
-    if (m_length != 7) 
-    {
+    if (m_length != 7) {
         std::stringstream stream;
         stream << _T("Warning: unable to unpack message:") << std::endl
-            << _T("Expected message length is 7 bytes, unpacked length is ")
-            << m_length << _T(" bytes.") << std::endl 
-            << std::endl;
+               << _T("Expected message length is 7 bytes, unpacked length is ")
+               << m_length << _T(" bytes.") << std::endl
+               << std::endl;
         MessageManager::GetInstance().ReportStatus(stream.str(),ST_WARNING);
-        return false; 
+        return false;
     }
 
     return true;
@@ -326,8 +315,7 @@ bool NASSetEventReportRsp::Unpack(MsgBuf& msgBuf)
 Message::Uint8UnpackerMap& NASSetEventReportRsp::GetUnpackerMap()
 {
     static Uint8UnpackerMap UUMap;
-    if (UUMap.empty())
-    {
+    if (UUMap.empty()) {
         bool bSuccess = UUMap.insert(UUPair(RESULT_CODE_TYPE,(Unpacker)UnpackResultCode)).second;
         assert(bSuccess);
     }
@@ -348,12 +336,11 @@ bool NASSetEventReportRsp::UnpackResultCode(MsgBuf& msgBuf)
     m_resultCodeType = RESULT_CODE_TYPE;
 
     m_resultCodeLen = msgBuf.GetWord();
-    if (m_resultCodeLen != 4) 
-    {
+    if (m_resultCodeLen != 4) {
         std::stringstream stream;
         stream << _T("Warning: unable to unpack message:") << std::endl
                << _T("Expected Result Code length is 4 bytes, unpacked length is ")
-               << m_resultCodeLen << _T(" bytes.") << std::endl 
+               << m_resultCodeLen << _T(" bytes.") << std::endl
                << std::endl;
         MessageManager::GetInstance().ReportStatus(stream.str(),ST_WARNING);
         return false;
@@ -362,8 +349,7 @@ bool NASSetEventReportRsp::UnpackResultCode(MsgBuf& msgBuf)
     m_result = msgBuf.GetWord();
     m_error = msgBuf.GetWord();
 
-    if (!msgBuf.EOB())
-    {
+    if (!msgBuf.EOB()) {
         std::stringstream stream;
         stream << _T("Warning: unable to unpack message:") << std::endl
                << _T("Finished unpacking message but end of buffer not reached")
@@ -429,33 +415,30 @@ NASEventReportInd::~NASEventReportInd()
 bool NASEventReportInd::Unpack(MsgBuf& msgBuf)
 {
     // call the base unpack
-    if (!Message::Unpack(msgBuf))
-    {
+    if (!Message::Unpack(msgBuf)) {
         return false;
     }
 
     // at least one optional tlv must be present
-    if (m_signalStrengthType != SIGNAL_STRENGTH_TYPE)
-    {
+    if (m_signalStrengthType != SIGNAL_STRENGTH_TYPE) {
         std::stringstream stream;
         stream << _T("Warning: unable to unpack message:") << std::endl
-               << _T("At least one of the following optional tlv's must be present:") << std::endl 
-               << _T("  Signal Strength") << std::endl 
+               << _T("At least one of the following optional tlv's must be present:") << std::endl
+               << _T("  Signal Strength") << std::endl
                << std::endl;
         MessageManager::GetInstance().ReportStatus(stream.str(),ST_WARNING);
         return false;
     }
 
     // validate message length
-    if (m_length != 5) 
-    {
+    if (m_length != 5) {
         std::stringstream stream;
         stream << _T("Warning: unable to unpack message:") << std::endl
                << _T("Expected message length is 5 bytes, unpacked length is ")
-               << m_length << _T(" bytes.") << std::endl 
+               << m_length << _T(" bytes.") << std::endl
                << std::endl;
         MessageManager::GetInstance().ReportStatus(stream.str(),ST_WARNING);
-        return false; 
+        return false;
     }
 
     return true;
@@ -472,8 +455,7 @@ bool NASEventReportInd::Unpack(MsgBuf& msgBuf)
 Message::Uint8UnpackerMap& NASEventReportInd::GetUnpackerMap()
 {
     static Uint8UnpackerMap UUMap;
-    if (UUMap.empty())
-    {
+    if (UUMap.empty()) {
         bool bSuccess = UUMap.insert(UUPair(SIGNAL_STRENGTH_TYPE,(Unpacker)UnpackSignalStrength)).second;
         assert(bSuccess);
     }
@@ -494,12 +476,11 @@ bool NASEventReportInd::UnpackSignalStrength(MsgBuf& msgBuf)
     m_signalStrengthType = SIGNAL_STRENGTH_TYPE;
 
     m_signalStrengthLen = msgBuf.GetWord();
-    if (m_signalStrengthLen != 2) 
-    {
+    if (m_signalStrengthLen != 2) {
         std::stringstream stream;
         stream << _T("Warning: unable to unpack message:") << std::endl
                << _T("Expected Signal Strength length is 2 bytes, unpacked length is ")
-               << m_signalStrengthLen << _T(" bytes.") << std::endl 
+               << m_signalStrengthLen << _T(" bytes.") << std::endl
                << std::endl;
         MessageManager::GetInstance().ReportStatus(stream.str(),ST_WARNING);
         return false;
@@ -508,12 +489,11 @@ bool NASEventReportInd::UnpackSignalStrength(MsgBuf& msgBuf)
     m_signalStrength = msgBuf.GetByte();
 
     m_radioIf = msgBuf.GetByte();
-    if (m_radioIf > 5)
-    {
+    if (m_radioIf > 5) {
         std::stringstream stream;
         stream << _T("Warning: unable to unpack message:") << std::endl
                << _T("Valid Radio IF values are 0 - 5 , unpacked value is ")
-               << m_radioIf << _T(" .") << std::endl 
+               << m_radioIf << _T(" .") << std::endl
                << std::endl;
         MessageManager::GetInstance().ReportStatus(stream.str(),ST_WARNING);
         return false;
@@ -534,8 +514,7 @@ void NASEventReportInd::Print(std::ostream& stream)
     stream << "QMI_NAS_EVENT_REPORT_IND" << std::endl
            << _T("{") << std::endl;
 
-    if (m_signalStrengthType == SIGNAL_STRENGTH_TYPE)
-    {
+    if (m_signalStrengthType == SIGNAL_STRENGTH_TYPE) {
         stream << _T("  SignalStrength ") << (int)m_signalStrength << std::endl
                << _T("  RadioIf ") << (int)m_radioIf << std::endl;
     }

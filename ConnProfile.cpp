@@ -39,11 +39,9 @@ BOOL CConnProfile::EditConnProfile(WORD nIndex, const StConnProfile &profile)
 {
     ASSERT(nIndex < m_ConnNum);
 
-    if(profile.bDefault)
-    {
+    if(profile.bDefault) {
         WORD cnt;
-        for(cnt = 0; cnt < m_ConnNum; cnt++)
-        {
+        for(cnt = 0; cnt < m_ConnNum; cnt++) {
             m_ConnProfile[cnt].bDefault = FALSE;
         }
     }
@@ -57,13 +55,10 @@ BOOL CConnProfile::AddConnProfile(const StConnProfile &profile)
 {
     if(IsFull())
         return FALSE;
-    else
-    {
-        if(profile.bDefault)
-        {
+    else {
+        if(profile.bDefault) {
             WORD cnt;
-            for(cnt = 0; cnt < m_ConnNum; cnt++)
-            {
+            for(cnt = 0; cnt < m_ConnNum; cnt++) {
                 m_ConnProfile[cnt].bDefault = FALSE;
             }
         }
@@ -143,47 +138,43 @@ BOOL CConnProfile::IsFull() const
     return (m_ConnNum == CONNECTION_PROFILE_MAX);
 }
 
-CString CConnProfile::DeorEncrypt(const TCHAR* strData)     //加密   
+CString CConnProfile::DeorEncrypt(const TCHAR* strData)     //加密
 {
-	//CString strTemp = _T("");  
-	TCHAR strTemp ;
-	CString strCode = _T("");  
-	int i = 0;
+    //CString strTemp = _T("");
+    TCHAR strTemp ;
+    CString strCode = _T("");
+    int i = 0;
 
-	for (i = 0; i <= wcslen(strData);i++)   
-	{   
-	  TCHAR ch = strData[i];   
-	  strTemp = ch ^ 0XFFFF;
-	  strCode += strTemp;
-	} 
-	return strCode;		 
-} 
-  
+    for (i = 0; i <= wcslen(strData); i++) {
+        TCHAR ch = strData[i];
+        strTemp = ch ^ 0XFFFF;
+        strCode += strTemp;
+    }
+    return strCode;
+}
+
 //从文件中读取数据
 BOOL CConnProfile::ReadDataFromFile()
 {
     WORD         cnt;
     CFile        file;
     CFileStatus  filestatus;
-	CString strPwd = _T("");
-    
-    if(CFile::GetStatus(m_strConnProfileFileName, filestatus))
-    {
+    CString strPwd = _T("");
+
+    if(CFile::GetStatus(m_strConnProfileFileName, filestatus)) {
 //        m_strConnProfileFileName=_T("NdisConnProfile.dat");
-	    file.Open(m_strConnProfileFileName, CFile::modeRead);
-		
+        file.Open(m_strConnProfileFileName, CFile::modeRead);
+
         file.Read(&m_ConnNum, sizeof(m_ConnNum));
-        
-        for(cnt = 0; cnt < m_ConnNum; cnt++)
-        {
+
+        for(cnt = 0; cnt < m_ConnNum; cnt++) {
             file.Read(&m_ConnProfile[cnt], sizeof(StConnProfile));
-		    strPwd = DeorEncrypt(m_ConnProfile[cnt].szPassword);
-			wcscpy(m_ConnProfile[cnt].szPassword,strPwd);
+            strPwd = DeorEncrypt(m_ConnProfile[cnt].szPassword);
+            wcscpy(m_ConnProfile[cnt].szPassword,strPwd);
         }
         file.Close();
         return TRUE;
-    }
-    else
+    } else
         return FALSE;
 }
 
@@ -193,22 +184,21 @@ BOOL CConnProfile::WriteDataToFile()
     WORD         cnt;
     CFile        file;
     CFileStatus  filestatus;
-	CString strPwd = _T("");
-	CString strPwdTemp = _T("");
-    
+    CString strPwd = _T("");
+    CString strPwdTemp = _T("");
+
     if(CFile::GetStatus(m_strConnProfileFileName, filestatus))
         SetFileAttributes(m_strConnProfileFileName, FILE_ATTRIBUTE_ARCHIVE);
-    
-    file.Open(m_strConnProfileFileName, CFile::modeCreate | CFile::modeWrite);    
+
+    file.Open(m_strConnProfileFileName, CFile::modeCreate | CFile::modeWrite);
     file.Write(&m_ConnNum, sizeof(m_ConnNum));
-    
-    for(cnt = 0; cnt < m_ConnNum; cnt++)
-    {
-		strPwd = DeorEncrypt(m_ConnProfile[cnt].szPassword);
-		strPwdTemp.Format(m_ConnProfile[cnt].szPassword);
-		wcscpy(m_ConnProfile[cnt].szPassword,strPwd);
+
+    for(cnt = 0; cnt < m_ConnNum; cnt++) {
+        strPwd = DeorEncrypt(m_ConnProfile[cnt].szPassword);
+        strPwdTemp.Format(m_ConnProfile[cnt].szPassword);
+        wcscpy(m_ConnProfile[cnt].szPassword,strPwd);
         file.Write(&m_ConnProfile[cnt], sizeof(StConnProfile));
-		wcscpy(m_ConnProfile[cnt].szPassword, strPwdTemp);
+        wcscpy(m_ConnProfile[cnt].szPassword, strPwdTemp);
     }
     file.Close();
     return TRUE;
@@ -221,10 +211,8 @@ BOOL CConnProfile::IsExistent(LPCTSTR pEntryName)
     WORD cnt;
     BOOL bExist = FALSE;
 
-    for(cnt = 0; cnt < m_ConnNum; cnt++)
-    {
-        if(wcscmp(pEntryName, m_ConnProfile[cnt].szEntryName) == 0)
-        {
+    for(cnt = 0; cnt < m_ConnNum; cnt++) {
+        if(wcscmp(pEntryName, m_ConnProfile[cnt].szEntryName) == 0) {
             bExist = TRUE;
             break;
         }
@@ -236,8 +224,7 @@ WORD CConnProfile::GetDefaultConnProfileIndex()
 {
     WORD cnt;
 
-    for(cnt = 0; cnt < m_ConnNum; cnt++)
-    {
+    for(cnt = 0; cnt < m_ConnNum; cnt++) {
         if(m_ConnProfile[cnt].bDefault)
             break;
     }

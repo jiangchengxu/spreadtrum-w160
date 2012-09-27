@@ -47,15 +47,14 @@ CSerialPort::CSerialPort()
     m_bIsConnect = FALSE;
     m_dwEvtMask = 0;
     m_SerialState = SERIAL_STATE_INI;
- 
+
     memset(&m_ReadOvlp,0,sizeof(OVERLAPPED));
     memset(&m_WriteOvlp,0,sizeof(OVERLAPPED));
     memset(&m_WaitOvlp,0,sizeof(OVERLAPPED));
     memset(&m_IoCtrlOvlp,0,sizeof(OVERLAPPED));
 
 #ifdef FEATURE_SERIAL_ASYNWRITE
-    for(int i = 0; i < SERAIL_EVENTARRAYNUM; i++)
-    {
+    for(int i = 0; i < SERAIL_EVENTARRAYNUM; i++) {
         m_hEventArray[i] = NULL;
     }
     //创建自动重置事件
@@ -65,7 +64,7 @@ CSerialPort::CSerialPort()
 
     m_hEventArray[SERAIL_WRITEEVENT]  = m_hWriteEvent;
     m_hEventArray[SERAIL_IOCTRLEVENT] = m_hIoCtrlEvent;
-    m_hEventArray[SERAIL_CLOSEEVENT]  = m_hCloseWriteEvent;    
+    m_hEventArray[SERAIL_CLOSEEVENT]  = m_hCloseWriteEvent;
 #endif
 
 #ifndef FEATURE_SERIAL_QUEUE
@@ -81,10 +80,9 @@ CSerialPort::~CSerialPort()
     StopPort();
 
 #ifdef FEATURE_SERIAL_ASYNWRITE
-    for(int i = 0; i < SERAIL_EVENTARRAYNUM; i++)
-    {
+    for(int i = 0; i < SERAIL_EVENTARRAYNUM; i++) {
         if(m_hEventArray[i] != NULL)
-            ::CloseHandle(m_hEventArray[i]);            
+            ::CloseHandle(m_hEventArray[i]);
     }
 #endif
 
@@ -97,7 +95,7 @@ CSerialPort::~CSerialPort()
 }
 
 BOOL CSerialPort::Open(LPCTSTR lpszCommName, BOOL bOverlapped)
-{    
+{
     // Check if the port isn't already opened
     ASSERT(!IsOpen());
 
@@ -111,8 +109,7 @@ BOOL CSerialPort::Open(LPCTSTR lpszCommName, BOOL bOverlapped)
                            bOverlapped ? FILE_FLAG_OVERLAPPED : 0,
                            NULL);
 
-    if(m_hComm == INVALID_HANDLE_VALUE)
-    {
+    if(m_hComm == INVALID_HANDLE_VALUE) {
         m_hComm = NULL;
         m_bOverlapped = FALSE;
         return FALSE;
@@ -121,18 +118,17 @@ BOOL CSerialPort::Open(LPCTSTR lpszCommName, BOOL bOverlapped)
 }
 
 void CSerialPort::Close()
-{    
-    if(IsOpen())
-    {
-		m_bIsConnect = FALSE;
-		SetCommMask(m_hComm,0);
-		EscapeCommFunction(m_hComm,CLRDTR);
+{
+    if(IsOpen()) {
+        m_bIsConnect = FALSE;
+        SetCommMask(m_hComm,0);
+        EscapeCommFunction(m_hComm,CLRDTR);
         Purge(PURGE_TXCLEAR | PURGE_RXCLEAR | PURGE_RXABORT | PURGE_TXABORT);
         ::CloseHandle(m_hComm);
         m_hComm = NULL;
         m_bOverlapped = FALSE;
     }
-	Sleep(100);
+    Sleep(100);
 }
 
 inline BOOL CSerialPort::IsOpen() const
@@ -158,36 +154,29 @@ DWORD CSerialPort::Read(LPVOID lpBuffer, DWORD dwToRead, DWORD dwTimeout)
     DWORD dwRead = 0;
 
     //同步读
-    if(!m_bOverlapped) 
-    {
+    if(!m_bOverlapped) {
         // Read the data
         if(!::ReadFile(m_hComm, lpBuffer, dwToRead, &dwRead, 0))
             dwRead = 0;
-    }
-    else //异步读
-    {    
+    } else { //异步读
         // Wait for the event to happen
         memset(&m_ReadOvlp,0,sizeof(OVERLAPPED));
         m_ReadOvlp.hEvent = ::CreateEvent(NULL, TRUE, FALSE, NULL);
-        
+
         // Write the data
-        if(!::ReadFile(m_hComm, lpBuffer, dwToRead, &dwRead, &m_ReadOvlp))
-        {
+        if(!::ReadFile(m_hComm, lpBuffer, dwToRead, &dwRead, &m_ReadOvlp)) {
             m_dwLastError = ::GetLastError();
             // Overlapped operation in progress is not an actual error
             if(m_dwLastError == ERROR_HANDLE_EOF)
                 NULL;
             else if(m_dwLastError != ERROR_IO_PENDING)
                 dwRead = 0;
-            else
-            {
+            else {
                 // Wait for the overlapped operation to complete
-                switch(::WaitForSingleObject(m_ReadOvlp.hEvent, dwTimeout))
-                {
+                switch(::WaitForSingleObject(m_ReadOvlp.hEvent, dwTimeout)) {
                 case WAIT_OBJECT_0:
                     // The overlapped operation has completed
-                    if(!::GetOverlappedResult(m_hComm, &m_ReadOvlp, &dwRead, FALSE))
-                    {
+                    if(!::GetOverlappedResult(m_hComm, &m_ReadOvlp, &dwRead, FALSE)) {
                         if(::GetLastError() != ERROR_HANDLE_EOF)
                             dwRead = 0;
                     }
@@ -214,29 +203,23 @@ DWORD CSerialPort::Write(LPCVOID lpBuffer, DWORD dwToWrite, DWORD dwTimeout)
     DWORD dwWrite = 0;
 
     //同步写
-    if(!m_bOverlapped) 
-    {
+    if(!m_bOverlapped) {
         // Write the data
         if(!::WriteFile(m_hComm, lpBuffer, dwToWrite, &dwWrite, 0))
             dwWrite = 0;
-    }
-    else //异步写
-    {    
+    } else { //异步写
         // Wait for the event to happen
         memset(&m_WriteOvlp,0,sizeof(OVERLAPPED));
         m_WriteOvlp.hEvent = ::CreateEvent(NULL, TRUE, FALSE, NULL);
-        
+
         // Write the data
-        if(!::WriteFile(m_hComm, lpBuffer, dwToWrite, &dwWrite, &m_WriteOvlp))
-        {    
+        if(!::WriteFile(m_hComm, lpBuffer, dwToWrite, &dwWrite, &m_WriteOvlp)) {
             // Overlapped operation in progress is not an actual error
             if(::GetLastError() != ERROR_IO_PENDING)
                 dwWrite = 0;
-            else
-            {
+            else {
                 // Wait for the overlapped operation to complete
-                switch(::WaitForSingleObject(m_WriteOvlp.hEvent, dwTimeout))
-                {
+                switch(::WaitForSingleObject(m_WriteOvlp.hEvent, dwTimeout)) {
                 case WAIT_OBJECT_0:
                     // The overlapped operation has completed
                     if(!::GetOverlappedResult(m_hComm, &m_WriteOvlp, &dwWrite, FALSE))
@@ -265,38 +248,32 @@ BOOL CSerialPort::WaitEvent(DWORD dwTimeout)
     DWORD dwTrans;
 
     // Wait for the COM event
-    if(!m_bOverlapped) //同步
-    {
+    if(!m_bOverlapped) { //同步
         if(!::WaitCommEvent(m_hComm, LPDWORD(&m_dwEvtMask), 0))
             bRet = FALSE;
-    }
-    else //异步
-    {
+    } else { //异步
         // Wait for the event to happen
         memset(&m_WaitOvlp,0,sizeof(OVERLAPPED));
         m_WaitOvlp.hEvent = ::CreateEvent(NULL, TRUE, FALSE, NULL);
-        
+
         // Wait for the COM event
-        if(!::WaitCommEvent(m_hComm, LPDWORD(&m_dwEvtMask), &m_WaitOvlp))
-        {    
+        if(!::WaitCommEvent(m_hComm, LPDWORD(&m_dwEvtMask), &m_WaitOvlp)) {
             // Overlapped operation in progress is not an actual error
             if(::GetLastError() != ERROR_IO_PENDING)
                 bRet = FALSE;
-            else
-            {
+            else {
                 // Wait for the overlapped operation to complete
-                switch (::WaitForSingleObject(m_WaitOvlp.hEvent,dwTimeout))
-                {
+                switch (::WaitForSingleObject(m_WaitOvlp.hEvent,dwTimeout)) {
                 case WAIT_OBJECT_0:
                     if(!::GetOverlappedResult(m_hComm, &m_WaitOvlp, &dwTrans, FALSE))
                         bRet = FALSE;
                     else
                         bRet = TRUE;
                     break;
-        
+
                 case WAIT_TIMEOUT:
                     // Cancel the I/O operation
-                    ::CancelIo(m_hComm);                
+                    ::CancelIo(m_hComm);
                 default:
                     bRet = FALSE;
                 }
@@ -321,8 +298,7 @@ BOOL CSerialPort::IoControl(DWORD dwIoControlCode, LPVOID lpInBuffer, DWORD nInB
     BOOL bRet = FALSE;
 
     //同步控制
-    if(!m_bOverlapped) 
-    {
+    if(!m_bOverlapped) {
         if(!::DeviceIoControl(m_hComm,
                               dwIoControlCode,
                               lpInBuffer,
@@ -331,14 +307,12 @@ BOOL CSerialPort::IoControl(DWORD dwIoControlCode, LPVOID lpInBuffer, DWORD nInB
                               nOutBufferSize,
                               lpBytesReturned,
                               0))
-        bRet = FALSE;
-    }
-    else //异步控制
-    {
+            bRet = FALSE;
+    } else { //异步控制
         // Wait for the event to happen
         memset(&m_IoCtrlOvlp,0,sizeof(OVERLAPPED));
         m_IoCtrlOvlp.hEvent = ::CreateEvent(NULL, TRUE, FALSE, NULL);
-        
+
         if(!::DeviceIoControl(m_hComm,
                               dwIoControlCode,
                               lpInBuffer,
@@ -346,23 +320,20 @@ BOOL CSerialPort::IoControl(DWORD dwIoControlCode, LPVOID lpInBuffer, DWORD nInB
                               lpOutBuffer,
                               nOutBufferSize,
                               lpBytesReturned,
-                              &m_IoCtrlOvlp))    
-        {
+                              &m_IoCtrlOvlp)) {
             // Overlapped operation in progress is not an actual error
             if(::GetLastError() != ERROR_IO_PENDING)
                 bRet = FALSE;
-            else
-            {
+            else {
                 // Wait for the overlapped operation to complete
-                switch(::WaitForSingleObject(m_IoCtrlOvlp.hEvent, dwTimeout))
-                {
+                switch(::WaitForSingleObject(m_IoCtrlOvlp.hEvent, dwTimeout)) {
                 case WAIT_OBJECT_0:
                     // The overlapped operation has completed
-                    if(!::GetOverlappedResult(m_hComm, &m_IoCtrlOvlp, lpBytesReturned, FALSE))  
+                    if(!::GetOverlappedResult(m_hComm, &m_IoCtrlOvlp, lpBytesReturned, FALSE))
                         bRet = FALSE;
                     else
                         bRet = TRUE;
-                    break; 
+                    break;
                 case WAIT_TIMEOUT:
                     // Cancel the I/O operation
                     ::CancelIo(m_hComm);
@@ -373,7 +344,7 @@ BOOL CSerialPort::IoControl(DWORD dwIoControlCode, LPVOID lpInBuffer, DWORD nInB
         }
         ::CloseHandle(m_IoCtrlOvlp.hEvent);
     }
-    
+
     // Return successfully
     return bRet;
 }
@@ -386,8 +357,7 @@ UINT CSerialPort::CommWriteThreadProc(LPVOID pParam)
     CSerialPort *pComm = (CSerialPort*)pParam;
 
 //  AfxMessageBox("Serial Write Thread Start!");
-    for(;;)
-    {
+    for(;;) {
         dwEvent = ::WaitForMultipleObjects(SERAIL_EVENTARRAYNUM, pComm->m_hEventArray, FALSE, INFINITE);
         dwEvent -= WAIT_OBJECT_0;
 
@@ -395,11 +365,10 @@ UINT CSerialPort::CommWriteThreadProc(LPVOID pParam)
         case SERAIL_WRITEEVENT:
             pComm->Purge(PURGE_TXCLEAR);
             dwWrite = 0;
-#ifdef FEATURE_SERIAL_QUEUE    
+#ifdef FEATURE_SERIAL_QUEUE
             CSerialBuffer *buf;
-            while(buf = pComm->m_WriteBufQueue.GetFromHead())
-            {
-                dwWrite = 0;                
+            while(buf = pComm->m_WriteBufQueue.GetFromHead()) {
+                dwWrite = 0;
                 dwWrite = pComm->Write(buf->m_szBuffer, buf->m_dwBytes);
                 delete buf;
             }
@@ -438,26 +407,24 @@ BOOL CSerialPort::StartPort(LPCTSTR lpszCommName, BOOL bCreateThread, BOOL bOver
     bOverlapped = TRUE;
 
 #ifndef FEATURE_SERIAL_QUEUE
-    EnterCriticalSection(&m_csRxQueue);    
+    EnterCriticalSection(&m_csRxQueue);
     memset(m_RxQueueCtrl.RxBuffer, 0, SERIAL_RXBUFFERSIZE);
     m_RxQueueCtrl.pRead = m_RxQueueCtrl.pWrite = &m_RxQueueCtrl.RxBuffer[0];
     m_RxQueueCtrl.wRxCount = 0;
     LeaveCriticalSection(&m_csRxQueue);
 
 #ifdef FEATURE_SERIAL_ASYNWRITE
-    EnterCriticalSection(&m_csTxBuff);    
+    EnterCriticalSection(&m_csTxBuff);
     memset(m_TxBuff, 0, SERIAL_TXBUFFERSIZE);
     m_wTxCount = 0;
     LeaveCriticalSection(&m_csTxBuff);
 #endif
 #endif
-    
-    if(Open(lpszCommName, bOverlapped) && Config())
-    {
-        m_bIsConnect = TRUE;      
 
-        if(bCreateThread)
-        {
+    if(Open(lpszCommName, bOverlapped) && Config()) {
+        m_bIsConnect = TRUE;
+
+        if(bCreateThread) {
             m_ReadThread = AfxBeginThread(CommReadThreadProc, this);
             m_DetectThread = AfxBeginThread(CommDetectThreadProc, this);
 #ifdef FEATURE_SERIAL_ASYNWRITE
@@ -465,21 +432,18 @@ BOOL CSerialPort::StartPort(LPCTSTR lpszCommName, BOOL bCreateThread, BOOL bOver
 #endif
         }
 
-        m_SerialState = SERIAL_STATE_CMD;        
+        m_SerialState = SERIAL_STATE_CMD;
         return TRUE;
-    }
-    else
-    {
-        m_SerialState = SERIAL_STATE_EXCEPTION;        
-        return FALSE;        
+    } else {
+        m_SerialState = SERIAL_STATE_EXCEPTION;
+        return FALSE;
     }
 }
 
 BOOL CSerialPort::StopPort()
 {
 #ifdef FEATURE_SERIAL_ASYNWRITE
-    if(m_WriteThread)
-    {
+    if(m_WriteThread) {
         if(m_hCloseWriteEvent)
             ::SetEvent(m_hCloseWriteEvent);
         m_WriteThread = NULL;
@@ -487,20 +451,19 @@ BOOL CSerialPort::StopPort()
 #endif
 
 #if 0
-    if(m_ReadThread && m_ReadThread->m_hThread)
-    {
+    if(m_ReadThread && m_ReadThread->m_hThread) {
         ::TerminateThread(m_ReadThread->m_hThread, 0);
         m_ReadThread = NULL;
     }
 #endif
 
-#ifdef FEATURE_SERIAL_QUEUE        
+#ifdef FEATURE_SERIAL_QUEUE
     m_ReadBufQueue.Clear();
     m_WriteBufQueue.Clear();
 #endif
 
     Close();
-    m_SerialState = SERIAL_STATE_INI;    
+    m_SerialState = SERIAL_STATE_INI;
     return TRUE;
 }
 
@@ -510,16 +473,13 @@ BOOL CSerialPort::WriteToPort(const char *pBuf, WORD wLen, BOOL bReportError)
 {
     ASSERT(pBuf != NULL && wLen < SERIAL_TXBUFFERSIZE);
 
-    if(m_SerialState != SERIAL_STATE_CMD)
-    {
-        if(pSpMainDlg)
-        {
+    if(m_SerialState != SERIAL_STATE_CMD) {
+        if(pSpMainDlg) {
             BOOL bSyncInitMask;
             EnterCriticalSection(&pSpMainDlg->m_csSyncInitMask);
             bSyncInitMask = pSpMainDlg->m_bSyncInitMask; //added by wk
             LeaveCriticalSection(&pSpMainDlg->m_csSyncInitMask);
-            if(!bSyncInitMask && bReportError)
-            {
+            if(!bSyncInitMask && bReportError) {
                 if(m_SerialState == SERIAL_STATE_INI)
                     AfxMessageBox(IDS_USB_PORT_INI);
                 else if(m_SerialState == SERIAL_STATE_EXCEPTION)
@@ -530,13 +490,13 @@ BOOL CSerialPort::WriteToPort(const char *pBuf, WORD wLen, BOOL bReportError)
                     AfxMessageBox(IDS_USB_PORT_DATA);
                 else
                     AfxMessageBox(IDS_USB_PORT_WAIT);
-            }  
+            }
         }
         return FALSE;
     }
 
 #ifdef FEATURE_SERIAL_ASYNWRITE
-#ifdef FEATURE_SERIAL_QUEUE    
+#ifdef FEATURE_SERIAL_QUEUE
     CSerialBuffer *pWriteBuf = new CSerialBuffer;
     pWriteBuf->m_dwBytes = wLen;
     memcpy(pWriteBuf->m_szBuffer, pBuf, wLen);
@@ -555,8 +515,7 @@ BOOL CSerialPort::WriteToPort(const char *pBuf, WORD wLen, BOOL bReportError)
     Purge(PURGE_TXCLEAR);
     m_SerialState = SERIAL_STATE_CMD_WAIT;
     dwWrite = Write(pBuf, wLen);
-    if(dwWrite != wLen)
-    {
+    if(dwWrite != wLen) {
         m_SerialState = SERIAL_STATE_CMD;
         return FALSE;
     }
@@ -568,61 +527,54 @@ BOOL CSerialPort::WriteToPort(const char *pBuf, WORD wLen, BOOL bReportError)
 #endif
 
 #ifdef FEATURE_ATTEST_SUPPORT
-	/*added by taolinling start on 2008.3.19*/
-	//输入，out
-	CStdioFile file;
-	if(file.Open("AtDebug.log", CFile::modeReadWrite))
-	{
-		CString str;
-		str.Format("%s", &pBuf[0]);
-		str.Insert(str.GetLength(),"\n");
-		DWORD dwActual = file.SeekToEnd();
-		file.WriteString(str);
-		file.Close();		
-	}
-	/*added by taolinling end on 2008.3.19*/
+    /*added by taolinling start on 2008.3.19*/
+    //输入，out
+    CStdioFile file;
+    if(file.Open("AtDebug.log", CFile::modeReadWrite)) {
+        CString str;
+        str.Format("%s", &pBuf[0]);
+        str.Insert(str.GetLength(),"\n");
+        DWORD dwActual = file.SeekToEnd();
+        file.WriteString(str);
+        file.Close();
+    }
+    /*added by taolinling end on 2008.3.19*/
 #endif
     return TRUE;
 }
 
 UINT CSerialPort::CommReadThreadProc(LPVOID pParam)
 {
-	CSerialPort *pComm = (CSerialPort*)pParam;
+    CSerialPort *pComm = (CSerialPort*)pParam;
     DWORD   dwErrorFlags;
     COMSTAT comStat;
     pComm->Purge(PURGE_RXCLEAR);
     //注册监听的事件
     ::SetCommMask(pComm->m_hComm, EV_RXCHAR | EV_ERR);
-    
-    while(pComm->IsConnect()) 
-    {
-        if(pComm->WaitEvent())
-        {    
-            if(pComm->m_dwEvtMask & EV_RXCHAR)
-            {                
-				DWORD dwReadBytes = 0;			
-                do    //读缓冲区有数据
-                {                    
+
+    while(pComm->IsConnect()) {
+        if(pComm->WaitEvent()) {
+            if(pComm->m_dwEvtMask & EV_RXCHAR) {
+                DWORD dwReadBytes = 0;
+                do {  //读缓冲区有数据
                     BYTE WorkBuff[SERIAL_RXBUFFERSIZE];
                     memset(WorkBuff, 0, SERIAL_RXBUFFERSIZE);
-                    if((dwReadBytes = pComm->Read(WorkBuff, 1)) > 0)
-                    {
+                    if((dwReadBytes = pComm->Read(WorkBuff, 1)) > 0) {
                         DWORD wCopyBytes = 0;
-                        BYTE *ptr = WorkBuff;                   
+                        BYTE *ptr = WorkBuff;
                         EnterCriticalSection(&pComm->m_csRxQueue);
                         WORD wRxCount = pComm->m_RxQueueCtrl.wRxCount;
                         wCopyBytes = min(dwReadBytes, (WORD)(SERIAL_RXBUFFERSIZE - pComm->m_RxQueueCtrl.wRxCount));
-                        while(wCopyBytes-- > 0)
-                        {
+                        while(wCopyBytes-- > 0) {
                             *pComm->m_RxQueueCtrl.pWrite++ = *ptr++;
                             if(pComm->m_RxQueueCtrl.pWrite >= &pComm->m_RxQueueCtrl.RxBuffer[SERIAL_RXBUFFERSIZE])
                                 pComm->m_RxQueueCtrl.pWrite = &pComm->m_RxQueueCtrl.RxBuffer[0];
                             pComm->m_RxQueueCtrl.wRxCount++;
-                        }  
+                        }
                         LeaveCriticalSection(&pComm->m_csRxQueue);
                         ::SetEvent(g_AtRespEvent);
-                    }  
-                }while(dwReadBytes > 0);
+                    }
+                } while(dwReadBytes > 0);
 //Debug
 #ifdef _DEBUG
 #if 0
@@ -632,9 +584,7 @@ UINT CSerialPort::CommReadThreadProc(LPVOID pParam)
                 file.Close();
 #endif
 #endif
-            }
-            else if(pComm->m_dwEvtMask & EV_ERR)
-            {
+            } else if(pComm->m_dwEvtMask & EV_ERR) {
                 pComm->Purge(PURGE_RXCLEAR);
                 ::ClearCommError(pComm->m_hComm, &dwErrorFlags, &comStat);
             }
@@ -648,66 +598,58 @@ UINT CSerialPort::CommDetectThreadProc(LPVOID pParam)
 {
     CSerialPort *pComm = (CSerialPort*)pParam;
     ULONG        event = 0, junk = 0;
-    
- //   AfxMessageBox("DECT");
-    
+
+//   AfxMessageBox("DECT");
+
     if(!pComm->IsConnect())
         return 0;
     if(pComm->IoControl(IOCTL_QCOMSER_WAIT_NOTIFY_CODE,
-                       NULL,
-                       0,
-                       &event,
-                       sizeof(event),
-                       &junk))
-    {  
+                        NULL,
+                        0,
+                        &event,
+                        sizeof(event),
+                        &junk)) {
 //    AfxMessageBox("disc");
         if(!pComm->IsConnect())
             return 0;
-        
-        if(event & 0x01)
-        {
+
+        if(event & 0x01) {
             CHSDPADlg* pMainDlg = (CHSDPADlg*)(theApp.GetMainWnd());
             ASSERT(pMainDlg);
-         
+
 #ifdef FEATURE_AUTOQUIT
 //			AfxMessageBox(IDS_CARD_DISCONN);
-			CHSDPADlg* pMainDlgTemp = (CHSDPADlg*)(theApp.GetMainWnd());
-			PreMsg *PreMsgDlgTemp = NULL;
-			
-			if (!pMainDlgTemp->m_bPortStatus)
-			{
-				
-				if (NULL == PreMsgDlgTemp)
-				{
-					CString strDspInfo;
-					PreMsg *PreMsgDlg = new PreMsg;
-					ASSERT(PreMsgDlg);
-					PreMsgDlg->Create(PreMsgDlg->IDD);
-					//PreMsgDlg->SetBitmap(IDB_SPLASH,255,0,255);
-					PreMsgDlg->SetBitmap(g_SetData.Main_szSplashBmp, 255 ,0 ,255);
-					PreMsgDlg->ShowWindow(SW_SHOW);
-					strDspInfo.LoadString(IDS_CARD_DISCONN);
-					PreMsgDlg->SetText(strDspInfo);
-					Sleep(2000);
-					PreMsgDlg->DestroyWindow();
-					delete PreMsgDlg;
-					pMainDlgTemp->PostMessage(WM_QUIT);
-				}
-				else
-				{
-					/*
-					CString strDspInfo;
-					strDspInfo.LoadString(IDS_CARD_DISCONN);
-					PreMsgDlgTemp->SetText(strDspInfo);
-					Sleep(2000);
-					*/
-					exit(0);
-				}				
-			}
-			else
-			{
-				pMainDlgTemp->m_bPortStatus = false;
-			}
+            CHSDPADlg* pMainDlgTemp = (CHSDPADlg*)(theApp.GetMainWnd());
+            PreMsg *PreMsgDlgTemp = NULL;
+
+            if (!pMainDlgTemp->m_bPortStatus) {
+
+                if (NULL == PreMsgDlgTemp) {
+                    CString strDspInfo;
+                    PreMsg *PreMsgDlg = new PreMsg;
+                    ASSERT(PreMsgDlg);
+                    PreMsgDlg->Create(PreMsgDlg->IDD);
+                    //PreMsgDlg->SetBitmap(IDB_SPLASH,255,0,255);
+                    PreMsgDlg->SetBitmap(g_SetData.Main_szSplashBmp, 255 ,0 ,255);
+                    PreMsgDlg->ShowWindow(SW_SHOW);
+                    strDspInfo.LoadString(IDS_CARD_DISCONN);
+                    PreMsgDlg->SetText(strDspInfo);
+                    Sleep(2000);
+                    PreMsgDlg->DestroyWindow();
+                    delete PreMsgDlg;
+                    pMainDlgTemp->PostMessage(WM_QUIT);
+                } else {
+                    /*
+                    CString strDspInfo;
+                    strDspInfo.LoadString(IDS_CARD_DISCONN);
+                    PreMsgDlgTemp->SetText(strDspInfo);
+                    Sleep(2000);
+                    */
+                    exit(0);
+                }
+            } else {
+                pMainDlgTemp->m_bPortStatus = false;
+            }
 #else
             pComm->StopPort();
             pComm->m_DetectThread = NULL;
@@ -720,7 +662,7 @@ UINT CSerialPort::CommDetectThreadProc(LPVOID pParam)
             pMainDlg->PostMessage(WM_ICON_UPDATE, ICON_TYPE_NETWORK, NW_TYPE_NOSRV);
             pMainDlg->PostMessage(WM_ICON_UPDATE, ICON_TYPE_ROAM, ROAM_OFF);
             pMainDlg->PostMessage(WM_ICON_UPDATE, ICON_TYPE_PLMN, 0);
-		    (theApp.GetMainWnd())->SetTimer(IDT_USB_CONN_DETECT, 1000, NULL);
+            (theApp.GetMainWnd())->SetTimer(IDT_USB_CONN_DETECT, 1000, NULL);
 #endif
         }
     }
@@ -731,20 +673,17 @@ UINT CSerialPort::CommDetectThreadProc(LPVOID pParam)
 DWORD CSerialPort::PrintBufBytes(int type) //0: 读缓冲，1: 写缓冲
 {
     DWORD   dwErrorFlags;
-    COMSTAT comStat;    
+    COMSTAT comStat;
 
     CString str;
     DWORD   dwBytes;
 
-    ::ClearCommError(m_hComm, &dwErrorFlags, &comStat);    
+    ::ClearCommError(m_hComm, &dwErrorFlags, &comStat);
 
-    if(type == 0)
-    {
+    if(type == 0) {
         str.Format(_T("ReadBuf: %d"), comStat.cbInQue);
         dwBytes = comStat.cbInQue;
-    }
-    else
-    {
+    } else {
         str.Format(_T("WriteBuf: %d"), comStat.cbOutQue);
         dwBytes = comStat.cbOutQue;
     }
@@ -759,7 +698,7 @@ BOOL CSerialPort::Config()
     COMMTIMEOUTS TimeOuts;
 
     ::SetupComm(m_hComm, 1200, 1200);
-    
+
     TimeOuts.ReadIntervalTimeout = MAXDWORD;
     TimeOuts.ReadTotalTimeoutMultiplier = 0;
     TimeOuts.ReadTotalTimeoutConstant = 1000;
@@ -767,9 +706,9 @@ BOOL CSerialPort::Config()
     TimeOuts.WriteTotalTimeoutConstant = 1000;
     ::SetCommTimeouts(m_hComm, &TimeOuts);
 
-    DCB dcb;    
+    DCB dcb;
     dcb.DCBlength = sizeof(DCB);
-    
+
     if(!::GetCommState(m_hComm, &dcb))
         return FALSE;
 
@@ -777,7 +716,7 @@ BOOL CSerialPort::Config()
     dcb.ByteSize = 8;
     dcb.Parity = NOPARITY;
     dcb.StopBits = ONESTOPBIT;
-    
+
     return ::SetCommState(m_hComm, &dcb);
 }
 
@@ -800,11 +739,10 @@ EnSerialState CSerialPort::SetSerialState(const EnSerialState state)
 }
 
 BOOL CSerialPort::CommIsReady()
-{   
+{
     EnSerialState state;
 
-    if((state = GetSerialState()) != SERIAL_STATE_CMD)
-    {
+    if((state = GetSerialState()) != SERIAL_STATE_CMD) {
         if(state == SERIAL_STATE_INI)
             AfxMessageBox(IDS_USB_PORT_INI);
         else if(state == SERIAL_STATE_EXCEPTION)
@@ -816,8 +754,7 @@ BOOL CSerialPort::CommIsReady()
 //         else
 //             AfxMessageBox(IDS_USB_PORT_WAIT);
         return FALSE;
-    }
-    else
+    } else
         return TRUE;
 }
 

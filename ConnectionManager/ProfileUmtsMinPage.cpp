@@ -82,7 +82,7 @@ ProfileUmtsMinPage::ProfileUmtsMinPage(WDSGetProfileSettingsRspRCP rspRCP) :
 // --------------------------------------------------------------------------
 void ProfileUmtsMinPage::DoDataExchange(CDataExchange* pDX)
 {
-	CDialog::DoDataExchange(pDX);
+    CDialog::DoDataExchange(pDX);
     DDX_Control(pDX, IDC_PROFILE_MIN_TRAFFIC_CLASS_COMBO, m_trafficClassCombo);
     DDX_Control(pDX, IDC_PROFILE_MIN_QOS_DELIVERY_ORDER_COMBO, m_qosDeliveryOrderCombo);
     DDX_Control(pDX, IDC_PROFILE_MIN_MAX_UPLINK_BITRATE_EDIT, m_maxUplinkBitrateEdit);
@@ -146,17 +146,21 @@ BOOL ProfileUmtsMinPage::OnInitDialog()
     m_erroneousSduCombo.AddString(_T("Not Delivered"));
 
     // initialize member data
-    if (!m_defaultSettingsRspRCP.IsNull()) { DefaultInit(); }
-    if (!m_profileSettingsRspRCP.IsNull()) { ProfileInit(); }
+    if (!m_defaultSettingsRspRCP.IsNull()) {
+        DefaultInit();
+    }
+    if (!m_profileSettingsRspRCP.IsNull()) {
+        ProfileInit();
+    }
 
     // set initial values for the controls on this page
     std::stringstream stream;
 
     m_trafficClassCombo.SetCurSel(m_initTrafficClass);
 
-   USES_CONVERSION;
+    USES_CONVERSION;
 
-	stream << m_initMaxUplinkBitrate;
+    stream << m_initMaxUplinkBitrate;
     m_maxUplinkBitrateEdit.SetWindowText(A2W(stream.str().c_str()));
 
     stream.str("");
@@ -190,7 +194,7 @@ BOOL ProfileUmtsMinPage::OnInitDialog()
     m_handlingPriorityEdit.SetWindowText(A2W(stream.str().c_str()));
 
 
-	return TRUE;  // return TRUE  unless you set the focus to a control
+    return TRUE;  // return TRUE  unless you set the focus to a control
 }
 
 // --------------------------------------------------------------------------
@@ -200,8 +204,7 @@ BOOL ProfileUmtsMinPage::OnInitDialog()
 // --------------------------------------------------------------------------
 void ProfileUmtsMinPage::DefaultInit()
 {
-    if (m_defaultSettingsRspRCP->IsUmtsMinimumQos())
-    {
+    if (m_defaultSettingsRspRCP->IsUmtsMinimumQos()) {
         m_initTrafficClass = m_defaultSettingsRspRCP->GetMinTrafficClass();
         m_initMaxUplinkBitrate = m_defaultSettingsRspRCP->GetMinMaxUplinkBitrate();
         m_initMaxDownlinkBitrate = m_defaultSettingsRspRCP->GetMinMaxDownlinkBitrate();
@@ -224,8 +227,7 @@ void ProfileUmtsMinPage::DefaultInit()
 // --------------------------------------------------------------------------
 void ProfileUmtsMinPage::ProfileInit()
 {
-    if (m_profileSettingsRspRCP->IsUmtsMinimumQos())
-    {
+    if (m_profileSettingsRspRCP->IsUmtsMinimumQos()) {
         m_initTrafficClass = m_profileSettingsRspRCP->GetMinTrafficClass();
         m_initMaxUplinkBitrate = m_profileSettingsRspRCP->GetMinMaxUplinkBitrate();
         m_initMaxDownlinkBitrate = m_profileSettingsRspRCP->GetMinMaxDownlinkBitrate();
@@ -255,29 +257,39 @@ std::string ProfileUmtsMinPage::BuildTlvString()
 
     // umts minimum qos tlv
     int trafficClass = m_trafficClassCombo.GetCurSel();
-	USES_CONVERSION;
+    USES_CONVERSION;
 
     CString maxUplinkBitrate;
     m_maxUplinkBitrateEdit.GetWindowText(maxUplinkBitrate);
-    if (maxUplinkBitrate.Compare(_T("")) == 0) { maxUplinkBitrate = _T("0"); }
+    if (maxUplinkBitrate.Compare(_T("")) == 0) {
+        maxUplinkBitrate = _T("0");
+    }
 
     CString maxDownlinkBitrate;
     m_maxDownlinkBitrateEdit.GetWindowText(maxDownlinkBitrate);
-    if (maxDownlinkBitrate.Compare(_T("")) == 0) { maxDownlinkBitrate = _T("0"); }
+    if (maxDownlinkBitrate.Compare(_T("")) == 0) {
+        maxDownlinkBitrate = _T("0");
+    }
 
     CString gtdUplinkBitrate;
     m_gtdUplinkBitrateEdit.GetWindowText(gtdUplinkBitrate);
-    if (gtdUplinkBitrate.Compare(_T("")) == 0) { gtdUplinkBitrate = _T("0"); }
+    if (gtdUplinkBitrate.Compare(_T("")) == 0) {
+        gtdUplinkBitrate = _T("0");
+    }
 
     CString gtdDownlinkBitrate;
     m_gtdDownlinkBitrateEdit.GetWindowText(gtdDownlinkBitrate);
-    if (gtdDownlinkBitrate.Compare(_T("")) == 0) { gtdDownlinkBitrate = _T("0"); }
+    if (gtdDownlinkBitrate.Compare(_T("")) == 0) {
+        gtdDownlinkBitrate = _T("0");
+    }
 
     int qosDeliveryOrder = m_qosDeliveryOrderCombo.GetCurSel();
 
     CString maxSduSize;
     m_maxSduSizeEdit.GetWindowText(maxSduSize);
-    if (maxSduSize.Compare(_T("")) == 0) { maxSduSize = _T("0"); }
+    if (maxSduSize.Compare(_T("")) == 0) {
+        maxSduSize = _T("0");
+    }
 
     int sduErrorRatio = m_sduErrorRatioCombo.GetCurSel();
     int residualBerRatio = m_residualBerRatioCombo.GetCurSel();
@@ -285,26 +297,29 @@ std::string ProfileUmtsMinPage::BuildTlvString()
 
     CString transferDelay;
     m_transferDelayEdit.GetWindowText(transferDelay);
-    if (transferDelay.Compare(_T("")) == 0) { transferDelay = _T("0"); }
+    if (transferDelay.Compare(_T("")) == 0) {
+        transferDelay = _T("0");
+    }
 
     CString handlingPriority;
     m_handlingPriorityEdit.GetWindowText(handlingPriority);
-    if (handlingPriority.Compare(_T("")) == 0) { handlingPriority = _T("0"); }
+    if (handlingPriority.Compare(_T("")) == 0) {
+        handlingPriority = _T("0");
+    }
 
     // add tlv to stream if any value has changed
     if (trafficClass != m_initTrafficClass ||
-        _wtoi(maxUplinkBitrate) != m_initMaxUplinkBitrate ||
-        _wtoi(maxDownlinkBitrate) != m_initMaxDownlinkBitrate ||
-        _wtoi(gtdUplinkBitrate) != m_initGtdUplinkBitrate ||
-        _wtoi(gtdDownlinkBitrate) != m_initGtdDownlinkBitrate ||
-        qosDeliveryOrder != m_initQosDeliveryOrder ||
-        _wtoi(maxSduSize) != m_initMaxSduSize ||
-        sduErrorRatio != m_initSduErrorRatio ||
-        residualBerRatio != m_initResidualBerRatio ||
-        erroneousSdu != m_initErroneousSdu ||
-        _wtoi(transferDelay) != m_initTransferDelay ||
-        _wtoi(handlingPriority) != m_initHandlingPriority)
-    {
+            _wtoi(maxUplinkBitrate) != m_initMaxUplinkBitrate ||
+            _wtoi(maxDownlinkBitrate) != m_initMaxDownlinkBitrate ||
+            _wtoi(gtdUplinkBitrate) != m_initGtdUplinkBitrate ||
+            _wtoi(gtdDownlinkBitrate) != m_initGtdDownlinkBitrate ||
+            qosDeliveryOrder != m_initQosDeliveryOrder ||
+            _wtoi(maxSduSize) != m_initMaxSduSize ||
+            sduErrorRatio != m_initSduErrorRatio ||
+            residualBerRatio != m_initResidualBerRatio ||
+            erroneousSdu != m_initErroneousSdu ||
+            _wtoi(transferDelay) != m_initTransferDelay ||
+            _wtoi(handlingPriority) != m_initHandlingPriority) {
         stream << "  MinTrafficClass " << trafficClass << std::endl
                << "  MinMaxUplinkBitrate " << maxUplinkBitrate << std::endl
                << "  MinMaxDownlinkBitrate " << maxDownlinkBitrate << std::endl

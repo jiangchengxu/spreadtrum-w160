@@ -42,7 +42,7 @@ class ProfileSheet;
 //
 /// The ProfilesPage class represents the controls under the profiles
 /// tab of the ConnectionManager dialog. Input from the user and output to
-/// the user under the profiles tab is controlled by this class. 
+/// the user under the profiles tab is controlled by this class.
 // --------------------------------------------------------------------------
 
 class ProfilesPage : public CPropertyPage
@@ -69,8 +69,8 @@ public:
 
 protected:
     enum { UNKNOWN = -1 };
-	virtual void DoDataExchange(CDataExchange* pDX);
-	virtual BOOL OnInitDialog();
+    virtual void DoDataExchange(CDataExchange* pDX);
+    virtual BOOL OnInitDialog();
     std::string BuildWDSGetProfileListString();
     std::string BuildWDSGetDefaultSettingsString();
     std::string BuildWDSGetProfileSettingsString();
@@ -79,13 +79,13 @@ protected:
     afx_msg void OnCreate();
     afx_msg void OnViewModify();
     afx_msg void OnDelete();
-    
-	DECLARE_MESSAGE_MAP()
+
+    DECLARE_MESSAGE_MAP()
 
 private:
 // @@@@@@
 #ifndef OPEN_PAGE_UI
-	CHSDPADlg* m_pCMDlg;
+    CHSDPADlg* m_pCMDlg;
 #else
     ConnectionManagerDlg* m_pCMDlg;
 #endif

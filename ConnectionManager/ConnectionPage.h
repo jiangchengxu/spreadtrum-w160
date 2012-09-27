@@ -44,7 +44,7 @@ class ConnectionManagerDlg;
 //
 /// The ConnectionPage class represents the controls under the connection
 /// tab of the ConnectionManager dialog. Input from the user and output to
-/// the user under the connection tab is controlled by this class. 
+/// the user under the connection tab is controlled by this class.
 // --------------------------------------------------------------------------
 
 class ConnectionPage : public CPropertyPage
@@ -55,15 +55,17 @@ public:
 // @@@@@@
 #ifndef OPEN_PAGE_UI
     void SetHSDPADlg(CHSDPADlg* pDlg);
-	void OnConnectEx(NdisStateRet ndisStatus, StConnProfile *profile);
+    void OnConnectEx(NdisStateRet ndisStatus, StConnProfile *profile);
     void OnDeviceSelect(std::string& deviceName);
 
-    StConnProfile m_NdisProfile; 
+    StConnProfile m_NdisProfile;
 #else
     void SetCMDlg(ConnectionManagerDlg* pCMDlg);
 #endif
 
-    void SetTxId(uint16 txId) { m_txId = txId; }
+    void SetTxId(uint16 txId) {
+        m_txId = txId;
+    }
     void EnableSelectedState();
     void DisableSelectedState();
     void EnableConnectedState(uint32 pktDataHandle);
@@ -84,8 +86,8 @@ public:
 #else
 protected:
 #endif
-	virtual void DoDataExchange(CDataExchange* pDX);
-	virtual BOOL OnInitDialog();
+    virtual void DoDataExchange(CDataExchange* pDX);
+    virtual BOOL OnInitDialog();
     afx_msg BOOL OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message);
     afx_msg void OnDeviceSelect();
     afx_msg void OnTechPrefCheck();
@@ -116,13 +118,13 @@ protected:
     void ProcessPowerState(uint8 powerStatus,uint8 batteryLvl);
     void ProcessSignalStrength(int8 signalStrength,uint8 radioIf);
     void ProcessAttachState(uint8 csAttachState,uint8 psAttachState);
-    
-	DECLARE_MESSAGE_MAP()
+
+    DECLARE_MESSAGE_MAP()
 
 private:
 // @@@@@@
 #ifndef OPEN_PAGE_UI
-	CHSDPADlg* m_pCMDlg;
+    CHSDPADlg* m_pCMDlg;
 #else
     ConnectionManagerDlg* m_pCMDlg;
 #endif

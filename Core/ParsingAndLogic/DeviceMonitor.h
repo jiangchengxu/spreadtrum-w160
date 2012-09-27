@@ -27,7 +27,7 @@
 //
 /// The DeviceMonitor class keeps track of removable network adapters
 /// attached to the computer and reports changes to the MessageManager. There
-/// should only ever be one instance of this class monitoring network 
+/// should only ever be one instance of this class monitoring network
 /// adapters, so it is implemented as a singleton.
 // --------------------------------------------------------------------------
 class DeviceMonitor
@@ -40,8 +40,12 @@ public:
     bool StopDeviceMonitor();
     void SetDevice(std::string& deviceName);
     void ClearDevice();
-    bool IsConnected() { return m_isConnected; }
-    std::string GetDeviceName() { return m_deviceName; }
+    bool IsConnected() {
+        return m_isConnected;
+    }
+    std::string GetDeviceName() {
+        return m_deviceName;
+    }
 
 private:
     DeviceMonitor();

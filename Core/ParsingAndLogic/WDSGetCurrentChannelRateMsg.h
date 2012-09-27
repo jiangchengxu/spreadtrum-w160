@@ -23,12 +23,12 @@
 // Unique identifiers for WDSGetCurrentChannelRateMsg types
 // --------------------------------------------------------------------------
 static const uint32 WDSGetCurrentChannelRateReqUID =
-    (QMUX_TYPE_WDS << 24 | 
-     QMI_CTL_FLAG_TYPE_CMD << 16 | 
+    (QMUX_TYPE_WDS << 24 |
+     QMI_CTL_FLAG_TYPE_CMD << 16 |
      QMI_WDS_GET_CURRENT_CHANNEL_RATE_MSG);
 static const uint32 WDSGetCurrentChannelRateRspUID =
-    (QMUX_TYPE_WDS << 24 | 
-     QMI_CTL_FLAG_TYPE_RSP << 16 | 
+    (QMUX_TYPE_WDS << 24 |
+     QMI_CTL_FLAG_TYPE_RSP << 16 |
      QMI_WDS_GET_CURRENT_CHANNEL_RATE_MSG);
 
 // --------------------------------------------------------------------------
@@ -43,7 +43,7 @@ typedef TRCPointer<WDSGetCurrentChannelRateRsp> WDSGetCurrentChannelRateRspRCP;
 // --------------------------------------------------------------------------
 // WDSGetCurrentChannelRateReq
 //
-/// This class represents a QMI_WDS_GET_CURRENT_CHANNEL_RATE_REQ message 
+/// This class represents a QMI_WDS_GET_CURRENT_CHANNEL_RATE_REQ message
 /// which is used to obtain the current and maximum possible (for the current
 /// serving radio interface) Tx and Rx channel rates. If this request is
 /// issued when a network connection is not yet started, only the max channel
@@ -53,20 +53,22 @@ class WDSGetCurrentChannelRateReq : public Message
 {
 public:
     ~WDSGetCurrentChannelRateReq();
-    
+
     virtual void Print(std::ostream& stream);
 
 protected:
     WDSGetCurrentChannelRateReq();
     virtual bool BuildMsgBuf();
-    virtual bool Unpack(MsgBuf& msgBuf) { return false; }
+    virtual bool Unpack(MsgBuf& msgBuf) {
+        return false;
+    }
 };
 
 
 // --------------------------------------------------------------------------
 // WDSGetCurrentChannelRateRsp
 //
-/// This class represents a QMI_WDS_GET_CURRENT_CHANNEL_RATE_RESP message 
+/// This class represents a QMI_WDS_GET_CURRENT_CHANNEL_RATE_RESP message
 /// which is the response to the wds get current channel rate request.
 // --------------------------------------------------------------------------
 
@@ -81,18 +83,34 @@ public:
 
     virtual void Print(std::ostream& stream);
 
-    virtual uint16 GetResult() { return m_result; }
-    virtual uint16 GetError() { return m_error; }
-    virtual uint32 GetCurrentChannelTxRate() { return m_currentChannelTxRate; }
-    virtual uint32 GetCurrentChannelRxRate() { return m_currentChannelRxRate; }
-    virtual uint32 GetMaxChannelTxRate() { return m_maxChannelTxRate; }
-    virtual uint32 GetMaxChannelRxRate() { return m_maxChannelRxRate; }
+    virtual uint16 GetResult() {
+        return m_result;
+    }
+    virtual uint16 GetError() {
+        return m_error;
+    }
+    virtual uint32 GetCurrentChannelTxRate() {
+        return m_currentChannelTxRate;
+    }
+    virtual uint32 GetCurrentChannelRxRate() {
+        return m_currentChannelRxRate;
+    }
+    virtual uint32 GetMaxChannelTxRate() {
+        return m_maxChannelTxRate;
+    }
+    virtual uint32 GetMaxChannelRxRate() {
+        return m_maxChannelRxRate;
+    }
 
 
 protected:
     WDSGetCurrentChannelRateRsp();
-    virtual bool Build(std::string& nameValue) { return false; }
-    virtual bool BuildMsgBuf() { return false; }
+    virtual bool Build(std::string& nameValue) {
+        return false;
+    }
+    virtual bool BuildMsgBuf() {
+        return false;
+    }
     virtual bool Unpack(MsgBuf& msgBuf);
     virtual Uint8UnpackerMap& GetUnpackerMap();
     virtual bool UnpackResultCode(MsgBuf& msgBuf);

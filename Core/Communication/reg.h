@@ -31,38 +31,38 @@
 
 BOOL QueryKey
 (
-   HKEY  hKey,
-   PCHAR DeviceFriendlyName,
-   PCHAR ControlFileName,
-   PCHAR FullKeyName
+    HKEY  hKey,
+    PCHAR DeviceFriendlyName,
+    PCHAR ControlFileName,
+    PCHAR FullKeyName
 );
 
 BOOL FindDeviceInstance
 (
-   PCHAR InstanceKey,
-   PCHAR  DeviceFriendlyName,
-   PCHAR  ControlFileName
+    PCHAR InstanceKey,
+    PCHAR  DeviceFriendlyName,
+    PCHAR  ControlFileName
 );
 
 BOOL QCWWAN_GetEntryValue
 (
-   HKEY  hKey,
-   PCHAR DeviceFriendlyName,
-   PCHAR EntryName,
-   PCHAR ControlFileName
+    HKEY  hKey,
+    PCHAR DeviceFriendlyName,
+    PCHAR EntryName,
+    PCHAR ControlFileName
 );
 
 BOOL QCWWAN_GetControlFileName
 (
-   PCHAR DeviceFriendlyName,
-   PCHAR ControlFileName
+    PCHAR DeviceFriendlyName,
+    PCHAR ControlFileName
 );
 
 BOOL QueryUSBDeviceKeys
 (
-   PCHAR InstanceKey,
-   PCHAR  DeviceFriendlyName,
-   PCHAR  ControlFileName
+    PCHAR InstanceKey,
+    PCHAR  DeviceFriendlyName,
+    PCHAR  ControlFileName
 );
 
 #endif  // REG_H

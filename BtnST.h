@@ -53,19 +53,19 @@ public:
     enum {ST_ALIGN_HORIZ, ST_ALIGN_VERT, ST_ALIGN_HORIZ_RIGHT};
 
     enum    {    BTNST_COLOR_BK_IN    = 0,        // Background color when mouse is INside
-                BTNST_COLOR_FG_IN,                // Text color when mouse is INside
-                BTNST_COLOR_BK_OUT,                // Background color when mouse is OUTside
-                BTNST_COLOR_FG_OUT,                // Text color when mouse is OUTside
+                 BTNST_COLOR_FG_IN,                // Text color when mouse is INside
+                 BTNST_COLOR_BK_OUT,                // Background color when mouse is OUTside
+                 BTNST_COLOR_FG_OUT,                // Text color when mouse is OUTside
 
-                BTNST_MAX_COLORS
+                 BTNST_MAX_COLORS
             };
 
     // ClassWizard generated virtual function overrides
     //{{AFX_VIRTUAL(CButtonST)
-    public:
+public:
     virtual void DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct);
     virtual BOOL PreTranslateMessage(MSG* pMsg);
-    protected:
+protected:
     virtual void PreSubclassWindow();
     virtual LRESULT DefWindowProc(UINT message, WPARAM wParam, LPARAM lParam);
     //}}AFX_VIRTUAL
@@ -103,14 +103,18 @@ public:
     DWORD SetBitmaps(int nBitmapIn, COLORREF crTransColorIn, int nBitmapOut = NULL, COLORREF crTransColorOut = 0);
     DWORD SetBitmaps(HBITMAP hBitmapIn, COLORREF crTransColorIn, HBITMAP hBitmapOut = NULL, COLORREF crTransColorOut = 0);
 
-    static short GetVersionI()        {return 32;}
-    static LPCTSTR GetVersionC()    {return (LPCTSTR)_T("3.2");}
+    static short GetVersionI()        {
+        return 32;
+    }
+    static LPCTSTR GetVersionC()    {
+        return (LPCTSTR)_T("3.2");
+    }
 
 protected:
     //当前的窗口
-	CWnd* m_wndCurrentWnd;
+    CWnd* m_wndCurrentWnd;
     //上一个窗口
-	CWnd* m_wndLastWnd;
+    CWnd* m_wndLastWnd;
     //{{AFX_MSG(CButtonST)
     afx_msg void OnCaptureChanged(CWnd *pWnd);
     afx_msg BOOL OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message);
@@ -122,14 +126,14 @@ protected:
     afx_msg void OnEnable(BOOL bEnable);
     afx_msg void OnCancelMode();
     afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
-	afx_msg BOOL OnEraseBkgnd(CDC* pDC);
-	//}}AFX_MSG
+    afx_msg BOOL OnEraseBkgnd(CDC* pDC);
+    //}}AFX_MSG
 
     afx_msg HBRUSH CtlColor(CDC* pDC, UINT nCtlColor);
     virtual DWORD OnDrawBackground(CDC* pDC, LPCRECT pRect);
     virtual DWORD OnDrawBorder(CDC* pDC, LPCRECT pRect);
 
-	afx_msg LRESULT OnMouseLeave(WPARAM wParam, LPARAM lParam);
+    afx_msg LRESULT OnMouseLeave(WPARAM wParam, LPARAM lParam);
 
     BOOL        m_bDrawTransparent;
     BOOL        m_bMouseOnButton;
@@ -138,7 +142,7 @@ protected:
     BOOL        m_bIsDisabled;
     COLORREF    m_crColors[BTNST_MAX_COLORS];
 
-	int        m_nAlign;
+    int        m_nAlign;
     BOOL    m_bDrawBorder;
     BOOL    m_bIsFlat;
     BOOL    m_bDrawFlatFocus;
@@ -146,14 +150,14 @@ protected:
     HWND    m_hWndAutoRepeat;
     UINT    m_nMsgAutoRepeat;
     DWORD    m_dwPeriodAutoRepeat;
-	
+
     HCURSOR m_hCursor;
     CToolTipCtrl m_ToolTip;
 
-	BOOL        m_bIsDefault;
-	BOOL        m_bIsCheckBox;
+    BOOL        m_bIsDefault;
+    BOOL        m_bIsCheckBox;
 
-	void PaintBk(CDC* pDC);
+    void PaintBk(CDC* pDC);
 
 private:
     void CancelHover();
@@ -165,8 +169,7 @@ private:
     void InitToolTip();
 
 #pragma pack(1)
-    typedef struct _STRUCT_ICONS
-    {
+    typedef struct _STRUCT_ICONS {
         HICON        hIcon;            // Handle to icon
         DWORD        dwWidth;        // Width of icon
         DWORD        dwHeight;        // Height of icon
@@ -174,8 +177,7 @@ private:
 #pragma pack()
 
 #pragma pack(1)
-    typedef struct _STRUCT_BITMAPS
-    {
+    typedef struct _STRUCT_BITMAPS {
         HBITMAP        hBitmap;        // Handle to bitmap
         DWORD        dwWidth;        // Width of bitmap
         DWORD        dwHeight;        // Height of bitmap

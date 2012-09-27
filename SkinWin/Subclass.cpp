@@ -13,7 +13,7 @@
  * $Archive: /CodeJock/CJLibrary/Subclass.cpp $
  *
  * $History: Subclass.cpp $
- * 
+ *
  * *****************  Version 2  *****************
  * User: Kirk Stowell Date: 10/14/99   Time: 12:41p
  * Updated in $/CodeJock/CJLibrary
@@ -38,7 +38,8 @@ static char THIS_FILE[] = __FILE__;
 // attached to a window is stored in the map; all other CSubclassWnd's for that
 // window are then chained via CSubclassWnd::m_pNext.
 //
-class CSubclassWndMap : private CMapPtrToPtr {
+class CSubclassWndMap : private CMapPtrToPtr
+{
 public:
     CSubclassWndMap();
     ~CSubclassWndMap();
@@ -59,13 +60,13 @@ IMPLEMENT_DYNAMIC(CSubclassWnd, CWnd);
 CSubclassWnd::CSubclassWnd()
 {
     m_pNext = NULL;
-    m_pOldWndProc = NULL;    
+    m_pOldWndProc = NULL;
     m_hWnd  = NULL;
 }
 
 CSubclassWnd::~CSubclassWnd()
 {
-    if (m_hWnd) 
+    if (m_hWnd)
         HookWindow((HWND)NULL);        // unhook window
 }
 
@@ -94,7 +95,7 @@ BOOL CSubclassWnd::HookWindow(HWND hwnd)
 
 //////////////////
 // Window proc-like virtual function which specific CSubclassWnds will
-// override to do stuff. Default passes the message to the next hook; 
+// override to do stuff. Default passes the message to the next hook;
 // the last hook passes the message to the original window.
 // You MUST call this at the end of your WindowProc if you want the real
 // window to get the message. This is just like CWnd::WindowProc, except that
@@ -104,8 +105,8 @@ LRESULT CSubclassWnd::WindowProc(UINT msg, WPARAM wp, LPARAM lp)
 {
 //    ASSERT_VALID(this);  // removed for speed
     ASSERT(m_pOldWndProc);
-    return m_pNext ? m_pNext->WindowProc(msg, wp, lp) :    
-        ::CallWindowProc(m_pOldWndProc, m_hWnd, msg, wp, lp);
+    return m_pNext ? m_pNext->WindowProc(msg, wp, lp) :
+           ::CallWindowProc(m_pOldWndProc, m_hWnd, msg, wp, lp);
 }
 
 //////////////////
@@ -197,12 +198,12 @@ CSubclassWndMap::CSubclassWndMap()
 CSubclassWndMap::~CSubclassWndMap()
 {
 // This assert bombs when posting WM_QUIT, so I've deleted it.
-//    ASSERT(IsEmpty());    // all hooks should be removed!    
+//    ASSERT(IsEmpty());    // all hooks should be removed!
 }
 
 //////////////////
 // Get the one and only global hook map
-// 
+//
 CSubclassWndMap& CSubclassWndMap::GetHookMap()
 {
     // By creating theMap here, C++ doesn't instantiate it until/unless
@@ -223,10 +224,10 @@ void CSubclassWndMap::Add(HWND hwnd, CSubclassWnd* pSubclassWnd)
     // Add to front of list
     pSubclassWnd->m_pNext = Lookup(hwnd);
     SetAt(hwnd, pSubclassWnd);
-    
+
     if (pSubclassWnd->m_pNext==NULL) {
         // If this is the first hook added, subclass the window
-        pSubclassWnd->m_pOldWndProc = 
+        pSubclassWnd->m_pOldWndProc =
             (WNDPROC)SetWindowLong(hwnd, GWL_WNDPROC, (DWORD)HookWndProc);
 
     } else {

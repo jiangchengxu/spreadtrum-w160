@@ -19,15 +19,15 @@ public:
     //{{AFX_DATA(CProgressDlg)
     enum { IDD = IDD_DIALOG_PROGRESS };
     CProgressCtrl    m_Progress;
-	//CString    m_str_sms_Prompt;
+    //CString    m_str_sms_Prompt;
     //}}AFX_DATA
 
 // Overrides
     // ClassWizard generated virtual function overrides
     //{{AFX_VIRTUAL(CProgressDlg)
-    public:
+public:
     virtual BOOL PreTranslateMessage(MSG* pMsg);
-    protected:
+protected:
     virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
     //}}AFX_VIRTUAL
     virtual BOOL OnInitDialog();
@@ -36,7 +36,7 @@ protected:
 
     // Generated message map functions
     //{{AFX_MSG(CProgressDlg)
-        // NOTE: the ClassWizard will add member functions here
+    // NOTE: the ClassWizard will add member functions here
     //}}AFX_MSG
     DECLARE_MESSAGE_MAP()
 private:

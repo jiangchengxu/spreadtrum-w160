@@ -42,7 +42,7 @@ static MessageCreator<WDSDeleteProfileRsp> RspUint32Creator(WDSDeleteProfileRspU
 /// Constructor for WDSDeleteProfileReq.
 // --------------------------------------------------------------------------
 const uint8 WDSDeleteProfileReq::PROFILE_IDENTIFIER_TYPE = 0x01;
-WDSDeleteProfileReq::WDSDeleteProfileReq() : 
+WDSDeleteProfileReq::WDSDeleteProfileReq() :
     Message(QMUX_TYPE_WDS,QMI_WDS_DELETE_PROFILE_MSG,QMI_CTL_FLAG_TYPE_CMD),
     m_profileIdentifierType(TLV_TYPE_INVALID),
     m_profileIdentifierLen(0),
@@ -87,8 +87,7 @@ bool WDSDeleteProfileReq::Build(std::string& nameValue)
 Message::StringBuilderMap& WDSDeleteProfileReq::GetBuilderMap()
 {
     static StringBuilderMap SBMap;
-    if (SBMap.empty())
-    {
+    if (SBMap.empty()) {
         bool bSuccess = SBMap.insert(SBPair("ProfileType",(Builder)BuildProfileType)).second;
         assert(bSuccess);
         SBMap.insert(SBPair("ProfileIndex",(Builder)BuildProfileIndex)).second;
@@ -113,8 +112,7 @@ bool WDSDeleteProfileReq::BuildProfileType(std::string& value)
     sscanf(value.c_str(), "%i", &num);
 
     // validate entry
-    if (num != 0)
-    {
+    if (num != 0) {
         std::stringstream stream;
         stream << _T("Warning: unable to build message:") << std::endl
                << _T("Invalid Profile Type '") << (uint32)num
@@ -148,8 +146,7 @@ bool WDSDeleteProfileReq::BuildProfileType(std::string& value)
 bool WDSDeleteProfileReq::BuildProfileIndex(std::string& value)
 {
     // verify expected previous attribute
-    if (m_prevName.compare("ProfileType") != 0)
-    {
+    if (m_prevName.compare("ProfileType") != 0) {
         ReportInvalidSequence("ProfileType");
         return false;
     }
@@ -253,21 +250,19 @@ WDSDeleteProfileRsp::~WDSDeleteProfileRsp()
 bool WDSDeleteProfileRsp::Unpack(MsgBuf& msgBuf)
 {
     // call the base unpack
-    if (!Message::Unpack(msgBuf))
-    {
+    if (!Message::Unpack(msgBuf)) {
         return false;
     }
-    
+
     // validate message length
-    if (m_length != 7) 
-    {
+    if (m_length != 7) {
         std::stringstream stream;
         stream << _T("Warning: unable to unpack message:") << std::endl
-            << _T("Expected message length is 7 bytes, unpacked length is ")
-            << m_length << _T(" bytes.") << std::endl 
-            << std::endl;
+               << _T("Expected message length is 7 bytes, unpacked length is ")
+               << m_length << _T(" bytes.") << std::endl
+               << std::endl;
         MessageManager::GetInstance().ReportStatus(stream.str(),ST_WARNING);
-        return false; 
+        return false;
     }
 
     return true;
@@ -284,8 +279,7 @@ bool WDSDeleteProfileRsp::Unpack(MsgBuf& msgBuf)
 Message::Uint8UnpackerMap& WDSDeleteProfileRsp::GetUnpackerMap()
 {
     static Uint8UnpackerMap UUMap;
-    if (UUMap.empty())
-    {
+    if (UUMap.empty()) {
         bool bSuccess = UUMap.insert(UUPair(RESULT_CODE_TYPE,(Unpacker)UnpackResultCode)).second;
         assert(bSuccess);
     }
@@ -306,12 +300,11 @@ bool WDSDeleteProfileRsp::UnpackResultCode(MsgBuf& msgBuf)
     m_resultCodeType = RESULT_CODE_TYPE;
 
     m_resultCodeLen = msgBuf.GetWord();
-    if (m_resultCodeLen != 4) 
-    {
+    if (m_resultCodeLen != 4) {
         std::stringstream stream;
         stream << _T("Warning: unable to unpack message:") << std::endl
                << _T("Expected Result Code length is 4 bytes, unpacked length is ")
-               << m_resultCodeLen << _T(" bytes.") << std::endl 
+               << m_resultCodeLen << _T(" bytes.") << std::endl
                << std::endl;
         MessageManager::GetInstance().ReportStatus(stream.str(),ST_WARNING);
         return false;
@@ -320,8 +313,7 @@ bool WDSDeleteProfileRsp::UnpackResultCode(MsgBuf& msgBuf)
     m_result = msgBuf.GetWord();
     m_error = msgBuf.GetWord();
 
-    if (!msgBuf.EOB())
-    {
+    if (!msgBuf.EOB()) {
         std::stringstream stream;
         stream << _T("Warning: unable to unpack message:") << std::endl
                << _T("Finished unpacking message but end of buffer not reached")

@@ -12,12 +12,12 @@
 class CSmsData : public CObject
 {
 public:
-	CSmsData();
+    CSmsData();
     //删除含有指定标记的所有记录
-	BOOL DelallRecordbyFlag(EnSmsType type, BYTE flag);
+    BOOL DelallRecordbyFlag(EnSmsType type, BYTE flag);
 
     //获得未读SMS条数
-	WORD GetUnreadSmsNum();
+    WORD GetUnreadSmsNum();
 
     //编辑SMS记录
     BOOL EditSmsRecord(EnSmsType type, WORD nIndex, const StSmsRecord &record);
@@ -42,7 +42,7 @@ public:
                       const COleDateTime &time, LPCTSTR pContent, LPCTSTR pSCNum =_T(""),
                       BYTE flag = 0, USHORT nRefCnt = 0, BYTE nSeqCnt = 0, BYTE nTotalCnt = 0,
                       BOOL bAutoReplace = TRUE);
-    
+
     //删除一条记录
     BOOL DeleteSmsRecord(EnSmsType type, WORD nIndex);
 
@@ -63,7 +63,7 @@ protected:
     //数据串行化
     void Serialize(CArchive &ar);
 #endif
-    
+
     //从文件中读取数据
     BOOL ReadDataFromFile();
 
@@ -81,7 +81,7 @@ private:
 
 private:
     //记录满时删除最早的一条记录
-	void DeleteWhenFull(EnSmsType type);
+    void DeleteWhenFull(EnSmsType type);
     CString m_strSmsFileName;                               //短信息文件名
     //WORD m_SmsNum[SMS_TYPE_ALL];                           //当前记录数目
     StSmsRecord m_SmsRecord[SMS_TYPE_ALL][SMS_RECORD_MAX]; //当前记录条目

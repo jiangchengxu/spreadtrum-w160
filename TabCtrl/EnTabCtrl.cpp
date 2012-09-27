@@ -1,13 +1,13 @@
 //_ **********************************************************
-//_ 
-//_ Name: EnTabCtrl.cpp 
-//_ Purpose: 
-//_ Created: 15 September 1998 
+//_
+//_ Name: EnTabCtrl.cpp
+//_ Purpose:
+//_ Created: 15 September 1998
 //_ Author: D.R.Godson
-//_ Modified By: 
-//_ 
-//_ Copyright (c) 1998 Brilliant Digital Entertainment Inc. 
-//_ 
+//_ Modified By:
+//_
+//_ Copyright (c) 1998 Brilliant Digital Entertainment Inc.
+//_
 //_ **********************************************************
 
 // EnTabCtrl.cpp : implementation file
@@ -53,7 +53,7 @@ COLORREF Darker(COLORREF crBase, float fFactor)
     return RGB(bRedShadow, bGreenShadow, bBlueShadow);
 }
 
-COLORREF Lighter(COLORREF crBase, float fFactor) 
+COLORREF Lighter(COLORREF crBase, float fFactor)
 {
     ASSERT (fFactor > 1.0f);
 
@@ -117,7 +117,7 @@ void CEnTabCtrl::DrawItem(LPDRAWITEMSTRUCT lpdis)
         rItem.bottom += 2;
 
     COLORREF crFrom = GetTabColor(bSelected);
-    
+
     if (s_dwCustomLook & ETC_GRADIENT && pDC->GetDeviceCaps(BITSPIXEL) >= 16)
     {
         COLORREF crTo = bSelected ? ::GetSysColor(COLOR_3DFACE) : Darker(!bColor || m_crBack == -1 ? ::GetSysColor(COLOR_3DFACE) : m_crBack, 0.7f);
@@ -128,7 +128,7 @@ void CEnTabCtrl::DrawItem(LPDRAWITEMSTRUCT lpdis)
         int nRDiff = GetRValue(crTo) - nROrg;
         int nGDiff = GetGValue(crTo) - nGOrg;
         int nBDiff = GetBValue(crTo) - nBOrg;
-        
+
         int nHeight = rItem.Height();
 
         for (int nLine = 0; nLine < nHeight; nLine += 2)
@@ -136,8 +136,8 @@ void CEnTabCtrl::DrawItem(LPDRAWITEMSTRUCT lpdis)
             int nRed = nROrg + (nLine * nRDiff) / nHeight;
             int nGreen = nGOrg + (nLine * nGDiff) / nHeight;
             int nBlue = nBOrg + (nLine * nBDiff) / nHeight;
-            
-            pDC->FillSolidRect(CRect(rItem.left, rItem.top + nLine, rItem.right, rItem.top + nLine + 2), 
+
+            pDC->FillSolidRect(CRect(rItem.left, rItem.top + nLine, rItem.right, rItem.top + nLine + 2),
                                 RGB(nRed, nGreen, nBlue));
         }
     }
@@ -177,7 +177,7 @@ void CEnTabCtrl::DrawItemBorder(LPDRAWITEMSTRUCT lpdis)
     BOOL bBackTabs = (s_dwCustomLook & ETC_BACKTABS);
 
     CRect rItem(lpdis->rcItem);
-    CDC* pDC = CDC::FromHandle(lpdis->hDC); 
+    CDC* pDC = CDC::FromHandle(lpdis->hDC);
 
     COLORREF crTab = GetTabColor(bSelected);
     COLORREF crHighlight = Lighter(crTab, 1.5f);
@@ -201,7 +201,7 @@ void CEnTabCtrl::DrawItemBorder(LPDRAWITEMSTRUCT lpdis)
 void CEnTabCtrl::DrawMainBorder(LPDRAWITEMSTRUCT lpdis)
 {
     CRect rBorder(lpdis->rcItem);
-    CDC* pDC = CDC::FromHandle(lpdis->hDC); 
+    CDC* pDC = CDC::FromHandle(lpdis->hDC);
 
     COLORREF crTab = GetTabColor();
     COLORREF crHighlight = Lighter(crTab, 1.5f);
@@ -261,9 +261,8 @@ void CEnTabCtrl::DrawItem(LPDRAWITEMSTRUCT lpdis)
     // tab
     // blend from back color to COLOR_3DFACE if 16 bit mode or better
     COLORREF crFrom = GetTabColor(bSelected);
-    
-    if (s_dwCustomLook & ETC_GRADIENT && pDC->GetDeviceCaps(BITSPIXEL) >= 16)
-    {
+
+    if (s_dwCustomLook & ETC_GRADIENT && pDC->GetDeviceCaps(BITSPIXEL) >= 16) {
         COLORREF crTo = bSelected ? TAB_COLOR : SH_TAB_COLOR;
         int nROrg = GetRValue(crFrom);
         int nGOrg = GetGValue(crFrom);
@@ -271,19 +270,18 @@ void CEnTabCtrl::DrawItem(LPDRAWITEMSTRUCT lpdis)
         int nRDiff = GetRValue(crTo) - nROrg;
         int nGDiff = GetGValue(crTo) - nGOrg;
         int nBDiff = GetBValue(crTo) - nBOrg;
-        
+
         int nHeight = rItem.Height();
 
-        for (int nLine = 0; nLine < nHeight; nLine += 2)
-        {
+        for (int nLine = 0; nLine < nHeight; nLine += 2) {
             int nRed = nROrg + (nLine * nRDiff) / nHeight;
             int nGreen = nGOrg + (nLine * nGDiff) / nHeight;
             int nBlue = nBOrg + (nLine * nBDiff) / nHeight;
-            
-            pDC->FillSolidRect(CRect(rItem.left, rItem.top + nLine, rItem.right, rItem.top + nLine + 2), 
-                                RGB(nRed, nGreen, nBlue));
+
+            pDC->FillSolidRect(CRect(rItem.left, rItem.top + nLine, rItem.right, rItem.top + nLine + 2),
+                               RGB(nRed, nGreen, nBlue));
         }
-    }else{ // simple solid fill
+    } else { // simple solid fill
         pDC->FillSolidRect(rItem, crFrom);
     }
     // text & icon
@@ -300,8 +298,7 @@ void CEnTabCtrl::DrawItem(LPDRAWITEMSTRUCT lpdis)
     sTemp.ReleaseBuffer();
 
     // icon
-    if (hilTabs)
-    {
+    if (hilTabs) {
         ImageList_Draw(hilTabs, tci.iImage, *pDC, rItem.left, rItem.top, ILD_TRANSPARENT);
         rItem.left += 16 + PADDING;
     }
@@ -322,22 +319,19 @@ void CEnTabCtrl::DrawItemBorder(LPDRAWITEMSTRUCT lpdis)
     BOOL bBackTabs = (s_dwCustomLook & ETC_BACKTABS);
 
     CRect rItem(lpdis->rcItem);
-    CDC* pDC = CDC::FromHandle(lpdis->hDC); 
+    CDC* pDC = CDC::FromHandle(lpdis->hDC);
 
     COLORREF crTab = GetTabColor(bSelected);
     COLORREF crHighlight = Lighter(crTab, 1.5f);
     COLORREF crShadow = Darker(SH_TAB_COLOR, 0.75f);
 
-    if (bSelected || bBackTabs)
-    {
+    if (bSelected || bBackTabs) {
         rItem.bottom += bSelected ? -1 : 1;
         // edges
         pDC->FillSolidRect(CRect(rItem.left-1, rItem.top-1, rItem.left, rItem.bottom+1), crHighlight);
         pDC->FillSolidRect(CRect(rItem.left, rItem.top+1, rItem.right+1, rItem.top+1), crHighlight);
         pDC->FillSolidRect(CRect(rItem.right, rItem.top, rItem.right+1, rItem.bottom+1), crShadow);
-    }
-    else // draw simple dividers
-    {
+    } else { // draw simple dividers
         pDC->FillSolidRect(CRect(rItem.left+1 , rItem.top, rItem.left+1, rItem.bottom+1), crShadow);
         pDC->FillSolidRect(CRect(rItem.right, rItem.top, rItem.right+1, rItem.bottom+1), crShadow);
     }
@@ -346,14 +340,14 @@ void CEnTabCtrl::DrawItemBorder(LPDRAWITEMSTRUCT lpdis)
 void CEnTabCtrl::DrawMainBorder(LPDRAWITEMSTRUCT lpdis)
 {
     CRect rBorder(lpdis->rcItem);
-    CDC* pDC = CDC::FromHandle(lpdis->hDC); 
+    CDC* pDC = CDC::FromHandle(lpdis->hDC);
 
     COLORREF crTab = GetTabColor();
     COLORREF crHighlight = Lighter(crTab, 1.5f);
     COLORREF crShadow = Darker(SH_TAB_COLOR, 0.75f);
 
     pDC->Draw3dRect(rBorder, crHighlight, crShadow);
-    
+
 }
 COLORREF CEnTabCtrl::GetTabColor(BOOL bSelected)
 {
@@ -361,19 +355,16 @@ COLORREF CEnTabCtrl::GetTabColor(BOOL bSelected)
     BOOL bHiliteSel = (s_dwCustomLook & ETC_SELECTION);
     BOOL bBackTabs = (s_dwCustomLook & ETC_BACKTABS);
     BOOL bFlat = (s_dwCustomLook & ETC_FLAT);
-    
-    if (bSelected && bHiliteSel){
+
+    if (bSelected && bHiliteSel) {
         return Lighter(TAB_COLOR, 1.4f);
-    }
-    else if (!bSelected)
-    {
-        if(bBackTabs || !bFlat){
+    } else if (!bSelected) {
+        if(bBackTabs || !bFlat) {
             return Darker(SH_TAB_COLOR, 0.9f);
-        }
-        else
+        } else
             return TAB_COLOR;
     }
-    
+
     return TAB_COLOR;
 }
 
@@ -382,10 +373,9 @@ COLORREF CEnTabCtrl::GetTabTextColor(BOOL bSelected)
     BOOL bColor = (s_dwCustomLook & ETC_COLOR);
     BOOL bFlat = (s_dwCustomLook & ETC_FLAT);
 
-    if (bSelected){
+    if (bSelected) {
         return ::GetSysColor(COLOR_WINDOWTEXT);
-    }
-    else{
+    } else {
         return SH_TXT_COLOR;
     }
     return SH_TXT_COLOR;
@@ -399,7 +389,7 @@ void CEnTabCtrl::EnableCustomLook(BOOL bEnable, DWORD dwStyle)
     s_dwCustomLook = dwStyle;
 }
 
-void CEnTabCtrl::PreSubclassWindow() 
+void CEnTabCtrl::PreSubclassWindow()
 {
     CBaseTabCtrl::PreSubclassWindow();
 

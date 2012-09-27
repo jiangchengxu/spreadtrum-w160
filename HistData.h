@@ -22,7 +22,7 @@ public:
     void SaveFile();
 private:
     stHistList m_HistData[HISTKIND_MAX];
-	CString	   m_strHistFileName;
+    CString	   m_strHistFileName;
 #ifdef FEATURE_OBJECT_SERIAL
     virtual void Serialize(CArchive& ar);
 #endif

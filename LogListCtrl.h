@@ -48,7 +48,7 @@ public:
 // Overrides
     // ClassWizard generated virtual function overrides
     //{{AFX_VIRTUAL(CLogListCtrl)
-    protected:
+protected:
     virtual void PreSubclassWindow();
     //}}AFX_VIRTUAL
 
@@ -64,7 +64,7 @@ protected:
     afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
     //}}AFX_MSG
     afx_msg void OnMenuClicked(UINT nID);
-    
+
     DECLARE_MESSAGE_MAP()
 };
 

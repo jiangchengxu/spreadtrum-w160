@@ -13,7 +13,7 @@
 class CScreenStatic : public CStatic
 {
 public:
-	BOOL		m_bFillBk;		//ÊÇ·ñÒªÌî³ä±³¾°É«
+    BOOL		m_bFillBk;		//ÊÇ·ñÒªÌî³ä±³¾°É«
     UINT        m_nBmpID;		//±³¾°Í¼Æ¬ID
     CBitmap     m_bmp;
     int         m_nWidth;
@@ -25,7 +25,7 @@ public:
     CString        m_strTick;
     BOOL SetBitmap(UINT nIDResource);
     void SetText(LPCTSTR szText);
-	    void SetTextA(LPCSTR szText);
+    void SetTextA(LPCSTR szText);
 protected:
 // Construction
 public:
@@ -53,9 +53,9 @@ protected:
     //{{AFX_MSG(CScreenStatic)
     afx_msg BOOL OnEraseBkgnd(CDC* pDC);
     afx_msg void OnPaint();
-    
+
     //}}AFX_MSG
-    
+
     DECLARE_MESSAGE_MAP()
 };
 

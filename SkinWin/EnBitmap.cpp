@@ -39,24 +39,20 @@ BOOL CEnBitmap::LoadImage(UINT uIDRes, LPCTSTR szResourceType, HMODULE hInst, CO
     BOOL bResult = FALSE;
 
     // first call is to get buffer size
-    if (GetResource(MAKEINTRESOURCE(uIDRes), szResourceType, hInst, 0, nSize))
-    {
-        if (nSize > 0)
-        {
+    if (GetResource(MAKEINTRESOURCE(uIDRes), szResourceType, hInst, 0, nSize)) {
+        if (nSize > 0) {
             pBuff = new BYTE[nSize];
-            
+
             // this loads it
-            if (GetResource(MAKEINTRESOURCE(uIDRes), szResourceType, hInst, pBuff, nSize))
-            {
+            if (GetResource(MAKEINTRESOURCE(uIDRes), szResourceType, hInst, pBuff, nSize)) {
                 IPicture* pPicture = LoadFromBuffer(pBuff, nSize);
 
-                if (pPicture)
-                {
+                if (pPicture) {
                     bResult = Attach(pPicture, crBack);
                     pPicture->Release();
                 }
             }
-            
+
             delete [] pBuff;
         }
     }
@@ -74,24 +70,21 @@ BOOL CEnBitmap::LoadImage(LPCTSTR szImagePath, COLORREF crBack)
     BOOL bResult = FALSE;
     CFile            cFile;
     CFileException    e;
-    
-    if (cFile.Open(szImagePath, CFile::modeRead | CFile::typeBinary, &e))
-    {
+
+    if (cFile.Open(szImagePath, CFile::modeRead | CFile::typeBinary, &e)) {
         int nSize = cFile.GetLength();
 
         BYTE* pBuff = new BYTE[nSize];
-        
-        if (cFile.Read(pBuff, nSize) > 0)
-        {
+
+        if (cFile.Read(pBuff, nSize) > 0) {
             IPicture* pPicture = LoadFromBuffer(pBuff, nSize);
-            
-            if (pPicture)
-            {
+
+            if (pPicture) {
                 bResult = Attach(pPicture, crBack);
                 pPicture->Release();
             }
         }
-        
+
         delete [] pBuff;
     }
 
@@ -110,58 +103,52 @@ IPicture* CEnBitmap::LoadFromBuffer(BYTE* pBuff, int nSize)
     IStream* pStream = NULL;
     IPicture* pPicture = NULL;
 
-    if (CreateStreamOnHGlobal(hGlobal, TRUE, &pStream) == S_OK)
-    {
+    if (CreateStreamOnHGlobal(hGlobal, TRUE, &pStream) == S_OK) {
         HRESULT hr = OleLoadPicture(pStream, nSize, FALSE, IID_IPicture, (LPVOID *)&pPicture);
         pStream->Release();
     }
-	
-	//wyw
-	GlobalFree(hGlobal);
+
+    //wyw
+    GlobalFree(hGlobal);
 
     return pPicture; // caller releases
 }
 
 BOOL CEnBitmap::GetResource(LPCTSTR lpName, LPCTSTR lpType, HMODULE hInst, void* pResource, int& nBufSize)
-{ 
+{
     HRSRC        hResInfo;
     HANDLE        hRes;
-    LPSTR        lpRes    = NULL; 
+    LPSTR        lpRes    = NULL;
     int            nLen    = 0;
     bool        bResult    = FALSE;
 
     // Find the resource
     hResInfo = FindResource(hInst, lpName, lpType);
 
-    if (hResInfo == NULL) 
+    if (hResInfo == NULL)
         return false;
 
     // Load the resource
     hRes = LoadResource(hInst, hResInfo);
 
-    if (hRes == NULL) 
+    if (hRes == NULL)
         return false;
 
     // Lock the resource
     lpRes = (char*)LockResource(hRes);
 
-    if (lpRes != NULL)
-    { 
-        if (pResource == NULL)
-        {
+    if (lpRes != NULL) {
+        if (pResource == NULL) {
             nBufSize = SizeofResource(hInst, hResInfo);
             bResult = true;
-        }
-        else
-        {
-            if (nBufSize >= (int)SizeofResource(hInst, hResInfo))
-            {
+        } else {
+            if (nBufSize >= (int)SizeofResource(hInst, hResInfo)) {
                 memcpy(pResource, lpRes, nBufSize);
                 bResult = true;
             }
-        } 
+        }
 
-        UnlockResource(hRes);  
+        UnlockResource(hRes);
     }
 
     // Free the resource
@@ -187,41 +174,39 @@ BOOL CEnBitmap::Attach(IPicture* pPicture, COLORREF crBack)
     CDC dcMem;
     CDC* pDC = CWnd::GetDesktopWindow()->GetDC();
 
-    if (dcMem.CreateCompatibleDC(pDC))
-    {
+    if (dcMem.CreateCompatibleDC(pDC)) {
         long hmWidth;
         long hmHeight;
 
         pPicture->get_Width(&hmWidth);
         pPicture->get_Height(&hmHeight);
-        
+
         int nWidth    = MulDiv(hmWidth,    pDC->GetDeviceCaps(LOGPIXELSX), HIMETRIC_INCH);
         int nHeight    = MulDiv(hmHeight,    pDC->GetDeviceCaps(LOGPIXELSY), HIMETRIC_INCH);
 
         CBitmap bmMem;
 
-        if (bmMem.CreateCompatibleBitmap(pDC, nWidth, nHeight))
-        {
+        if (bmMem.CreateCompatibleBitmap(pDC, nWidth, nHeight)) {
             CBitmap* pOldBM = dcMem.SelectObject(&bmMem);
 
             if (crBack != -1)
                 dcMem.FillSolidRect(0, 0, nWidth, nHeight, crBack);
-            
+
             HRESULT hr = pPicture->Render(dcMem, 0, 0, nWidth, nHeight, 0, hmHeight, hmWidth, -hmHeight, NULL);
             dcMem.SelectObject(pOldBM);
 
             if (hr == S_OK)
                 bResult = CBitmap::Attach(bmMem.Detach());
 
-			//wyw
-			bmMem.DeleteObject();
+            //wyw
+            bmMem.DeleteObject();
         }
     }
 
     CWnd::GetDesktopWindow()->ReleaseDC(pDC);
 
-	//wyw
-	dcMem.DeleteDC();
+    //wyw
+    dcMem.DeleteDC();
 
     return bResult;
 }

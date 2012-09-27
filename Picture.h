@@ -14,11 +14,10 @@
 
 //------------------------------------------
 
-typedef enum
-{
-	OFM_WRITE        = 0,
-	OFM_READ         = 1
-}FILE_OPENMODE;
+typedef enum {
+    OFM_WRITE        = 0,
+    OFM_READ         = 1
+} FILE_OPENMODE;
 
 #define HIMETRIC_INCH 2540
 
@@ -26,43 +25,43 @@ typedef enum
 class CFileProcess
 {
 private :
-	FILE  *m_File;
+    FILE  *m_File;
 
 public:
-	CFileProcess();
-   ~CFileProcess();
+    CFileProcess();
+    ~CFileProcess();
     BOOL	Open        (TCHAR * FileName , FILE_OPENMODE Open_Mode);
-	BOOL	Write       (VOID * zBuffer, DWORD cSize);
+    BOOL	Write       (VOID * zBuffer, DWORD cSize);
     BOOL	Read        (VOID * zBuffer, DWORD cSize);
-	LONG    GetSize     (VOID);
-	VOID    Close       (VOID);
+    LONG    GetSize     (VOID);
+    VOID    Close       (VOID);
 };
 
 //-------------------------------------------------------------
 
 
 //-----------------------------------------
-class CPicture  
+class CPicture
 {
 public:
-	CPicture();
-	virtual ~CPicture();
-	
+    CPicture();
+    virtual ~CPicture();
+
 private:
-	IPicture *m_pic;
-	HGLOBAL  hGlobal;
+    IPicture *m_pic;
+    HGLOBAL  hGlobal;
 
 public:
 
-	HBITMAP LoadPicture(TCHAR * FileName);
-	HBITMAP LoadPicture(TCHAR * FileName, HDC hdc);
-	VOID    FreePicture( VOID );
+    HBITMAP LoadPicture(TCHAR * FileName);
+    HBITMAP LoadPicture(TCHAR * FileName, HDC hdc);
+    VOID    FreePicture( VOID );
     HDC     _GetDC     ( VOID );
-	HBITMAP _GetHandle ( VOID );
-	DWORD   _GetWidth  ( VOID );
-	DWORD   _GetHeight ( VOID );
-	BOOL    DrawPicture(HDC hdc,long x,long y,long cx,long cy);
-	
+    HBITMAP _GetHandle ( VOID );
+    DWORD   _GetWidth  ( VOID );
+    DWORD   _GetHeight ( VOID );
+    BOOL    DrawPicture(HDC hdc,long x,long y,long cx,long cy);
+
 
 };
 

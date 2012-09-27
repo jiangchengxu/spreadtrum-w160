@@ -27,8 +27,7 @@
 // --------------------------------------------------------------------------
 // Define notice types
 // --------------------------------------------------------------------------
-enum 
-{
+enum {
     NT_MESSAGE = 0,
     NT_STATUS,
     NT_DEVICE
@@ -37,8 +36,7 @@ enum
 // --------------------------------------------------------------------------
 // Define severity types
 // --------------------------------------------------------------------------
-enum 
-{
+enum {
     ST_ERROR = 0,
     ST_WARNING,
     ST_INFORMATION
@@ -47,8 +45,7 @@ enum
 // --------------------------------------------------------------------------
 // Define device notice types
 // --------------------------------------------------------------------------
-enum 
-{
+enum {
     DT_AVAILABLE = 0,
     DT_CONNECT,
     DT_CONNECT_FAIL,
@@ -72,14 +69,14 @@ typedef TRCPointer<DeviceNotice> DeviceNoticeRCP;
 // --------------------------------------------------------------------------
 // Notice
 //
-/// Notice is the base class for all notice types. It defines the basic 
+/// Notice is the base class for all notice types. It defines the basic
 /// interface that all notices must implement. The notice class works with
-/// the Publish Subscribe classes to publish notices to subscribers. The 
-/// Publish Subscribe classes are templated using the Notice class. 
+/// the Publish Subscribe classes to publish notices to subscribers. The
+/// Publish Subscribe classes are templated using the Notice class.
 /// Publishers can send, and Subscribers can receive, any subtype of Notice
-/// allowing a single publisher to send different kinds of notices. 
-/// Notice inherits from IRCObject which provides a reference counting 
-/// interface to the class. Reference counting allows multiple references to 
+/// allowing a single publisher to send different kinds of notices.
+/// Notice inherits from IRCObject which provides a reference counting
+/// interface to the class. Reference counting allows multiple references to
 /// the same heap allocated Notice without worring about orphaning or
 /// premature deletion. Reference counting is necessary because a Notice can
 /// be published to multiple subscribers.
@@ -87,11 +84,12 @@ typedef TRCPointer<DeviceNotice> DeviceNoticeRCP;
 class Notice : public IRCObject
 {
 public:
-    Notice(uint8 noticeType) : m_noticeType(noticeType)
-    {
+    Notice(uint8 noticeType) : m_noticeType(noticeType) {
     }
 
-    uint8 GetNoticeType() const { return m_noticeType; }
+    uint8 GetNoticeType() const {
+        return m_noticeType;
+    }
 
 private:
     uint8 m_noticeType;
@@ -100,18 +98,19 @@ private:
 // --------------------------------------------------------------------------
 // MsgNotice
 //
-/// A MsgNotice alerts a Subscriber that the Publisher has received a new 
-/// Message. The MsgNotice holds a pointer to the new message as a data 
+/// A MsgNotice alerts a Subscriber that the Publisher has received a new
+/// Message. The MsgNotice holds a pointer to the new message as a data
 /// member.
 // --------------------------------------------------------------------------
 class MsgNotice : public Notice
 {
 public:
-    MsgNotice(MessageRCP msgRCP) : Notice(NT_MESSAGE), m_msgRCP(msgRCP)
-    {
+    MsgNotice(MessageRCP msgRCP) : Notice(NT_MESSAGE), m_msgRCP(msgRCP) {
     }
 
-    MessageRCP GetMessageRCP() const { return m_msgRCP; }
+    MessageRCP GetMessageRCP() const {
+        return m_msgRCP;
+    }
 
 private:
     MessageRCP m_msgRCP;
@@ -120,22 +119,25 @@ private:
 // --------------------------------------------------------------------------
 // StatusNotice
 //
-/// A StatusNotice transmits status information to Subscribers. The event 
+/// A StatusNotice transmits status information to Subscribers. The event
 /// being reported is represented as a string and the severity of the event
 /// (error, warning or information) is represented as a uint8.
 // --------------------------------------------------------------------------
 class StatusNotice : public Notice
 {
 public:
-    StatusNotice(std::string event, uint8 severity) : 
-        Notice(NT_STATUS), 
+    StatusNotice(std::string event, uint8 severity) :
+        Notice(NT_STATUS),
         m_event(event),
-        m_severity(severity)
-    {
+        m_severity(severity) {
     }
 
-    std::string GetEvent() { return m_event; }
-    uint8 GetSeverity() { return m_severity; }
+    std::string GetEvent() {
+        return m_event;
+    }
+    uint8 GetSeverity() {
+        return m_severity;
+    }
 
 private:
     std::string m_event;
@@ -155,18 +157,23 @@ public:
         std::string reason,
         uint8 type,
         const std::vector<std::string>& networkAdapters
-    ) : 
+    ) :
         Notice(NT_DEVICE),
         m_reason(reason),
         m_type(type),
-        m_networkAdapters(networkAdapters)
-    {
+        m_networkAdapters(networkAdapters) {
     }
 
-    std::string GetReason() { return m_reason; }
-    uint8 GetType() { return m_type; }
-    std::vector<std::string> GetNetworkAdapters() { return m_networkAdapters; }
-    
+    std::string GetReason() {
+        return m_reason;
+    }
+    uint8 GetType() {
+        return m_type;
+    }
+    std::vector<std::string> GetNetworkAdapters() {
+        return m_networkAdapters;
+    }
+
 private:
     std::string m_reason;
     uint8 m_type;
@@ -184,8 +191,8 @@ private:
 class NoticePublisher : public Publisher<NoticeRCP>
 {
 public:
-   NoticePublisher() {}
-   virtual ~NoticePublisher() {}
+    NoticePublisher() {}
+    virtual ~NoticePublisher() {}
 };
 
 
@@ -197,6 +204,6 @@ public:
 class NoticeSubscriber : public Subscriber<NoticeRCP>
 {
 public:
-   NoticeSubscriber() {}
-   virtual ~NoticeSubscriber() {}
+    NoticeSubscriber() {}
+    virtual ~NoticeSubscriber() {}
 };

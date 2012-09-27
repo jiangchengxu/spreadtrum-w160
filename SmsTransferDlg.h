@@ -18,11 +18,11 @@ class CSmsTransferDlg : public CBaseDialog
 {
 // Construction
 public:
-	virtual ~CSmsTransferDlg();
+    virtual ~CSmsTransferDlg();
 
-	UCHAR chr;
+    UCHAR chr;
     char MinMaxChar;
-	void UpTreeSMSCount();
+    void UpTreeSMSCount();
     void UpdateOwner();
     BOOL ProgressPos(int nPos);
     BOOL ProgressOpen(int nUpper = 0, int nStep = 0);
@@ -31,38 +31,36 @@ public:
     BOOL ProgressSet(int nLower, int nUpper, int nStep);
     EnLocType GetLocTypeByStr(LPCTSTR str);
     BOOL StartTransfer(BOOL bFromLToR = TRUE);
-    
-	static void RspAtSmsQCMGD(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL], WORD wStrNum);    
+
+    static void RspAtSmsQCMGD(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL], WORD wStrNum);
     static void RspAtSmsQCMGW(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL], WORD wStrNum);
     static void RspAtSmsQCMGR(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL], WORD wStrNum);
     static void RspAtSmsQCPMS(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL], WORD wStrNum);
-	static void RspAtSmsQCSMP(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL], WORD wStrNum);
-	static void RspAtSmsQCSCA(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL], WORD wStrNum);
-	static void RspAtSmsQHMSGL(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL], WORD wStrNum);
-	static void RspAtSmsQHMSGP(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL], WORD wStrNum);
-	//·¢ËÍAt$HMSGL(CDMA2000 add by liub)
-	BOOL SndAtSmsQHMSGL(BOOL bAscii = TRUE, BOOL bConcatenate = FALSE);
+    static void RspAtSmsQCSMP(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL], WORD wStrNum);
+    static void RspAtSmsQCSCA(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL], WORD wStrNum);
+    static void RspAtSmsQHMSGL(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL], WORD wStrNum);
+    static void RspAtSmsQHMSGP(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL], WORD wStrNum);
+    //·¢ËÍAt$HMSGL(CDMA2000 add by liub)
+    BOOL SndAtSmsQHMSGL(BOOL bAscii = TRUE, BOOL bConcatenate = FALSE);
 
     BOOL SndAtSmsQCSCA(const StSmsRecord *pRecord);
-	BOOL SndAtSmsQCMGD(USHORT index);
+    BOOL SndAtSmsQCMGD(USHORT index);
     BOOL SndAtSmsQCMGW(StSmsRecord *pRecord = NULL);
     BOOL SndAtSmsQCMGR(USHORT index);
     BOOL SndAtSmsQCPMS(EnLocType locType1, EnLocType locType2 = LOC_MAX);
-	BOOL SndAtSmsQCSMP(EnSmsQcsmpType type, BOOL bAscii = TRUE, BOOL bConcatenate = FALSE);
+    BOOL SndAtSmsQCSMP(EnSmsQcsmpType type, BOOL bAscii = TRUE, BOOL bConcatenate = FALSE);
     BOOL SndAtSmsQCSMP(StSmsRecord *pRecord);
-	BOOL SndAtSmsQHMSGP();
+    BOOL SndAtSmsQHMSGP();
     CSmsTransferDlg(CWnd* pParent = NULL);   // standard constructor
 
 // Dialog Data
-    enum EnCtrlDirection
-    {
+    enum EnCtrlDirection {
         CTRL_DIRECTION_LEFT = 0,
         CTRL_DIRECTION_RIGHT,
         CTRL_DIRECTION_MAX
     };
 
-    enum EnProcType
-    {
+    enum EnProcType {
         PROC_TYPE_INIT = 0,
         PROC_TYPE_READ,
         PROC_TYPE_COPY,
@@ -70,8 +68,8 @@ public:
         PROC_TYPE_MAX
     };
 
-	CShadeButtonST TransUpToDownBtn;
-	CShadeButtonST TransDownToUpBtn;
+    CShadeButtonST TransUpToDownBtn;
+    CShadeButtonST TransDownToUpBtn;
     CComboBox    m_LocCombo[CTRL_DIRECTION_MAX];
     CComboBox    m_TypeCombo[CTRL_DIRECTION_MAX];
     CSmsListCtrl    m_SmsList[CTRL_DIRECTION_MAX];
@@ -83,7 +81,7 @@ public:
 // Overrides
     // ClassWizard generated virtual function overrides
     //{{AFX_VIRTUAL(CSmsTransferDlg)
-    protected:
+protected:
     virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
     //}}AFX_VIRTUAL
 
@@ -102,11 +100,11 @@ protected:
     afx_msg void OnTimer(UINT nIDEvent);
     afx_msg void OnShowWindow(BOOL bShow, UINT nStatus);
     //}}AFX_MSG
-    afx_msg LRESULT OnSmsTransferProc(WPARAM wParam, LPARAM lParam = 0);    
-    afx_msg LRESULT OnCreateProgress(WPARAM wParam, LPARAM lParam = 0);        
+    afx_msg LRESULT OnSmsTransferProc(WPARAM wParam, LPARAM lParam = 0);
+    afx_msg LRESULT OnCreateProgress(WPARAM wParam, LPARAM lParam = 0);
     DECLARE_MESSAGE_MAP()
 private:
-	CHSDPADlg* m_pMainWnd;
+    CHSDPADlg* m_pMainWnd;
     USHORT m_ME_SmsNum;
     USHORT m_ME_SmsMax;
     USHORT m_SM_SmsNum;
@@ -135,14 +133,14 @@ private:
     EnLocType m_SrcLoc, m_DesLoc;
     EnCtrlDirection m_SrcDirection, m_DesDirection;
     EnProcType m_ProcType;
-	void ClearAllSelectMask(EnCtrlDirection direction);
+    void ClearAllSelectMask(EnCtrlDirection direction);
     void UpdateListCtrl(EnCtrlDirection direction);
     void UpdateComboState(EnCtrlDirection direction);
-	void UpdateComboType(EnCtrlDirection direction);
+    void UpdateComboType(EnCtrlDirection direction);
     void UpdateButtonState();
 
-	bool bSetHmsgp;
-	HANDLE m_Event;
+    bool bSetHmsgp;
+    HANDLE m_Event;
 };
 
 //{{AFX_INSERT_LOCATION}}

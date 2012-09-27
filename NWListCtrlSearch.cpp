@@ -24,14 +24,14 @@ CNWListCtrlSearch::~CNWListCtrlSearch()
 
 
 BEGIN_MESSAGE_MAP(CNWListCtrlSearch, CListCtrl)
-	//{{AFX_MSG_MAP(CNWListCtrlSearch)
-		// NOTE - the ClassWizard will add and remove mapping macros here.
-	//}}AFX_MSG_MAP
+    //{{AFX_MSG_MAP(CNWListCtrlSearch)
+    // NOTE - the ClassWizard will add and remove mapping macros here.
+    //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
 // CNWListCtrlSearch message handlers
-void CNWListCtrlSearch::PreSubclassWindow() 
+void CNWListCtrlSearch::PreSubclassWindow()
 {
     m_headerCtrl.SubclassWindow(GetDlgItem(0)->GetSafeHwnd());
     CListCtrl::PreSubclassWindow();

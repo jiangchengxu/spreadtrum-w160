@@ -4,31 +4,37 @@
 // LogData.h : header file
 //
 /////////////////////////////////////////////////////////////////////////////
-// CLogData 
+// CLogData
 class CLogData: public CObject
 {
 public:
-	DWORD CalculateTotalDuration(const COleDateTime &datetime);
-	DWORD CalculateTotalFlux(const COleDateTime &datetime);
+    DWORD CalculateTotalDuration(const COleDateTime &datetime);
+    DWORD CalculateTotalFlux(const COleDateTime &datetime);
     /*{{The interface--------------------------*/
     ////查找和指定内容相同的记录，返回索引值（未实现）
     int SearchList(stLogItem *pItem);
     BOOL SaveItem(stLogItem *pItem);
-    int  GetCount(){ return mLogData.count; }
-    stLogItem GetItem(int npos){ return mLogData.mItemData[npos]; }
-    BOOL IsEmpty(){ return (mLogData.count == 0); }
+    int  GetCount() {
+        return mLogData.count;
+    }
+    stLogItem GetItem(int npos) {
+        return mLogData.mItemData[npos];
+    }
+    BOOL IsEmpty() {
+        return (mLogData.count == 0);
+    }
     /*---------------------------------------}}*/
     void LoadLogData(void);
-    
+
     BOOL LoadFile(LPCTSTR szFileName = NULL);
     BOOL SaveFile(LPCTSTR szFileName = NULL);
 
     BOOL RemoveItem(int npos);
     BOOL ClearAll();
-    
+
     BOOL m_bModifed;
     stLogList mLogData;
-    
+
     /*The destructor takes care of destroying all items*/
     virtual ~CLogData();
     DECLARE_SERIAL( CLogData )

@@ -45,19 +45,35 @@ public:
     void PutDWord(uint32 value);
     void PutCopy(const void* src, uint32 count);
 
-    uint32 GetSize() { return m_size; }
-    uint32 GetIndex() { return m_index; }
-    const uint8* GetBuffer() { return m_buf; }
-    void Rewind() { m_index = 0; }
-    bool EOB() { return m_index == m_size; }
+    uint32 GetSize() {
+        return m_size;
+    }
+    uint32 GetIndex() {
+        return m_index;
+    }
+    const uint8* GetBuffer() {
+        return m_buf;
+    }
+    void Rewind() {
+        m_index = 0;
+    }
+    bool EOB() {
+        return m_index == m_size;
+    }
     void Print(std::ostream& stream);
 
-    void SetSvcType(uint8 svcType) { m_svcType = svcType; }
-    uint8 GetSvcType() { return m_svcType; }
+    void SetSvcType(uint8 svcType) {
+        m_svcType = svcType;
+    }
+    uint8 GetSvcType() {
+        return m_svcType;
+    }
 
     MsgBuf& operator=(MsgBuf& msgBuf);
     bool operator==(MsgBuf& msgBuf);
-    bool operator!=(MsgBuf& msgBuf) { return !operator==(msgBuf); }
+    bool operator!=(MsgBuf& msgBuf) {
+        return !operator==(msgBuf);
+    }
 
 private:
     uint8* m_buf;

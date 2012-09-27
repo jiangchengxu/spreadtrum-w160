@@ -13,8 +13,7 @@
 
 class CMyListCtrl;
 
-struct SortInfo
-{
+struct SortInfo {
     int iColumn;
     CMyListCtrl *pList;
 };
@@ -40,29 +39,29 @@ public:
 // Overrides
     // ClassWizard generated virtual function overrides
     //{{AFX_VIRTUAL(CMyListCtrl)
-    protected:
+protected:
     virtual void PreSubclassWindow();
     //}}AFX_VIRTUAL
 
 // Implementation
 public:
-	void AdjustColumnWidth();
+    void AdjustColumnWidth();
     void SetSort(PFNLVCOMPARE pfnSort, LPARAM lParam);
     void SetColClick(LPFNLCSOP pfnLCOpHandler, LPARAM lParam);
     //void SortItems(int nColumn, BOOL bAscending);
-    
+
     int GetColumnCount();
     virtual ~CMyListCtrl();
     void SetWidths();
     int InsertColumn(int nCol, LPCTSTR lpszColumnHeading,
-    int nFormat = LVCFMT_LEFT, int nWidth = -1, int nSubItem = -1);
+                     int nFormat = LVCFMT_LEFT, int nWidth = -1, int nSubItem = -1);
     int GetCurrentIndex();
     int InsertItem(int nItem, LPCTSTR lpszItem, LPARAM lItemData,int nImage = -1);
     int CompareItems(int nItem1, int nItem2);
     int FindSeparator(int nStartAfter, int nColumn) const;
     BOOL PartialSort(int nStart, int nEnd);
     void QuickSortRecursive(int* pArr, int nLow, int nHigh);
-    
+
     DWORD GetItemStates(int nItem) const;
     BOOL SetItemStates(int nItem, DWORD dwNewStates);
 
@@ -88,7 +87,7 @@ protected:
 
     //{{AFX_MSG(CMyListCtrl)
 //    afx_msg void OnColumnclick(NMHDR* pNMHDR, LRESULT* pResult);
-//    afx_msg void OnClick(NMHDR* pNMHDR, LRESULT* pResult); 
+//    afx_msg void OnClick(NMHDR* pNMHDR, LRESULT* pResult);
 //    afx_msg void OnDblclk(NMHDR* pNMHDR, LRESULT* pResult);
     afx_msg void OnChar(UINT nChar, UINT nRepCnt, UINT nFlags);
     afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);

@@ -32,7 +32,7 @@ static uint32 THREAD_EXIT_TIMEOUT = 1000;
 //
 /// Constructor for QMIService. Initialize data members.
 // --------------------------------------------------------------------------
-QMIService::QMIService(uint8 svcType) : 
+QMIService::QMIService(uint8 svcType) :
     m_svcType(svcType),
     m_isOpen(false),
     m_hServiceHandle(INVALID_HANDLE_VALUE),
@@ -48,8 +48,7 @@ QMIService::QMIService(uint8 svcType) :
 // --------------------------------------------------------------------------
 QMIService::~QMIService()
 {
-    if (m_isOpen)
-    {
+    if (m_isOpen) {
         CloseService();
     }
 
@@ -69,11 +68,10 @@ QMIService::~QMIService()
 bool QMIService::OpenService(std::string& deviceName)
 {
     // create service handle
-    m_hServiceHandle = 
+    m_hServiceHandle =
         QCWWAN_OpenService((PCHAR)deviceName.c_str(),m_svcType);
 
-    if (m_hServiceHandle == INVALID_HANDLE_VALUE)
-    {
+    if (m_hServiceHandle == INVALID_HANDLE_VALUE) {
         // report unable to open service
         std::stringstream stream;
         stream << _T("Error: Unable to open service:") << std::endl
@@ -85,11 +83,10 @@ bool QMIService::OpenService(std::string& deviceName)
     }
 
     // start the service thread
-    m_hServiceThread = 
+    m_hServiceThread =
         ::CreateThread(NULL,0,StartServiceThread,(LPVOID)this,0,NULL);
 
-    if (m_hServiceThread == NULL)
-    {
+    if (m_hServiceThread == NULL) {
         QCWWAN_CloseService(m_hServiceHandle);
         m_hServiceHandle = INVALID_HANDLE_VALUE;
 
@@ -120,7 +117,9 @@ bool QMIService::OpenService(std::string& deviceName)
 bool QMIService::CloseService()
 {
     // check if service already closed
-    if (!m_isOpen) { return true; }
+    if (!m_isOpen) {
+        return true;
+    }
 
     bool result = true;
     std::stringstream stream;
@@ -132,8 +131,7 @@ bool QMIService::CloseService()
     DWORD exitVal = ::WaitForSingleObject(m_hServiceThread,THREAD_EXIT_TIMEOUT);
 
     // check for abnormal exit
-    if (exitVal != 0)
-    {
+    if (exitVal != 0) {
         // report abnormal exit
         stream << _T("Error: Abnormal exit from service thread:") << std::endl
                << _T("  Service Type: ") << SERVICE_TYPE_STRINGS[m_svcType] << std::endl
@@ -145,8 +143,7 @@ bool QMIService::CloseService()
     m_hServiceThread = INVALID_HANDLE_VALUE;
 
     // close the service handle
-    if (!QCWWAN_CloseService(m_hServiceHandle))
-    {
+    if (!QCWWAN_CloseService(m_hServiceHandle)) {
         // report error closing service handle
         stream << _T("Error: Service did not close successfully:") << std::endl
                << _T("  Service Type: ") << SERVICE_TYPE_STRINGS[m_svcType] << std::endl
@@ -154,7 +151,7 @@ bool QMIService::CloseService()
         MessageManager::GetInstance().ReportStatus(stream.str(),ST_ERROR);
         result = false;
     }
-    
+
     m_hServiceHandle = INVALID_HANDLE_VALUE;
 
     // indicate that the service is closed
@@ -179,43 +176,41 @@ bool QMIService::SendMsgBuf(MsgBuf& msgBuf)
 
     // send the packed buffer
     result = !!QCWWAN_SendRaw(
-                     m_hServiceHandle,
-                     (PCHAR)msgBuf.GetBuffer(),
-                     (ULONG)msgBuf.GetSize(),
-                     (PULONG)&bytesWritten
-                  );
+                 m_hServiceHandle,
+                 (PCHAR)msgBuf.GetBuffer(),
+                 (ULONG)msgBuf.GetSize(),
+                 (PULONG)&bytesWritten
+             );
 
-	if (false == result) 
-	{
-		TRACE(_T("error #1 !\n"));
-		if (false == !!QCWWAN_SendRaw(m_hServiceHandle, (PCHAR)msgBuf.GetBuffer(), (ULONG)msgBuf.GetSize(), (PULONG)&bytesWritten)) {
-			TRACE(_T("error #2 !\n"));
-			result = !!QCWWAN_SendRaw(m_hServiceHandle, (PCHAR)msgBuf.GetBuffer(), (ULONG)msgBuf.GetSize(), (PULONG)&bytesWritten);
-		}
-	}
+    if (false == result) {
+        TRACE(_T("error #1 !\n"));
+        if (false == !!QCWWAN_SendRaw(m_hServiceHandle, (PCHAR)msgBuf.GetBuffer(), (ULONG)msgBuf.GetSize(), (PULONG)&bytesWritten)) {
+            TRACE(_T("error #2 !\n"));
+            result = !!QCWWAN_SendRaw(m_hServiceHandle, (PCHAR)msgBuf.GetBuffer(), (ULONG)msgBuf.GetSize(), (PULONG)&bytesWritten);
+        }
+    }
 
     // check for error sending buffer
-    if (!result)
-    {
-		TRACE(_T("error #3 !\n"));
+    if (!result) {
+        TRACE(_T("error #3 !\n"));
         std::stringstream stream;
         stream << _T("Error: Message buffer was not sent successfully:") << std::endl
-                << _T("  Service Type: ") << SERVICE_TYPE_STRINGS[m_svcType] << std::endl;
+               << _T("  Service Type: ") << SERVICE_TYPE_STRINGS[m_svcType] << std::endl;
         msgBuf.Print(stream);
         MessageManager::GetInstance().ReportStatus(stream.str(),ST_ERROR);
     }
 
-    return result; 
+    return result;
 }
 
 // --------------------------------------------------------------------------
 // StartServiceThread
 //
 /// Start a service thread. This method must be static to work with
-/// ::CreateThread. By passing the QMIService pointer we can call a 
+/// ::CreateThread. By passing the QMIService pointer we can call a
 /// non-static method and use non-static data members.
-/// 
-/// @param context - pointer to the MessageManager. 
+///
+/// @param context - pointer to the MessageManager.
 // --------------------------------------------------------------------------
 DWORD WINAPI QMIService::StartServiceThread(LPVOID context)
 {
@@ -226,7 +221,7 @@ DWORD WINAPI QMIService::StartServiceThread(LPVOID context)
 // --------------------------------------------------------------------------
 // ServiceThread
 //
-/// Service threads "listen" to an overlapped I/O file for messages being 
+/// Service threads "listen" to an overlapped I/O file for messages being
 /// sent from the target. Each service type has its own overlapped file and
 /// thread.
 // --------------------------------------------------------------------------
@@ -239,10 +234,9 @@ void QMIService::ServiceThread()
 
     ::memset(&ov,0,sizeof(ov));
     ov.hEvent = CreateEvent(NULL, TRUE, FALSE, NULL);
- 
-    // report create event failure  
-    if (ov.hEvent == NULL)
-    {
+
+    // report create event failure
+    if (ov.hEvent == NULL) {
         stream << _T("Unable to create overlapped event for service file.") << std::endl
                << std::endl;
         MessageManager::GetInstance().ReportStatus(stream.str(),ST_ERROR);
@@ -251,10 +245,8 @@ void QMIService::ServiceThread()
     }
 
     // do asyncronous file read until exit triggered
-    while (true)
-    {
-        while (::ReadFile(m_hServiceHandle,rspBuf,QMUX_MAX_DATA_LEN,&bytesRead,&ov))
-        {
+    while (true) {
+        while (::ReadFile(m_hServiceHandle,rspBuf,QMUX_MAX_DATA_LEN,&bytesRead,&ov)) {
             // process the raw buffer from the service file read
             ProcessBuffer(rspBuf,bytesRead);
 
@@ -264,8 +256,7 @@ void QMIService::ServiceThread()
         }
 
         uint32 status = GetLastError();
-        if (ERROR_IO_PENDING != status)
-        {
+        if (ERROR_IO_PENDING != status) {
             stream << _T("Service file read failure.") << std::endl
                    << _T("Last error code: ") << status << std::endl
                    << std::endl;
@@ -275,17 +266,13 @@ void QMIService::ServiceThread()
             ::CloseHandle(ov.hEvent);
             CancelService();
             return;
-        }
-        else
-        {
+        } else {
             // establish array of handles to wait on
             HANDLE waitHandles [] = { m_hReadExitEvent,ov.hEvent };
 
-            if (::WaitForMultipleObjects(2,waitHandles,FALSE,INFINITE) == WAIT_OBJECT_0)
-            {
+            if (::WaitForMultipleObjects(2,waitHandles,FALSE,INFINITE) == WAIT_OBJECT_0) {
                 // exit event signaled, cancel any pending IO
-                if (!::CancelIo(m_hServiceHandle))
-                {
+                if (!::CancelIo(m_hServiceHandle)) {
                     // report cancel IO failure
                     status = ::GetLastError();
                     stream << _T("Error cancelling IO on service read exit.") << std::endl
@@ -298,21 +285,16 @@ void QMIService::ServiceThread()
                 ::CloseHandle(ov.hEvent);
 
                 return;
-            }
-            else
-            {
+            } else {
                 // overlapped event signaled, get result
-                if (GetOverlappedResult(m_hServiceHandle,&ov,&bytesRead,TRUE))
-                {
+                if (GetOverlappedResult(m_hServiceHandle,&ov,&bytesRead,TRUE)) {
                     // process the raw buffer from the service file read
                     ProcessBuffer(rspBuf,bytesRead);
 
                     // reset the buffer and number of bytes returned
                     ::memset(rspBuf,0,QMUX_MAX_DATA_LEN);
                     bytesRead = 0;
-                }
-                else
-                {
+                } else {
                     // report get overlapped error
                     status = ::GetLastError();
                     stream << _T("Error: Unexpected error in get overlapped of service read.") << std::endl
@@ -333,10 +315,10 @@ void QMIService::ServiceThread()
 // --------------------------------------------------------------------------
 // ProcessBuffer
 //
-/// Convert a raw buffer from a service file read to a MsgBuf and put it on 
+/// Convert a raw buffer from a service file read to a MsgBuf and put it on
 /// the MessageManager's message response queue.
-/// 
-/// @param rspBuf - the response buffer to process. 
+///
+/// @param rspBuf - the response buffer to process.
 // --------------------------------------------------------------------------
 void QMIService::ProcessBuffer(UCHAR* rspBuf, ULONG bytesRead)
 {
@@ -358,20 +340,21 @@ void QMIService::ProcessBuffer(UCHAR* rspBuf, ULONG bytesRead)
 void QMIService::CancelService()
 {
     // check if service already closed
-    if (!m_isOpen) { return; }
+    if (!m_isOpen) {
+        return;
+    }
 
     std::stringstream stream;
 
     // close the service handle
-    if (!QCWWAN_CloseService(m_hServiceHandle))
-    {
+    if (!QCWWAN_CloseService(m_hServiceHandle)) {
         // report error closing service handle
         stream << _T("Error: Service did not close successfully:") << std::endl
                << _T("  Service Type: ") << SERVICE_TYPE_STRINGS[m_svcType] << std::endl
                << std::endl;
         MessageManager::GetInstance().ReportStatus(stream.str(),ST_ERROR);
     }
-    
+
     m_hServiceHandle = INVALID_HANDLE_VALUE;
 
     // indicate that the service is closed

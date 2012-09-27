@@ -32,71 +32,71 @@ class CNetStatistics : public CTabedDialog
 {
 // Construction
 public:
-	DECLARE_DYNAMIC(CNetStatistics)
-	CNetStatistics(CWnd* pParent = NULL);   // standard constructor
-     ~CNetStatistics();
+    DECLARE_DYNAMIC(CNetStatistics)
+    CNetStatistics(CWnd* pParent = NULL);   // standard constructor
+    ~CNetStatistics();
 // Dialog Data
-	//{{AFX_DATA(CNetStatistics)
-	enum { IDD = IDD_DIALOG_NET_STATISTICS };
-	CTreeCtrl	m_Tree;
-	CImageList *m_pImageList;
+    //{{AFX_DATA(CNetStatistics)
+    enum { IDD = IDD_DIALOG_NET_STATISTICS };
+    CTreeCtrl	m_Tree;
+    CImageList *m_pImageList;
 
-	MFTrafficButton	m_cOutgoing;
-	MFTrafficButton	m_cIncoming;
-	MFTrafficButton	m_cTotalTraffic;
-	CDlgConnect* pDlgConnect;
-	HTREEITEM ht_transferTime,ht_uploadSpeed,ht_downloadSpeed,ht_downloadedData,ht_uploadedData;
-	HTREEITEM ht_dailyDownload,ht_dailyUpload,ht_monthlyDownload,ht_monthlyUpload,ht_timeLastReset;
-	HTREEITEM ht_yearlyDownload,ht_yearlyUpload;
-	CString strTransferTime,strTransfer,strSpeed,strData,strDownload,strUpload,strStatistics;
-	CString strDaily,strMonthly,strYearly,StrTransTime,strUploadedData,strDownloadedData;
-	CString strTimeLastReset;
+    MFTrafficButton	m_cOutgoing;
+    MFTrafficButton	m_cIncoming;
+    MFTrafficButton	m_cTotalTraffic;
+    CDlgConnect* pDlgConnect;
+    HTREEITEM ht_transferTime,ht_uploadSpeed,ht_downloadSpeed,ht_downloadedData,ht_uploadedData;
+    HTREEITEM ht_dailyDownload,ht_dailyUpload,ht_monthlyDownload,ht_monthlyUpload,ht_timeLastReset;
+    HTREEITEM ht_yearlyDownload,ht_yearlyUpload;
+    CString strTransferTime,strTransfer,strSpeed,strData,strDownload,strUpload,strStatistics;
+    CString strDaily,strMonthly,strYearly,StrTransTime,strUploadedData,strDownloadedData;
+    CString strTimeLastReset;
 
 
-		// NOTE: the ClassWizard will add data members here
-	//}}AFX_DATA
+    // NOTE: the ClassWizard will add data members here
+    //}}AFX_DATA
 
 
 // Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(CNetStatistics)
-	protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	//}}AFX_VIRTUAL
+    // ClassWizard generated virtual function overrides
+    //{{AFX_VIRTUAL(CNetStatistics)
+protected:
+    virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+    //}}AFX_VIRTUAL
 
 // Implementation
 protected:
     HICON m_hIcon;
-	// Generated message map functions
-	//{{AFX_MSG(CNetStatistics)
-	virtual BOOL OnInitDialog();
-	afx_msg void OnPaint();
-	afx_msg void OnTimer(UINT nIDEvent);
-	afx_msg void OnRightClickTree(NMHDR* pNMHDR, LRESULT* pResult);
-	afx_msg void OnButtonExpandAll();
-	
-	afx_msg void OnButtonNetLog();
-	void ExpandBranch(HTREEITEM   hitem);
-	afx_msg void OnButtonCollapseAll();
-	void CollapseBranch(HTREEITEM   hitem);
-	//}}AFX_MSG
-	DECLARE_MESSAGE_MAP()
+    // Generated message map functions
+    //{{AFX_MSG(CNetStatistics)
+    virtual BOOL OnInitDialog();
+    afx_msg void OnPaint();
+    afx_msg void OnTimer(UINT nIDEvent);
+    afx_msg void OnRightClickTree(NMHDR* pNMHDR, LRESULT* pResult);
+    afx_msg void OnButtonExpandAll();
+
+    afx_msg void OnButtonNetLog();
+    void ExpandBranch(HTREEITEM   hitem);
+    afx_msg void OnButtonCollapseAll();
+    void CollapseBranch(HTREEITEM   hitem);
+    //}}AFX_MSG
+    DECLARE_MESSAGE_MAP()
 
 public:
 
-	int ConnectionType;	
-	void setConnection(int connectType);
-	void setDrawFlag(BOOL);
-	afx_msg void OnButtonResetStatistics();
-	afx_msg void OnResetStatistics(WPARAM wParam, LPARAM lParam);
+    int ConnectionType;
+    void setConnection(int connectType);
+    void setDrawFlag(BOOL);
+    afx_msg void OnButtonResetStatistics();
+    afx_msg void OnResetStatistics(WPARAM wParam, LPARAM lParam);
 private:
 
-	
+
 public:
-	DWORD m_dCurrDownTraffic,m_dCurrUpTraffic;
-		stThroughput m_stThroughput;
+    DWORD m_dCurrDownTraffic,m_dCurrUpTraffic;
+    stThroughput m_stThroughput;
 };
 
-	
+
 
 #endif

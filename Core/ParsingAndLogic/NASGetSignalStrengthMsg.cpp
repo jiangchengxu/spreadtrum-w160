@@ -42,7 +42,7 @@ static MessageCreator<NASGetSignalStrengthRsp> RspUint32Creator(NASGetSignalStre
 //
 /// Constructor for NASGetSignalStrengthMsg.
 // --------------------------------------------------------------------------
-NASGetSignalStrengthReq::NASGetSignalStrengthReq() : 
+NASGetSignalStrengthReq::NASGetSignalStrengthReq() :
     Message(QMUX_TYPE_NAS,QMI_NAS_GET_SIGNAL_STRENGTH_MSG,QMI_CTL_FLAG_TYPE_CMD)
 {}
 
@@ -134,38 +134,32 @@ NASGetSignalStrengthRsp::~NASGetSignalStrengthRsp()
 bool NASGetSignalStrengthRsp::Unpack(MsgBuf& msgBuf)
 {
     // call the base unpack
-    if (!Message::Unpack(msgBuf))
-    {
+    if (!Message::Unpack(msgBuf)) {
         return false;
     }
-    
+
     // validate message length
-    if (m_result == QMI_RESULT_SUCCESS)
-    {
+    if (m_result == QMI_RESULT_SUCCESS) {
         // mandatory tlvs
-        if (m_length != 12) 
-        {
+        if (m_length != 12) {
             std::stringstream stream;
             stream << _T("Warning: unable to unpack message:") << std::endl
-                << _T("Expected message length is 12 bytes, unpacked length is ")
-                << m_length << _T(" bytes.") << std::endl 
-                << std::endl;
+                   << _T("Expected message length is 12 bytes, unpacked length is ")
+                   << m_length << _T(" bytes.") << std::endl
+                   << std::endl;
             MessageManager::GetInstance().ReportStatus(stream.str(),ST_WARNING);
-            return false; 
+            return false;
         }
-    }
-    else
-    {
+    } else {
         // only result code tlv on failure
-        if (m_length != 7) 
-        {
+        if (m_length != 7) {
             std::stringstream stream;
             stream << _T("Warning: unable to unpack message:") << std::endl
-                << _T("Expected message length is 7 bytes, unpacked length is ")
-                << m_length << _T(" bytes.") << std::endl 
-                << std::endl;
+                   << _T("Expected message length is 7 bytes, unpacked length is ")
+                   << m_length << _T(" bytes.") << std::endl
+                   << std::endl;
             MessageManager::GetInstance().ReportStatus(stream.str(),ST_WARNING);
-            return false; 
+            return false;
         }
     }
 
@@ -183,8 +177,7 @@ bool NASGetSignalStrengthRsp::Unpack(MsgBuf& msgBuf)
 Message::Uint8UnpackerMap& NASGetSignalStrengthRsp::GetUnpackerMap()
 {
     static Uint8UnpackerMap UUMap;
-    if (UUMap.empty())
-    {
+    if (UUMap.empty()) {
         bool bSuccess = UUMap.insert(UUPair(RESULT_CODE_TYPE,(Unpacker)UnpackResultCode)).second;
         assert(bSuccess);
         bSuccess = UUMap.insert(UUPair(SIGNAL_STRENGTH_TYPE,(Unpacker)UnpackSignalStrength)).second;
@@ -207,12 +200,11 @@ bool NASGetSignalStrengthRsp::UnpackResultCode(MsgBuf& msgBuf)
     m_resultCodeType = RESULT_CODE_TYPE;
 
     m_resultCodeLen = msgBuf.GetWord();
-    if (m_resultCodeLen != 4) 
-    {
+    if (m_resultCodeLen != 4) {
         std::stringstream stream;
         stream << _T("Warning: unable to unpack message:") << std::endl
                << _T("Expected Result Code length is 4 bytes, unpacked length is ")
-               << m_resultCodeLen << _T(" bytes.") << std::endl 
+               << m_resultCodeLen << _T(" bytes.") << std::endl
                << std::endl;
         MessageManager::GetInstance().ReportStatus(stream.str(),ST_WARNING);
         return false;
@@ -222,8 +214,7 @@ bool NASGetSignalStrengthRsp::UnpackResultCode(MsgBuf& msgBuf)
     m_error = msgBuf.GetWord();
 
     // should be at the end of buffer on failure
-    if (m_result == QMI_RESULT_FAILURE && !msgBuf.EOB())
-    {
+    if (m_result == QMI_RESULT_FAILURE && !msgBuf.EOB()) {
         std::stringstream stream;
         stream << _T("Warning: unable to unpack message:") << std::endl
                << _T("Finished unpacking message but end of buffer not reached")
@@ -249,12 +240,11 @@ bool NASGetSignalStrengthRsp::UnpackSignalStrength(MsgBuf& msgBuf)
     m_signalStrengthType = SIGNAL_STRENGTH_TYPE;
 
     m_signalStrengthLen = msgBuf.GetWord();
-    if (m_signalStrengthLen != 2) 
-    {
+    if (m_signalStrengthLen != 2) {
         std::stringstream stream;
         stream << _T("Warning: unable to unpack message:") << std::endl
                << _T("Expected Signal Strength length is 2 bytes, unpacked length is ")
-               << m_signalStrengthLen << _T(" bytes.") << std::endl 
+               << m_signalStrengthLen << _T(" bytes.") << std::endl
                << std::endl;
         MessageManager::GetInstance().ReportStatus(stream.str(),ST_WARNING);
         return false;
@@ -263,20 +253,18 @@ bool NASGetSignalStrengthRsp::UnpackSignalStrength(MsgBuf& msgBuf)
     m_signalStrength = msgBuf.GetByte();
 
     m_radioIf = msgBuf.GetByte();
-    if (m_radioIf > 5)
-    {
+    if (m_radioIf > 5) {
         std::stringstream stream;
         stream << _T("Warning: unable to unpack message:") << std::endl
                << _T("Valid Radio IF values are 0 - 5 , unpacked value is ")
-               << m_radioIf << _T(" .") << std::endl 
+               << m_radioIf << _T(" .") << std::endl
                << std::endl;
         MessageManager::GetInstance().ReportStatus(stream.str(),ST_WARNING);
         return false;
     }
 
     // should be at the end of buffer
-    if (!msgBuf.EOB())
-    {
+    if (!msgBuf.EOB()) {
         std::stringstream stream;
         stream << _T("Warning: unable to unpack message:") << std::endl
                << _T("Finished unpacking message but end of buffer not reached")
@@ -302,8 +290,7 @@ void NASGetSignalStrengthRsp::Print(std::ostream& stream)
            << _T("  ResultCode ") << (int)m_result << std::endl
            << _T("  ErrorCode ") << (int)m_error << std::endl;
 
-    if (m_signalStrengthType == SIGNAL_STRENGTH_TYPE)
-    {
+    if (m_signalStrengthType == SIGNAL_STRENGTH_TYPE) {
         stream << _T("  SignalStrength ") << (int)m_signalStrength << std::endl
                << _T("  RadioIf ") << (int)m_radioIf << std::endl;
     }

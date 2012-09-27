@@ -24,14 +24,14 @@ CNWListCtrl::~CNWListCtrl()
 
 
 BEGIN_MESSAGE_MAP(CNWListCtrl, CListCtrl)
-	//{{AFX_MSG_MAP(CNWListCtrl)
-		// NOTE - the ClassWizard will add and remove mapping macros here.
-	//}}AFX_MSG_MAP
+    //{{AFX_MSG_MAP(CNWListCtrl)
+    // NOTE - the ClassWizard will add and remove mapping macros here.
+    //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
 // CNWListCtrl message handlers
-void CNWListCtrl::PreSubclassWindow() 
+void CNWListCtrl::PreSubclassWindow()
 {
     m_headerCtrl.SubclassWindow(GetDlgItem(0)->GetSafeHwnd());
     CListCtrl::PreSubclassWindow();

@@ -14,43 +14,43 @@ class CPBNewGroupDlg : public CBaseDialog
 {
 // Construction
 public:
-	CPBNewGroupDlg(CWnd* pParent = NULL,CString groupName=_T(""));   // standard constructor
+    CPBNewGroupDlg(CWnd* pParent = NULL,CString groupName=_T(""));   // standard constructor
 
 // Dialog Data
-	//{{AFX_DATA(CPBNewGroup)
-	enum { IDD = IDD_DIALOG_PBGROUP_NEW };
-		// NOTE: the ClassWizard will add data members here
-	//}}AFX_DATA
-CListBox m_ListGroupMembers;
-CString m_strGroupName;
-int m_iEditFlag; //编辑还是添加
-CString m_strPreGPName; //修改之前的group name
-CEdit m_EditGroupName;
+    //{{AFX_DATA(CPBNewGroup)
+    enum { IDD = IDD_DIALOG_PBGROUP_NEW };
+    // NOTE: the ClassWizard will add data members here
+    //}}AFX_DATA
+    CListBox m_ListGroupMembers;
+    CString m_strGroupName;
+    int m_iEditFlag; //编辑还是添加
+    CString m_strPreGPName; //修改之前的group name
+    CEdit m_EditGroupName;
 
-	int m_nGroupSelected;
+    int m_nGroupSelected;
 // Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(CPBNewGroup)
-	protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	
-	//}}AFX_VIRTUAL
+    // ClassWizard generated virtual function overrides
+    //{{AFX_VIRTUAL(CPBNewGroup)
+protected:
+    virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+
+    //}}AFX_VIRTUAL
 
 // Implementation
 protected:
 
-	virtual BOOL OnInitDialog();
-	afx_msg void OnPaint();
-	afx_msg void initGroupList();
-	afx_msg void OnButtonOK();
-	afx_msg void OnButtonCancel();
-	afx_msg void OnButtonEdit();
-	afx_msg LRESULT OnRefreshGroup(WPARAM wParam, LPARAM lParam);
-	BOOL GroupExisted();
-	DECLARE_MESSAGE_MAP()
+    virtual BOOL OnInitDialog();
+    afx_msg void OnPaint();
+    afx_msg void initGroupList();
+    afx_msg void OnButtonOK();
+    afx_msg void OnButtonCancel();
+    afx_msg void OnButtonEdit();
+    afx_msg LRESULT OnRefreshGroup(WPARAM wParam, LPARAM lParam);
+    BOOL GroupExisted();
+    DECLARE_MESSAGE_MAP()
 
 private:
-	CPbData  *m_pPbData;
+    CPbData  *m_pPbData;
 };
 
 //{{AFX_INSERT_LOCATION}}

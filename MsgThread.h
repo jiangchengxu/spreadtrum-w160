@@ -27,7 +27,7 @@ public:
 // Overrides
     // ClassWizard generated virtual function overrides
     //{{AFX_VIRTUAL(CMsgThread)
-    public:
+public:
     virtual BOOL InitInstance();
     virtual int ExitInstance();
     virtual BOOL OnIdle(LONG lCount);
@@ -39,7 +39,7 @@ protected:
 
     // Generated message map functions
     //{{AFX_MSG(CMsgThread)
-        // NOTE - the ClassWizard will add and remove member functions here.
+    // NOTE - the ClassWizard will add and remove member functions here.
     //}}AFX_MSG
 
     DECLARE_MESSAGE_MAP()

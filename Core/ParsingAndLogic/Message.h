@@ -47,7 +47,7 @@ static const uint8 QMI_CTL_FLAG_TYPE_CMD =                              0x00;
 static const uint8 QMI_CTL_FLAG_TYPE_RSP =                              0x02;
 static const uint8 QMI_CTL_FLAG_TYPE_IND =                              0x04;
 //static const uint8 QMI_CTL_FLAG_MASK_COMPOUND =                         0x01;
-//static const uint8 QMI_CTL_FLAG_MASK_TYPE =                             0x06; 
+//static const uint8 QMI_CTL_FLAG_MASK_TYPE =                             0x06;
 
 // --------------------------------------------------------------------------
 // QMI_WDS - Wireless Data Service Messages
@@ -142,8 +142,7 @@ static const uint16 QMI_ERR_WIDTH =                                   0xFFFF;
 // --------------------------------------------------------------------------
 // Error Strings
 // --------------------------------------------------------------------------
-static const std::string ERROR_STRINGS[] = 
-{
+static const std::string ERROR_STRINGS[] = {
     "None",
     "Malformed Message",
     "No Memmory",
@@ -184,8 +183,7 @@ static const std::string ERROR_STRINGS[] =
 // --------------------------------------------------------------------------
 // Data Bearer Technology Strings
 // --------------------------------------------------------------------------
-static const std::string DATA_BEARER_TECH_STRINGS[] = 
-{
+static const std::string DATA_BEARER_TECH_STRINGS[] = {
     "INVALID DATA BEARER TECHNOLOGY",
     "CDMA2000 1x",
     "CDMA2000 HRPD (1xEV-DO)",
@@ -197,8 +195,7 @@ static const std::string DATA_BEARER_TECH_STRINGS[] =
 // --------------------------------------------------------------------------
 // Radio Interface Technology Strings
 // --------------------------------------------------------------------------
-static const std::string RADIO_IF_TECH_STRINGS[] = 
-{
+static const std::string RADIO_IF_TECH_STRINGS[] = {
     "No Service",
     "CDMA2000 1x",
     "CDMA2000 HRPD",
@@ -210,8 +207,7 @@ static const std::string RADIO_IF_TECH_STRINGS[] =
 // --------------------------------------------------------------------------
 // Profile Type Strings
 // --------------------------------------------------------------------------
-static const std::string PROFILE_TYPE_STRINGS[] = 
-{
+static const std::string PROFILE_TYPE_STRINGS[] = {
     "3GPP"
 };
 
@@ -244,49 +240,57 @@ public:
     virtual ~Message();
 
     template<typename T>
-    static Message* Create(std::string& nameValue, T* dummy)
-	{
-		// new up the message
-		Message* pMsg = THeapObject<T>::Create();
+    static Message* Create(std::string& nameValue, T* dummy) {
+        // new up the message
+        Message* pMsg = THeapObject<T>::Create();
 
-		// initialize the message with the string
-		if (pMsg->Build(nameValue))
-		{
-			// build successful, return the message pointer
-			return pMsg;
-		}
+        // initialize the message with the string
+        if (pMsg->Build(nameValue)) {
+            // build successful, return the message pointer
+            return pMsg;
+        }
 
-		// build not successful, add/release to delete the message and return null.
-		pMsg->AddRef();
-		pMsg->Release();
-		return NULL;
-	}
+        // build not successful, add/release to delete the message and return null.
+        pMsg->AddRef();
+        pMsg->Release();
+        return NULL;
+    }
 
     template<typename T>
-    static Message* Create(MsgBuf& msgBuf, T* dummy)
-	{
-		// new up the message
-		Message* pMsg = THeapObject<T>::Create();
+    static Message* Create(MsgBuf& msgBuf, T* dummy) {
+        // new up the message
+        Message* pMsg = THeapObject<T>::Create();
 
-		// initialize the message with the buffer
-		if (pMsg->Unpack(msgBuf))
-		{
-			// unpack successful, return the message pointer
-			return pMsg;
-		}
+        // initialize the message with the buffer
+        if (pMsg->Unpack(msgBuf)) {
+            // unpack successful, return the message pointer
+            return pMsg;
+        }
 
-		// unpack not successful, add/release to delete the message and return null.
-		pMsg->AddRef();
-		pMsg->Release();
-		return NULL;
-	}
+        // unpack not successful, add/release to delete the message and return null.
+        pMsg->AddRef();
+        pMsg->Release();
+        return NULL;
+    }
 
-    virtual uint8 GetSvcType() { return m_svcType; }
-    virtual uint16 GetMsgType() { return m_msgType; }
-    virtual uint8 GetCtlType() { return m_ctlType; }
-    virtual uint16 GetTxId() { return m_txId; }
-    virtual uint16 GetLength() { return m_length; }
-    virtual MsgBuf& GetMsgBuf() { return *m_pMsgBuf; }
+    virtual uint8 GetSvcType() {
+        return m_svcType;
+    }
+    virtual uint16 GetMsgType() {
+        return m_msgType;
+    }
+    virtual uint8 GetCtlType() {
+        return m_ctlType;
+    }
+    virtual uint16 GetTxId() {
+        return m_txId;
+    }
+    virtual uint16 GetLength() {
+        return m_length;
+    }
+    virtual MsgBuf& GetMsgBuf() {
+        return *m_pMsgBuf;
+    }
 
     virtual void Print(std::ostream& stream) = 0;
     virtual void PrintMsgBuf(std::ostream& stream);
@@ -340,8 +344,7 @@ Message* Message::Create(std::string& nameValue)
     Message* pMsg = THeapObject<T>::Create();
 
     // initialize the message with the string
-    if (pMsg->Build(nameValue))
-    {
+    if (pMsg->Build(nameValue)) {
         // build successful, return the message pointer
         return pMsg;
     }
@@ -371,8 +374,7 @@ Message* Message::Create(MsgBuf& msgBuf)
     Message* pMsg = THeapObject<T>::Create();
 
     // initialize the message with the buffer
-    if (pMsg->Unpack(msgBuf))
-    {
+    if (pMsg->Unpack(msgBuf)) {
         // unpack successful, return the message pointer
         return pMsg;
     }

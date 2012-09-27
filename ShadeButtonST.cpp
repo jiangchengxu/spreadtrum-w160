@@ -19,7 +19,7 @@ void CShadeButtonST::SetShade(UINT shadeID, BYTE granularity, BYTE highlight, BY
 {
     long    sXSize,sYSize,bytes,j,i,k,h;
     BYTE    *iDst ,*posDst;
-    
+
     RECT rect;
     GetWindowRect(&rect);
     sYSize=rect.bottom-rect.top;
@@ -34,7 +34,7 @@ void CShadeButtonST::SetShade(UINT shadeID, BYTE granularity, BYTE highlight, BY
     COLORREF midcr=GetSysColor(COLOR_BTNFACE);
     COLORREF locr=GetSysColor(COLOR_BTNSHADOW);
     long r,g,b;                                            //build the shaded palette
-    for(i=0;i<129;i++){
+    for(i=0; i<129; i++) {
         r=((128-i)*GetRValue(locr)+i*GetRValue(midcr))/128;
         g=((128-i)*GetGValue(locr)+i*GetGValue(midcr))/128;
         b=((128-i)*GetBValue(locr)+i*GetBValue(midcr))/128;
@@ -42,7 +42,7 @@ void CShadeButtonST::SetShade(UINT shadeID, BYTE granularity, BYTE highlight, BY
         m_dh.SetPaletteIndex((BYTE)i,(BYTE)r,(BYTE)g,(BYTE)b);
         m_dv.SetPaletteIndex((BYTE)i,(BYTE)r,(BYTE)g,(BYTE)b);
     }
-    for(i=1;i<129;i++){
+    for(i=1; i<129; i++) {
         r=((128-i)*GetRValue(midcr)+i*GetRValue(hicr))/128;
         g=((128-i)*GetGValue(midcr)+i*GetGValue(hicr))/128;
         b=((128-i)*GetBValue(midcr)+i*GetBValue(hicr))/128;
@@ -55,14 +55,14 @@ void CShadeButtonST::SetShade(UINT shadeID, BYTE granularity, BYTE highlight, BY
 
     iDst=m_dh.GetBits();        //build the horiz. dotted focus bitmap
     j=(long)m_dh.GetWidth();
-    for(i=0;i<j;i++){
+    for(i=0; i<j; i++) {
 //        iDst[i]=64+127*(i%2);    //soft
         iDst[i]=255*(i%2);        //hard
     }
 
     iDst=m_dv.GetBits();        //build the vert. dotted focus bitmap
     j=(long)m_dv.GetHeight();
-    for(i=0;i<j;i++){
+    for(i=0; i<j; i++) {
 //        *iDst=64+127*(i%2);        //soft
         *iDst=255*(i%2);        //hard
         iDst+=4;
@@ -77,18 +77,18 @@ void CShadeButtonST::SetShade(UINT shadeID, BYTE granularity, BYTE highlight, BY
     idxmax=255-granularity;
     idxmin=granularity;
 
-    switch(shadeID){
+    switch(shadeID) {
 //----------------------------------------------------
     case 8:    //SHS_METAL
         m_dNormal.Clear();
         // create the strokes
         k=40;    //stroke granularity
-        for(a=0;a<200;a++){
+        for(a=0; a<200; a++) {
             x=rand()/(RAND_MAX/sXSize); //stroke postion
             y=rand()/(RAND_MAX/sYSize);    //stroke position
             xs=rand()/(RAND_MAX/min(sXSize,sYSize))/2; //stroke lenght
             d=rand()/(RAND_MAX/k);    //stroke color
-            for(i=0;i<xs;i++){
+            for(i=0; i<xs; i++) {
                 if (((x-i)>0)&&((y+i)<sYSize))
                     m_dNormal.SetPixelIndex(x-i,y+i,(BYTE)d);
                 if (((x+i)<sXSize)&&((y-i)>0))
@@ -230,14 +230,12 @@ void CShadeButtonST::SetShade(UINT shadeID, BYTE granularity, BYTE highlight, BY
 
 DWORD CShadeButtonST::OnDrawBackground(CDC *pDC, LPCRECT pRect)
 {
-    if (m_bMouseOnButton)
-    {
+    if (m_bMouseOnButton) {
         if (m_bIsPressed)
             m_dOver.Draw(pDC->GetSafeHdc(),1,1);
         else
             m_dOver.Draw(pDC->GetSafeHdc(),0,0);
-    }
-    else
+    } else
         m_dNormal.Draw(pDC->GetSafeHdc(),0,0);
 
     return BTNST_OK;

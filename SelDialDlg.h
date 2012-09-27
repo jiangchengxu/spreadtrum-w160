@@ -18,15 +18,15 @@ public:
 
 // Dialog Data
     //{{AFX_DATA(CSelDialDlg)
-	enum { IDD = IDD_DIALOG_SEL_NUMBER };
+    enum { IDD = IDD_DIALOG_SEL_NUMBER };
     CComboBox m_ComboNum;
-	//}}AFX_DATA
-    
+    //}}AFX_DATA
+
 
 // Overrides
     // ClassWizard generated virtual function overrides
     //{{AFX_VIRTUAL(CSelDialDlg)
-    protected:
+protected:
     virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
     virtual BOOL OnInitDialog();
     virtual void OnOK();
@@ -37,9 +37,9 @@ protected:
 
     // Generated message map functions
     //{{AFX_MSG(CSelDialDlg)
-	afx_msg void OnSelchangeCombo1();
-	//}}AFX_MSG
-	void GetSelNumber(); 
+    afx_msg void OnSelchangeCombo1();
+    //}}AFX_MSG
+    void GetSelNumber();
     DECLARE_MESSAGE_MAP()
 
 public:
@@ -52,12 +52,12 @@ public:
 
     //用于保存Company号码内容
     CString m_strCompany;
-    
+
     //用于保存用户选择的号码内容
     CString m_strSelCallNum;
 
-	//用于保存Name内容
-	CString m_strName;
+    //用于保存Name内容
+    CString m_strName;
 
 };
 

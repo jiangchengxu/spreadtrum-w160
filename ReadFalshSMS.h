@@ -14,44 +14,44 @@ class CReadFalshSMS : public CBaseDialog
 {
 // Construction
 public:
-	CReadFalshSMS(CWnd* pParent = NULL);   // standard constructor
+    CReadFalshSMS(CWnd* pParent = NULL);   // standard constructor
 
-	int DlgDestoryTime;
+    int DlgDestoryTime;
 // Dialog Data
-	//{{AFX_DATA(CReadFalshSMS)
-	enum { IDD = IDD_DIALOG_READ_CFTSMS };
-	CString    m_strCFTContent;
+    //{{AFX_DATA(CReadFalshSMS)
+    enum { IDD = IDD_DIALOG_READ_CFTSMS };
+    CString    m_strCFTContent;
     CString    m_strCFTDatetime;
     CString    m_strCFTName;
     CString    m_strCFTNumber;
     CString    m_strCFTByteCount;
-		// NOTE: the ClassWizard will add data members here
-	//}}AFX_DATA
+    // NOTE: the ClassWizard will add data members here
+    //}}AFX_DATA
 
-	void UpdataSMS();//add by liub
-	void OnCancel();
+    void UpdataSMS();//add by liub
+    void OnCancel();
 
 // Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(CReadFalshSMS)
-	protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	//}}AFX_VIRTUAL
+    // ClassWizard generated virtual function overrides
+    //{{AFX_VIRTUAL(CReadFalshSMS)
+protected:
+    virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+    //}}AFX_VIRTUAL
 
 // Implementation
 protected:
 
-	// Generated message map functions
-	//{{AFX_MSG(CReadFalshSMS)
-	virtual BOOL OnInitDialog();
-	virtual void OnOK();
-   // virtual void OnCancel();
+    // Generated message map functions
+    //{{AFX_MSG(CReadFalshSMS)
+    virtual BOOL OnInitDialog();
+    virtual void OnOK();
+    // virtual void OnCancel();
 //	afx_msg void OnTimer(UINT nIDEvent);
-		// NOTE: the ClassWizard will add member functions here
-	//}}AFX_MSG
-	DECLARE_MESSAGE_MAP()
+    // NOTE: the ClassWizard will add member functions here
+    //}}AFX_MSG
+    DECLARE_MESSAGE_MAP()
 private:
-	CSmsData  *m_pSmsData; //SMS数据指针
+    CSmsData  *m_pSmsData; //SMS数据指针
     CPbData      *m_pPbData; //PBM数据指针
 };
 

@@ -1,14 +1,14 @@
 ///////////////////////////////////////////////////////////////////////////
-//                                                                         
-// FILE NAME                                                               
-//                                                                         
+//
+// FILE NAME
+//
 //        XInfoTip.cpp
-//                                                                         
-// COMPONENT                                                               
-//                                                                         
+//
+// COMPONENT
+//
 //        CXInfoTip class implementation
-//                                                                         
-// DESCRIPTION                                                             
+//
+// DESCRIPTION
 //
 //        (see header)
 //
@@ -17,12 +17,12 @@
 //        Mark Bozeman        09-16-2001
 //
 ///////////////////////////////////////////////////////////////////////////
-// This software is released into the public domain.  
+// This software is released into the public domain.
 // You are free to use it in any way you like.
 //
-// This software is provided "as is" with no expressed 
-// or implied warranty.  I accept no liability for any 
-// damage or loss of business that this software may cause. 
+// This software is provided "as is" with no expressed
+// or implied warranty.  I accept no liability for any
+// damage or loss of business that this software may cause.
 ///////////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"            // PCH
@@ -46,13 +46,13 @@ static char THIS_FILE[] = __FILE__;
 
 
 /////////////////////////////////////////////////////////////////////
-// 
+//
 // CXInfoTip::CXInfoTip()
-// 
+//
 // DESCRIPTION
-//     
+//
 //        Constructor
-//     
+//
 /////////////////////////////////////////////////////////////////////
 CXInfoTip::CXInfoTip()
 {
@@ -69,13 +69,13 @@ CXInfoTip::CXInfoTip()
 }
 
 /////////////////////////////////////////////////////////////////////
-// 
+//
 // CXInfoTip::~CXInfoTip()
-// 
+//
 // DESCRIPTION
-//     
+//
 //        Deconstructor
-//     
+//
 /////////////////////////////////////////////////////////////////////
 CXInfoTip::~CXInfoTip()
 {
@@ -92,11 +92,11 @@ BEGIN_MESSAGE_MAP(CXInfoTip, CWnd)
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////
-// 
+//
 // CXInfoTip::Create()
-// 
+//
 // DESCRIPTION
-//     
+//
 //        Creates the tip window
 //
 // RETURNS
@@ -106,9 +106,9 @@ END_MESSAGE_MAP()
 // PARAMETERS
 //
 //        [pParentWnd]    - Pointer to parent window
-//     
+//
 /////////////////////////////////////////////////////////////////////
-BOOL CXInfoTip::Create(CWnd* pParentWnd) 
+BOOL CXInfoTip::Create(CWnd* pParentWnd)
 {
     BOOL    bSuccess;
 
@@ -124,23 +124,23 @@ BOOL CXInfoTip::Create(CWnd* pParentWnd)
 }
 
 /////////////////////////////////////////////////////////////////////
-// 
+//
 // CXInfoTip::Show()
-// 
+//
 // DESCRIPTION
-//     
+//
 //        Shows the tip window
 //
 // RETURNS
 //
-//        [void]    
+//        [void]
 //
 // PARAMETERS
 //
 //        [szText]    - Tip text
 //        [pt]        - Coordinates to display tip window
 //                    or NULL to use the current cursor position
-//     
+//
 /////////////////////////////////////////////////////////////////////
 void CXInfoTip::Show(CString szText, CPoint *pt /* = NULL */)
 {
@@ -156,11 +156,11 @@ void CXInfoTip::Show(CString szText, CPoint *pt /* = NULL */)
 }
 
 /////////////////////////////////////////////////////////////////////
-// 
+//
 // CXInfoTip::OnPaint()
-// 
+//
 // DESCRIPTION
-//     
+//
 //        Paint the window
 //
 // RETURNS
@@ -168,7 +168,7 @@ void CXInfoTip::Show(CString szText, CPoint *pt /* = NULL */)
 //        [void]
 //
 /////////////////////////////////////////////////////////////////////
-void CXInfoTip::OnPaint() 
+void CXInfoTip::OnPaint()
 {
     CPaintDC dc( this ); // device context for painting
 
@@ -201,10 +201,10 @@ void CXInfoTip::OnPaint()
     rc.DeflateRect(CX_ROUNDED, CY_ROUNDED, 0, 0);
     if (m_hIcon != NULL)
         rc.left = rc.left + m_IconSize.cx + CX_ICON_MARGIN;
-    
+
     // Set the font
     pSysFont = (CFont *)dc.SelectObject(m_pFont);
-    // Draw the tip text    
+    // Draw the tip text
     dc.SetBkMode( TRANSPARENT );
     dc.DrawText(m_szText, &rc, DT_TOP | DT_LEFT);
 
@@ -219,11 +219,11 @@ void CXInfoTip::OnPaint()
 }
 
 /////////////////////////////////////////////////////////////////////
-// 
+//
 // CXInfoTip::GetWindowRegion()
-// 
+//
 // DESCRIPTION
-//     
+//
 //        Retrieves the window region
 //
 // RETURNS
@@ -236,7 +236,7 @@ void CXInfoTip::OnPaint()
 //        [hRegion]    - Filled with the calculated window region
 //        [Size]        - Filled with the calculated window size
 //                    or NULL.
-//     
+//
 /////////////////////////////////////////////////////////////////////
 BOOL CXInfoTip::GetWindowRegion(CDC* pDC, HRGN* hRegion, CSize *Size /* = NULL */)
 {
@@ -245,7 +245,7 @@ BOOL CXInfoTip::GetWindowRegion(CDC* pDC, HRGN* hRegion, CSize *Size /* = NULL *
     CRgn    LeaderRegion;
     CRgn    CaptionRegion;
     CFont    *pSysFont;
-    
+
     ASSERT(pDC != NULL);
     ASSERT(hRegion != NULL);
 
@@ -284,8 +284,7 @@ BOOL CXInfoTip::GetWindowRegion(CDC* pDC, HRGN* hRegion, CSize *Size /* = NULL *
     CombineRgn(*hRegion, CaptionRegion.operator HRGN(), LeaderRegion.operator HRGN(), RGN_OR);
 
     // Set the window size
-    if (Size != NULL)
-    {
+    if (Size != NULL) {
         Size->cx    = rcWnd.Width();
         Size->cy    = rcWnd.Height() + CY_LEADER;
     }
@@ -294,11 +293,11 @@ BOOL CXInfoTip::GetWindowRegion(CDC* pDC, HRGN* hRegion, CSize *Size /* = NULL *
 }
 
 /////////////////////////////////////////////////////////////////////
-// 
+//
 // CXInfoTip::OnCreate()
-// 
+//
 // DESCRIPTION
-//     
+//
 //        Window creation
 //
 // RETURNS
@@ -308,45 +307,44 @@ BOOL CXInfoTip::GetWindowRegion(CDC* pDC, HRGN* hRegion, CSize *Size /* = NULL *
 // PARAMETERS
 //
 //        [lpCreateStruct]    - Pointer to creation structure
-//     
+//
 /////////////////////////////////////////////////////////////////////
-int CXInfoTip::OnCreate( LPCREATESTRUCT lpCreateStruct ) 
+int CXInfoTip::OnCreate( LPCREATESTRUCT lpCreateStruct )
 {
-   if ( CWnd::OnCreate( lpCreateStruct ) == -1 )
-      return -1;
-   
-   return 0;
+    if ( CWnd::OnCreate( lpCreateStruct ) == -1 )
+        return -1;
+
+    return 0;
 }
 
 /////////////////////////////////////////////////////////////////////
-// 
+//
 // CXInfoTip::OnTimer()
-// 
+//
 // DESCRIPTION
-//     
+//
 //        Timer event
 //
 // RETURNS
 //
-//        [void]    
+//        [void]
 //
 // PARAMETERS
 //
 //        [nIDEvent]    - Timer identifier
-//     
+//
 /////////////////////////////////////////////////////////////////////
-void CXInfoTip::OnTimer( UINT nIDEvent ) 
+void CXInfoTip::OnTimer( UINT nIDEvent )
 {
     HRGN    hRegion;
     CSize    WindowSize;
     CDC        *pDC;
     CPoint    ptCursor;
 
-    switch (nIDEvent)
-    {
-    /////////////////////////////////////////////////////////////////////
-    // Show the tip window
-    /////////////////////////////////////////////////////////////////////
+    switch (nIDEvent) {
+        /////////////////////////////////////////////////////////////////////
+        // Show the tip window
+        /////////////////////////////////////////////////////////////////////
     case timerShow:
         KillTimer(m_nTimer);
 
@@ -360,13 +358,12 @@ void CXInfoTip::OnTimer( UINT nIDEvent )
 
         m_nTimer = SetTimer(timerHide, TIMER_HIDE, NULL);
         break;
-    /////////////////////////////////////////////////////////////////////
-    // Hide the tip window
-    /////////////////////////////////////////////////////////////////////
+        /////////////////////////////////////////////////////////////////////
+        // Hide the tip window
+        /////////////////////////////////////////////////////////////////////
     case timerHide:
         GetCursorPos(&ptCursor);
-        if (ptCursor != m_ptOrigin)
-        {
+        if (ptCursor != m_ptOrigin) {
             KillTimer(m_nTimer);
             ShowWindow(SW_HIDE);
         }
@@ -378,19 +375,19 @@ void CXInfoTip::OnTimer( UINT nIDEvent )
 }
 
 /////////////////////////////////////////////////////////////////////
-// 
+//
 // CXInfoTip::OnDestroy()
-// 
+//
 // DESCRIPTION
-//     
+//
 //        Window destruction
 //
 // RETURNS
 //
-//        [void]    
+//        [void]
 //
 /////////////////////////////////////////////////////////////////////
-void CXInfoTip::OnDestroy() 
+void CXInfoTip::OnDestroy()
 {
     KillTimer(m_nTimer);
 
@@ -398,22 +395,22 @@ void CXInfoTip::OnDestroy()
 }
 
 /////////////////////////////////////////////////////////////////////
-// 
+//
 // CXInfoTip::RelayEvent()
-// 
+//
 // DESCRIPTION
-//     
-//        Call this in the parent's PreTranslateMessage() to 
+//
+//        Call this in the parent's PreTranslateMessage() to
 //        relay tooltip event messages.
 //
 // RETURNS
 //
-//        [void]    
+//        [void]
 //
 // PARAMETERS
 //
 //        [lpMsg]    - Pointer to message structure
-//     
+//
 /////////////////////////////////////////////////////////////////////
 void CXInfoTip::RelayEvent(LPMSG lpMsg)
 {
@@ -421,9 +418,8 @@ void CXInfoTip::RelayEvent(LPMSG lpMsg)
     CWnd            *pWindow;
     CString            szTooltipText;
     TipToolInfo        Info;
-        
-    switch(lpMsg->message)
-    {
+
+    switch(lpMsg->message) {
     case WM_LBUTTONDOWN:
     case WM_RBUTTONDOWN:
     case WM_MBUTTONDOWN:
@@ -432,14 +428,11 @@ void CXInfoTip::RelayEvent(LPMSG lpMsg)
     case WM_MOUSEMOVE:
         GetCursorPos(&point);
 
-        if (point != m_ptOrigin)
-        {
+        if (point != m_ptOrigin) {
             // Find the tool
             pWindow = WindowFromPoint(point);
-            if (pWindow != NULL)
-            {
-                if (m_ToolMap.Lookup(pWindow->m_hWnd, Info))
-                {
+            if (pWindow != NULL) {
+                if (m_ToolMap.Lookup(pWindow->m_hWnd, Info)) {
                     // Display the tooltip
                     m_ptOrigin = point;
                     SetIcon(Info.hIcon);
@@ -451,47 +444,46 @@ void CXInfoTip::RelayEvent(LPMSG lpMsg)
         // Hide the tooltip
         if (point != m_ptOrigin)
             ShowWindow(SW_HIDE);
-        
+
         break;
     }
 }
 
 /////////////////////////////////////////////////////////////////////
-// 
+//
 // CXInfoTip::SetIcon()
-// 
+//
 // DESCRIPTION
-//     
+//
 //        Sets the tip window icon
 //
 // RETURNS
 //
-//        [void]    
+//        [void]
 //
 // PARAMETERS
 //
 //        [hIcon]    - Handle to the icon
-//     
+//
 /////////////////////////////////////////////////////////////////////
-void CXInfoTip::SetIcon(HICON hIcon) 
+void CXInfoTip::SetIcon(HICON hIcon)
 {
     ICONINFO    IconInfo;
 
-    m_hIcon = hIcon; 
+    m_hIcon = hIcon;
 
-    if (hIcon == NULL)
-    {
+    if (hIcon == NULL) {
         m_IconSize = CSize(0, 0);
         return;
     }
-    
-    // Get the icon sizes    
+
+    // Get the icon sizes
     ZeroMemory(&IconInfo, sizeof(ICONINFO));
     ::GetIconInfo(m_hIcon, &IconInfo);
 
     m_IconSize.cx = (BYTE)(IconInfo.xHotspot * 2);
     m_IconSize.cy = (BYTE)(IconInfo.yHotspot * 2);
-    
+
     ::DeleteObject(IconInfo.hbmMask);
     ::DeleteObject(IconInfo.hbmColor);
 
@@ -500,16 +492,16 @@ void CXInfoTip::SetIcon(HICON hIcon)
 }
 
 /////////////////////////////////////////////////////////////////////
-// 
+//
 // CXInfoTip::AddTool()
-// 
+//
 // DESCRIPTION
-//     
+//
 //        Adds a tool
 //
 // RETURNS
 //
-//        [void]    
+//        [void]
 //
 // PARAMETERS
 //
@@ -518,7 +510,7 @@ void CXInfoTip::SetIcon(HICON hIcon)
 //                        over the window (pWnd)
 //        [hIcon]            - Icon to display in the tooltip, or NULL
 //                        to display no icon.
-//     
+//
 /////////////////////////////////////////////////////////////////////
 void CXInfoTip::AddTool(CWnd *pWnd, LPCTSTR szTooltipText, HICON hIcon /* = NULL */)
 {
@@ -529,26 +521,26 @@ void CXInfoTip::AddTool(CWnd *pWnd, LPCTSTR szTooltipText, HICON hIcon /* = NULL
     Info.szText = szTooltipText;
     Info.hIcon    = hIcon;
 
-    // Add the tool 
+    // Add the tool
     m_ToolMap.SetAt(pWnd->m_hWnd, Info);
 };
 
 /////////////////////////////////////////////////////////////////////
-// 
+//
 // CXInfoTip::RemoveTool()
-// 
+//
 // DESCRIPTION
-//     
+//
 //        Removes a tool
 //
 // RETURNS
 //
-//        [void]    
+//        [void]
 //
 // PARAMETERS
 //
 //        [pWnd]            - Pointer to the tool window to remove
-//     
+//
 /////////////////////////////////////////////////////////////////////
 void CXInfoTip::RemoveTool(CWnd *pWnd)
 {

@@ -14,30 +14,30 @@ class CDlgMsg : public CBaseDialog
 {
 // Construction
 public:
-	CDlgMsg(CWnd* pParent = NULL);   // standard constructor
+    CDlgMsg(CWnd* pParent = NULL);   // standard constructor
 
 // Dialog Data
-	//{{AFX_DATA(CDlgMsg)
-	enum { IDD = IDD_DIALOG_MESSAGE };
-	CString	m_strMsg;
-	//}}AFX_DATA
+    //{{AFX_DATA(CDlgMsg)
+    enum { IDD = IDD_DIALOG_MESSAGE };
+    CString	m_strMsg;
+    //}}AFX_DATA
 
 
 // Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(CDlgMsg)
-	protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	//}}AFX_VIRTUAL
+    // ClassWizard generated virtual function overrides
+    //{{AFX_VIRTUAL(CDlgMsg)
+protected:
+    virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+    //}}AFX_VIRTUAL
 
 // Implementation
 protected:
 
-	// Generated message map functions
-	//{{AFX_MSG(CDlgMsg)
-		// NOTE: the ClassWizard will add member functions here
-	//}}AFX_MSG
-	DECLARE_MESSAGE_MAP()
+    // Generated message map functions
+    //{{AFX_MSG(CDlgMsg)
+    // NOTE: the ClassWizard will add member functions here
+    //}}AFX_MSG
+    DECLARE_MESSAGE_MAP()
 };
 
 //{{AFX_INSERT_LOCATION}}

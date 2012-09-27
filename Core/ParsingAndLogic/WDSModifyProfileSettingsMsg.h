@@ -23,12 +23,12 @@
 // Unique identifiers for WDSModifyProfileSettingsMsg types
 // --------------------------------------------------------------------------
 static const uint32 WDSModifyProfileSettingsReqUID =
-    (QMUX_TYPE_WDS << 24 | 
-     QMI_CTL_FLAG_TYPE_CMD << 16 | 
+    (QMUX_TYPE_WDS << 24 |
+     QMI_CTL_FLAG_TYPE_CMD << 16 |
      QMI_WDS_MODIFY_PROFILE_SETTINGS_MSG);
 static const uint32 WDSModifyProfileSettingsRspUID =
-    (QMUX_TYPE_WDS << 24 | 
-     QMI_CTL_FLAG_TYPE_RSP << 16 | 
+    (QMUX_TYPE_WDS << 24 |
+     QMI_CTL_FLAG_TYPE_RSP << 16 |
      QMI_WDS_MODIFY_PROFILE_SETTINGS_MSG);
 
 // --------------------------------------------------------------------------
@@ -67,7 +67,7 @@ class WDSModifyProfileSettingsReq : public Message
 
 public:
     ~WDSModifyProfileSettingsReq();
-    
+
     virtual void Print(std::ostream& stream);
 
 protected:
@@ -120,7 +120,9 @@ protected:
     virtual bool BuildAuthPref(std::string& value);
     virtual bool BuildIpv4AddrPref(std::string& value);
     virtual bool BuildMsgBuf();
-    virtual bool Unpack(MsgBuf& msgBuf) { return false; }
+    virtual bool Unpack(MsgBuf& msgBuf) {
+        return false;
+    }
 
 private:
     // PROFILE_IDENTIFIER, mandatory tlv 0x01
@@ -229,7 +231,7 @@ private:
 // --------------------------------------------------------------------------
 // WDSModifyProfileSettingsRsp
 //
-/// This class represents a QMI_WDS_MODIFY_PROFILE_SETTINGS_RESP message 
+/// This class represents a QMI_WDS_MODIFY_PROFILE_SETTINGS_RESP message
 /// which is the response to the wds modify profile settings request.
 // --------------------------------------------------------------------------
 
@@ -243,13 +245,21 @@ public:
 
     virtual void Print(std::ostream& stream);
 
-    virtual uint16 GetResult() { return m_result; }
-    virtual uint16 GetError() { return m_error; }
+    virtual uint16 GetResult() {
+        return m_result;
+    }
+    virtual uint16 GetError() {
+        return m_error;
+    }
 
 protected:
     WDSModifyProfileSettingsRsp();
-    virtual bool Build(std::string& nameValue) { return false; }
-    virtual bool BuildMsgBuf() { return false; }
+    virtual bool Build(std::string& nameValue) {
+        return false;
+    }
+    virtual bool BuildMsgBuf() {
+        return false;
+    }
     virtual bool Unpack(MsgBuf& msgBuf);
     virtual Uint8UnpackerMap& GetUnpackerMap();
     virtual bool UnpackResultCode(MsgBuf& msgBuf);

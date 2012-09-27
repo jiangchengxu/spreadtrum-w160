@@ -16,16 +16,16 @@ class CSliderCtrlEx : public CSliderCtrl
 // Construction
 public:
     CSliderCtrlEx();
-	void SetVolume(int nVol);
-	static void AtRespVol(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL], WORD wStrNum);
+    void SetVolume(int nVol);
+    static void AtRespVol(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL], WORD wStrNum);
 
 // Attributes
 public:
-	BOOL m_bVolSet;//音量下位机交互使能
+    BOOL m_bVolSet;//音量下位机交互使能
     int m_nVolValue;
     BOOL m_bDragging;
-	CMyBitmap *m_bmpBack;
-	CMyBitmap *m_bmpTic;
+    CMyBitmap *m_bmpBack;
+    CMyBitmap *m_bmpTic;
 // Operations
 public:
 
@@ -37,18 +37,18 @@ public:
 // Implementation
 public:
     virtual ~CSliderCtrlEx();
-	void SetSkin(UINT uiBackGround, UINT uiTickImage/*,short nCursor*/);
-	void SetRange(int nMin, int nMax, BOOL bRedraw = FALSE);
+    void SetSkin(UINT uiBackGround, UINT uiTickImage/*,short nCursor*/);
+    void SetRange(int nMin, int nMax, BOOL bRedraw = FALSE);
     // Generated message map functions
 protected:
     //{{AFX_MSG(CSliderCtrlEx)
     afx_msg void OnMouseMove(UINT nFlags, CPoint point);
     afx_msg void OnLButtonUp(UINT nFlags, CPoint point);
     afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
-	afx_msg BOOL OnMouseWheel(UINT nFlags, short zDelta, CPoint pt);
-	//}}AFX_MSG
-	//afx_msg HBRUSH CtlColor(CDC* pDC, UINT nCtlColor);
-	afx_msg void OnPaint();
+    afx_msg BOOL OnMouseWheel(UINT nFlags, short zDelta, CPoint pt);
+    //}}AFX_MSG
+    //afx_msg HBRUSH CtlColor(CDC* pDC, UINT nCtlColor);
+    afx_msg void OnPaint();
     DECLARE_MESSAGE_MAP()
 };
 

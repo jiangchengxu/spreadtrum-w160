@@ -23,12 +23,12 @@
 // Unique identifiers for WDSAbortMsg types
 // --------------------------------------------------------------------------
 static const uint32 WDSAbortReqUID =
-    (QMUX_TYPE_WDS << 24 | 
-     QMI_CTL_FLAG_TYPE_CMD << 16 | 
+    (QMUX_TYPE_WDS << 24 |
+     QMI_CTL_FLAG_TYPE_CMD << 16 |
      QMI_WDS_ABORT_MSG);
 static const uint32 WDSAbortRspUID =
-    (QMUX_TYPE_WDS << 24 | 
-     QMI_CTL_FLAG_TYPE_RSP << 16 | 
+    (QMUX_TYPE_WDS << 24 |
+     QMI_CTL_FLAG_TYPE_RSP << 16 |
      QMI_WDS_ABORT_MSG);
 
 // --------------------------------------------------------------------------
@@ -43,7 +43,7 @@ typedef TRCPointer<WDSAbortRsp> WDSAbortRspRCP;
 // --------------------------------------------------------------------------
 // WDSAbortReq
 //
-/// This class represents a QMI_WDS_ABORT_REQ message which aborts a 
+/// This class represents a QMI_WDS_ABORT_REQ message which aborts a
 /// previously issued QMI_WDS command
 // --------------------------------------------------------------------------
 
@@ -54,7 +54,7 @@ class WDSAbortReq : public Message
 
 public:
     ~WDSAbortReq();
-    
+
     virtual void Print(std::ostream& stream);
 
 protected:
@@ -63,7 +63,9 @@ protected:
     virtual StringBuilderMap& GetBuilderMap();
     virtual bool BuildTxId(std::string& value);
     virtual bool BuildMsgBuf();
-    virtual bool Unpack(MsgBuf& msgBuf) { return false; }
+    virtual bool Unpack(MsgBuf& msgBuf) {
+        return false;
+    }
 
 private:
     // TX_ID, mandatory tlv 0x01
@@ -90,13 +92,21 @@ public:
 
     virtual void Print(std::ostream& stream);
 
-    virtual uint16 GetResult() { return m_result; }
-    virtual uint16 GetError() { return m_error; }
+    virtual uint16 GetResult() {
+        return m_result;
+    }
+    virtual uint16 GetError() {
+        return m_error;
+    }
 
 protected:
     WDSAbortRsp();
-    virtual bool Build(std::string& nameValue) { return false; }
-    virtual bool BuildMsgBuf() { return false; }
+    virtual bool Build(std::string& nameValue) {
+        return false;
+    }
+    virtual bool BuildMsgBuf() {
+        return false;
+    }
     virtual bool Unpack(MsgBuf& msgBuf);
     virtual Uint8UnpackerMap& GetUnpackerMap();
     virtual bool UnpackResultCode(MsgBuf& msgBuf);

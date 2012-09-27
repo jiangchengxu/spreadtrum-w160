@@ -24,33 +24,33 @@ class CSmsDlg : public CTabedDialog
 // Construction
 public:
 
-	CComboBox  m_cmbLocFilter;
-	CString VoiceMailCountSMSDlg;
-	////////////////////////////////////////////////////////////////////////// add by liub for SMS buttons 1121 begin
-	CShadeButtonST m_btnnew;
-	CShadeButtonST m_btnReply;
-	CShadeButtonST m_btnForward;
-	CShadeButtonST m_btnDelete;
-	CShadeButtonST m_btnExtract;
-	CShadeButtonST m_btnDial;
-	CShadeButtonST m_btnSearch;
-	CShadeButtonST m_btnEdit;
-	CShadeButtonST m_btnArchive;
-	CShadeButtonST m_btnResume;
-	CShadeButtonST m_btnTransfer;
-	////////////////////////////////////////////////////////////////////////// add by liub end
-	StSmsRecord m_SmsRecord[SMS_TYPE_ALL][SMS_RECORD_MAX]; //当前记录条目
+    CComboBox  m_cmbLocFilter;
+    CString VoiceMailCountSMSDlg;
+    ////////////////////////////////////////////////////////////////////////// add by liub for SMS buttons 1121 begin
+    CShadeButtonST m_btnnew;
+    CShadeButtonST m_btnReply;
+    CShadeButtonST m_btnForward;
+    CShadeButtonST m_btnDelete;
+    CShadeButtonST m_btnExtract;
+    CShadeButtonST m_btnDial;
+    CShadeButtonST m_btnSearch;
+    CShadeButtonST m_btnEdit;
+    CShadeButtonST m_btnArchive;
+    CShadeButtonST m_btnResume;
+    CShadeButtonST m_btnTransfer;
+    ////////////////////////////////////////////////////////////////////////// add by liub end
+    StSmsRecord m_SmsRecord[SMS_TYPE_ALL][SMS_RECORD_MAX]; //当前记录条目
 
 //	BOOL UnKnowSms;
 
-	int ForwardSMSpriority;
+    int ForwardSMSpriority;
 
     CSmsData  *sms_full_motify;//added by lly
-	CString smstree_node_name;//add  by liub
-	CString voicesmscount;//add by liub for voicemail
-	int MEsmscount;//add by liub
-	int SMsmscount;
-	BOOL SetupCall(); //发起呼叫
+    CString smstree_node_name;//add  by liub
+    CString voicesmscount;//add by liub for voicemail
+    int MEsmscount;//add by liub
+    int SMsmscount;
+    BOOL SetupCall(); //发起呼叫
     CSmsDlg(CWnd* pParent = NULL);   // standard constructor
     void DispSms(); //显示SMS
     void UpdateSmsSortList(EnSmsType type, EnLocFilter locFilter); //更新排序
@@ -60,40 +60,39 @@ public:
     BOOL ProgressOpen(int nUpper = 0, int nStep = 0); //打开进度条
     BOOL ProgressClose(); //关闭进度条
     BOOL ProgressStep(); //步进进度条
-    BOOL ProgressSet(int nLower, int nUpper, int nStep);    //设置进度条 
+    BOOL ProgressSet(int nLower, int nUpper, int nStep);    //设置进度条
     //AT$QCMGD响应
-	static void RspAtSmsQCMGD(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL], WORD wStrNum);    
+    static void RspAtSmsQCMGD(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL], WORD wStrNum);
     //AT$QCMGR响应
     static void RspAtSmsQCMGR(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL], WORD wStrNum);
     //AT$QCPMS响应
-    static void RspAtSmsQCPMS(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL], WORD wStrNum); 
+    static void RspAtSmsQCPMS(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL], WORD wStrNum);
     BOOL SndAtSmsRead();
     BOOL SndAtOffSmsRead();
-	BOOL SndAtCVMR();//add by liub
-	BOOL SndAtCVMD();//add by liub
+    BOOL SndAtCVMR();//add by liub
+    BOOL SndAtCVMD();//add by liub
     static void RspAtSmsRead(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL], WORD wStrNum);
-	static void RspAtCVMR(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL], WORD wStrNum);//add by liub for TATA voicemail
-	static void RspAtCVMD(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL], WORD wStrNum);//add by liub for TATA voicemail
+    static void RspAtCVMR(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL], WORD wStrNum);//add by liub for TATA voicemail
+    static void RspAtCVMD(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL], WORD wStrNum);//add by liub for TATA voicemail
     //发送AT$QCMGD
-	BOOL SndAtSmsQCMGD(USHORT index);
+    BOOL SndAtSmsQCMGD(USHORT index);
     //发送AT$QCMGR
     BOOL SndAtSmsQCMGR(USHORT index);
     //发送AT$QCPMS
-    BOOL SndAtSmsQCPMS(EnLocType locType1, EnLocType locType2 = LOC_MAX); 
+    BOOL SndAtSmsQCPMS(EnLocType locType1, EnLocType locType2 = LOC_MAX);
     void OnInitSMSRecord();
-	BOOL InitSMSTree();//liub_modify
-	HTREEITEM OnSmsUpdataNumforSmsTree(HTREEITEM hRoot);
-	void UpdateSortListWhenAddDelete(EnSmsType type, EnLocType loc);
-	void OnSelchangeCombolocfilterForOut();
-	void Updatatree();
+    BOOL InitSMSTree();//liub_modify
+    HTREEITEM OnSmsUpdataNumforSmsTree(HTREEITEM hRoot);
+    void UpdateSortListWhenAddDelete(EnSmsType type, EnLocType loc);
+    void OnSelchangeCombolocfilterForOut();
+    void Updatatree();
 
-	void SmsDelete_flexi(int index_flexi);
+    void SmsDelete_flexi(int index_flexi);
 
-	//从显示索引获得
-	StSmsRecord GetTotalSmsRecordFromDspIndex(EnSmsType type, EnLocFilter locFilter, WORD dspIndex);
-	
-    enum EnProcType
-    {
+    //从显示索引获得
+    StSmsRecord GetTotalSmsRecordFromDspIndex(EnSmsType type, EnLocFilter locFilter, WORD dspIndex);
+
+    enum EnProcType {
         PROC_TYPE_INIT = 0,
         PROC_TYPE_READ,
         PROC_TYPE_DELETE,
@@ -103,30 +102,30 @@ public:
 // Dialog Data
     //{{AFX_DATA(CSmsDlg)
     enum { IDD = IDD_DIALOG_SMS };
-	CSmsListCtrl	m_lstSms;
-	CEnTabCtrl	    m_tabSms;
-	CTreeCtrl	m_treeSms;
-	CString  m_SmsContent;
+    CSmsListCtrl	m_lstSms;
+    CEnTabCtrl	    m_tabSms;
+    CTreeCtrl	m_treeSms;
+    CString  m_SmsContent;
 
-	
+
     //}}AFX_DATA
 
 // Overrides
     // ClassWizard generated virtual function overrides
     //{{AFX_VIRTUAL(CSmsDlg)
-    protected:
+protected:
     virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
     //}}AFX_VIRTUAL
 
 // Implementation
 protected:
-	
+
     CImageList m_ilTabs;
     CImageList m_ilLsts;
     // Generated message map functions
     //{{AFX_MSG(CSmsDlg)
     virtual BOOL OnInitDialog();
-	afx_msg void OnChangeEditSmsSearch();
+    afx_msg void OnChangeEditSmsSearch();
     afx_msg void OnSelchangeTabSms(NMHDR* pNMHDR, LRESULT* pResult);
     afx_msg void OnButtonSmsRead();
     afx_msg void OnButtonSmsReply();
@@ -136,42 +135,42 @@ protected:
     afx_msg void OnButtonSmsForward();
     afx_msg void OnButtonSmsAbstract();
     afx_msg void OnButtonSmsDelall();
-	afx_msg void OnclkListSms(NMHDR* pNMHDR, LRESULT* pResult);//liub_modify//添加单击SMS列表显示其内容功能
+    afx_msg void OnclkListSms(NMHDR* pNMHDR, LRESULT* pResult);//liub_modify//添加单击SMS列表显示其内容功能
     afx_msg void OnButtonSmsEdit();
     afx_msg void OnButtonSmsTransfer();
     afx_msg void OnButtonSmsExport();
-	afx_msg void OnButtonSmsSearch();
-	afx_msg void OnButtonSmsArchive();
+    afx_msg void OnButtonSmsSearch();
+    afx_msg void OnButtonSmsArchive();
     afx_msg void OnButtonSmsResume();
     afx_msg void OnColumnclickListSms(NMHDR* pNMHDR, LRESULT* pResult);
     afx_msg void OnShowWindow(BOOL bShow, UINT nStatus);
     afx_msg void OnCusDrawListSms(NMHDR* pNMHDR, LRESULT* pResult);
-	afx_msg void OnSelchangeCombolocfilter();
+    afx_msg void OnSelchangeCombolocfilter();
     afx_msg void OnTimer(UINT nIDEvent);
-	afx_msg void OnSelchangedSMSTree(NMHDR* pNMHDR, LRESULT* pResult);//liubo_modify SMStreeCtrl响应函数
-	afx_msg void OnDestroy();
-	afx_msg void DeleteCDSSMS();//add by liub for delete CDSSms
+    afx_msg void OnSelchangedSMSTree(NMHDR* pNMHDR, LRESULT* pResult);//liubo_modify SMStreeCtrl响应函数
+    afx_msg void OnDestroy();
+    afx_msg void DeleteCDSSMS();//add by liub for delete CDSSms
 
-	//}}AFX_MSG
+    //}}AFX_MSG
     afx_msg LRESULT OnSendSms(WPARAM wParam, LPARAM lParam = 0);
     afx_msg LRESULT OnSaveSms(WPARAM wParam, LPARAM lParam = 0);
-    afx_msg LRESULT OnReadSms(WPARAM wParam, LPARAM lParam = 0);    
-	afx_msg LRESULT OnReadFlashSMS(WPARAM wParam, LPARAM lParam = 0);//add by liub for CFT
-    afx_msg LRESULT OnViewSms(WPARAM wParam, LPARAM lParam = 0);    
+    afx_msg LRESULT OnReadSms(WPARAM wParam, LPARAM lParam = 0);
+    afx_msg LRESULT OnReadFlashSMS(WPARAM wParam, LPARAM lParam = 0);//add by liub for CFT
+    afx_msg LRESULT OnViewSms(WPARAM wParam, LPARAM lParam = 0);
     afx_msg LRESULT OnMenuItemClick(WPARAM wParam = 0, LPARAM lParam = 0);
-    afx_msg LRESULT OnSmsOperateProc(WPARAM wParam, LPARAM lParam = 0);    
-    afx_msg LRESULT OnCreateProgress(WPARAM wParam, LPARAM lParam = 0); 
-	afx_msg void OnVScrollContent();
-	afx_msg LRESULT OnModemStausChange(WPARAM wParam =0, LPARAM lParam = 0);
+    afx_msg LRESULT OnSmsOperateProc(WPARAM wParam, LPARAM lParam = 0);
+    afx_msg LRESULT OnCreateProgress(WPARAM wParam, LPARAM lParam = 0);
+    afx_msg void OnVScrollContent();
+    afx_msg LRESULT OnModemStausChange(WPARAM wParam =0, LPARAM lParam = 0);
     DECLARE_MESSAGE_MAP()
 private:
-	void UpdateListAfterDelete(); //删除后更新列表
+    void UpdateListAfterDelete(); //删除后更新列表
     //增删后更新排序列表
-	
-    //获得总SMS条数
-	WORD GetTotalSmsNum(EnSmsType type, EnLocFilter locFilter);  
 
-	//从索引编辑SMS记录
+    //获得总SMS条数
+    WORD GetTotalSmsNum(EnSmsType type, EnLocFilter locFilter);
+
+    //从索引编辑SMS记录
     void EditTotalSmsRecordFromDspIndex(EnSmsType type, EnLocFilter locFilter, WORD dspIndex, const StSmsRecord &record);//add by liub
     void InitFont(); //初始化字体
     void InitTabCtrl(); //初始化标签
@@ -205,10 +204,10 @@ private:
     EnProcType m_ProcType; //操作类型
     WORD m_DelDspIndexArr[LOC_MAX][SMS_TOTAL_RECORD_MAX]; //删除SMS索引缓冲
     WORD m_DelNumArr[LOC_MAX]; //删除SMS数目缓冲
-	CString m_strSearch; //查找条件
+    CString m_strSearch; //查找条件
 
-	//wyw_0103
-	CImageList *m_imagelistSMSTree;
+    //wyw_0103
+    CImageList *m_imagelistSMSTree;
 };
 
 //{{AFX_INSERT_LOCATION}}

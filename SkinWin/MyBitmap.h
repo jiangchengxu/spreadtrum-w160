@@ -12,7 +12,7 @@
 //#include "include\Picture.h"
 #include "EnBitmap.h"
 
-class CMyBitmap : public CEnBitmap  
+class CMyBitmap : public CEnBitmap
 {
 public:
     BOOL Draw( CDC *pDC, LPRECT r);
@@ -23,49 +23,43 @@ public:
     BOOL StretchDraw(CDC *pDC, LPRECT tr, LPRECT sr );
     BOOL StretchDraw(CDC *pDC, LPRECT r);
 
-    int     Width()
-    {
+    int     Width() {
         return GetWidth();
     }
-        
-    int     GetWidth()
-    {
+
+    int     GetWidth() {
         BITMAP bm;
         memset( &bm, 0, sizeof(bm) );
         GetBitmap(&bm);
         return bm.bmWidth;
     }
 
-    int     Height()
-    {
+    int     Height() {
         return GetHeight();
     }
-    
-    int     GetHeight()
-    {
+
+    int     GetHeight() {
         BITMAP bm;
         memset( &bm, 0, sizeof(bm) );
         GetBitmap(&bm);
         return bm.bmHeight;
     }
-    
+
     CMyBitmap();
     virtual ~CMyBitmap();
 
 
-    BOOL Attach( HBITMAP hbmp )
-    {
+    BOOL Attach( HBITMAP hbmp ) {
         return CBitmap::Attach( hbmp );
     }
 
-/*        
-        HBITMAP hBitmap = NULL; 
-        hBitmap = (HBITMAP)LoadImage(NULL, szFilename, IMAGE_BITMAP, 0, 0, 
-            LR_LOADFROMFILE | LR_CREATEDIBSECTION | LR_DEFAULTSIZE); 
-*/
+    /*
+            HBITMAP hBitmap = NULL;
+            hBitmap = (HBITMAP)LoadImage(NULL, szFilename, IMAGE_BITMAP, 0, 0,
+                LR_LOADFROMFILE | LR_CREATEDIBSECTION | LR_DEFAULTSIZE);
+    */
 
-    BOOL LoadBitmap(LPCTSTR szFilename) 
-    { 
+    BOOL LoadBitmap(LPCTSTR szFilename) {
         ASSERT(szFilename);
         DeleteObject();
 
@@ -77,16 +71,15 @@ public:
         HBITMAP hBitmap = pic.CreateDDB(&dc);
         pic.DeleteObject();
 
-        return Attach(hBitmap); 
+        return Attach(hBitmap);
         */
         return LoadImage( szFilename );
     }
-	BOOL LoadBitmap(UINT nRes)
-	{
-		return CBitmap::LoadBitmap(nRes);
-	}
+    BOOL LoadBitmap(UINT nRes) {
+        return CBitmap::LoadBitmap(nRes);
+    }
 
-    BOOL DrawTransparent(CDC * pDC, int x, int y, COLORREF crColour);    
+    BOOL DrawTransparent(CDC * pDC, int x, int y, COLORREF crColour);
 
     HRGN CreateRgnFromFile( COLORREF color );
 };

@@ -17,24 +17,24 @@ class CSearchContactDlg : public CDialog
 public:
     CSearchContactDlg(CWnd* pParent = NULL);   // standard constructor
 
-	~CSearchContactDlg();
+    ~CSearchContactDlg();
 // Dialog Data
     //{{AFX_DATA(CSearchContactDlg)
     enum { IDD = IDD_DIALOG_SEARCH };
-    	
-	CNumEdit m_EditSerachNum;
+
+    CNumEdit m_EditSerachNum;
     CString m_strName;
     CString m_strMobile;
     CString m_strFindNum;
 
-        // NOTE: the ClassWizard will add data members here
+    // NOTE: the ClassWizard will add data members here
     //}}AFX_DATA
 
 
 // Overrides
     // ClassWizard generated virtual function overrides
     //{{AFX_VIRTUAL(CSearchContactDlg)
-    protected:
+protected:
     virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
     //}}AFX_VIRTUAL
 
@@ -44,7 +44,7 @@ protected:
     // Generated message map functions
     //{{AFX_MSG(CSearchContactDlg)
     virtual BOOL OnInitDialog();
-    
+
     afx_msg void OnButtonSearch();
     afx_msg void OnButtonAhead();
     afx_msg void OnButtonNext();
@@ -58,7 +58,7 @@ private:
     int TotalIndexNum;
     int CurIndexNum;
     int* m_IndexArr;  //存放满足条件的下标
-	int m_PBListTotalCount;
+    int m_PBListTotalCount;
 };
 
 //{{AFX_INSERT_LOCATION}}

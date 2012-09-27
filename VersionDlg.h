@@ -15,32 +15,32 @@ class CVersionDlg : public CBaseDialog
 {
 // Construction
 public:
-	CVersionDlg(CWnd* pParent = NULL, EnVersionType type = VERSION_IMEI);   // standard constructor
+    CVersionDlg(CWnd* pParent = NULL, EnVersionType type = VERSION_IMEI);   // standard constructor
 
 // Dialog Data
-	//{{AFX_DATA(CVersionDlg)
-	enum { IDD = IDD_DIALOG_VERSION };
-	CString	m_strVersion;
-	//}}AFX_DATA
+    //{{AFX_DATA(CVersionDlg)
+    enum { IDD = IDD_DIALOG_VERSION };
+    CString	m_strVersion;
+    //}}AFX_DATA
 
 
 // Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(CVersionDlg)
-	protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	//}}AFX_VIRTUAL
+    // ClassWizard generated virtual function overrides
+    //{{AFX_VIRTUAL(CVersionDlg)
+protected:
+    virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+    //}}AFX_VIRTUAL
 
 // Implementation
 protected:
 
-	// Generated message map functions
-	//{{AFX_MSG(CVersionDlg)
-	virtual BOOL OnInitDialog();
-	//}}AFX_MSG
-	DECLARE_MESSAGE_MAP()
+    // Generated message map functions
+    //{{AFX_MSG(CVersionDlg)
+    virtual BOOL OnInitDialog();
+    //}}AFX_MSG
+    DECLARE_MESSAGE_MAP()
 private:
-	EnVersionType m_VersionType;
+    EnVersionType m_VersionType;
 };
 
 //{{AFX_INSERT_LOCATION}}

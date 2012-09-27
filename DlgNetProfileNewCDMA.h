@@ -15,33 +15,33 @@ class CDlgNetProfileNewCDMA : public CDialog
 {
 // Construction
 public:
-	CDlgNetProfileNewCDMA(CWnd* pParent = NULL, INT nProfileType = 1);   // standard constructor
+    CDlgNetProfileNewCDMA(CWnd* pParent = NULL, INT nProfileType = 1);   // standard constructor
 
 // Dialog Data
-	//{{AFX_DATA(CDlgNetProfileNewCDMA)
-	enum { IDD = IDD_DIALOG_PROFILE_NEWCDMA2000 };
-	CNumEdit	m_NumEditPhoneNumber;
+    //{{AFX_DATA(CDlgNetProfileNewCDMA)
+    enum { IDD = IDD_DIALOG_PROFILE_NEWCDMA2000 };
+    CNumEdit	m_NumEditPhoneNumber;
     CString    m_strConnName;
-	CString	m_strUserName;
-	CString	m_strPassWord;
-	CString	m_strPhoneNumber;
-	BOOL	m_bSetDefault;
+    CString	m_strUserName;
+    CString	m_strPassWord;
+    CString	m_strPhoneNumber;
+    BOOL	m_bSetDefault;
     int		m_nAuthRadio;
-	//}}AFX_DATA
-	
+    //}}AFX_DATA
+
 protected:
     CConnProfile *m_pConnProf;
     CConnProfile *m_pNdisConnProf;
-	int m_nProfileType;
-	
-	// Overrides
+    int m_nProfileType;
+
+    // Overrides
     // ClassWizard generated virtual function overrides
     //{{AFX_VIRTUAL(CDlgInternetNewConn)
     virtual void OnOK();
     virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
     //}}AFX_VIRTUAL
-	
-	// Implementation
+
+    // Implementation
     // Generated message map functions
     //{{AFX_MSG(CDlgInternetNewConn)
     virtual BOOL OnInitDialog();

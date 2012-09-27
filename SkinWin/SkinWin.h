@@ -18,7 +18,7 @@ public:
     CString        m_strSkinFile;        //skin definition file
     CMyBitmap    m_bmpTitle;        //contains two bitmap;
 
-    CMyBitmap    m_bmpLeft;        
+    CMyBitmap    m_bmpLeft;
     CMyBitmap    m_bmpRight;
     CMyBitmap    m_bmpBottom;
     CMyBitmap    m_bmpMenubg;
@@ -73,8 +73,7 @@ public:
     BOOL        m_bDrag;//是否可拖动窗口
 public:
     CWnd * m_pHookedWnd;
-    BOOL IsInited()
-    {
+    BOOL IsInited() {
         return m_bInit;
     }
     BOOL HandleSysCommand(WPARAM wp, LPARAM lp);
@@ -112,10 +111,9 @@ public:
     BOOL DrawBottom(CDC *pDC, int x, int y, int w, int state);
     BOOL DrawTitle( CDC *pDC, int x, int y, int w, int state );
     CSkinWin();
-    CSkinWin( const TCHAR * skinfile )
-    {
+    CSkinWin( const TCHAR * skinfile ) {
         CSkinWin();
-        LoadSkin( skinfile );            
+        LoadSkin( skinfile );
     }
     virtual ~CSkinWin();
 
@@ -123,9 +121,9 @@ public:
     BOOL    LoadSkin( const TCHAR * skinfile );
     //vitrual functions
     virtual LRESULT WindowProc(UINT msg, WPARAM wp, LPARAM lp);
-	
-	//wyw
-	BOOL OnHitTestSetCursor(UINT nHitTest);
+
+    //wyw
+    BOOL OnHitTestSetCursor(UINT nHitTest);
 
 };
 

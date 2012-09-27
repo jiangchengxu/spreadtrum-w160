@@ -1,5 +1,5 @@
 /*
-File: HSDPADlg.cpp 
+File: HSDPADlg.cpp
 Desc:
     通话历史记录
 
@@ -28,7 +28,7 @@ CCallHistoryDlg::CCallHistoryDlg(CWnd* pParent /*=NULL*/)
     : CBaseDialog(CCallHistoryDlg::IDD, pParent)
 {
     m_pHistData = ((CHSDPAApp *)AfxGetApp())->GetHistData();
-	m_pPbData   = ((CHSDPAApp *)AfxGetApp())->GetPbData();
+    m_pPbData   = ((CHSDPAApp *)AfxGetApp())->GetPbData();
     m_nBkTag    = 1;
 }
 
@@ -52,13 +52,13 @@ BEGIN_MESSAGE_MAP(CCallHistoryDlg, CBaseDialog)
     ON_BN_CLICKED(IDC_BUTTON_DELETEALL, OnButtonDeleteall)
     //}}AFX_MSG_MAP
     ON_MESSAGE(WM_HIST_MENUITEM_CLICK, OnMenuItemClick)
-	ON_MESSAGE(WM_ADD_CONTACT, OnAbstractPb)
+    ON_MESSAGE(WM_ADD_CONTACT, OnAbstractPb)
     ON_MESSAGE(WM_HIST_SAVE_MSG, OnSaveHist)
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
 // CCallHistoryDlg message handlers
-BOOL CCallHistoryDlg::OnInitDialog() 
+BOOL CCallHistoryDlg::OnInitDialog()
 {
     CBaseDialog::OnInitDialog();
     m_bFirst = TRUE;
@@ -75,12 +75,11 @@ BOOL CCallHistoryDlg::OnInitDialog()
 
 void CCallHistoryDlg::InitTabCtrl()
 {
-    if(m_ilTabs.Create(IDB_CALL_STATE, 16, 1, 255))
-    {
+    if(m_ilTabs.Create(IDB_CALL_STATE, 16, 1, 255)) {
         m_tabHist.SetImageList(&m_ilTabs);
     }
 
-    m_tabHist.SetParent(this);    
+    m_tabHist.SetParent(this);
 
     CString strTabCaption;
     strTabCaption.LoadString(IDS_CALLHIST_MISSED);
@@ -91,24 +90,23 @@ void CCallHistoryDlg::InitTabCtrl()
     m_tabHist.InsertItem(2, strTabCaption, 2);
 
     DWORD dwFlags = 0;
-    dwFlags |= ETC_FLAT;        
+    dwFlags |= ETC_FLAT;
     dwFlags |= ETC_SELECTION;
     dwFlags |= ETC_GRADIENT;
-    
+
     m_tabHist.SetBkgndColor(RGB(238,241,243));
 
     m_tabHist.EnableDraw(BTC_ALL);
-    
+
     CEnTabCtrl::EnableCustomLook(dwFlags, dwFlags);
-    
+
     //列表控件类型初始化为未接电话
     m_DispFilter = HISTKIND_MIS;
 }
 
 void CCallHistoryDlg::InitListCtrl()
 {
-    if(m_ilLsts.Create(IDB_CALL_STATE, 16, 1, 255))
-    {
+    if(m_ilLsts.Create(IDB_CALL_STATE, 16, 1, 255)) {
         m_lstHist.SetImageList(&m_ilLsts, LVSIL_SMALL);
     }
 
@@ -128,20 +126,18 @@ void CCallHistoryDlg::InitListCtrl()
     };
 
     CString strColTitle;
-    for(int i = 0; i < HISTCOL_MAX; i++)
-    {
+    for(int i = 0; i < HISTCOL_MAX; i++) {
         strColTitle.LoadString(arr_cols[i][0]);
         m_lstHist.InsertColumn(i, strColTitle, LVCFMT_LEFT, arr_cols[i][1]);
     }
 
     m_lstHist.SetExtendedStyle(LVS_EX_FULLROWSELECT | LVS_EX_GRIDLINES);
-	m_lstHist.m_headerCtrl.DrawHeader();
+    m_lstHist.m_headerCtrl.DrawHeader();
 }
 
 void CCallHistoryDlg::OnSelchangeTabHist(NMHDR* pNMHDR, LRESULT* pResult)
 {
-    switch(m_tabHist.GetCurSel())
-    {
+    switch(m_tabHist.GetCurSel()) {
     case 0:
         m_DispFilter = HISTKIND_MIS;
         break;
@@ -181,20 +177,19 @@ void CCallHistoryDlg::DispCallHistory()
     m_lstHist.SetRedraw(FALSE);
     m_lstHist.DeleteAllItems();
 
-    for(cnt = 0; cnt < nHistNum; cnt++)
-    {
+    for(cnt = 0; cnt < nHistNum; cnt++) {
         nIndex = m_DspIndexArr[m_DispFilter][cnt];
         ASSERT(nIndex < nHistNum);
-     
+
         memset(szSeq, 0x00, sizeof(szSeq));
         memset(szName, 0x00, sizeof(szName));
         memset(&HistItem, 0x00, sizeof(stHistItem));
 
         HistItem = m_pHistData->GetItem(m_DispFilter, nIndex);
 
-		if(wcscmp(HistItem.szNumber, strUnknown) == 0
-           || !m_pPbData->SearchNameByNumber(HistItem.szNumber, szName))
-			wcsncpy(szName, strUnknown, PB_NAME_MAX);
+        if(wcscmp(HistItem.szNumber, strUnknown) == 0
+                || !m_pPbData->SearchNameByNumber(HistItem.szNumber, szName))
+            wcsncpy(szName, strUnknown, PB_NAME_MAX);
 
         m_lstHist.InsertItem(cnt, _T(""), (int)m_DispFilter);
         m_lstHist.SetItemText(cnt, HISTCOL_NAME, szName);
@@ -217,14 +212,13 @@ int CCallHistoryDlg::DealwithResponseProc(LPARAM lParam, WPARAM wParam)
     return 1;
 }
 
-void CCallHistoryDlg::OnButtonReply() 
+void CCallHistoryDlg::OnButtonReply()
 {
     int nCurSel;
-    
+
     if(m_pHistData->IsEmpty(m_DispFilter))
         return;
-    else if((nCurSel = m_lstHist.GetNextItem(-1, LVNI_SELECTED)) == -1)
-    {
+    else if((nCurSel = m_lstHist.GetNextItem(-1, LVNI_SELECTED)) == -1) {
         AfxMessageBox(IDS_NOITEMSEL, MB_OK | MB_ICONINFORMATION);
         return;
     }
@@ -234,62 +228,55 @@ void CCallHistoryDlg::OnButtonReply()
 
     CSerialPort* pComm = ((CHSDPAApp*)AfxGetApp())->m_pSerialPort;
     ASSERT(pComm);
-    
-    if(pComm->CommIsReady())
-    {
+
+    if(pComm->CommIsReady()) {
         WORD nIndex = m_DspIndexArr[m_DispFilter][nCurSel];
         ASSERT(nIndex < m_pHistData->GetCount(m_DispFilter));
 
         WPARAM wParam = 0;
         LPARAM lParam = (LPARAM)(LPCTSTR)(m_pHistData->GetItem(m_DispFilter, nIndex)).szNumber;
 
-        if(wcslen((LPCTSTR)lParam) > 0 && wcscmp((LPCTSTR)lParam, strUnknown))
-        {
+        if(wcslen((LPCTSTR)lParam) > 0 && wcscmp((LPCTSTR)lParam, strUnknown)) {
             ::SendMessage(GetOwner()->GetSafeHwnd(),IDT_CALL_DIAL, wParam, lParam);
             OnOK();
-        }
-        else
+        } else
             AfxMessageBox(IDS_SELCONNECT_NULLNUM);
     }
 }
 
-void CCallHistoryDlg::OnButtonSendsms() 
+void CCallHistoryDlg::OnButtonSendsms()
 {
     int nCurSel;
 
     if(m_pHistData->IsEmpty(m_DispFilter))
         return;
-    else if((nCurSel = m_lstHist.GetNextItem(-1, LVNI_SELECTED)) == -1)
-    {
+    else if((nCurSel = m_lstHist.GetNextItem(-1, LVNI_SELECTED)) == -1) {
         AfxMessageBox(IDS_NOITEMSEL, MB_OK | MB_ICONINFORMATION);
         return;
     }
 
     CString strUnknown;
     strUnknown.LoadString(IDS_UNKNOWN);
-    
+
     WORD nIndex = m_DspIndexArr[m_DispFilter][nCurSel];
     ASSERT(nIndex < m_pHistData->GetCount(m_DispFilter));
 
     LPARAM lParam = (LPARAM)(LPCTSTR)(m_pHistData->GetItem(m_DispFilter, nIndex)).szNumber;
-    
-    if(wcslen((LPCTSTR)lParam) > 0 && wcscmp((LPCTSTR)lParam, strUnknown))
-    {
+
+    if(wcslen((LPCTSTR)lParam) > 0 && wcscmp((LPCTSTR)lParam, strUnknown)) {
         CSmsWriteDlg dlg(this, (LPCTSTR)lParam, NULL);
         dlg.DoModal();
-    }
-    else
+    } else
         AfxMessageBox(IDS_SELCONNECT_NULLNUM);
 }
 
 void CCallHistoryDlg::OnButtonDelete()
 {
     int nCurSel;
-    
+
     if(m_pHistData->IsEmpty(m_DispFilter))
         return;
-    else if((nCurSel = m_lstHist.GetNextItem(-1, LVNI_SELECTED)) == -1)
-    {
+    else if((nCurSel = m_lstHist.GetNextItem(-1, LVNI_SELECTED)) == -1) {
         AfxMessageBox(IDS_NOITEMSEL, MB_OK | MB_ICONINFORMATION);
         return;
     }
@@ -299,31 +286,28 @@ void CCallHistoryDlg::OnButtonDelete()
 
     if(MessageBox(str, NULL, MB_YESNO | MB_ICONQUESTION | MB_DEFBUTTON2) == IDNO)
         return;
-    else
-    {
+    else {
         WORD nIndex;
         UINT nDelCount = m_lstHist.GetSelectedCount();
-        
+
         do {
             nIndex = m_DspIndexArr[m_DispFilter][nCurSel];
             ASSERT(nIndex < m_pHistData->GetCount(m_DispFilter));
-            
+
             int i;
-            for(i = nCurSel; i < m_pHistData->GetCount(m_DispFilter) - 1; i++)
-            {
+            for(i = nCurSel; i < m_pHistData->GetCount(m_DispFilter) - 1; i++) {
                 m_DspIndexArr[m_DispFilter][i] = m_DspIndexArr[m_DispFilter][i+1];
             }
             m_DspIndexArr[m_DispFilter][i] = 0;
-            
-            m_lstHist.DeleteItem(nCurSel);   
+
+            m_lstHist.DeleteItem(nCurSel);
             m_pHistData->RemoveItem(m_DispFilter, nIndex);
-            
+
             for(i = 0; i < m_pHistData->GetCount(m_DispFilter); i++)
                 if(m_DspIndexArr[m_DispFilter][i] > nIndex)
                     m_DspIndexArr[m_DispFilter][i]--;
-                
-            if(nDelCount == 1 && !m_pHistData->IsEmpty(m_DispFilter))
-            {
+
+            if(nDelCount == 1 && !m_pHistData->IsEmpty(m_DispFilter)) {
                 if(nCurSel == m_pHistData->GetCount(m_DispFilter))
                     m_lstHist.SetItemState(nCurSel-1, LVIS_FOCUSED | LVIS_SELECTED, 0x000F);
                 else
@@ -337,7 +321,7 @@ void CCallHistoryDlg::OnButtonDelete()
 LRESULT CCallHistoryDlg::OnMenuItemClick(WPARAM wParam, LPARAM lParam)
 {
     UINT nID = wParam;
-    
+
     if(nID == IDC_BUTTON_REPLY)
         OnButtonReply();
     else if(nID == IDC_BUTTON_ABSTRACT)
@@ -348,32 +332,30 @@ LRESULT CCallHistoryDlg::OnMenuItemClick(WPARAM wParam, LPARAM lParam)
         OnButtonDelete();
     else if(nID == IDC_BUTTON_DELETEALL)
         OnButtonDeleteall();
-    
+
     return 0;
 }
 
-void CCallHistoryDlg::OnButtonAbstract() 
+void CCallHistoryDlg::OnButtonAbstract()
 {
     int nCurSel;
-    
+
     if(m_pHistData->IsEmpty(m_DispFilter))
         return;
 
-    if((nCurSel = m_lstHist.GetNextItem(-1, LVNI_SELECTED)) == -1)
-    {
+    if((nCurSel = m_lstHist.GetNextItem(-1, LVNI_SELECTED)) == -1) {
         AfxMessageBox(IDS_NOITEMSEL, MB_OK | MB_ICONINFORMATION);
         return;
     }
 
-    if(m_pPbData->CheckFull())
-    {
+    if(m_pPbData->CheckFull()) {
         AfxMessageBox(IDS_PB_FULL);
         return;
     }
- 
+
     CString strUnknown;
     strUnknown.LoadString(IDS_UNKNOWN);
-    
+
     WORD nIndex = m_DspIndexArr[m_DispFilter][nCurSel];
     ASSERT(nIndex < m_pHistData->GetCount(m_DispFilter));
 
@@ -382,41 +364,37 @@ void CCallHistoryDlg::OnButtonAbstract()
     HistItem = m_pHistData->GetItem(m_DispFilter, nIndex);
 
     if(wcslen((TCHAR*)HistItem.szNumber) > 0
-        && wcscmp((TCHAR*)HistItem.szNumber, strUnknown))
-    {
-        if(CompareChar((TCHAR*)HistItem.szNumber))
-        {
+            && wcscmp((TCHAR*)HistItem.szNumber, strUnknown)) {
+        if(CompareChar((TCHAR*)HistItem.szNumber)) {
             CSelPosition dlg(this, (TCHAR *)HistItem.szNumber);
             dlg.DoModal();
             DispCallHistory();
         }
-    }
-    else
+    } else
         AfxMessageBox(IDS_SELCONNECT_NULLNUM);
 }
 
-void CCallHistoryDlg::OnButtonDeleteall() 
+void CCallHistoryDlg::OnButtonDeleteall()
 {
     if(m_pHistData->IsEmpty(m_DispFilter))
         return;
-    
+
     CString strMessage;
     strMessage.LoadString(IDS_DELALLCONFIRM);
-    if(AfxMessageBox(strMessage, MB_YESNO|MB_ICONQUESTION| MB_DEFBUTTON2) == IDYES)
-    {
+    if(AfxMessageBox(strMessage, MB_YESNO|MB_ICONQUESTION| MB_DEFBUTTON2) == IDYES) {
         m_lstHist.DeleteAllItems();
         m_pHistData->RemoveAllItem(m_DispFilter);
         InitDspIndexArr();
-    }  
+    }
 }
 
 LRESULT CCallHistoryDlg::OnAbstractPb(WPARAM wParam, LPARAM lParam)
 {
-	 this->GetParent()->SendMessage(WM_ADD_CONTACT, wParam, lParam);
-	 return 0;
+    this->GetParent()->SendMessage(WM_ADD_CONTACT, wParam, lParam);
+    return 0;
 }
 
-void CCallHistoryDlg::OnColumnclickListHist(NMHDR* pNMHDR, LRESULT* pResult) 
+void CCallHistoryDlg::OnColumnclickListHist(NMHDR* pNMHDR, LRESULT* pResult)
 {
     NM_LISTVIEW* pNMListView = (NM_LISTVIEW*)pNMHDR;
 
@@ -425,13 +403,10 @@ void CCallHistoryDlg::OnColumnclickListHist(NMHDR* pNMHDR, LRESULT* pResult)
 
     ASSERT(col >= (int)HISTCOL_NAME && col <= (int)HISTCOL_FREQUENCY);
 
-    if(col == (int)m_SortColArr[m_DispFilter])
-    {
+    if(col == (int)m_SortColArr[m_DispFilter]) {
         m_bSortAscendArr[m_DispFilter] = !m_bSortAscendArr[m_DispFilter];
         ReverseSortIndexArr(m_DispFilter);
-    }
-    else
-    {
+    } else {
         m_bSortAscendArr[m_DispFilter] = TRUE;
         m_SortColArr[m_DispFilter] = (EnHistCol)col;
         SortHistList(m_DispFilter, m_SortColArr[m_DispFilter]);
@@ -439,7 +414,7 @@ void CCallHistoryDlg::OnColumnclickListHist(NMHDR* pNMHDR, LRESULT* pResult)
 
     m_lstHist.m_headerCtrl.SetSortImage(col, m_bSortAscendArr[m_DispFilter]);
     DispCallHistory();
-    
+
     *pResult = 0;
 }
 
@@ -448,12 +423,11 @@ void CCallHistoryDlg::InitDspIndexArr()
 {
     int i;
 
-    for(i = HISTKIND_MIS; i < HISTKIND_MAX; i++)
-    {
+    for(i = HISTKIND_MIS; i < HISTKIND_MAX; i++) {
         m_bSortAscendArr[i] = FALSE;
         m_SortColArr[i] = HISTCOL_TIMESTAMP;
     }
-    
+
     ResetDspIndexArr(HISTKIND_MAX);
 }
 
@@ -466,25 +440,21 @@ void CCallHistoryDlg::SortHistList(EnHistKind type, EnHistCol col)
     WORD j;
     WORD nNum = m_pHistData->GetCount(type);
 
-    if(col == HISTCOL_TIMESTAMP)
-    {
+    if(col == HISTCOL_TIMESTAMP) {
         for(j = 0; j < nNum; j++)
             m_DspIndexArr[type][j] = nNum - 1 - j;
-    }
-    else
-    {
+    } else {
         BubbleSort(type, col);
     }
 }
 
 //以当前选中的排序关键字逆序排序
 void CCallHistoryDlg::ReverseSortIndexArr(EnHistKind type)
-{    
+{
     WORD tmp;
     WORD nNum = m_pHistData->GetCount(type);
 
-    for(WORD i = 0; i < nNum/2; i++)
-    {
+    for(WORD i = 0; i < nNum/2; i++) {
         tmp = m_DspIndexArr[type][i];
         m_DspIndexArr[type][i] = m_DspIndexArr[type][nNum-1-i];
         m_DspIndexArr[type][nNum-1-i] = tmp;
@@ -496,31 +466,28 @@ void CCallHistoryDlg::BubbleSort(EnHistKind type, EnHistCol col)
 {
     ASSERT(type >= HISTKIND_MIS && type < HISTKIND_MAX);
     ASSERT(col >= HISTCOL_NAME && col <= HISTCOL_FREQUENCY);
-    
+
     WORD nNum = m_pHistData->GetCount(type);
-    
+
     int  nSubItem = (int)col;
     int  change = 1;
     WORD tmp;
     WORD i, j;
     int  res;
     TCHAR  szName1[PB_NAME_MAX + 2];
-    TCHAR  szName2[PB_NAME_MAX + 2];    
-    
-    for(i = 0; i < nNum - 1 && change; i++)
-    {
+    TCHAR  szName2[PB_NAME_MAX + 2];
+
+    for(i = 0; i < nNum - 1 && change; i++) {
         change = 0;
-        for(j = nNum - 1; j > i; j--)
-        {
+        for(j = nNum - 1; j > i; j--) {
             res = 0;
-            switch(col)
-            {
+            switch(col) {
             case HISTCOL_NAME:
                 memset(szName1, 0x00, sizeof(szName1));
                 memset(szName2, 0x00, sizeof(szName2));
                 m_pPbData->SearchNameByNumber(CString(m_pHistData->GetItem(type, m_DspIndexArr[type][j]).szNumber), szName1);
                 m_pPbData->SearchNameByNumber(CString(m_pHistData->GetItem(type, m_DspIndexArr[type][j-1]).szNumber), szName2);
-                res = wcscmp(szName1, szName2);                
+                res = wcscmp(szName1, szName2);
                 break;
             case HISTCOL_NUMBER:
                 res = strcmp((const char *)(m_pHistData->GetItem(type, m_DspIndexArr[type][j]).szNumber),
@@ -528,23 +495,22 @@ void CCallHistoryDlg::BubbleSort(EnHistKind type, EnHistCol col)
                 break;
             case HISTCOL_TIMESTAMP:
                 if(m_pHistData->GetItem(type, m_DspIndexArr[type][j]).cTimeStamp
-                    < m_pHistData->GetItem(type, m_DspIndexArr[type][j-1]).cTimeStamp)
+                        < m_pHistData->GetItem(type, m_DspIndexArr[type][j-1]).cTimeStamp)
                     res = -1;
                 break;
             case HISTCOL_DURATION:
                 if(m_pHistData->GetItem(type, m_DspIndexArr[type][j]).cDuration
-                    < m_pHistData->GetItem(type, m_DspIndexArr[type][j-1]).cDuration)
+                        < m_pHistData->GetItem(type, m_DspIndexArr[type][j-1]).cDuration)
                     res = -1;
                 break;
             case HISTCOL_FREQUENCY:
                 if(m_pHistData->GetItem(type, m_DspIndexArr[type][j]).nSeqNum
-                    < m_pHistData->GetItem(type, m_DspIndexArr[type][j-1]).nSeqNum)
+                        < m_pHistData->GetItem(type, m_DspIndexArr[type][j-1]).nSeqNum)
                     res = -1;
                 break;
             }
 
-            if(res < 0)
-            {
+            if(res < 0) {
                 tmp = m_DspIndexArr[type][j];
                 m_DspIndexArr[type][j] = m_DspIndexArr[type][j-1];
                 m_DspIndexArr[type][j-1] = tmp;
@@ -558,17 +524,13 @@ void CCallHistoryDlg::UpdateHistSortList(EnHistKind type)
 {
     ResetDspIndexArr(type);
 
-    if(type == HISTKIND_MAX)
-    {
-        for(WORD i=0; i<HISTKIND_MAX; i++)
-        {
+    if(type == HISTKIND_MAX) {
+        for(WORD i=0; i<HISTKIND_MAX; i++) {
             SortHistList((EnHistKind)i, m_SortColArr[i]);
             if(!m_bSortAscendArr[i])
                 ReverseSortIndexArr((EnHistKind)i);
         }
-    }
-    else
-    {
+    } else {
         SortHistList(type, m_SortColArr[type]);
         if(!m_bSortAscendArr[type])
             ReverseSortIndexArr(type);
@@ -581,18 +543,15 @@ void CCallHistoryDlg::ResetDspIndexArr(EnHistKind type)
 {
     int i, j;
 
-    if(type == HISTKIND_MAX)
-    {
+    if(type == HISTKIND_MAX) {
         for(i = HISTKIND_MIS; i < HISTKIND_MAX; i++)
             for(j = 0; j < HIST_ITEM_MAX; j++)
                 m_DspIndexArr[i][j] = 0;
-            
+
         for(i = HISTKIND_MIS; i < HISTKIND_MAX; i++)
             for(j = 0; j < m_pHistData->GetCount((EnHistKind)i); j++)
                 m_DspIndexArr[i][j] = j;
-    }
-    else
-    {
+    } else {
         for(j = 0; j < HIST_ITEM_MAX; j++)
             m_DspIndexArr[type][j] = 0;
         for(j = 0; j < m_pHistData->GetCount(type); j++)

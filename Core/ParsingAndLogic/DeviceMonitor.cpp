@@ -45,10 +45,10 @@ DeviceMonitor& DeviceMonitor::GetInstance()
 // --------------------------------------------------------------------------
 // ctor
 //
-/// Constructor for MessageManager. Initialize data members and start the 
+/// Constructor for MessageManager. Initialize data members and start the
 /// message manager (MM) thread.
 // --------------------------------------------------------------------------
-DeviceMonitor::DeviceMonitor() : 
+DeviceMonitor::DeviceMonitor() :
     m_hMonitorThread(INVALID_HANDLE_VALUE),
     m_hExitEvent(::CreateEvent(NULL, TRUE, FALSE, NULL)),
     m_isStarted(false),
@@ -66,16 +66,15 @@ DeviceMonitor::DeviceMonitor() :
 // --------------------------------------------------------------------------
 DeviceMonitor::~DeviceMonitor()
 {
-    if (m_isStarted)
-    {
+    if (m_isStarted) {
         StopDeviceMonitor();
     }
 
     ::CloseHandle(m_hMonitorThread); // ???
     ::CloseHandle(m_hExitEvent);
 
-	//wyw_0104
-	::CloseHandle(m_hDetachExitEvent);
+    //wyw_0104
+    ::CloseHandle(m_hDetachExitEvent);
 
     // close the connection flag mutex
     ::CloseHandle(m_hIsConnectedMutex);
@@ -94,8 +93,7 @@ bool DeviceMonitor::StartDeviceMonitor()
     m_hMonitorThread = ::CreateThread(NULL,0,StartMonitorThread,NULL,0,NULL);
 
     // report if error starting the monitor thread
-    if (m_hMonitorThread == NULL)
-    {
+    if (m_hMonitorThread == NULL) {
         m_hMonitorThread = INVALID_HANDLE_VALUE;
 
         std::stringstream stream;
@@ -121,8 +119,7 @@ bool DeviceMonitor::StartDeviceMonitor()
 bool DeviceMonitor::StopDeviceMonitor()
 {
     // stop the monitor thread
-    if(m_isStarted)
-    {
+    if(m_isStarted) {
         // trigger the exit event and wait for the thread to exit
         ::SetEvent(m_hExitEvent);
         ::WaitForSingleObject(m_hMonitorThread,INFINITE);
@@ -139,8 +136,8 @@ bool DeviceMonitor::StopDeviceMonitor()
 /// Start the device monitor thread. This method must be static to work with
 /// ::CreateThread. DeviceMonitor is a singleton, so get its instance to call
 /// a non-static method and use non-static data members.
-/// 
-/// @param context - not used. 
+///
+/// @param context - not used.
 // --------------------------------------------------------------------------
 DWORD WINAPI DeviceMonitor::StartMonitorThread(LPVOID context)
 {
@@ -151,7 +148,7 @@ DWORD WINAPI DeviceMonitor::StartMonitorThread(LPVOID context)
 // --------------------------------------------------------------------------
 // MonitorThread
 //
-/// The monitor thread keeps track of removable network adapters attached to 
+/// The monitor thread keeps track of removable network adapters attached to
 /// computer and reports changes to the MessageManager.
 // --------------------------------------------------------------------------
 void DeviceMonitor::MonitorThread()
@@ -159,9 +156,8 @@ void DeviceMonitor::MonitorThread()
     // open the reg key to watch for changes
 
     CRegKey regKey;
-    if (ERROR_SUCCESS != 
-        regKey.Open(HKEY_LOCAL_MACHINE,REG_KEY_STRING.c_str(),KEY_READ))
-    {
+    if (ERROR_SUCCESS !=
+            regKey.Open(HKEY_LOCAL_MACHINE,REG_KEY_STRING.c_str(),KEY_READ)) {
         std::stringstream stream;
         stream << _T("Error: MonitorThread:") << std::endl
                << _T("Unable to open registry key.") << std::endl
@@ -173,8 +169,7 @@ void DeviceMonitor::MonitorThread()
 
     // create the event flag to be used in the watch
     HANDLE hRegChangedEvent = CreateEvent(NULL, FALSE, FALSE, NULL) ;
-    if (INVALID_HANDLE_VALUE == hRegChangedEvent)
-    {
+    if (INVALID_HANDLE_VALUE == hRegChangedEvent) {
         std::stringstream stream;
         stream << _T("Error: MonitorThread:") << std::endl
                << _T("Unable to create event flag.") << std::endl
@@ -188,25 +183,23 @@ void DeviceMonitor::MonitorThread()
 
 
     // establish array of handles to wait on
-    HANDLE waitHandles [] = { m_hExitEvent,hRegChangedEvent }; 
+    HANDLE waitHandles [] = { m_hExitEvent,hRegChangedEvent };
 
     // loop until stop is requested
-    do
-    {
+    do {
         // attaching/detaching a phone causes changes in the serialcomm key
         // and triggers a chack of removable network adapters on the system.
-        // it would be better to be notified when there is a change to the 
+        // it would be better to be notified when there is a change to the
         // GUID_DEVCLASS_NET but including files for IORegisterPlugPlayNotify
         // causes namespace conflicts with other Windows include files.
         // request to be notified when the reg key/sub key changes
-        if (ERROR_SUCCESS != 
-            RegNotifyChangeKeyValue(
-                (HKEY)regKey,
-                TRUE,
-                REG_NOTIFY_CHANGE_NAME | REG_NOTIFY_CHANGE_LAST_SET,
-                hRegChangedEvent,
-                TRUE))
-        {
+        if (ERROR_SUCCESS !=
+                RegNotifyChangeKeyValue(
+                    (HKEY)regKey,
+                    TRUE,
+                    REG_NOTIFY_CHANGE_NAME | REG_NOTIFY_CHANGE_LAST_SET,
+                    hRegChangedEvent,
+                    TRUE)) {
             std::stringstream stream;
             stream << _T("Error: MonitorThread:") << std::endl
                    << _T("Unable to establish registry key notification.") << std::endl
@@ -217,9 +210,8 @@ void DeviceMonitor::MonitorThread()
         }
 
         // check for and report changes in removable network adapters
-        InspectNetAdapters();        
-    }
-    while (::WaitForMultipleObjects(2,waitHandles,FALSE,INFINITE) != WAIT_OBJECT_0);
+        InspectNetAdapters();
+    } while (::WaitForMultipleObjects(2,waitHandles,FALSE,INFINITE) != WAIT_OBJECT_0);
 
     // cleanup
     ::CloseHandle(hRegChangedEvent);
@@ -240,13 +232,13 @@ void DeviceMonitor::InspectNetAdapters()
 
     // get the set of network adapters on the system
 #if 0
-    HDEVINFO hDevInfo = 
+    HDEVINFO hDevInfo =
         SetupDiGetClassDevs(&GUID_DEVCLASS_NET,NULL,NULL,DIGCF_PRESENT);
-		//SetupDiGetClassDevs(&GUID_DEVCLASS_NET,NULL,NULL,DIGCF_ALLCLASSES);
+    //SetupDiGetClassDevs(&GUID_DEVCLASS_NET,NULL,NULL,DIGCF_ALLCLASSES);
 #else
-	// @@
-	GUID guid = GUID_DEVCLASS_NET_EX;
-    HDEVINFO hDevInfo = 
+    // @@
+    GUID guid = GUID_DEVCLASS_NET_EX;
+    HDEVINFO hDevInfo =
         SetupDiGetClassDevs(&guid,NULL,NULL,DIGCF_PRESENT);
 #endif
 
@@ -254,35 +246,34 @@ void DeviceMonitor::InspectNetAdapters()
     SP_DEVINFO_DATA DeviceInfoData;
     DeviceInfoData.cbSize = sizeof(SP_DEVINFO_DATA);
 
-	//DeviceInfoSet Supplies a handle to the device information set. 
+    //DeviceInfoSet Supplies a handle to the device information set.
 
-   //MemberIndex Supplies the 0-based index of the device information member to retrieve. 
+    //MemberIndex Supplies the 0-based index of the device information member to retrieve.
 
-//DeviceInfoData Supplies a pointer to an SP_DEVINFO_DATA structure to receive information about this member. 
- //GL Start
-
-          
+//DeviceInfoData Supplies a pointer to an SP_DEVINFO_DATA structure to receive information about this member.
+//GL Start
 
 
 
-    for (DWORD i=0;SetupDiEnumDeviceInfo(hDevInfo,i,&DeviceInfoData);i++)
-    {    
-	     DWORD regDataType = 0;
 
-		DWORD DataT = 0;
-		
-		CHAR hwi[256] = {0};
+
+    for (DWORD i=0; SetupDiEnumDeviceInfo(hDevInfo,i,&DeviceInfoData); i++) {
+        DWORD regDataType = 0;
+
+        DWORD DataT = 0;
+
+        CHAR hwi[256] = {0};
 
         DWORD MAX__DESC = 256;
 
-		DWORD hwisize = 0; 
+        DWORD hwisize = 0;
 
-		char* p = NULL;
+        char* p = NULL;
 
-		//std::vector<std::string> strHardwareId;
-	    
-		
-        //strHardwareId = "USB\Vid_05c6&Pid_7001&MI_01";	
+        //std::vector<std::string> strHardwareId;
+
+
+        //strHardwareId = "USB\Vid_05c6&Pid_7001&MI_01";
 
         SetupDiGetDeviceRegistryProperty(
             hDevInfo,
@@ -291,61 +282,59 @@ void DeviceMonitor::InspectNetAdapters()
             &DataT,
             (PBYTE)hwi,
             MAX__DESC,
-            &hwisize);               
-        for (p=hwi;*p&&(p<&hwi[hwisize]);p+=strlen(p)+sizeof(char))
-        {	
-			//if(!_stricmp(p, "USB\Vid_05c6&Pid_7001&Rev_0000&Mi_01"))     
+            &hwisize);
+        for (p=hwi; *p&&(p<&hwi[hwisize]); p+=strlen(p)+sizeof(char)) {
+            //if(!_stricmp(p, "USB\Vid_05c6&Pid_7001&Rev_0000&Mi_01"))
 
-			if(!_stricmp(p, "USB\\Vid_1614&Pid_7002&Mi_01"))    
-			
-			//if(!_stricmp(p, strHardwareId))   
+            if(!_stricmp(p, "USB\\Vid_1614&Pid_7002&Mi_01"))
 
-            {					   
-			            CHAR buf[256] = {0};
-            DWORD bufSize = 256;
+                //if(!_stricmp(p, strHardwareId))
 
-            // get the device friendly name
-            SetupDiGetDeviceRegistryProperty(
-                hDevInfo,
-                &DeviceInfoData,
-                SPDRP_FRIENDLYNAME,
-                &regDataType,
-                (PBYTE)buf,
-                bufSize,
-                &bufSize);
-
-            // if no device friendly name, get the device description
-            if (buf[0] == '\0')
             {
+                CHAR buf[256] = {0};
+                DWORD bufSize = 256;
+
                 // get the device friendly name
                 SetupDiGetDeviceRegistryProperty(
                     hDevInfo,
                     &DeviceInfoData,
-                    SPDRP_DEVICEDESC,
+                    SPDRP_FRIENDLYNAME,
                     &regDataType,
                     (PBYTE)buf,
                     bufSize,
                     &bufSize);
+
+                // if no device friendly name, get the device description
+                if (buf[0] == '\0') {
+                    // get the device friendly name
+                    SetupDiGetDeviceRegistryProperty(
+                        hDevInfo,
+                        &DeviceInfoData,
+                        SPDRP_DEVICEDESC,
+                        &regDataType,
+                        (PBYTE)buf,
+                        bufSize,
+                        &bufSize);
+                }
+
+                // add to available network adapters
+                netAdapters.push_back(buf);
             }
+        }
 
-            // add to available network adapters
-            netAdapters.push_back(buf);										
-            }
-        }		
+    }
 
-	}
-	
-//end	
+//end
 
-	
-	/*for (DWORD i=0;SetupDiEnumDeviceInfo(hDevInfo,i,&DeviceInfoData);i++)
 
- 
- {
+    /*for (DWORD i=0;SetupDiEnumDeviceInfo(hDevInfo,i,&DeviceInfoData);i++)
+
+
+     {
         DWORD regDataType = 0;
 
         DWORD cap = 0;
-		 
+
         DWORD capSize = sizeof(cap);
 
         // get the device capabilities
@@ -357,10 +346,10 @@ void DeviceMonitor::InspectNetAdapters()
             (PBYTE)&cap,
             capSize,
             &capSize);
-// ADD function by WY
-	//	if ( i == 5 ) {
-	//		 cap = 4;}
-       //   cap = 4; 
+    // ADD function by WY
+    //	if ( i == 5 ) {
+    //		 cap = 4;}
+       //   cap = 4;
         // we are only interested in removable devices
         if (cap & CM_DEVCAP_REMOVABLE)
         {
@@ -395,10 +384,9 @@ void DeviceMonitor::InspectNetAdapters()
             netAdapters.push_back(buf);
         }
     }
-*/
+    */
     // report to MessageManager if collection of network adapters has changed
-    if (m_netAdapters != netAdapters)
-    {
+    if (m_netAdapters != netAdapters) {
         m_netAdapters = netAdapters;
 
         std::string reason = "Attached Network Adapters.";
@@ -420,11 +408,9 @@ void DeviceMonitor::InspectNetAdapters()
 void DeviceMonitor::SetDevice(std::string& deviceName)
 {
     // check connection status
-    if (!m_deviceName.empty() && m_isConnected)
-    {
+    if (!m_deviceName.empty() && m_isConnected) {
         // check if device name is already set to submitted name
-        if (m_deviceName.compare(deviceName) == 0) 
-        {
+        if (m_deviceName.compare(deviceName) == 0) {
             return;
         }
 
@@ -434,13 +420,12 @@ void DeviceMonitor::SetDevice(std::string& deviceName)
                << _T("'.") << std::endl << _T("A connection is currently established with, '")
                << m_deviceName << _T("'.") << std::endl << std::endl;
         MessageManager::GetInstance().ReportDevice(stream.str(),DT_CONNECT_FAIL, m_netAdapters);
-        return;  
+        return;
     }
 
     // verify the device name by attempting to open a service
     m_hDetachHandle = QCWWAN_OpenService((PCHAR)deviceName.c_str(),QMUX_TYPE_WDS);
-    if (m_hDetachHandle == INVALID_HANDLE_VALUE)
-    {
+    if (m_hDetachHandle == INVALID_HANDLE_VALUE) {
         // fail if unable to open service on device
         std::stringstream stream;
         stream << _T("Unable to establish a connection to the device, '") << deviceName
@@ -458,12 +443,11 @@ void DeviceMonitor::SetDevice(std::string& deviceName)
     m_hDetachThread = ::CreateThread(NULL,0,StartDetachThread,NULL,0,NULL);
 
     // report if error starting the detach notification thread
-    if (m_hDetachThread == NULL)
-    {
+    if (m_hDetachThread == NULL) {
         m_hDetachThread = INVALID_HANDLE_VALUE;
         std::stringstream stream;
         stream << _T("Unable to start the device detach notification thread.")
-                << std::endl << std::endl;
+               << std::endl << std::endl;
         MessageManager::GetInstance().ReportDevice(stream.str(),DT_CONNECT_FAIL, m_netAdapters);
 
         // release the connected flag mutex
@@ -494,8 +478,7 @@ void DeviceMonitor::SetDevice(std::string& deviceName)
 void DeviceMonitor::ClearDevice()
 {
     // exit the detach notification thread if active
-    if (m_hDetachThread != INVALID_HANDLE_VALUE)
-    {
+    if (m_hDetachThread != INVALID_HANDLE_VALUE) {
         ::SetEvent(m_hDetachExitEvent);
         ::WaitForSingleObject(m_hDetachThread,INFINITE);
         ::ResetEvent(m_hDetachExitEvent);
@@ -506,10 +489,10 @@ void DeviceMonitor::ClearDevice()
 // StartDetachThread
 //
 /// Start the device detach notification thread. This method must be static
-/// to work with ::CreateThread. MessageManager is a singleton, so get its 
+/// to work with ::CreateThread. MessageManager is a singleton, so get its
 /// instance to call a non-static method and use non-static data members.
-/// 
-/// @param context - not used. 
+///
+/// @param context - not used.
 // --------------------------------------------------------------------------
 DWORD WINAPI DeviceMonitor::StartDetachThread(LPVOID context)
 {
@@ -533,10 +516,9 @@ void DeviceMonitor::DetachThread()
 
     ::memset(&ov,0,sizeof(ov));
     ov.hEvent = CreateEvent(NULL, TRUE, FALSE, NULL);
- 
-    // report create event failure  
-    if (ov.hEvent == NULL)
-    {
+
+    // report create event failure
+    if (ov.hEvent == NULL) {
         stream << _T("Unable to create overlapped event for detach notification.") << std::endl
                << _T("Disconnecting from device, ") << m_deviceName << _T(".")
                << std::endl << std::endl;
@@ -562,31 +544,23 @@ void DeviceMonitor::DetachThread()
     uint8 type = DT_CONNECT_FAIL;
 
     // check for immediate response or unexpected error
-    if (result == TRUE)
-    {
+    if (result == TRUE) {
         ProcessDeviceEvent(event,stream,type);
-    }
-    else
-    {
+    } else {
         int status = ::GetLastError();
-        if (ERROR_IO_PENDING != status)
-        {
+        if (ERROR_IO_PENDING != status) {
             // report device IO control error
             stream << _T("Unexpected error in detach notification.") << std::endl
                    << _T("Last error code: ") << status << std::endl
                    << _T("Disconnecting from device, ") << m_deviceName << _T(".")
                    << std::endl << std::endl;
-        }
-        else
-        {
+        } else {
             // establish array of handles to wait on
             HANDLE waitHandles [] = { m_hDetachExitEvent,ov.hEvent };
 
-            if (::WaitForMultipleObjects(2,waitHandles,FALSE,INFINITE) == WAIT_OBJECT_0)
-            {
+            if (::WaitForMultipleObjects(2,waitHandles,FALSE,INFINITE) == WAIT_OBJECT_0) {
                 // exit event signaled, cancel any pending IO
-                if (!::CancelIo(m_hDetachHandle))
-                {
+                if (!::CancelIo(m_hDetachHandle)) {
                     // report cancel IO failure
                     status = ::GetLastError();
                     stream << _T("Error cancelling IO on detach notification exit.") << std::endl
@@ -599,16 +573,11 @@ void DeviceMonitor::DetachThread()
                 stream << _T("Successful disconnection from ") << m_deviceName
                        << _T(".") << std::endl << std::endl;
                 type = DT_DISCONNECT;
-            }
-            else
-            {
+            } else {
                 // overlapped event signaled, get result
-                if (GetOverlappedResult(m_hDetachHandle,&ov,&bytesReturned,TRUE))
-                {
+                if (GetOverlappedResult(m_hDetachHandle,&ov,&bytesReturned,TRUE)) {
                     ProcessDeviceEvent(event,stream,type);
-                }
-                else
-                {
+                } else {
                     // report get overlapped error
                     status = ::GetLastError();
                     stream << _T("Error: Unexpected error in get overlapped of detach notification.") << std::endl
@@ -648,8 +617,7 @@ void DeviceMonitor::DetachThread()
 // --------------------------------------------------------------------------
 void DeviceMonitor::ProcessDeviceEvent(DWORD event,std::stringstream& stream, uint8& type)
 {
-    if (event & 0x00000001)
-    { 
+    if (event & 0x00000001) {
         // detach notification
         stream << _T("The device, ") << m_deviceName
                << _T(", has been detached.") << std::endl
@@ -657,21 +625,18 @@ void DeviceMonitor::ProcessDeviceEvent(DWORD event,std::stringstream& stream, ui
                << std::endl;
 
         // remove the detached device from the collection of network adapters
-        std::vector<std::string>::iterator iter = 
+        std::vector<std::string>::iterator iter =
             std::find(m_netAdapters.begin(),m_netAdapters.end(),m_deviceName);
 
-        if (iter != m_netAdapters.end())
-        {
+        if (iter != m_netAdapters.end()) {
             m_netAdapters.erase(iter);
         }
 
         // set type
         type = DT_DETACH;
-    }
-    else
-    {
+    } else {
         // device notification, but not a detach notice
-        stream << _T("Unknown device notification received: Mask:  ") 
+        stream << _T("Unknown device notification received: Mask:  ")
                << std::showbase << std::hex << event << std::endl
                << _T("Disconnecting from device, ") << m_deviceName << _T(".")
                << std::endl << std::endl;
@@ -690,7 +655,9 @@ void DeviceMonitor::ProcessDeviceEvent(DWORD event,std::stringstream& stream, ui
 void DeviceMonitor::CancelDevice()
 {
     // check if service already closed
-    if (!m_isConnected) { return; }
+    if (!m_isConnected) {
+        return;
+    }
 
     std::stringstream stream;
 
@@ -698,13 +665,12 @@ void DeviceMonitor::CancelDevice()
     ::WaitForSingleObject(m_hIsConnectedMutex,INFINITE);
 
     // clear the device name
-	// @@
+    // @@
     //m_deviceName.clear();
-	m_deviceName.erase(m_deviceName.begin(), m_deviceName.end());
+    m_deviceName.erase(m_deviceName.begin(), m_deviceName.end());
 
     // close the detach notification handle
-    if (!QCWWAN_CloseService(m_hDetachHandle))
-    {
+    if (!QCWWAN_CloseService(m_hDetachHandle)) {
         // report error closing handle
         stream << _T("Error: Detach notification handle did not close successfully:") << std::endl
                << std::endl;

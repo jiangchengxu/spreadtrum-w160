@@ -24,9 +24,9 @@
 // --------------------------------------------------------------------------
 // Unique identifiers for DMSGetDeviceMfrMsg types
 // --------------------------------------------------------------------------
-static const uint32 DMSGetDeviceMfrReqUID = 
+static const uint32 DMSGetDeviceMfrReqUID =
     (QMUX_TYPE_DMS << 24 | QMI_CTL_FLAG_TYPE_CMD << 16 | QMI_DMS_GET_DEVICE_MFR_MSG);
-static const uint32 DMSGetDeviceMfrRspUID = 
+static const uint32 DMSGetDeviceMfrRspUID =
     (QMUX_TYPE_DMS << 24 | QMI_CTL_FLAG_TYPE_RSP << 16 | QMI_DMS_GET_DEVICE_MFR_MSG);
 
 // --------------------------------------------------------------------------
@@ -54,7 +54,9 @@ public:
 protected:
     DMSGetDeviceMfrReq();
     virtual bool BuildMsgBuf();
-    virtual bool Unpack(MsgBuf& msgBuf) { return false; }
+    virtual bool Unpack(MsgBuf& msgBuf) {
+        return false;
+    }
 };
 
 
@@ -62,7 +64,7 @@ protected:
 // DMSGetDeviceMfrRsp
 //
 /// This class represents a QMI_DMS_GET_DEVICE_MFR_RESP message which is the
-/// response to a request for the device manufacturer of the service. 
+/// response to a request for the device manufacturer of the service.
 // --------------------------------------------------------------------------
 
 class DMSGetDeviceMfrRsp : public Message
@@ -76,15 +78,25 @@ public:
 
     virtual void Print(std::ostream& stream);
 
-    uint16 GetResult() { return m_result; }
-    uint16 GetError() { return m_error; }
+    uint16 GetResult() {
+        return m_result;
+    }
+    uint16 GetError() {
+        return m_error;
+    }
 
-    std::string GetDeviceManufacturer() { return m_deviceManufacturer; }
+    std::string GetDeviceManufacturer() {
+        return m_deviceManufacturer;
+    }
 
 protected:
     DMSGetDeviceMfrRsp();
-    virtual bool Build(std::string& nameValue) { return false; }
-    virtual bool BuildMsgBuf() { return false; }
+    virtual bool Build(std::string& nameValue) {
+        return false;
+    }
+    virtual bool BuildMsgBuf() {
+        return false;
+    }
     virtual bool Unpack(MsgBuf& msgBuf);
     virtual Uint8UnpackerMap& GetUnpackerMap();
     virtual bool UnpackResultCode(MsgBuf& msgBuf);

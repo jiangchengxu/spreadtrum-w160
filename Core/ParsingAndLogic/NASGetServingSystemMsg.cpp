@@ -45,7 +45,7 @@ static MessageCreator<NASServingSystemInd> IndUint32Creator(NASServingSystemIndU
 //
 /// Constructor for NASGetServingSystemMsg.
 // --------------------------------------------------------------------------
-NASGetServingSystemReq::NASGetServingSystemReq() : 
+NASGetServingSystemReq::NASGetServingSystemReq() :
     Message(QMUX_TYPE_NAS,QMI_NAS_GET_SERVING_SYSTEM_MSG,QMI_CTL_FLAG_TYPE_CMD)
 {}
 
@@ -150,30 +150,26 @@ NASGetServingSystemRsp::~NASGetServingSystemRsp()
 bool NASGetServingSystemRsp::Unpack(MsgBuf& msgBuf)
 {
     // call the base unpack
-    if (!Message::Unpack(msgBuf))
-    {
+    if (!Message::Unpack(msgBuf)) {
         return false;
     }
-    
+
     // validate message length
-    if (m_result != QMI_RESULT_SUCCESS)
-    {
+    if (m_result != QMI_RESULT_SUCCESS) {
         // only result code tlv on failure
-        if (m_length != 7) 
-        {
+        if (m_length != 7) {
             std::stringstream stream;
             stream << _T("Warning: unable to unpack message:") << std::endl
-                << _T("Expected message length is 7 bytes, unpacked length is ")
-                << m_length << _T(" bytes.") << std::endl 
-                << std::endl;
+                   << _T("Expected message length is 7 bytes, unpacked length is ")
+                   << m_length << _T(" bytes.") << std::endl
+                   << std::endl;
             MessageManager::GetInstance().ReportStatus(stream.str(),ST_WARNING);
-            return false; 
+            return false;
         }
     }
 
     // should be at the end of buffer
-    if (!msgBuf.EOB())
-    {
+    if (!msgBuf.EOB()) {
         std::stringstream stream;
         stream << _T("Warning: unable to unpack message:") << std::endl
                << _T("Finished unpacking message but end of buffer not reached")
@@ -196,8 +192,7 @@ bool NASGetServingSystemRsp::Unpack(MsgBuf& msgBuf)
 Message::Uint8UnpackerMap& NASGetServingSystemRsp::GetUnpackerMap()
 {
     static Uint8UnpackerMap UUMap;
-    if (UUMap.empty())
-    {
+    if (UUMap.empty()) {
         bool bSuccess = UUMap.insert(UUPair(RESULT_CODE_TYPE,(Unpacker)UnpackResultCode)).second;
         assert(bSuccess);
         bSuccess = UUMap.insert(UUPair(SERVING_SYSTEM_TYPE,(Unpacker)UnpackServingSystem)).second;
@@ -224,12 +219,11 @@ bool NASGetServingSystemRsp::UnpackResultCode(MsgBuf& msgBuf)
     m_resultCodeType = RESULT_CODE_TYPE;
 
     m_resultCodeLen = msgBuf.GetWord();
-    if (m_resultCodeLen != 4) 
-    {
+    if (m_resultCodeLen != 4) {
         std::stringstream stream;
         stream << _T("Warning: unable to unpack message:") << std::endl
                << _T("Expected Result Code length is 4 bytes, unpacked length is ")
-               << m_resultCodeLen << _T(" bytes.") << std::endl 
+               << m_resultCodeLen << _T(" bytes.") << std::endl
                << std::endl;
         MessageManager::GetInstance().ReportStatus(stream.str(),ST_WARNING);
         return false;
@@ -239,8 +233,7 @@ bool NASGetServingSystemRsp::UnpackResultCode(MsgBuf& msgBuf)
     m_error = msgBuf.GetWord();
 
     // should be at the end of buffer on failure
-    if (m_result == QMI_RESULT_FAILURE && !msgBuf.EOB())
-    {
+    if (m_result == QMI_RESULT_FAILURE && !msgBuf.EOB()) {
         std::stringstream stream;
         stream << _T("Warning: unable to unpack message:") << std::endl
                << _T("Finished unpacking message but end of buffer not reached")
@@ -268,63 +261,57 @@ bool NASGetServingSystemRsp::UnpackServingSystem(MsgBuf& msgBuf)
 
     m_registrationState = msgBuf.GetByte();
     // !!! allow 6, 802.11 (QMI_RADIO_IF_WLAN), not advertised as supported by RmNet yet
-    if (m_registrationState > 4 && m_registrationState != 6)
-    {
+    if (m_registrationState > 4 && m_registrationState != 6) {
         std::stringstream stream;
         stream << _T("Warning: unable to unpack message:") << std::endl
                << _T("Valid Registration State values are 0 - 4 , unpacked value is ")
-               << (uint32)m_registrationState << _T(".") << std::endl 
+               << (uint32)m_registrationState << _T(".") << std::endl
                << std::endl;
         MessageManager::GetInstance().ReportStatus(stream.str(),ST_WARNING);
         return false;
     }
 
     m_csAttachState = msgBuf.GetByte();
-    if (m_csAttachState > 2)
-    {
+    if (m_csAttachState > 2) {
         std::stringstream stream;
         stream << _T("Warning: unable to unpack message:") << std::endl
                << _T("Valid CS Attach State values are 0 - 2 , unpacked value is ")
-               << (uint32)m_csAttachState << _T(".") << std::endl 
+               << (uint32)m_csAttachState << _T(".") << std::endl
                << std::endl;
         MessageManager::GetInstance().ReportStatus(stream.str(),ST_WARNING);
         return false;
     }
 
     m_psAttachState = msgBuf.GetByte();
-    if (m_psAttachState > 2)
-    {
+    if (m_psAttachState > 2) {
         std::stringstream stream;
         stream << _T("Warning: unable to unpack message:") << std::endl
                << _T("Valid PS Attach State values are 0 - 2 , unpacked value is ")
-               << (uint32)m_psAttachState << _T(".") << std::endl 
+               << (uint32)m_psAttachState << _T(".") << std::endl
                << std::endl;
         MessageManager::GetInstance().ReportStatus(stream.str(),ST_WARNING);
         return false;
     }
 
     m_registeredNetwork = msgBuf.GetByte();
-    if (m_registeredNetwork > 2)
-    {
+    if (m_registeredNetwork > 2) {
         std::stringstream stream;
         stream << _T("Warning: unable to unpack message:") << std::endl
                << _T("Valid Registered Network values are 0 - 2 , unpacked value is ")
-               << (uint32)m_registeredNetwork << _T(".") << std::endl 
+               << (uint32)m_registeredNetwork << _T(".") << std::endl
                << std::endl;
         MessageManager::GetInstance().ReportStatus(stream.str(),ST_WARNING);
         return false;
     }
 
     m_numRadioIfs = msgBuf.GetByte();
-    for (int i = 0; i < m_numRadioIfs; i++)
-    {
+    for (int i = 0; i < m_numRadioIfs; i++) {
         m_radioIfs.push_back(msgBuf.GetByte());
-        if (m_radioIfs[i] > 5)
-        {
+        if (m_radioIfs[i] > 5) {
             std::stringstream stream;
             stream << _T("Warning: unable to unpack message:") << std::endl
                    << _T("Valid Radio IF values are 0 - 5 , unpacked value is ")
-                   << (uint32)m_radioIfs[i] << _T(".") << std::endl 
+                   << (uint32)m_radioIfs[i] << _T(".") << std::endl
                    << std::endl;
             MessageManager::GetInstance().ReportStatus(stream.str(),ST_WARNING);
             return false;
@@ -347,12 +334,11 @@ bool NASGetServingSystemRsp::UnpackRoamingIndicator(MsgBuf& msgBuf)
 {
     m_roamingIndicatorType = ROAMING_INDICATOR_TYPE;
     m_roamingIndicatorLen = msgBuf.GetWord();
-    if (m_roamingIndicatorLen != 1) 
-    {
+    if (m_roamingIndicatorLen != 1) {
         std::stringstream stream;
         stream << _T("Warning: unable to unpack message:") << std::endl
                << _T("Expected Roaming Indicator length is 1 bytes, unpacked length is ")
-               << (uint32)m_roamingIndicatorLen << _T(" bytes.") << std::endl 
+               << (uint32)m_roamingIndicatorLen << _T(" bytes.") << std::endl
                << std::endl;
         MessageManager::GetInstance().ReportStatus(stream.str(),ST_WARNING);
         return false;
@@ -377,24 +363,22 @@ bool NASGetServingSystemRsp::UnpackCurrentPlmn(MsgBuf& msgBuf)
     m_currentPlmnLen = msgBuf.GetWord();
 
     m_mobileCountryCode = msgBuf.GetWord();
-    if (m_mobileCountryCode > 999)
-    {
+    if (m_mobileCountryCode > 999) {
         std::stringstream stream;
         stream << _T("Warning: unable to unpack message:") << std::endl
                << _T("Valid Mobile Country Code values are 0 - 999 , unpacked value is ")
-               << (uint32)m_mobileCountryCode << _T(".") << std::endl 
+               << (uint32)m_mobileCountryCode << _T(".") << std::endl
                << std::endl;
         MessageManager::GetInstance().ReportStatus(stream.str(),ST_WARNING);
         return false;
     }
 
     m_mobileNetworkCode = msgBuf.GetWord();
-    if (m_mobileNetworkCode > 999)
-    {
+    if (m_mobileNetworkCode > 999) {
         std::stringstream stream;
         stream << _T("Warning: unable to unpack message:") << std::endl
                << _T("Valid Mobile Network Code values are 0 - 999 , unpacked value is ")
-               << (uint32)m_mobileNetworkCode << _T(".") << std::endl 
+               << (uint32)m_mobileNetworkCode << _T(".") << std::endl
                << std::endl;
         MessageManager::GetInstance().ReportStatus(stream.str(),ST_WARNING);
         return false;
@@ -421,26 +405,22 @@ void NASGetServingSystemRsp::Print(std::ostream& stream)
            << _T("  ResultCode ") << (int)m_result << std::endl
            << _T("  ErrorCode ") << (int)m_error << std::endl;
 
-    if (m_servingSystemType == SERVING_SYSTEM_TYPE)
-    {
+    if (m_servingSystemType == SERVING_SYSTEM_TYPE) {
         stream << _T("  RegistrationState ") << (uint32)m_registrationState << std::endl
                << _T("  CsAttachState ") << (uint32)m_csAttachState << std::endl
                << _T("  PsAttachState ") << (uint32)m_psAttachState << std::endl
                << _T("  RegisteredNetwork ") << (uint32)m_registeredNetwork << std::endl;
 
-        for (int i = 0; i < m_numRadioIfs; i++)
-        {
+        for (int i = 0; i < m_numRadioIfs; i++) {
             stream  << _T("  RadioIf ") << (uint32)m_radioIfs[i] << std::endl;
         }
     }
 
-    if (m_roamingIndicatorType == ROAMING_INDICATOR_TYPE)
-    {
+    if (m_roamingIndicatorType == ROAMING_INDICATOR_TYPE) {
         stream << _T("  RoamingIndicator ") << (uint32)m_roamingIndicator << std::endl;
     }
 
-    if (m_currentPlmnType == CURRENT_PLMN_TYPE)
-    {
+    if (m_currentPlmnType == CURRENT_PLMN_TYPE) {
         stream << _T("  MobileCountryCode ") << (uint32)m_mobileCountryCode << std::endl
                << _T("  MobileNetworkCode ") << (uint32)m_mobileNetworkCode << std::endl
                << _T("  NetworkDesc ") << m_networkDesc << std::endl;
@@ -501,26 +481,23 @@ NASServingSystemInd::~NASServingSystemInd()
 bool NASServingSystemInd::Unpack(MsgBuf& msgBuf)
 {
     // call the base unpack
-    if (!Message::Unpack(msgBuf))
-    {
+    if (!Message::Unpack(msgBuf)) {
         return false;
     }
 
     // mandatory tlv must be present
-    if (m_servingSystemType != SERVING_SYSTEM_TYPE)
-    {
+    if (m_servingSystemType != SERVING_SYSTEM_TYPE) {
         std::stringstream stream;
         stream << _T("Warning: unable to unpack message:") << std::endl
-               << _T("The following mandatory tlv must be present:") << std::endl 
-               << _T("  Serving System") << std::endl 
+               << _T("The following mandatory tlv must be present:") << std::endl
+               << _T("  Serving System") << std::endl
                << std::endl;
         MessageManager::GetInstance().ReportStatus(stream.str(),ST_WARNING);
         return false;
     }
 
     // should be at the end of buffer
-    if (!msgBuf.EOB())
-    {
+    if (!msgBuf.EOB()) {
         std::stringstream stream;
         stream << _T("Warning: unable to unpack message:") << std::endl
                << _T("Finished unpacking message but end of buffer not reached")
@@ -543,8 +520,7 @@ bool NASServingSystemInd::Unpack(MsgBuf& msgBuf)
 Message::Uint8UnpackerMap& NASServingSystemInd::GetUnpackerMap()
 {
     static Uint8UnpackerMap UUMap;
-    if (UUMap.empty())
-    {
+    if (UUMap.empty()) {
         bool bSuccess = UUMap.insert(UUPair(SERVING_SYSTEM_TYPE,(Unpacker)UnpackServingSystem)).second;
         assert(bSuccess);
         bSuccess = UUMap.insert(UUPair(ROAMING_INDICATOR_TYPE,(Unpacker)UnpackRoamingIndicator)).second;
@@ -570,63 +546,57 @@ bool NASServingSystemInd::UnpackServingSystem(MsgBuf& msgBuf)
     m_servingSystemLen = msgBuf.GetWord();
 
     m_registrationState = msgBuf.GetByte();
-    if (m_registrationState > 4)
-    {
+    if (m_registrationState > 4) {
         std::stringstream stream;
         stream << _T("Warning: unable to unpack message:") << std::endl
                << _T("Valid Registration State values are 0 - 4 , unpacked value is ")
-               << (uint32)m_registrationState << _T(".") << std::endl 
+               << (uint32)m_registrationState << _T(".") << std::endl
                << std::endl;
         MessageManager::GetInstance().ReportStatus(stream.str(),ST_WARNING);
         return false;
     }
 
     m_csAttachState = msgBuf.GetByte();
-    if (m_csAttachState > 2)
-    {
+    if (m_csAttachState > 2) {
         std::stringstream stream;
         stream << _T("Warning: unable to unpack message:") << std::endl
                << _T("Valid CS Attach State values are 0 - 2 , unpacked value is ")
-               << (uint32)m_csAttachState << _T(".") << std::endl 
+               << (uint32)m_csAttachState << _T(".") << std::endl
                << std::endl;
         MessageManager::GetInstance().ReportStatus(stream.str(),ST_WARNING);
         return false;
     }
 
     m_psAttachState = msgBuf.GetByte();
-    if (m_psAttachState > 2)
-    {
+    if (m_psAttachState > 2) {
         std::stringstream stream;
         stream << _T("Warning: unable to unpack message:") << std::endl
                << _T("Valid PS Attach State values are 0 - 2 , unpacked value is ")
-               << (uint32)m_psAttachState << _T(".") << std::endl 
+               << (uint32)m_psAttachState << _T(".") << std::endl
                << std::endl;
         MessageManager::GetInstance().ReportStatus(stream.str(),ST_WARNING);
         return false;
     }
 
     m_registeredNetwork = msgBuf.GetByte();
-    if (m_registeredNetwork > 2)
-    {
+    if (m_registeredNetwork > 2) {
         std::stringstream stream;
         stream << _T("Warning: unable to unpack message:") << std::endl
                << _T("Valid Registered Network values are 0 - 2 , unpacked value is ")
-               << (uint32)m_registeredNetwork << _T(".") << std::endl 
+               << (uint32)m_registeredNetwork << _T(".") << std::endl
                << std::endl;
         MessageManager::GetInstance().ReportStatus(stream.str(),ST_WARNING);
         return false;
     }
 
     m_numRadioIfs = msgBuf.GetByte();
-    for (int i = 0; i < m_numRadioIfs; i++)
-    {
+    for (int i = 0; i < m_numRadioIfs; i++) {
         m_radioIfs.push_back(msgBuf.GetByte());
-        if (m_radioIfs[i] > 5)
-        {
+        if (m_radioIfs[i] > 5) {
             std::stringstream stream;
             stream << _T("Warning: unable to unpack message:") << std::endl
                    << _T("Valid Radio IF values are 0 - 5 , unpacked value is ")
-                   << (uint32)m_radioIfs[i] << _T(".") << std::endl 
+                   << (uint32)m_radioIfs[i] << _T(".") << std::endl
                    << std::endl;
             MessageManager::GetInstance().ReportStatus(stream.str(),ST_WARNING);
             return false;
@@ -649,12 +619,11 @@ bool NASServingSystemInd::UnpackRoamingIndicator(MsgBuf& msgBuf)
 {
     m_roamingIndicatorType = ROAMING_INDICATOR_TYPE;
     m_roamingIndicatorLen = msgBuf.GetWord();
-    if (m_roamingIndicatorLen != 1) 
-    {
+    if (m_roamingIndicatorLen != 1) {
         std::stringstream stream;
         stream << _T("Warning: unable to unpack message:") << std::endl
                << _T("Expected Roaming Indicator length is 1 bytes, unpacked length is ")
-               << (uint32)m_roamingIndicatorLen << _T(" bytes.") << std::endl 
+               << (uint32)m_roamingIndicatorLen << _T(" bytes.") << std::endl
                << std::endl;
         MessageManager::GetInstance().ReportStatus(stream.str(),ST_WARNING);
         return false;
@@ -679,24 +648,22 @@ bool NASServingSystemInd::UnpackCurrentPlmn(MsgBuf& msgBuf)
     m_currentPlmnLen = msgBuf.GetWord();
 
     m_mobileCountryCode = msgBuf.GetWord();
-    if (m_mobileCountryCode > 999)
-    {
+    if (m_mobileCountryCode > 999) {
         std::stringstream stream;
         stream << _T("Warning: unable to unpack message:") << std::endl
                << _T("Valid Mobile Country Code values are 0 - 999 , unpacked value is ")
-               << (uint32)m_mobileCountryCode << _T(".") << std::endl 
+               << (uint32)m_mobileCountryCode << _T(".") << std::endl
                << std::endl;
         MessageManager::GetInstance().ReportStatus(stream.str(),ST_WARNING);
         return false;
     }
 
     m_mobileNetworkCode = msgBuf.GetWord();
-    if (m_mobileNetworkCode > 999)
-    {
+    if (m_mobileNetworkCode > 999) {
         std::stringstream stream;
         stream << _T("Warning: unable to unpack message:") << std::endl
                << _T("Valid Mobile Network Code values are 0 - 999 , unpacked value is ")
-               << (uint32)m_mobileNetworkCode << _T(".") << std::endl 
+               << (uint32)m_mobileNetworkCode << _T(".") << std::endl
                << std::endl;
         MessageManager::GetInstance().ReportStatus(stream.str(),ST_WARNING);
         return false;
@@ -721,26 +688,22 @@ void NASServingSystemInd::Print(std::ostream& stream)
     stream << "QMI_NAS_SERVING_SYSTEM_IND" << std::endl
            << _T("{") << std::endl;
 
-    if (m_servingSystemType == SERVING_SYSTEM_TYPE)
-    {
+    if (m_servingSystemType == SERVING_SYSTEM_TYPE) {
         stream << _T("  RegistrationState ") << (uint32)m_registrationState << std::endl
                << _T("  CsAttachState ") << (uint32)m_csAttachState << std::endl
                << _T("  PsAttachState ") << (uint32)m_psAttachState << std::endl
                << _T("  RegisteredNetwork ") << (uint32)m_registeredNetwork << std::endl;
 
-        for (int i = 0; i < m_numRadioIfs; i++)
-        {
+        for (int i = 0; i < m_numRadioIfs; i++) {
             stream  << _T("  RadioIf ") << (uint32)m_radioIfs[i] << std::endl;
         }
     }
 
-    if (m_roamingIndicatorType == ROAMING_INDICATOR_TYPE)
-    {
+    if (m_roamingIndicatorType == ROAMING_INDICATOR_TYPE) {
         stream << _T("  RoamingIndicator ") << (uint32)m_roamingIndicator << std::endl;
     }
 
-    if (m_currentPlmnType == CURRENT_PLMN_TYPE)
-    {
+    if (m_currentPlmnType == CURRENT_PLMN_TYPE) {
         stream << _T("  MobileCountryCode ") << (uint32)m_mobileCountryCode << std::endl
                << _T("  MobileNetworkCode ") << (uint32)m_mobileNetworkCode << std::endl
                << _T("  NetworkDesc ") << m_networkDesc << std::endl;

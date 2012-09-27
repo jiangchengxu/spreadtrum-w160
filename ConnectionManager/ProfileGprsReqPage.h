@@ -28,8 +28,8 @@
 // ProfileGprsReqPage
 //
 /// The ProfileGprsReqPage class represents the controls under the gprs req
-/// qos tab of the profile sheet. Input from the user and output to the user 
-/// under the general tab is controlled by this class. 
+/// qos tab of the profile sheet. Input from the user and output to the user
+/// under the general tab is controlled by this class.
 // --------------------------------------------------------------------------
 
 class ProfileGprsReqPage : public ProfileSheetPage
@@ -41,8 +41,8 @@ public:
     virtual std::string BuildTlvString();
 
 protected:
-	virtual void DoDataExchange(CDataExchange* pDX);
-	virtual BOOL OnInitDialog();
+    virtual void DoDataExchange(CDataExchange* pDX);
+    virtual BOOL OnInitDialog();
     virtual void DefaultInit();
     virtual void ProfileInit();
 
@@ -56,8 +56,8 @@ protected:
     virtual int MapPeakVI(int value);
     virtual int MapMeanIV(int index);
     virtual int MapMeanVI(int value);
-    
-	DECLARE_MESSAGE_MAP()
+
+    DECLARE_MESSAGE_MAP()
 
 private:
     WDSGetDefaultSettingsRspRCP m_defaultSettingsRspRCP;

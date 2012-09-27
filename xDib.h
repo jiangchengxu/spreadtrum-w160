@@ -24,7 +24,7 @@
 #define BFT_BITMAP 0x4d42   // 'BM'
 #define BFT_CURSOR 0x5450   // 'PT'
 
-class CxDib  
+class CxDib
 {
 public:
     CxDib();
@@ -36,11 +36,21 @@ public:
     BOOL IsValid();
     long GetSize();
     BYTE* GetBits();
-    DWORD GetHeight() {return m_bi.biHeight;};
-    DWORD GetWidth() {return m_bi.biWidth;};
-    DWORD GetLineWidth() {return m_LineWidth;};
-    WORD GetNumColors() {return m_nColors;};
-    WORD GetBitCount() {return m_bi.biBitCount;};
+    DWORD GetHeight() {
+        return m_bi.biHeight;
+    };
+    DWORD GetWidth() {
+        return m_bi.biWidth;
+    };
+    DWORD GetLineWidth() {
+        return m_LineWidth;
+    };
+    WORD GetNumColors() {
+        return m_nColors;
+    };
+    WORD GetBitCount() {
+        return m_bi.biBitCount;
+    };
     WORD GetPaletteSize();
     BYTE GetPixelIndex(long x,long y);
     RGBQUAD GetPaletteIndex(BYTE idx);

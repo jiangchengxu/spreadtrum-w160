@@ -11,13 +11,13 @@
 
 #include "SkinButton.h"
 
-class CSkinResource  
+class CSkinResource
 {
     CSkinButtonResource m_btnres;
 public:
     CSkinResource();
     BOOL    LoadSkin( const char *skinfile );
-    
+
     virtual ~CSkinResource();
 
 };

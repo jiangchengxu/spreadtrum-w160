@@ -53,13 +53,15 @@ MsgBuf::MsgBuf(MsgBuf& msgBuf) : m_index(0)
 // --------------------------------------------------------------------------
 MsgBuf::~MsgBuf()
 {
-    if (!m_buf == NULL) { delete [] m_buf; }
+    if (!m_buf == NULL) {
+        delete [] m_buf;
+    }
 }
 
 // --------------------------------------------------------------------------
 // GetByte
 //
-/// Return the byte at the current buffer index location, increment the 
+/// Return the byte at the current buffer index location, increment the
 /// index by a byte.
 ///
 /// @returns uint8 - byte value at the current buffer index location.
@@ -76,7 +78,7 @@ uint8 MsgBuf::GetByte()
 // --------------------------------------------------------------------------
 // GetWord
 //
-/// Return the word at the current buffer index location, increment the 
+/// Return the word at the current buffer index location, increment the
 /// index by 2 bytes.
 ///
 /// @returns uint16 - word value at the current buffer index location.
@@ -93,7 +95,7 @@ uint16 MsgBuf::GetWord()
 // --------------------------------------------------------------------------
 // GetDWord
 //
-/// Return the double word at the current buffer index location, increment the 
+/// Return the double word at the current buffer index location, increment the
 /// index by 4 bytes.
 ///
 /// @returns uint32 - double word value at the current buffer index location.
@@ -120,7 +122,9 @@ uint32 MsgBuf::GetDWord()
 void MsgBuf::GetCopy(void* dest, uint32 count)
 {
     // if no bytes to copy, do nothing
-    if (count == 0) { return; }
+    if (count == 0) {
+        return;
+    }
 
     assert(m_index < m_size);
     assert(m_index + count <= m_size);
@@ -177,7 +181,7 @@ void MsgBuf::PutByte(uint8 value)
 // --------------------------------------------------------------------------
 // PutWord
 //
-/// Add a given word to the buffer at the current index location, increment 
+/// Add a given word to the buffer at the current index location, increment
 /// the index by 2 bytes.
 ///
 /// @param value - word value to add to the buffer.
@@ -219,7 +223,9 @@ void MsgBuf::PutDWord(uint32 value)
 void MsgBuf::PutCopy(const void* src, uint32 count)
 {
     // if no bytes to copy, do nothing
-    if (count == 0) { return; }
+    if (count == 0) {
+        return;
+    }
 
     assert(m_index < m_size);
     assert(m_index + count <= m_size);
@@ -237,16 +243,12 @@ void MsgBuf::PutCopy(const void* src, uint32 count)
 void MsgBuf::Print(std::ostream& stream)
 {
     stream << _T("Buffer (") << (int)m_size << _T(" bytes): ");
-    for (unsigned int i = 0; i < m_size; i++)
-    {
-        if (i % 16 == 0)
-        {
+    for (unsigned int i = 0; i < m_size; i++) {
+        if (i % 16 == 0) {
             stream.width(4);
             stream.fill('0');
             stream << std::endl << std::dec << i << _T(": ");
-        }
-        else if (i % 8 == 0)
-        {
+        } else if (i % 8 == 0) {
             stream << "   ";
         }
 
@@ -269,7 +271,9 @@ void MsgBuf::Print(std::ostream& stream)
 // --------------------------------------------------------------------------
 MsgBuf& MsgBuf::operator=(MsgBuf& msgBuf)
 {
-    if (this == &msgBuf) { return *this; }
+    if (this == &msgBuf) {
+        return *this;
+    }
 
     m_size = msgBuf.GetSize();
     m_index = 0;
@@ -278,7 +282,9 @@ MsgBuf& MsgBuf::operator=(MsgBuf& msgBuf)
     uint8* oldBuf = m_buf;
     m_buf = new uint8[m_size];
     memcpy(&m_buf[m_index],msgBuf.GetBuffer(),m_size);
-    if (!m_buf == NULL) { delete [] m_buf; }
+    if (!m_buf == NULL) {
+        delete [] m_buf;
+    }
 
     return *this;
 }
@@ -294,9 +300,15 @@ MsgBuf& MsgBuf::operator=(MsgBuf& msgBuf)
 // --------------------------------------------------------------------------
 bool MsgBuf::operator==(MsgBuf& msgBuf)
 {
-    if (m_size != msgBuf.GetSize()) { return false; }
-    if (m_svcType != msgBuf.GetSvcType()) { return false; }
-    if (memcmp(m_buf,msgBuf.GetBuffer(),m_size) != 0) { return false; }
+    if (m_size != msgBuf.GetSize()) {
+        return false;
+    }
+    if (m_svcType != msgBuf.GetSvcType()) {
+        return false;
+    }
+    if (memcmp(m_buf,msgBuf.GetBuffer(),m_size) != 0) {
+        return false;
+    }
 
     return true;
 }

@@ -48,7 +48,7 @@ static MessageCreator<DMSEventReportInd> IndUint32Creator(DMSEventReportIndUID);
 // --------------------------------------------------------------------------
 const uint8 DMSSetEventReportReq::POWER_STATE_REPORTING_MODE_TYPE = 0x10;
 const uint8 DMSSetEventReportReq::BATTERY_LVL_LIMITS_TYPE = 0x11;
-DMSSetEventReportReq::DMSSetEventReportReq() : 
+DMSSetEventReportReq::DMSSetEventReportReq() :
     Message(QMUX_TYPE_DMS,QMI_DMS_SET_EVENT_REPORT_MSG,QMI_CTL_FLAG_TYPE_CMD),
     m_powerStateReportModeType(TLV_TYPE_INVALID),
     m_powerStateReportModeLen(0),
@@ -79,18 +79,16 @@ DMSSetEventReportReq::~DMSSetEventReportReq()
 bool DMSSetEventReportReq::Build(std::string& nameValue)
 {
     // call the base build function
-    if (Message::Build(nameValue))
-    {
+    if (Message::Build(nameValue)) {
         // at least one optional tlv must be present
         if (m_powerStateReportModeType != POWER_STATE_REPORTING_MODE_TYPE &&
-            m_batteryLvlLimitsType != BATTERY_LVL_LIMITS_TYPE)
-        {
+                m_batteryLvlLimitsType != BATTERY_LVL_LIMITS_TYPE) {
             std::stringstream stream;
             stream << _T("Warning: unable to unpack message:") << std::endl
-                << _T("At least one of the following optional tlv's must be present:") << std::endl 
-                << _T("  Power State Reporting Mode") << std::endl
-                << _T("  Battery Level Report Limits") << std::endl
-                << std::endl;
+                   << _T("At least one of the following optional tlv's must be present:") << std::endl
+                   << _T("  Power State Reporting Mode") << std::endl
+                   << _T("  Battery Level Report Limits") << std::endl
+                   << std::endl;
             MessageManager::GetInstance().ReportStatus(stream.str(),ST_WARNING);
             return false;
         }
@@ -109,8 +107,7 @@ bool DMSSetEventReportReq::Build(std::string& nameValue)
 Message::StringBuilderMap& DMSSetEventReportReq::GetBuilderMap()
 {
     static StringBuilderMap SBMap;
-    if (SBMap.empty())
-    {
+    if (SBMap.empty()) {
         bool bSuccess = SBMap.insert(SBPair("PowerStateReportMode",(Builder)BuildPowerStateReportMode)).second;
         assert(bSuccess);
         bSuccess = SBMap.insert(SBPair("BatteryLvlLowerLimit",(Builder)BuildBatteryLvlLowerLimit)).second;
@@ -137,8 +134,7 @@ bool DMSSetEventReportReq::BuildPowerStateReportMode(std::string& value)
     sscanf(value.c_str(), "%i", &num);
 
     // validate entry
-    if (num != 0 && num != 1)
-    {
+    if (num != 0 && num != 1) {
         // report invalid profile type
         std::stringstream stream;
         stream << _T("Warning: unable to build message:") << std::endl
@@ -178,8 +174,7 @@ bool DMSSetEventReportReq::BuildBatteryLvlLowerLimit(std::string& value)
     sscanf(value.c_str(), "%i", &num);
 
     // validate entry
-    if (num < 1 || num > 100)
-    {
+    if (num < 1 || num > 100) {
         // report invalid profile type
         std::stringstream stream;
         stream << _T("Warning: unable to build message:") << std::endl
@@ -215,8 +210,7 @@ bool DMSSetEventReportReq::BuildBatteryLvlLowerLimit(std::string& value)
 bool DMSSetEventReportReq::BuildBatteryLvlUpperLimit(std::string& value)
 {
     // verify expected previous attribute
-    if (m_prevName.compare("BatteryLvlLowerLimit") != 0)
-    {
+    if (m_prevName.compare("BatteryLvlLowerLimit") != 0) {
         ReportInvalidSequence("BatteryLvlLowerLimit");
         return false;
     }
@@ -226,8 +220,7 @@ bool DMSSetEventReportReq::BuildBatteryLvlUpperLimit(std::string& value)
     sscanf(value.c_str(), "%i", &num);
 
     // validate entry
-    if (num < 1 || num > 100)
-    {
+    if (num < 1 || num > 100) {
         // report invalid profile type
         std::stringstream stream;
         stream << _T("Warning: unable to build message:") << std::endl
@@ -269,16 +262,14 @@ bool DMSSetEventReportReq::BuildMsgBuf()
     m_pMsgBuf->PutWord(m_length);
 
     // optional tlv, power state reporting mode
-    if (m_powerStateReportModeType == POWER_STATE_REPORTING_MODE_TYPE)
-    {
+    if (m_powerStateReportModeType == POWER_STATE_REPORTING_MODE_TYPE) {
         m_pMsgBuf->PutByte(m_powerStateReportModeType);
         m_pMsgBuf->PutWord(m_powerStateReportModeLen);
         m_pMsgBuf->PutByte(m_powerStateReportMode);
     }
 
     // optional tlv, battery level report limits
-    if (m_batteryLvlLimitsType == BATTERY_LVL_LIMITS_TYPE)
-    {
+    if (m_batteryLvlLimitsType == BATTERY_LVL_LIMITS_TYPE) {
         m_pMsgBuf->PutByte(m_batteryLvlLimitsType);
         m_pMsgBuf->PutWord(m_batteryLvlLimitsLen);
         m_pMsgBuf->PutByte(m_batteryLvlLowerLimit);
@@ -300,14 +291,12 @@ void DMSSetEventReportReq::Print(std::ostream& stream)
 {
     stream << "QMI_DMS_SET_EVENT_REPORT_REQ" << std::endl
            << _T("{") << std::endl;
-    
-    if (m_powerStateReportModeType == POWER_STATE_REPORTING_MODE_TYPE)
-    {
+
+    if (m_powerStateReportModeType == POWER_STATE_REPORTING_MODE_TYPE) {
         stream << _T("  PowerStateReportMode ") << (int)m_powerStateReportMode << std::endl;
     }
 
-    if (m_batteryLvlLimitsType == BATTERY_LVL_LIMITS_TYPE)
-    {
+    if (m_batteryLvlLimitsType == BATTERY_LVL_LIMITS_TYPE) {
         stream << _T("  BatteryLvlLowerLimit ") << (int)m_batteryLvlLowerLimit << std::endl
                << _T("  BatteryLvlUpperLimit ") << (int)m_batteryLvlUpperLimit << std::endl;
     }
@@ -325,7 +314,7 @@ void DMSSetEventReportReq::Print(std::ostream& stream)
 //
 /// Constructor for DMSSetEventReportRsp.
 // --------------------------------------------------------------------------
-    const uint8 DMSSetEventReportRsp::RESULT_CODE_TYPE = 0x02;
+const uint8 DMSSetEventReportRsp::RESULT_CODE_TYPE = 0x02;
 DMSSetEventReportRsp::DMSSetEventReportRsp() :
     Message(QMUX_TYPE_DMS,QMI_DMS_SET_EVENT_REPORT_MSG,QMI_CTL_FLAG_TYPE_RSP),
     m_resultCodeType(TLV_TYPE_INVALID),
@@ -354,21 +343,19 @@ DMSSetEventReportRsp::~DMSSetEventReportRsp()
 bool DMSSetEventReportRsp::Unpack(MsgBuf& msgBuf)
 {
     // call the base unpack
-    if (!Message::Unpack(msgBuf))
-    {
+    if (!Message::Unpack(msgBuf)) {
         return false;
     }
-    
+
     // validate message length
-    if (m_length != 7) 
-    {
+    if (m_length != 7) {
         std::stringstream stream;
         stream << _T("Warning: unable to unpack message:") << std::endl
                << _T("Expected message length is 7 bytes, unpacked length is ")
-               << m_length << _T(" bytes.") << std::endl 
+               << m_length << _T(" bytes.") << std::endl
                << std::endl;
         MessageManager::GetInstance().ReportStatus(stream.str(),ST_WARNING);
-        return false; 
+        return false;
     }
 
     return true;
@@ -385,8 +372,7 @@ bool DMSSetEventReportRsp::Unpack(MsgBuf& msgBuf)
 Message::Uint8UnpackerMap& DMSSetEventReportRsp::GetUnpackerMap()
 {
     static Uint8UnpackerMap UUMap;
-    if (UUMap.empty())
-    {
+    if (UUMap.empty()) {
         bool bSuccess = UUMap.insert(UUPair(RESULT_CODE_TYPE,(Unpacker)UnpackResultCode)).second;
         assert(bSuccess);
     }
@@ -407,12 +393,11 @@ bool DMSSetEventReportRsp::UnpackResultCode(MsgBuf& msgBuf)
     m_resultCodeType = RESULT_CODE_TYPE;
 
     m_resultCodeLen = msgBuf.GetWord();
-    if (m_resultCodeLen != 4) 
-    {
+    if (m_resultCodeLen != 4) {
         std::stringstream stream;
         stream << _T("Warning: unable to unpack message:") << std::endl
                << _T("Expected Result Code length is 4 bytes, unpacked length is ")
-               << m_resultCodeLen << _T(" bytes.") << std::endl 
+               << m_resultCodeLen << _T(" bytes.") << std::endl
                << std::endl;
         MessageManager::GetInstance().ReportStatus(stream.str(),ST_WARNING);
         return false;
@@ -421,8 +406,7 @@ bool DMSSetEventReportRsp::UnpackResultCode(MsgBuf& msgBuf)
     m_result = msgBuf.GetWord();
     m_error = msgBuf.GetWord();
 
-    if (!msgBuf.EOB())
-    {
+    if (!msgBuf.EOB()) {
         std::stringstream stream;
         stream << _T("Warning: unable to unpack message:") << std::endl
                << _T("Finished unpacking message but end of buffer not reached")
@@ -489,33 +473,30 @@ DMSEventReportInd::~DMSEventReportInd()
 bool DMSEventReportInd::Unpack(MsgBuf& msgBuf)
 {
     // call the base unpack
-    if (!Message::Unpack(msgBuf))
-    {
+    if (!Message::Unpack(msgBuf)) {
         return false;
     }
 
     // at least one optional tlv must be present
-    if (m_powerStateType != POWER_STATE_TYPE)
-    {
+    if (m_powerStateType != POWER_STATE_TYPE) {
         std::stringstream stream;
         stream << _T("Warning: unable to unpack message:") << std::endl
-               << _T("At least one of the following optional tlv's must be present:") << std::endl 
-               << _T("  Power State") << std::endl 
+               << _T("At least one of the following optional tlv's must be present:") << std::endl
+               << _T("  Power State") << std::endl
                << std::endl;
         MessageManager::GetInstance().ReportStatus(stream.str(),ST_WARNING);
         return false;
     }
 
     // validate message length
-    if (m_length != 5) 
-    {
+    if (m_length != 5) {
         std::stringstream stream;
         stream << _T("Warning: unable to unpack message:") << std::endl
                << _T("Expected message length is 5 bytes, unpacked length is ")
-               << m_length << _T(" bytes.") << std::endl 
+               << m_length << _T(" bytes.") << std::endl
                << std::endl;
         MessageManager::GetInstance().ReportStatus(stream.str(),ST_WARNING);
-        return false; 
+        return false;
     }
 
     return true;
@@ -532,8 +513,7 @@ bool DMSEventReportInd::Unpack(MsgBuf& msgBuf)
 Message::Uint8UnpackerMap& DMSEventReportInd::GetUnpackerMap()
 {
     static Uint8UnpackerMap UUMap;
-    if (UUMap.empty())
-    {
+    if (UUMap.empty()) {
         bool bSuccess = UUMap.insert(UUPair(POWER_STATE_TYPE,(Unpacker)UnpackPowerState)).second;
         assert(bSuccess);
     }
@@ -554,20 +534,18 @@ bool DMSEventReportInd::UnpackPowerState(MsgBuf& msgBuf)
     m_powerStateType = POWER_STATE_TYPE;
 
     m_powerStateLen = msgBuf.GetWord();
-    if (m_powerStateLen != 2) 
-    {
+    if (m_powerStateLen != 2) {
         std::stringstream stream;
         stream << _T("Warning: unable to unpack message:") << std::endl
                << _T("Expected Power State length is 2 bytes, unpacked length is ")
-               << m_powerStateLen << _T(" bytes.") << std::endl 
+               << m_powerStateLen << _T(" bytes.") << std::endl
                << std::endl;
         MessageManager::GetInstance().ReportStatus(stream.str(),ST_WARNING);
         return false;
     }
 
     m_powerStatus = msgBuf.GetByte();
-    if (m_powerStatus > 15)
-    {
+    if (m_powerStatus > 15) {
         std::stringstream stream;
         stream << _T("Warning: unable to unpack message:") << std::endl
                << _T("Unexpected use of 4 most significant bits in Power Status byte.")
@@ -577,12 +555,11 @@ bool DMSEventReportInd::UnpackPowerState(MsgBuf& msgBuf)
     }
 
     m_batteryLvl = msgBuf.GetByte();
-    if (m_batteryLvl > 100)
-    {
+    if (m_batteryLvl > 100) {
         std::stringstream stream;
         stream << _T("Warning: unable to unpack message:") << std::endl
                << _T("Valid Battery Level values are 0 - 100 , unpacked value is ")
-               << m_batteryLvl << _T(" .") << std::endl 
+               << m_batteryLvl << _T(" .") << std::endl
                << std::endl;
         MessageManager::GetInstance().ReportStatus(stream.str(),ST_WARNING);
         return false;
@@ -603,8 +580,7 @@ void DMSEventReportInd::Print(std::ostream& stream)
     stream << "QMI_DMS_EVENT_REPORT_IND" << std::endl
            << _T("{") << std::endl;
 
-    if (m_powerStateType != TLV_TYPE_INVALID)
-    {
+    if (m_powerStateType != TLV_TYPE_INVALID) {
         stream << _T("  PowerStatus ") << (int)m_powerStatus << std::endl
                << _T("  BatteryLvl ") << (int)m_batteryLvl << std::endl;
     }

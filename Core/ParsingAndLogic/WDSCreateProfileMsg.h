@@ -23,12 +23,12 @@
 // Unique identifiers for WDSCreateProfileMsg types
 // --------------------------------------------------------------------------
 static const uint32 WDSCreateProfileReqUID =
-    (QMUX_TYPE_WDS << 24 | 
-     QMI_CTL_FLAG_TYPE_CMD << 16 | 
+    (QMUX_TYPE_WDS << 24 |
+     QMI_CTL_FLAG_TYPE_CMD << 16 |
      QMI_WDS_CREATE_PROFILE_MSG);
 static const uint32 WDSCreateProfileRspUID =
-    (QMUX_TYPE_WDS << 24 | 
-     QMI_CTL_FLAG_TYPE_RSP << 16 | 
+    (QMUX_TYPE_WDS << 24 |
+     QMI_CTL_FLAG_TYPE_RSP << 16 |
      QMI_WDS_CREATE_PROFILE_MSG);
 
 // --------------------------------------------------------------------------
@@ -46,7 +46,7 @@ typedef TRCPointer<WDSCreateProfileRsp> WDSCreateProfileRspRCP;
 /// This class represents a QMI_WDS_CREATE_PROFILE_REQ message which creates
 /// a configured profile with specified settings.
 // --------------------------------------------------------------------------
-    // define tlv types
+// define tlv types
 
 class WDSCreateProfileReq : public Message
 {
@@ -68,7 +68,7 @@ class WDSCreateProfileReq : public Message
 
 public:
     ~WDSCreateProfileReq();
-    
+
     virtual void Print(std::ostream& stream);
 
 protected:
@@ -120,7 +120,9 @@ protected:
     virtual bool BuildAuthPref(std::string& value);
     virtual bool BuildIpv4AddrPref(std::string& value);
     virtual bool BuildMsgBuf();
-    virtual bool Unpack(MsgBuf& msgBuf) { return false; }
+    virtual bool Unpack(MsgBuf& msgBuf) {
+        return false;
+    }
 
 private:
     // PROFILE_TYPE, mandatory tlv 0x01
@@ -243,15 +245,27 @@ public:
 
     virtual void Print(std::ostream& stream);
 
-    virtual uint16 GetResult() { return m_result; }
-    virtual uint16 GetError() { return m_error; }
-    virtual uint8 GetProfileType() { return m_profileType; }
-    virtual uint8 GetProfileIndex() { return m_profileIndex; }
+    virtual uint16 GetResult() {
+        return m_result;
+    }
+    virtual uint16 GetError() {
+        return m_error;
+    }
+    virtual uint8 GetProfileType() {
+        return m_profileType;
+    }
+    virtual uint8 GetProfileIndex() {
+        return m_profileIndex;
+    }
 
 protected:
     WDSCreateProfileRsp();
-    virtual bool Build(std::string& nameValue) { return false; }
-    virtual bool BuildMsgBuf() { return false; }
+    virtual bool Build(std::string& nameValue) {
+        return false;
+    }
+    virtual bool BuildMsgBuf() {
+        return false;
+    }
     virtual bool Unpack(MsgBuf& msgBuf);
     virtual Uint8UnpackerMap& GetUnpackerMap();
     virtual bool UnpackResultCode(MsgBuf& msgBuf);

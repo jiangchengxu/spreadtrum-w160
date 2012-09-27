@@ -24,9 +24,9 @@
 // --------------------------------------------------------------------------
 // Unique identifiers for DMSGetDeviceModelIdMsg types
 // --------------------------------------------------------------------------
-static const uint32 DMSGetDeviceModelIdReqUID = 
+static const uint32 DMSGetDeviceModelIdReqUID =
     (QMUX_TYPE_DMS << 24 | QMI_CTL_FLAG_TYPE_CMD << 16 | QMI_DMS_GET_DEVICE_MODEL_ID_MSG);
-static const uint32 DMSGetDeviceModelIdRspUID = 
+static const uint32 DMSGetDeviceModelIdRspUID =
     (QMUX_TYPE_DMS << 24 | QMI_CTL_FLAG_TYPE_RSP << 16 | QMI_DMS_GET_DEVICE_MODEL_ID_MSG);
 
 // --------------------------------------------------------------------------
@@ -40,7 +40,7 @@ typedef TRCPointer<DMSGetDeviceModelIdRsp> DMSGetDeviceModelIdRspRCP;
 // --------------------------------------------------------------------------
 // DMSGetDeviceModelIdReq
 //
-/// This class represents a QMI_DMS_GET_DEVICE_MODEL_ID_REQ message which 
+/// This class represents a QMI_DMS_GET_DEVICE_MODEL_ID_REQ message which
 /// requests the device model id.
 // --------------------------------------------------------------------------
 class DMSGetDeviceModelIdReq : public Message
@@ -53,7 +53,9 @@ public:
 protected:
     DMSGetDeviceModelIdReq();
     virtual bool BuildMsgBuf();
-    virtual bool Unpack(MsgBuf& msgBuf) { return false; }
+    virtual bool Unpack(MsgBuf& msgBuf) {
+        return false;
+    }
 };
 
 
@@ -61,7 +63,7 @@ protected:
 // DMSGetDeviceModelIdRsp
 //
 /// This class represents a QMI_DMS_GET_DEVICE_MODEL_ID_RESP message which is the
-/// response to a request for the the device model id. 
+/// response to a request for the the device model id.
 // --------------------------------------------------------------------------
 
 class DMSGetDeviceModelIdRsp : public Message
@@ -75,15 +77,25 @@ public:
 
     virtual void Print(std::ostream& stream);
 
-    uint16 GetResult() { return m_result; }
-    uint16 GetError() { return m_error; }
+    uint16 GetResult() {
+        return m_result;
+    }
+    uint16 GetError() {
+        return m_error;
+    }
 
-    std::string GetDeviceModelId() { return m_deviceModelId; }
+    std::string GetDeviceModelId() {
+        return m_deviceModelId;
+    }
 
 protected:
     DMSGetDeviceModelIdRsp();
-    virtual bool Build(std::string& nameValue) { return false; }
-    virtual bool BuildMsgBuf() { return false; }
+    virtual bool Build(std::string& nameValue) {
+        return false;
+    }
+    virtual bool BuildMsgBuf() {
+        return false;
+    }
     virtual bool Unpack(MsgBuf& msgBuf);
     virtual Uint8UnpackerMap& GetUnpackerMap();
     virtual bool UnpackResultCode(MsgBuf& msgBuf);

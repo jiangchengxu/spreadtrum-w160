@@ -31,7 +31,7 @@ public:
 // Overrides
     // ClassWizard generated virtual function overrides
     //{{AFX_VIRTUAL(CSmsReadDlg)
-    protected:
+protected:
     virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
     //}}AFX_VIRTUAL
 
@@ -47,15 +47,15 @@ protected:
     afx_msg void OnButtonPrev();
     afx_msg void OnButtonNext();
     afx_msg void OnButtonLast();
-	afx_msg void OnUpdateEditSmsContent();
+    afx_msg void OnUpdateEditSmsContent();
     //}}AFX_MSG
     afx_msg LRESULT OnUpdateReadSms(WPARAM wParam, LPARAM lParam = 0);
     DECLARE_MESSAGE_MAP()
 private:
     //获得SMS总条数
-	WORD GetTotalSmsNum(EnSmsType type, EnLocFilter locFilter);
+    WORD GetTotalSmsNum(EnSmsType type, EnLocFilter locFilter);
     //从索引获得SMS记录
-	StSmsRecord GetTotalSmsRecordFromDspIndex(EnSmsType type, EnLocFilter locFilter, WORD dspIndex);
+    StSmsRecord GetTotalSmsRecordFromDspIndex(EnSmsType type, EnLocFilter locFilter, WORD dspIndex);
     //从索引编辑SMS记录
     void EditTotalSmsRecordFromDspIndex(EnSmsType type, EnLocFilter locFilter, WORD dspIndex, const StSmsRecord &record);
     //更新SMS显示
@@ -69,7 +69,7 @@ private:
     CSmsData  *m_pSmsData; //SMS数据指针
     CPbData      *m_pPbData; //PBM数据指针
     EnSmsType m_DispFilter; //SMS类型
-	EnLocFilter m_LocFilter; //SMS位置
+    EnLocFilter m_LocFilter; //SMS位置
     WORD      m_nCurIndex; //当前索引
     StDspEntityType (*m_pDspEntity)[LOCFILTER_MAX][SMS_TOTAL_RECORD_MAX]; //显示索引表
 };

@@ -24,9 +24,9 @@
 // --------------------------------------------------------------------------
 // Unique identifiers for DMSGetDeviceCapMsg types
 // --------------------------------------------------------------------------
-static const uint32 DMSGetDeviceCapReqUID = 
+static const uint32 DMSGetDeviceCapReqUID =
     (QMUX_TYPE_DMS << 24 | QMI_CTL_FLAG_TYPE_CMD << 16 | QMI_DMS_GET_DEVICE_CAP_MSG);
-static const uint32 DMSGetDeviceCapRspUID = 
+static const uint32 DMSGetDeviceCapRspUID =
     (QMUX_TYPE_DMS << 24 | QMI_CTL_FLAG_TYPE_RSP << 16 | QMI_DMS_GET_DEVICE_CAP_MSG);
 
 // --------------------------------------------------------------------------
@@ -54,7 +54,9 @@ public:
 protected:
     DMSGetDeviceCapReq();
     virtual bool BuildMsgBuf();
-    virtual bool Unpack(MsgBuf& msgBuf) { return false; }
+    virtual bool Unpack(MsgBuf& msgBuf) {
+        return false;
+    }
 };
 
 
@@ -62,7 +64,7 @@ protected:
 // DMSGetDeviceCapRsp
 //
 /// This class represents a QMI_DMS_GET_DEVICE_CAP_RESP message which is the
-/// response to a request for the static device capabilities across all 
+/// response to a request for the static device capabilities across all
 /// services.
 // --------------------------------------------------------------------------
 
@@ -77,18 +79,34 @@ public:
 
     virtual void Print(std::ostream& stream);
 
-    uint16 GetResult() { return m_result; }
-    uint16 GetError() { return m_error; }
+    uint16 GetResult() {
+        return m_result;
+    }
+    uint16 GetError() {
+        return m_error;
+    }
 
-    uint32 GetMaxTxChannelRate() { return m_maxTxChannelRate; }
-    uint32 GetMaxRxChannelRate() { return m_maxRxChannelRate; }
-    uint8 GetServiceCapability() { return m_serviceCapability; }
-    uint8 GetSimCapability() { return m_simCapability; }
+    uint32 GetMaxTxChannelRate() {
+        return m_maxTxChannelRate;
+    }
+    uint32 GetMaxRxChannelRate() {
+        return m_maxRxChannelRate;
+    }
+    uint8 GetServiceCapability() {
+        return m_serviceCapability;
+    }
+    uint8 GetSimCapability() {
+        return m_simCapability;
+    }
 
 protected:
     DMSGetDeviceCapRsp();
-    virtual bool Build(std::string& nameValue) { return false; }
-    virtual bool BuildMsgBuf() { return false; }
+    virtual bool Build(std::string& nameValue) {
+        return false;
+    }
+    virtual bool BuildMsgBuf() {
+        return false;
+    }
     virtual bool Unpack(MsgBuf& msgBuf);
     virtual Uint8UnpackerMap& GetUnpackerMap();
     virtual bool UnpackResultCode(MsgBuf& msgBuf);

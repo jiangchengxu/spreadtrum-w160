@@ -24,12 +24,12 @@ class CBaseDialog : public CDialog
 {
 public:
     int m_nBkTag;
-	CString CmGetAppPath();
+    CString CmGetAppPath();
     DECLARE_DYNAMIC(CBaseDialog)
 // Construction
 public:
     void RegisterForNetworkNotify(UINT nEventID);
-    
+
     CBaseDialog(UINT nIDTemplate, CWnd* pParent = NULL);    // standard constructor
 
     virtual ~CBaseDialog();
@@ -43,18 +43,18 @@ public:
 
     //为底层回调的分发函数，凡是需要处理返回数据或者消息、通知的子类都必须重载此函数
     virtual int DealwithResponseProc(LPARAM lParam,   // application-defined value
-                                    WPARAM wParam   // application-defined value
+                                     WPARAM wParam   // application-defined value
                                     );
-	bool CompareChar(const TCHAR* chSource);  //用于判断电话号码中是否有非法字符。added by ljl
-	bool CompareCharAnsi(const char* chSource);
+    bool CompareChar(const TCHAR* chSource);  //用于判断电话号码中是否有非法字符。added by ljl
+    bool CompareCharAnsi(const char* chSource);
 public:
-	BOOL SetSkin(int nSkinType);
+    BOOL SetSkin(int nSkinType);
     CRect m_OriginRect;    //原始尺寸
-    BOOL m_bstatus;     
-	static bool m_bWinSize;//为真表示主窗口为默认大小，为假表示当前窗口为最大化显示
-	CRect m_MaxRect;
-	CRect g_MainDlgRect; //主窗口的最大化尺寸
-	CRect g_MainDlgMinRect; //主窗口的默认的尺寸	
+    BOOL m_bstatus;
+    static bool m_bWinSize;//为真表示主窗口为默认大小，为假表示当前窗口为最大化显示
+    CRect m_MaxRect;
+    CRect g_MainDlgRect; //主窗口的最大化尺寸
+    CRect g_MainDlgMinRect; //主窗口的默认的尺寸
     CRect g_TabDlgRect;  //TAB窗口的最大化尺寸
 
 // Dialog Data
@@ -64,9 +64,9 @@ public:
 
     // ClassWizard generated virtual function overrides
     //{{AFX_VIRTUAL(CBaseDialog)
-    public:
-    virtual BOOL PreTranslateMessage(MSG* pMsg);    
-    protected:
+public:
+    virtual BOOL PreTranslateMessage(MSG* pMsg);
+protected:
     virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
     //}}AFX_VIRTUAL
 
@@ -74,7 +74,7 @@ public:
 protected:
     HICON                    m_hIcon;
     CBitmap                    m_bmpBackground;            //背景图片
-    
+
     BOOL                    m_blUseFlashEffect;            //是否启用启动效果
     BOOL                    m_blUseFlashEffectFinished;    //启动效果展示是否完毕
 
@@ -83,17 +83,17 @@ protected:
     int                        m_nHeight;
     int                        m_dx;
     int                        m_dy;
-    
+
     CSkinWin                m_skinWin;        //skin win
     BOOL                    m_bFirst;        //first time call
-	BOOL					m_bPreMsgBox;
+    BOOL					m_bPreMsgBox;
     CObList                    m_wndList;
-    
+
     CSkinButtonResource        m_btnres;        //skin button resource
-    
+
     //CXInfoTip                m_Tip;
     HICON                    m_hIconInfo;
-    
+
     //设置窗口的皮肤
     BOOL SetSkin(CString file);
     //BOOL SetSkin(CString file,int mlev);
@@ -106,15 +106,15 @@ protected:
     virtual BOOL OnInitDialog();
     afx_msg void OnSysCommand(UINT nID, LPARAM lParam);
     afx_msg void OnDestroy();
-    afx_msg HCURSOR OnQueryDragIcon();    
+    afx_msg HCURSOR OnQueryDragIcon();
     afx_msg void OnTimer(UINT nIDEvent);
     afx_msg BOOL OnEraseBkgnd(CDC* pDC);
     afx_msg void OnPaint();
     //}}AFX_MSG
     afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
-    DECLARE_MESSAGE_MAP() 
+    DECLARE_MESSAGE_MAP()
 private:
-	CBrush m_brBkgnd;
+    CBrush m_brBkgnd;
 };
 
 //{{AFX_INSERT_LOCATION}}

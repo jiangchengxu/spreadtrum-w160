@@ -12,8 +12,8 @@
 class CConnProfile : public CObject
 {
 public:
-	WORD GetDefaultConnProfileIndex();
-	BOOL IsExistent(LPCTSTR pEntryName);
+    WORD GetDefaultConnProfileIndex();
+    BOOL IsExistent(LPCTSTR pEntryName);
     BOOL EditConnProfile(WORD nIndex, const StConnProfile &profile);
     BOOL AddConnProfile(const StConnProfile &profile);
     DECLARE_SERIAL(CConnProfile)
@@ -26,7 +26,7 @@ public:
 
     //返回指定位置的一条记录
     StConnProfile ReadConnProfile(WORD nIndex);
-    
+
     //删除一条记录
     BOOL DeleteConnProfile(WORD nIndex);
 
@@ -36,11 +36,11 @@ public:
     //返回当前记录数目
     WORD GetConnNum() const;
 
-	//返回当前Ndis记录数目
-	WORD GetNdisConnNum() const;
+    //返回当前Ndis记录数目
+    WORD GetNdisConnNum() const;
 
-	////返回当前Ras记录数目
-	WORD GetRasConnNum() const;
+    ////返回当前Ras记录数目
+    WORD GetRasConnNum() const;
 
     //判断当前记录数目为空
     BOOL IsEmpty() const;
@@ -55,8 +55,8 @@ protected:
     //将数据写入文件
     BOOL WriteDataToFile();
 
-	//解密加密
-	CString DeorEncrypt(const TCHAR* strData);
+    //解密加密
+    CString DeorEncrypt(const TCHAR* strData);
 
 private:
     CString m_strConnProfileFileName;                    //连接文件名

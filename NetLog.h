@@ -31,22 +31,22 @@ public:
     virtual int DealwithResponseProc(LPARAM lParam, WPARAM wParam);
 // Dialog Data
     //{{AFX_DATA(CNetLog)
-	enum { IDD = IDD_DIALOG_CALL_LOG };
-	CLogListCtrl	m_lstCallLog;
+    enum { IDD = IDD_DIALOG_CALL_LOG };
+    CLogListCtrl	m_lstCallLog;
     CString    m_strDataOut;
     CString    m_strDataIn;
     CString    m_strDataInOut;
     CString    m_strDuration;
-	CString    m_strGPRSDataINOut;
-	CString    m_strGPRSDuration;
-	CString    m_strUMTSDataInOut;
-	CString    m_strUMTSDuration;
-	//}}AFX_DATA
+    CString    m_strGPRSDataINOut;
+    CString    m_strGPRSDuration;
+    CString    m_strUMTSDataInOut;
+    CString    m_strUMTSDuration;
+    //}}AFX_DATA
 
 // Overrides
     // ClassWizard generated virtual function overrides
     //{{AFX_VIRTUAL(CNetLog)
-    protected:
+protected:
     virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
     //}}AFX_VIRTUAL
 
@@ -59,7 +59,7 @@ protected:
     afx_msg void OnButtonDelall();
     virtual BOOL OnInitDialog();
     afx_msg void OnButtonExport();
-	//}}AFX_MSG
+    //}}AFX_MSG
     afx_msg LRESULT OnMenuItemClick(WPARAM wParam, LPARAM lParam);
     DECLARE_MESSAGE_MAP()
 };

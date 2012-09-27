@@ -42,7 +42,7 @@ static MessageCreator<WDSGetProfileListRsp> RspUint32Creator(WDSGetProfileListRs
 //
 /// Constructor for WDSGetProfileListReq.
 // --------------------------------------------------------------------------
-WDSGetProfileListReq::WDSGetProfileListReq() : 
+WDSGetProfileListReq::WDSGetProfileListReq() :
     Message(QMUX_TYPE_WDS,QMI_WDS_GET_PROFILE_LIST_MSG,QMI_CTL_FLAG_TYPE_CMD)
 {}
 
@@ -121,8 +121,8 @@ WDSGetProfileListRsp::WDSGetProfileListRsp() :
 WDSGetProfileListRsp::~WDSGetProfileListRsp()
 {
     std::for_each(
-        m_profileListInstances.begin(), 
-        m_profileListInstances.end(), 
+        m_profileListInstances.begin(),
+        m_profileListInstances.end(),
         DeleteObjectFunctor());
 }
 
@@ -138,37 +138,31 @@ WDSGetProfileListRsp::~WDSGetProfileListRsp()
 bool WDSGetProfileListRsp::Unpack(MsgBuf& msgBuf)
 {
     // call the base unpack
-    if (!Message::Unpack(msgBuf))
-    {
+    if (!Message::Unpack(msgBuf)) {
         return false;
     }
-    
+
     // validate message length, mandatory tlvs
-    if (m_result == QMI_RESULT_SUCCESS)
-    {
+    if (m_result == QMI_RESULT_SUCCESS) {
         // mandatory tlvs, profile list type required but length is variable
-        if (m_profileListType != PROFILE_LIST_TYPE)
-        {
+        if (m_profileListType != PROFILE_LIST_TYPE) {
             std::stringstream stream;
             stream << _T("Warning: unable to unpack message:") << std::endl
-                   << _T("Mandatory TLV, Profile List, is not present.") 
+                   << _T("Mandatory TLV, Profile List, is not present.")
                    << std::endl << std::endl;
             MessageManager::GetInstance().ReportStatus(stream.str(),ST_WARNING);
-            return false; 
+            return false;
         }
-    }
-    else
-    {
+    } else {
         // only result code tlv on failure
-        if (m_length != 7) 
-        {
+        if (m_length != 7) {
             std::stringstream stream;
             stream << _T("Warning: unable to unpack message:") << std::endl
-                << _T("Expected message length is 7 bytes, unpacked length is ")
-                << m_length << _T(" bytes.") << std::endl 
-                << std::endl;
+                   << _T("Expected message length is 7 bytes, unpacked length is ")
+                   << m_length << _T(" bytes.") << std::endl
+                   << std::endl;
             MessageManager::GetInstance().ReportStatus(stream.str(),ST_WARNING);
-            return false; 
+            return false;
         }
     }
 
@@ -186,8 +180,7 @@ bool WDSGetProfileListRsp::Unpack(MsgBuf& msgBuf)
 Message::Uint8UnpackerMap& WDSGetProfileListRsp::GetUnpackerMap()
 {
     static Uint8UnpackerMap UUMap;
-    if (UUMap.empty())
-    {
+    if (UUMap.empty()) {
         bool bSuccess = UUMap.insert(UUPair(RESULT_CODE_TYPE,(Unpacker)UnpackResultCode)).second;
         assert(bSuccess);
         bSuccess = UUMap.insert(UUPair(PROFILE_LIST_TYPE,(Unpacker)UnpackProfileList)).second;
@@ -210,12 +203,11 @@ bool WDSGetProfileListRsp::UnpackResultCode(MsgBuf& msgBuf)
     m_resultCodeType = RESULT_CODE_TYPE;
 
     m_resultCodeLen = msgBuf.GetWord();
-    if (m_resultCodeLen != 4) 
-    {
+    if (m_resultCodeLen != 4) {
         std::stringstream stream;
         stream << _T("Warning: unable to unpack message:") << std::endl
                << _T("Expected Result Code length is 4 bytes, unpacked length is ")
-               << m_resultCodeLen << _T(" bytes.") << std::endl 
+               << m_resultCodeLen << _T(" bytes.") << std::endl
                << std::endl;
         MessageManager::GetInstance().ReportStatus(stream.str(),ST_WARNING);
         return false;
@@ -244,8 +236,7 @@ bool WDSGetProfileListRsp::UnpackProfileList(MsgBuf& msgBuf)
     m_numInstances = msgBuf.GetByte();
 
     // loop to unpack profile list instances
-    for (int i = 0; i < m_numInstances; i++)
-    {
+    for (int i = 0; i < m_numInstances; i++) {
         uint8 profileType = msgBuf.GetByte();
         uint8 profileIndex = msgBuf.GetByte();
         uint8 profileNameLen = msgBuf.GetByte();
@@ -254,12 +245,11 @@ bool WDSGetProfileListRsp::UnpackProfileList(MsgBuf& msgBuf)
         msgBuf.GetCopy(&profileName[0],profileNameLen);
 
         m_profileListInstances.push_back(new ProfileListInstance(
-            profileType,profileIndex,profileNameLen,profileName));
+                                             profileType,profileIndex,profileNameLen,profileName));
     }
 
     // all tlvs are mandatory, so we should be at end of buffer
-    if (!msgBuf.EOB())
-    {
+    if (!msgBuf.EOB()) {
         std::stringstream stream;
         stream << _T("Warning: unable to unpack message:") << std::endl
                << _T("Finished unpacking message but end of buffer not reached")
@@ -285,11 +275,9 @@ void WDSGetProfileListRsp::Print(std::ostream& stream)
            << _T("  ResultCode ") << (int)m_result << std::endl
            << _T("  ErrorCode ") << (int)m_error << std::endl;
 
-    if (m_profileListType == PROFILE_LIST_TYPE)
-    {
+    if (m_profileListType == PROFILE_LIST_TYPE) {
         // loop to print profile instances
-        for (int i = 0; i < m_numInstances; i++)
-        {
+        for (int i = 0; i < m_numInstances; i++) {
             stream << "  ProfileType " << (uint32)m_profileListInstances[i]->GetProfileType() << std::endl
                    << "  ProfileIndex " << (uint32)m_profileListInstances[i]->GetProfileIndex() << std::endl
                    << "  ProfileNameLen " << (uint32)m_profileListInstances[i]->GetProfileNameLen() << std::endl

@@ -12,7 +12,7 @@
 // CTabedDialog dialog
 #include "ShadeButtonST.h"
 #include "BtnST.h"
-class CTabedDialog: public CBaseDialog 
+class CTabedDialog: public CBaseDialog
 {
     DECLARE_DYNAMIC(CTabedDialog)
 // Construction
@@ -21,7 +21,7 @@ public:
     CShadeButtonST* GetButton();
     CShadeButtonST* m_pButton;
     CTabedDialog(UINT nIDTemplate, CWnd* pParent = NULL);    // standard constructor
-    
+
     virtual ~CTabedDialog();
     virtual BOOL CanSwitchMe();
 // Dialog Data
@@ -31,7 +31,7 @@ public:
 
     // ClassWizard generated virtual function overrides
     //{{AFX_VIRTUAL(CTabedDialog)
-    protected:
+protected:
     virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
     //}}AFX_VIRTUAL
 
@@ -44,8 +44,8 @@ protected:
     virtual void OnOK();
     virtual void OnCancel();
     afx_msg void OnDestroy();
-    afx_msg HCURSOR OnQueryDragIcon();    
-    //}}AFX_MSG    
+    afx_msg HCURSOR OnQueryDragIcon();
+    //}}AFX_MSG
     DECLARE_MESSAGE_MAP()
 };
 

@@ -23,12 +23,12 @@
 // Unique identifiers for WDSStopNetworkInterfaceMsg types
 // --------------------------------------------------------------------------
 static const uint32 WDSStopNetworkInterfaceReqUID =
-    (QMUX_TYPE_WDS << 24 | 
-    QMI_CTL_FLAG_TYPE_CMD << 16 | 
-    QMI_WDS_STOP_NETWORK_INTERFACE_MSG);
+    (QMUX_TYPE_WDS << 24 |
+     QMI_CTL_FLAG_TYPE_CMD << 16 |
+     QMI_WDS_STOP_NETWORK_INTERFACE_MSG);
 static const uint32 WDSStopNetworkInterfaceRspUID =
-    (QMUX_TYPE_WDS << 24 | 
-     QMI_CTL_FLAG_TYPE_RSP << 16 | 
+    (QMUX_TYPE_WDS << 24 |
+     QMI_CTL_FLAG_TYPE_RSP << 16 |
      QMI_WDS_STOP_NETWORK_INTERFACE_MSG);
 
 // --------------------------------------------------------------------------
@@ -45,11 +45,11 @@ typedef TRCPointer<WDSStopNetworkInterfaceRsp> WDSStopNetworkInterfaceRspRCP;
 //
 /// This class represents a QMI_WDS_STOP_NETWORK_INTERFACE_REQ message which
 /// releases the WWAN packet data connection unless other control points are
-/// still using it (i.e. have previously called 
+/// still using it (i.e. have previously called
 /// QMI_WDS_START_NETWORK_INTERFACE).
 ///
 /// Session will be closed (deactivating the packet data session on the air
-/// interface) when all control points have called 
+/// interface) when all control points have called
 /// QMI_WDS_STOP_NETWORK_INTERFACE on the interface.
 // --------------------------------------------------------------------------
 
@@ -60,7 +60,7 @@ class WDSStopNetworkInterfaceReq : public Message
 
 public:
     ~WDSStopNetworkInterfaceReq();
-    
+
     virtual void Print(std::ostream& stream);
 
 protected:
@@ -69,7 +69,9 @@ protected:
     virtual StringBuilderMap& GetBuilderMap();
     virtual bool BuildPktDataHandle(std::string& value);
     virtual bool BuildMsgBuf();
-    virtual bool Unpack(MsgBuf& msgBuf) { return false; }
+    virtual bool Unpack(MsgBuf& msgBuf) {
+        return false;
+    }
 
 private:
     // Packet Data Handle, mandatory tlv 0x01
@@ -82,7 +84,7 @@ private:
 // --------------------------------------------------------------------------
 // WDSStopNetworkInterfaceRsp
 //
-/// This class represents a QMI_WDS_STOP_NETWORK_INTERFACE_RESP message 
+/// This class represents a QMI_WDS_STOP_NETWORK_INTERFACE_RESP message
 /// which is the response to the stop network interface request.
 // --------------------------------------------------------------------------
 
@@ -96,13 +98,21 @@ public:
 
     virtual void Print(std::ostream& stream);
 
-    virtual uint16 GetResult() { return m_result; }
-    virtual uint16 GetError() { return m_error; }
+    virtual uint16 GetResult() {
+        return m_result;
+    }
+    virtual uint16 GetError() {
+        return m_error;
+    }
 
 protected:
     WDSStopNetworkInterfaceRsp();
-    virtual bool Build(std::string& nameValue) { return false; }
-    virtual bool BuildMsgBuf() { return false; }
+    virtual bool Build(std::string& nameValue) {
+        return false;
+    }
+    virtual bool BuildMsgBuf() {
+        return false;
+    }
     virtual bool Unpack(MsgBuf& msgBuf);
     virtual Uint8UnpackerMap& GetUnpackerMap();
     virtual bool UnpackResultCode(MsgBuf& msgBuf);

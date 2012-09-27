@@ -11,47 +11,47 @@
 
 class CSetupCallDlg : public CBaseDialog
 {
-	// Construction
+    // Construction
 public:
 
-	CSetupCallDlg(CWnd* pParent = NULL);   // standard constructor
-	virtual ~CSetupCallDlg();
+    CSetupCallDlg(CWnd* pParent = NULL);   // standard constructor
+    virtual ~CSetupCallDlg();
 
-	BOOL AtSndPrivacy();
-	static void AtRespPrivacy(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL], WORD wStrNum);
+    BOOL AtSndPrivacy();
+    static void AtRespPrivacy(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL], WORD wStrNum);
 
-	BOOL AtSndSetPrivacy(int nPrivacy);
-	static void AtRespSetPrivacy(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL], WORD wStrNum);
+    BOOL AtSndSetPrivacy(int nPrivacy);
+    static void AtRespSetPrivacy(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL], WORD wStrNum);
 
-	HANDLE m_hCallSetupEvt;
-	int m_nPrivacy;
-	int m_nPrivacySet;
-	
-	// Dialog Data
-	//{{AFX_DATA(CSmsTemplateDlg)
-	enum { IDD = IDD_DIALOG_SETUP_CALL };
-	// NOTE: the ClassWizard will add data members here
-	//}}AFX_DATA
-	
-	
-	// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(CSmsTemplateDlg)
+    HANDLE m_hCallSetupEvt;
+    int m_nPrivacy;
+    int m_nPrivacySet;
+
+    // Dialog Data
+    //{{AFX_DATA(CSmsTemplateDlg)
+    enum { IDD = IDD_DIALOG_SETUP_CALL };
+    // NOTE: the ClassWizard will add data members here
+    //}}AFX_DATA
+
+
+    // Overrides
+    // ClassWizard generated virtual function overrides
+    //{{AFX_VIRTUAL(CSmsTemplateDlg)
 protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	//}}AFX_VIRTUAL
-	
-	// Implementation
+    virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+    //}}AFX_VIRTUAL
+
+    // Implementation
 protected:
-	
-	// Generated message map functions
-	//{{AFX_MSG(CSmsTemplateDlg)
-	virtual void OnOK();
-	virtual BOOL OnInitDialog();
-	afx_msg void OnRadioPrivacyOn();
-	afx_msg void OnRadioPrivacyOff();
-	//}}AFX_MSG
-	DECLARE_MESSAGE_MAP()
+
+    // Generated message map functions
+    //{{AFX_MSG(CSmsTemplateDlg)
+    virtual void OnOK();
+    virtual BOOL OnInitDialog();
+    afx_msg void OnRadioPrivacyOn();
+    afx_msg void OnRadioPrivacyOff();
+    //}}AFX_MSG
+    DECLARE_MESSAGE_MAP()
 };
 
 //{{AFX_INSERT_LOCATION}}

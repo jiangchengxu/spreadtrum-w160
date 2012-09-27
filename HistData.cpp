@@ -8,7 +8,7 @@ IMPLEMENT_SERIAL(CHistData, CObject, 0)
 // CHistData
 CHistData::CHistData()
 {
-	m_strHistFileName = "HistData.dat";
+    m_strHistFileName = "HistData.dat";
     memset(m_HistData, 0x00, sizeof(m_HistData));
 }
 
@@ -23,19 +23,19 @@ const TCHAR* CHistData::GetRawNum(const TCHAR *pNum)
     if(!memcmp(pNum, _T("+86"), 3))
         return &pNum[3];
     else
-	    return pNum;
+        return pNum;
 }
 
 int CHistData::SearchList(EnHistKind kind, LPCTSTR pNumber)
 {
     ASSERT(kind >= HISTKIND_MIS && kind < HISTKIND_MAX);
     ASSERT(pNumber != NULL && wcslen(pNumber) > 0);
-    
+
     int nIndex = SEARCH_NODATA;
-    
+
     for(int i = 0; i < m_HistData[kind].nCount; i++)
         if(wcscmp(GetRawNum(m_HistData[kind].ItemData[i].szNumber),
-            GetRawNum(pNumber)) == 0)
+                  GetRawNum(pNumber)) == 0)
             break;
 
     if(i < m_HistData[kind].nCount)
@@ -60,7 +60,7 @@ stHistItem CHistData::GetItem(EnHistKind kind, USHORT npos)
 BOOL CHistData::IsEmpty(EnHistKind kind)
 {
     ASSERT(kind >= HISTKIND_MIS && kind <= HISTKIND_MAX);
-    
+
     if(kind == HISTKIND_MAX)
         return ((m_HistData[HISTKIND_MIS].nCount + m_HistData[HISTKIND_RCV].nCount
                  + m_HistData[HISTKIND_SND].nCount) == 0);
@@ -71,11 +71,11 @@ BOOL CHistData::IsEmpty(EnHistKind kind)
 BOOL CHistData::IsFull(EnHistKind kind)
 {
     ASSERT(kind >= HISTKIND_MIS && kind <= HISTKIND_MAX);
-    
+
     if(kind == HISTKIND_MAX)
         return ((m_HistData[HISTKIND_MIS].nCount == HIST_ITEM_MAX)
-                 && (m_HistData[HISTKIND_RCV].nCount == HIST_ITEM_MAX)
-                 && (m_HistData[HISTKIND_SND].nCount == HIST_ITEM_MAX));
+                && (m_HistData[HISTKIND_RCV].nCount == HIST_ITEM_MAX)
+                && (m_HistData[HISTKIND_SND].nCount == HIST_ITEM_MAX));
     else
         return (m_HistData[kind].nCount == HIST_ITEM_MAX);
 }
@@ -87,8 +87,7 @@ void CHistData::SaveItem(EnHistKind kind, stHistItem &item)
     BYTE   nSeq = 1;
     int    nIndex = SEARCH_NODATA;
 
-    if((nIndex = SearchList(kind, item.szNumber)) != SEARCH_NODATA)
-    {
+    if((nIndex = SearchList(kind, item.szNumber)) != SEARCH_NODATA) {
         nSeq = GetItem(kind, nIndex).nSeqNum + 1;
         RemoveItem(kind, nIndex);
     }
@@ -104,7 +103,7 @@ void CHistData::SaveItem(EnHistKind kind, stHistItem &item)
             break;
     for(j = m_HistData[kind].nCount; j > i; j--)
         m_HistData[kind].ItemData[j] = m_HistData[kind].ItemData[j-1];
-    
+
     m_HistData[kind].ItemData[i] = item;
     m_HistData[kind].nCount++;
     SaveFile();
@@ -142,11 +141,10 @@ void CHistData::LoadHistData()
 
 BOOL CHistData::LoadFile()
 {
-	CFile        file;
+    CFile        file;
     CFileStatus  filestatus;
 
-    if(!CFile::GetStatus(m_strHistFileName, filestatus))
-    {
+    if(!CFile::GetStatus(m_strHistFileName, filestatus)) {
         file.Open(m_strHistFileName, CFile::modeCreate | CFile::modeWrite);
         file.Close();
         return FALSE;
@@ -173,26 +171,26 @@ BOOL CHistData::LoadFile()
 
 void CHistData::SaveFile()
 {
-	CFile        file;
+    CFile        file;
     CFileStatus  filestatus;
 
     if(CFile::GetStatus(m_strHistFileName, filestatus))
         SetFileAttributes(m_strHistFileName, FILE_ATTRIBUTE_ARCHIVE);
-	
+
     file.Open(m_strHistFileName, CFile::modeCreate | CFile::modeWrite);
 
 #ifdef FEATURE_OBJECT_SERIAL
-        CArchive arStore(&file,CArchive::store);
-        Serialize(arStore);
-        arStore.Close();
-#else	
-	USHORT i, j;
-	for(i = HISTKIND_MIS; i < HISTKIND_MAX; i++)
-		file.Write(&m_HistData[i].nCount, sizeof(USHORT));
-	
-	for(i = HISTKIND_MIS; i < HISTKIND_MAX; i++)
-		for(j = 0; j < m_HistData[i].nCount; j++)
-			file.Write(&m_HistData[i].ItemData[j], sizeof(stHistItem));
+    CArchive arStore(&file,CArchive::store);
+    Serialize(arStore);
+    arStore.Close();
+#else
+    USHORT i, j;
+    for(i = HISTKIND_MIS; i < HISTKIND_MAX; i++)
+        file.Write(&m_HistData[i].nCount, sizeof(USHORT));
+
+    for(i = HISTKIND_MIS; i < HISTKIND_MAX; i++)
+        for(j = 0; j < m_HistData[i].nCount; j++)
+            file.Write(&m_HistData[i].ItemData[j], sizeof(stHistItem));
 #endif
     file.Close();
 }
@@ -206,33 +204,33 @@ void CHistData::Serialize(CArchive& ar)
 
     CObject::Serialize(ar);
     pHistData = (stHistList*)m_HistData;
-    
-    if(ar.IsStoring()){
-        for(i = HISTKIND_MIS; i < HISTKIND_MAX; i++){
+
+    if(ar.IsStoring()) {
+        for(i = HISTKIND_MIS; i < HISTKIND_MAX; i++) {
             ar<<pHistData[i].nCount;
         }
-        for(i = HISTKIND_MIS; i < HISTKIND_MAX; i++){
-            for(j = 0; j < pHistData[i].nCount; j++){
+        for(i = HISTKIND_MIS; i < HISTKIND_MAX; i++) {
+            for(j = 0; j < pHistData[i].nCount; j++) {
                 ar<<pHistData[i].ItemData[j].nSeqNum;
                 for(k = 0; k < PB_NUM_MAX; k++)
                     ar<<pHistData[i].ItemData[j].strNumber[k];
                 ar<<pHistData[i].ItemData[j].cTimeStamp
-                <<pHistData[i].ItemData[j].cDuration;
+                  <<pHistData[i].ItemData[j].cDuration;
             }
         }
-    }else{
-        for(i = HISTKIND_MIS; i < HISTKIND_MAX; i++){
+    } else {
+        for(i = HISTKIND_MIS; i < HISTKIND_MAX; i++) {
             ar>>pHistData[i].nCount;
         }
-        for(i = HISTKIND_MIS; i < HISTKIND_MAX; i++){
-            for(j = 0; j < pHistData[i].nCount; j++){
+        for(i = HISTKIND_MIS; i < HISTKIND_MAX; i++) {
+            for(j = 0; j < pHistData[i].nCount; j++) {
                 ar>>pHistData[i].ItemData[j].nSeqNum;
                 for(k = 0; k < PB_NUM_MAX; k++)
                     ar>>pHistData[i].ItemData[j].strNumber[k];
                 ar>>pHistData[i].ItemData[j].cTimeStamp
-                >>pHistData[i].ItemData[j].cDuration;
+                  >>pHistData[i].ItemData[j].cDuration;
             }
         }
-    } 
+    }
 }
 #endif

@@ -58,7 +58,7 @@ ProfileGprsReqPage::ProfileGprsReqPage(WDSGetProfileSettingsRspRCP rspRCP) :
 // --------------------------------------------------------------------------
 void ProfileGprsReqPage::DoDataExchange(CDataExchange* pDX)
 {
-	CDialog::DoDataExchange(pDX);
+    CDialog::DoDataExchange(pDX);
     DDX_Control(pDX, IDC_PROFILE_REQ_PRECEDENCE_CLASS_COMBO, m_precedenceClassCombo);
     DDX_Control(pDX, IDC_PROFILE_REQ_DELAY_CLASS_COMBO, m_delayClassCombo);
     DDX_Control(pDX, IDC_PROFILE_REQ_RELIABILITY_CLASS_COMBO, m_reliabilityClassCombo);
@@ -135,8 +135,12 @@ BOOL ProfileGprsReqPage::OnInitDialog()
     m_meanThruClassCombo.AddString(_T("Best Effort"));
 
     // initialize member data
-    if (!m_defaultSettingsRspRCP.IsNull()) { DefaultInit(); }
-    if (!m_profileSettingsRspRCP.IsNull()) { ProfileInit(); }
+    if (!m_defaultSettingsRspRCP.IsNull()) {
+        DefaultInit();
+    }
+    if (!m_profileSettingsRspRCP.IsNull()) {
+        ProfileInit();
+    }
 
     // set initial values for the controls on this page
     m_precedenceClassCombo.SetCurSel(MapPrecedenceVI(m_initPrecedenceClass));
@@ -145,7 +149,7 @@ BOOL ProfileGprsReqPage::OnInitDialog()
     m_peakThruClassCombo.SetCurSel(MapPeakVI(m_initPeakThruClass));
     m_meanThruClassCombo.SetCurSel(MapMeanVI(m_initMeanThruClass));
 
-	return TRUE;  // return TRUE  unless you set the focus to a control
+    return TRUE;  // return TRUE  unless you set the focus to a control
 }
 
 // --------------------------------------------------------------------------
@@ -155,8 +159,7 @@ BOOL ProfileGprsReqPage::OnInitDialog()
 // --------------------------------------------------------------------------
 void ProfileGprsReqPage::DefaultInit()
 {
-    if (m_defaultSettingsRspRCP->IsGprsRequestedQos())
-    {
+    if (m_defaultSettingsRspRCP->IsGprsRequestedQos()) {
         m_initPrecedenceClass = m_defaultSettingsRspRCP->GetReqPrecedenceClass();
         m_initDelayClass = m_defaultSettingsRspRCP->GetReqDelayClass();
         m_initReliabilityClass = m_defaultSettingsRspRCP->GetReqReliabilityClass();
@@ -172,8 +175,7 @@ void ProfileGprsReqPage::DefaultInit()
 // --------------------------------------------------------------------------
 void ProfileGprsReqPage::ProfileInit()
 {
-    if (m_profileSettingsRspRCP->IsGprsRequestedQos())
-    {
+    if (m_profileSettingsRspRCP->IsGprsRequestedQos()) {
         m_initPrecedenceClass = m_profileSettingsRspRCP->GetReqPrecedenceClass();
         m_initDelayClass = m_profileSettingsRspRCP->GetReqDelayClass();
         m_initReliabilityClass = m_profileSettingsRspRCP->GetReqReliabilityClass();
@@ -202,11 +204,10 @@ std::string ProfileGprsReqPage::BuildTlvString()
 
     // add tlv to stream if any value has changed
     if (precedenceClass != m_initPrecedenceClass ||
-        delayClass != m_initDelayClass ||
-        reliabilityClass != m_initReliabilityClass ||
-        peakThruClass != m_initPeakThruClass ||
-        meanThruClass != m_initMeanThruClass)
-    {
+            delayClass != m_initDelayClass ||
+            reliabilityClass != m_initReliabilityClass ||
+            peakThruClass != m_initPeakThruClass ||
+            meanThruClass != m_initMeanThruClass) {
         stream << _T("  ReqPrecedenceClass ") << precedenceClass << std::endl
                << _T("  ReqDelayClass ") << delayClass << std::endl
                << _T("  ReqReliabilityClass ") << reliabilityClass << std::endl
@@ -228,7 +229,9 @@ std::string ProfileGprsReqPage::BuildTlvString()
 // --------------------------------------------------------------------------
 int ProfileGprsReqPage::MapPrecedenceIV(int index)
 {
-    if (index == 4) { return 7; }
+    if (index == 4) {
+        return 7;
+    }
     return index;
 }
 
@@ -243,7 +246,9 @@ int ProfileGprsReqPage::MapPrecedenceIV(int index)
 // --------------------------------------------------------------------------
 int ProfileGprsReqPage::MapPrecedenceVI(int value)
 {
-    if (value == 7) { return 4; }
+    if (value == 7) {
+        return 4;
+    }
     return value;
 }
 
@@ -258,7 +263,9 @@ int ProfileGprsReqPage::MapPrecedenceVI(int value)
 // --------------------------------------------------------------------------
 int ProfileGprsReqPage::MapDelayIV(int index)
 {
-    if (index == 5) { return 7; }
+    if (index == 5) {
+        return 7;
+    }
     return index;
 }
 
@@ -273,7 +280,9 @@ int ProfileGprsReqPage::MapDelayIV(int index)
 // --------------------------------------------------------------------------
 int ProfileGprsReqPage::MapDelayVI(int value)
 {
-    if (value == 7) { return 5; }
+    if (value == 7) {
+        return 5;
+    }
     return value;
 }
 
@@ -288,7 +297,9 @@ int ProfileGprsReqPage::MapDelayVI(int value)
 // --------------------------------------------------------------------------
 int ProfileGprsReqPage::MapReliabilityIV(int index)
 {
-    if (index == 6) { return 7; }
+    if (index == 6) {
+        return 7;
+    }
     return index;
 }
 
@@ -303,7 +314,9 @@ int ProfileGprsReqPage::MapReliabilityIV(int index)
 // --------------------------------------------------------------------------
 int ProfileGprsReqPage::MapReliabilityVI(int value)
 {
-    if (value == 7) { return 6; }
+    if (value == 7) {
+        return 6;
+    }
     return value;
 }
 
@@ -318,7 +331,9 @@ int ProfileGprsReqPage::MapReliabilityVI(int value)
 // --------------------------------------------------------------------------
 int ProfileGprsReqPage::MapPeakIV(int index)
 {
-    if (index == 10) { return 15; }
+    if (index == 10) {
+        return 15;
+    }
     return index;
 }
 
@@ -333,7 +348,9 @@ int ProfileGprsReqPage::MapPeakIV(int index)
 // --------------------------------------------------------------------------
 int ProfileGprsReqPage::MapPeakVI(int value)
 {
-    if (value == 15) { return 10; }
+    if (value == 15) {
+        return 10;
+    }
     return value;
 }
 
@@ -348,8 +365,12 @@ int ProfileGprsReqPage::MapPeakVI(int value)
 // --------------------------------------------------------------------------
 int ProfileGprsReqPage::MapMeanIV(int index)
 {
-    if (index == 19) { return 30; }
-    if (index == 20) { return 31; }
+    if (index == 19) {
+        return 30;
+    }
+    if (index == 20) {
+        return 31;
+    }
     return index;
 }
 
@@ -364,7 +385,11 @@ int ProfileGprsReqPage::MapMeanIV(int index)
 // --------------------------------------------------------------------------
 int ProfileGprsReqPage::MapMeanVI(int value)
 {
-    if (value == 30) { return 19; }
-    if (value == 31) { return 20; }
+    if (value == 30) {
+        return 19;
+    }
+    if (value == 31) {
+        return 20;
+    }
     return value;
 }

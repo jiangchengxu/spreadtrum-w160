@@ -23,12 +23,12 @@
 // Unique identifiers for WDSGetProfileSettingsMsg types
 // --------------------------------------------------------------------------
 static const uint32 WDSGetProfileSettingsReqUID =
-    (QMUX_TYPE_WDS << 24 | 
-     QMI_CTL_FLAG_TYPE_CMD << 16 | 
+    (QMUX_TYPE_WDS << 24 |
+     QMI_CTL_FLAG_TYPE_CMD << 16 |
      QMI_WDS_GET_PROFILE_SETTINGS_MSG);
 static const uint32 WDSGetProfileSettingsRspUID =
-    (QMUX_TYPE_WDS << 24 | 
-     QMI_CTL_FLAG_TYPE_RSP << 16 | 
+    (QMUX_TYPE_WDS << 24 |
+     QMI_CTL_FLAG_TYPE_RSP << 16 |
      QMI_WDS_GET_PROFILE_SETTINGS_MSG);
 
 // --------------------------------------------------------------------------
@@ -54,11 +54,15 @@ class WDSGetProfileSettingsReq : public Message
 
 public:
     ~WDSGetProfileSettingsReq();
-    
+
     virtual void Print(std::ostream& stream);
 
-    virtual uint8 GetProfileType() { return m_profileType; }
-    virtual uint8 GetProfileIndex() { return m_profileIndex; }
+    virtual uint8 GetProfileType() {
+        return m_profileType;
+    }
+    virtual uint8 GetProfileIndex() {
+        return m_profileIndex;
+    }
 
 protected:
     WDSGetProfileSettingsReq();
@@ -67,7 +71,9 @@ protected:
     virtual bool BuildProfileType(std::string& value);
     virtual bool BuildProfileIndex(std::string& value);
     virtual bool BuildMsgBuf();
-    virtual bool Unpack(MsgBuf& msgBuf) { return false; }
+    virtual bool Unpack(MsgBuf& msgBuf) {
+        return false;
+    }
 
 private:
     // Profile Identifier, mandatory tlv 0x01
@@ -81,10 +87,10 @@ private:
 // --------------------------------------------------------------------------
 // WDSGetProfileSettingsRsp
 //
-/// This class represents a QMI_WDS_GET_PROFILE_SETTINGS_RESP message which 
+/// This class represents a QMI_WDS_GET_PROFILE_SETTINGS_RESP message which
 /// is the response to the wds get profile settings request.
 // --------------------------------------------------------------------------
-    // define tlv types
+// define tlv types
 
 class WDSGetProfileSettingsRsp : public Message
 {
@@ -108,68 +114,184 @@ public:
 
     virtual void Print(std::ostream& stream);
 
-    virtual bool IsProfileName() { return m_profileNameType == PROFILE_NAME_TYPE; }
-    virtual bool IsPdpType() { return m_pdpTypeType == PDP_TYPE_TYPE; }
-    virtual bool IsApnName() { return m_apnNameType == APN_NAME_TYPE; }
-    virtual bool IsPrimaryDnsIpv4AddrPref() { return m_primaryDnsIpv4AddrPrefType == PRIMARY_DNS_IPV4_ADDR_PREF_TYPE; }
-    virtual bool IsSecondaryDnsIpv4AddrPref() { return m_secondaryDnsIpv4AddrPrefType == SECONDARY_DNS_IPV4_ADDR_PREF_TYPE; }
-    virtual bool IsUmtsRequestedQos() { return m_umtsRequestedQosType == UMTS_REQUESTED_QOS_TYPE; }
-    virtual bool IsUmtsMinimumQos() { return m_umtsMinimumQosType == UMTS_MINIMUM_QOS_TYPE; }
-    virtual bool IsGprsRequestedQos() { return m_gprsRequestedQosType == GPRS_REQUESTED_QOS_TYPE; }
-    virtual bool IsGprsMinimumQos() { return m_gprsMinimumQosType == GPRS_MINIMUM_QOS_TYPE; }
-    virtual bool IsUsername() { return m_usernameType == USERNAME_TYPE; }
-    virtual bool IsAuthPref() { return m_authPrefType == AUTH_PREF_TYPE; }
-    virtual bool IsIpv4AddrPref() { return m_ipv4AddrPrefType == IPV4_ADDR_PREF_TYPE; }
- 
-    virtual uint16 GetResult() { return m_result; }
-    virtual uint16 GetError() { return m_error; }
-    virtual std::string GetProfileName() { return m_profileName; }
-    virtual uint8 GetPdpType() { return m_pdpType; }
-    virtual std::string GetApnName() { return m_apnName; }
-    virtual uint32 GetPrimaryDnsIpv4AddrPref() { return m_primaryDnsIpv4AddrPref; }
-    virtual uint32 GetSecondaryDnsIpv4AddrPref() { return m_secondaryDnsIpv4AddrPref; }
-    virtual uint8 GetReqTrafficClass() { return m_reqTrafficClass; }
-    virtual uint32 GetReqMaxUplinkBitrate() { return m_reqMaxUplinkBitrate; }
-    virtual uint32 GetReqMaxDownlinkBitrate() { return m_reqMaxDownlinkBitrate; }
-    virtual uint32 GetReqGtdUplinkBitrate() { return m_reqGtdUplinkBitrate; }
-    virtual uint32 GetReqGtdDownlinkBitrate() { return m_reqGtdDownlinkBitrate; }
-    virtual uint8 GetReqQosDeliveryOrder() { return m_reqQosDeliveryOrder; }
-    virtual uint32 GetReqMaxSduSize() { return m_reqMaxSduSize; }
-    virtual uint8 GetReqSduErrorRatio() { return m_reqSduErrorRatio; }
-    virtual uint8 GetReqResidualBerRatio() { return m_reqResidualBerRatio; }
-    virtual uint8 GetReqDeliveryErroneousSdu() { return m_reqDeliveryErroneousSdu; }
-    virtual uint32 GetReqTransferDelay() { return m_reqTransferDelay; }
-    virtual uint32 GetReqTrafficHandlingPriority() { return m_reqTrafficHandlingPriority; }
-    virtual uint8 GetMinTrafficClass() { return m_minTrafficClass; }
-    virtual uint32 GetMinMaxUplinkBitrate() { return m_minMaxUplinkBitrate; }
-    virtual uint32 GetMinMaxDownlinkBitrate() { return m_minMaxDownlinkBitrate; }
-    virtual uint32 GetMinGtdUplinkBitrate() { return m_minGtdUplinkBitrate; }
-    virtual uint32 GetMinGtdDownlinkBitrate() { return m_minGtdDownlinkBitrate; }
-    virtual uint8 GetMinQosDeliveryOrder() { return m_minQosDeliveryOrder; }
-    virtual uint32 GetMinMaxSduSize() { return m_minMaxSduSize; }
-    virtual uint8 GetMinSduErrorRatio() { return m_minSduErrorRatio; }
-    virtual uint8 GetMinResidualBerRatio() { return m_minResidualBerRatio; }
-    virtual uint8 GetMinDeliveryErroneousSdu() { return m_minDeliveryErroneousSdu; }
-    virtual uint32 GetMinTransferDelay() { return m_minTransferDelay; }
-    virtual uint32 GetMinTrafficHandlingPriority() { return m_minTrafficHandlingPriority; }
-    virtual uint32 GetReqPrecedenceClass() { return m_reqPrecedenceClass; }
-    virtual uint32 GetReqDelayClass() { return m_reqDelayClass; }
-    virtual uint32 GetReqReliabilityClass() { return m_reqReliabilityClass; }
-    virtual uint32 GetReqPeakThroughputClass() { return m_reqPeakThroughputClass; }
-    virtual uint32 GetReqMeanThroughputClass() { return m_reqMeanThroughputClass; }
-    virtual uint32 GetMinPrecedenceClass() { return m_minPrecedenceClass; }
-    virtual uint32 GetMinDelayClass() { return m_minDelayClass; }
-    virtual uint32 GetMinReliabilityClass() { return m_minReliabilityClass; }
-    virtual uint32 GetMinPeakThroughputClass() { return m_minPeakThroughputClass; }
-    virtual uint32 GetMinMeanThroughputClass() { return m_minMeanThroughputClass; }
-    virtual std::string GetUsername() { return m_username; }
-    virtual uint8 GetAuthPref() { return m_authPref; }
-    virtual uint32 GetIpv4AddrPref() { return m_ipv4AddrPref; }
+    virtual bool IsProfileName() {
+        return m_profileNameType == PROFILE_NAME_TYPE;
+    }
+    virtual bool IsPdpType() {
+        return m_pdpTypeType == PDP_TYPE_TYPE;
+    }
+    virtual bool IsApnName() {
+        return m_apnNameType == APN_NAME_TYPE;
+    }
+    virtual bool IsPrimaryDnsIpv4AddrPref() {
+        return m_primaryDnsIpv4AddrPrefType == PRIMARY_DNS_IPV4_ADDR_PREF_TYPE;
+    }
+    virtual bool IsSecondaryDnsIpv4AddrPref() {
+        return m_secondaryDnsIpv4AddrPrefType == SECONDARY_DNS_IPV4_ADDR_PREF_TYPE;
+    }
+    virtual bool IsUmtsRequestedQos() {
+        return m_umtsRequestedQosType == UMTS_REQUESTED_QOS_TYPE;
+    }
+    virtual bool IsUmtsMinimumQos() {
+        return m_umtsMinimumQosType == UMTS_MINIMUM_QOS_TYPE;
+    }
+    virtual bool IsGprsRequestedQos() {
+        return m_gprsRequestedQosType == GPRS_REQUESTED_QOS_TYPE;
+    }
+    virtual bool IsGprsMinimumQos() {
+        return m_gprsMinimumQosType == GPRS_MINIMUM_QOS_TYPE;
+    }
+    virtual bool IsUsername() {
+        return m_usernameType == USERNAME_TYPE;
+    }
+    virtual bool IsAuthPref() {
+        return m_authPrefType == AUTH_PREF_TYPE;
+    }
+    virtual bool IsIpv4AddrPref() {
+        return m_ipv4AddrPrefType == IPV4_ADDR_PREF_TYPE;
+    }
+
+    virtual uint16 GetResult() {
+        return m_result;
+    }
+    virtual uint16 GetError() {
+        return m_error;
+    }
+    virtual std::string GetProfileName() {
+        return m_profileName;
+    }
+    virtual uint8 GetPdpType() {
+        return m_pdpType;
+    }
+    virtual std::string GetApnName() {
+        return m_apnName;
+    }
+    virtual uint32 GetPrimaryDnsIpv4AddrPref() {
+        return m_primaryDnsIpv4AddrPref;
+    }
+    virtual uint32 GetSecondaryDnsIpv4AddrPref() {
+        return m_secondaryDnsIpv4AddrPref;
+    }
+    virtual uint8 GetReqTrafficClass() {
+        return m_reqTrafficClass;
+    }
+    virtual uint32 GetReqMaxUplinkBitrate() {
+        return m_reqMaxUplinkBitrate;
+    }
+    virtual uint32 GetReqMaxDownlinkBitrate() {
+        return m_reqMaxDownlinkBitrate;
+    }
+    virtual uint32 GetReqGtdUplinkBitrate() {
+        return m_reqGtdUplinkBitrate;
+    }
+    virtual uint32 GetReqGtdDownlinkBitrate() {
+        return m_reqGtdDownlinkBitrate;
+    }
+    virtual uint8 GetReqQosDeliveryOrder() {
+        return m_reqQosDeliveryOrder;
+    }
+    virtual uint32 GetReqMaxSduSize() {
+        return m_reqMaxSduSize;
+    }
+    virtual uint8 GetReqSduErrorRatio() {
+        return m_reqSduErrorRatio;
+    }
+    virtual uint8 GetReqResidualBerRatio() {
+        return m_reqResidualBerRatio;
+    }
+    virtual uint8 GetReqDeliveryErroneousSdu() {
+        return m_reqDeliveryErroneousSdu;
+    }
+    virtual uint32 GetReqTransferDelay() {
+        return m_reqTransferDelay;
+    }
+    virtual uint32 GetReqTrafficHandlingPriority() {
+        return m_reqTrafficHandlingPriority;
+    }
+    virtual uint8 GetMinTrafficClass() {
+        return m_minTrafficClass;
+    }
+    virtual uint32 GetMinMaxUplinkBitrate() {
+        return m_minMaxUplinkBitrate;
+    }
+    virtual uint32 GetMinMaxDownlinkBitrate() {
+        return m_minMaxDownlinkBitrate;
+    }
+    virtual uint32 GetMinGtdUplinkBitrate() {
+        return m_minGtdUplinkBitrate;
+    }
+    virtual uint32 GetMinGtdDownlinkBitrate() {
+        return m_minGtdDownlinkBitrate;
+    }
+    virtual uint8 GetMinQosDeliveryOrder() {
+        return m_minQosDeliveryOrder;
+    }
+    virtual uint32 GetMinMaxSduSize() {
+        return m_minMaxSduSize;
+    }
+    virtual uint8 GetMinSduErrorRatio() {
+        return m_minSduErrorRatio;
+    }
+    virtual uint8 GetMinResidualBerRatio() {
+        return m_minResidualBerRatio;
+    }
+    virtual uint8 GetMinDeliveryErroneousSdu() {
+        return m_minDeliveryErroneousSdu;
+    }
+    virtual uint32 GetMinTransferDelay() {
+        return m_minTransferDelay;
+    }
+    virtual uint32 GetMinTrafficHandlingPriority() {
+        return m_minTrafficHandlingPriority;
+    }
+    virtual uint32 GetReqPrecedenceClass() {
+        return m_reqPrecedenceClass;
+    }
+    virtual uint32 GetReqDelayClass() {
+        return m_reqDelayClass;
+    }
+    virtual uint32 GetReqReliabilityClass() {
+        return m_reqReliabilityClass;
+    }
+    virtual uint32 GetReqPeakThroughputClass() {
+        return m_reqPeakThroughputClass;
+    }
+    virtual uint32 GetReqMeanThroughputClass() {
+        return m_reqMeanThroughputClass;
+    }
+    virtual uint32 GetMinPrecedenceClass() {
+        return m_minPrecedenceClass;
+    }
+    virtual uint32 GetMinDelayClass() {
+        return m_minDelayClass;
+    }
+    virtual uint32 GetMinReliabilityClass() {
+        return m_minReliabilityClass;
+    }
+    virtual uint32 GetMinPeakThroughputClass() {
+        return m_minPeakThroughputClass;
+    }
+    virtual uint32 GetMinMeanThroughputClass() {
+        return m_minMeanThroughputClass;
+    }
+    virtual std::string GetUsername() {
+        return m_username;
+    }
+    virtual uint8 GetAuthPref() {
+        return m_authPref;
+    }
+    virtual uint32 GetIpv4AddrPref() {
+        return m_ipv4AddrPref;
+    }
 
 protected:
     WDSGetProfileSettingsRsp();
-    virtual bool Build(std::string& nameValue) { return false; }
-    virtual bool BuildMsgBuf() { return false; }
+    virtual bool Build(std::string& nameValue) {
+        return false;
+    }
+    virtual bool BuildMsgBuf() {
+        return false;
+    }
     virtual bool Unpack(MsgBuf& msgBuf);
     virtual Uint8UnpackerMap& GetUnpackerMap();
     virtual bool UnpackResultCode(MsgBuf& msgBuf);

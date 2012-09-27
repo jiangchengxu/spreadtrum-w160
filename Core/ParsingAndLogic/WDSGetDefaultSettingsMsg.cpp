@@ -42,7 +42,7 @@ static MessageCreator<WDSGetDefaultSettingsRsp> RspUint32Creator(WDSGetDefaultSe
 /// Constructor for WDSGetDefaultSettingsReq.
 // --------------------------------------------------------------------------
 const uint8 WDSGetDefaultSettingsReq::PROFILE_TYPE_TYPE = 0x01;
-WDSGetDefaultSettingsReq::WDSGetDefaultSettingsReq() : 
+WDSGetDefaultSettingsReq::WDSGetDefaultSettingsReq() :
     Message(QMUX_TYPE_WDS,QMI_WDS_GET_DEFAULT_SETTINGS_MSG,QMI_CTL_FLAG_TYPE_CMD),
     m_profileTypeType(TLV_TYPE_INVALID),
     m_profileTypeLen(0),
@@ -86,8 +86,7 @@ bool WDSGetDefaultSettingsReq::Build(std::string& nameValue)
 Message::StringBuilderMap& WDSGetDefaultSettingsReq::GetBuilderMap()
 {
     static StringBuilderMap SBMap;
-    if (SBMap.empty())
-    {
+    if (SBMap.empty()) {
         bool bSuccess = SBMap.insert(SBPair("ProfileType",(Builder)BuildProfileType)).second;
         assert(bSuccess);
     }
@@ -278,21 +277,19 @@ WDSGetDefaultSettingsRsp::~WDSGetDefaultSettingsRsp()
 bool WDSGetDefaultSettingsRsp::Unpack(MsgBuf& msgBuf)
 {
     // call the base unpack
-    if (!Message::Unpack(msgBuf))
-    {
+    if (!Message::Unpack(msgBuf)) {
         return false;
     }
-    
+
     // validate message length on failure (variable on success)
-    if (m_result != QMI_RESULT_SUCCESS && m_length != 7) 
-    {
+    if (m_result != QMI_RESULT_SUCCESS && m_length != 7) {
         std::stringstream stream;
         stream << _T("Warning: unable to unpack message:") << std::endl
-            << _T("Expected message length is 7 bytes, unpacked length is ")
-            << m_length << _T(" bytes.") << std::endl 
-            << std::endl;
+               << _T("Expected message length is 7 bytes, unpacked length is ")
+               << m_length << _T(" bytes.") << std::endl
+               << std::endl;
         MessageManager::GetInstance().ReportStatus(stream.str(),ST_WARNING);
-        return false; 
+        return false;
     }
 
     return true;
@@ -309,8 +306,7 @@ bool WDSGetDefaultSettingsRsp::Unpack(MsgBuf& msgBuf)
 Message::Uint8UnpackerMap& WDSGetDefaultSettingsRsp::GetUnpackerMap()
 {
     static Uint8UnpackerMap UUMap;
-    if (UUMap.empty())
-    {
+    if (UUMap.empty()) {
         bool bSuccess = UUMap.insert(UUPair(RESULT_CODE_TYPE,(Unpacker)UnpackResultCode)).second;
         assert(bSuccess);
         bSuccess = UUMap.insert(UUPair(PROFILE_NAME_TYPE,(Unpacker)UnpackProfileName)).second;
@@ -355,12 +351,11 @@ bool WDSGetDefaultSettingsRsp::UnpackResultCode(MsgBuf& msgBuf)
     m_resultCodeType = RESULT_CODE_TYPE;
 
     m_resultCodeLen = msgBuf.GetWord();
-    if (m_resultCodeLen != 4) 
-    {
+    if (m_resultCodeLen != 4) {
         std::stringstream stream;
         stream << _T("Warning: unable to unpack message:") << std::endl
                << _T("Expected Result Code length is 4 bytes, unpacked length is ")
-               << m_resultCodeLen << _T(" bytes.") << std::endl 
+               << m_resultCodeLen << _T(" bytes.") << std::endl
                << std::endl;
         MessageManager::GetInstance().ReportStatus(stream.str(),ST_WARNING);
         return false;
@@ -405,12 +400,11 @@ bool WDSGetDefaultSettingsRsp::UnpackPdpType(MsgBuf& msgBuf)
     m_pdpTypeType = PDP_TYPE_TYPE;
 
     m_pdpTypeLen = msgBuf.GetWord();
-    if (m_pdpTypeLen != 1) 
-    {
+    if (m_pdpTypeLen != 1) {
         std::stringstream stream;
         stream << _T("Warning: unable to unpack message:") << std::endl
                << _T("Expected PDP Type length is 1 byte, unpacked length is ")
-               << m_pdpTypeLen << _T(" bytes.") << std::endl 
+               << m_pdpTypeLen << _T(" bytes.") << std::endl
                << std::endl;
         MessageManager::GetInstance().ReportStatus(stream.str(),ST_WARNING);
         return false;
@@ -454,12 +448,11 @@ bool WDSGetDefaultSettingsRsp::UnpackPrimaryDnsIpv4AddrPref(MsgBuf& msgBuf)
     m_primaryDnsIpv4AddrPrefType = PRIMARY_DNS_IPV4_ADDR_PREF_TYPE;
 
     m_primaryDnsIpv4AddrPrefLen = msgBuf.GetWord();
-    if (m_primaryDnsIpv4AddrPrefLen != 4) 
-    {
+    if (m_primaryDnsIpv4AddrPrefLen != 4) {
         std::stringstream stream;
         stream << _T("Warning: unable to unpack message:") << std::endl
                << _T("Expected Primary Dns IPv4 Address Preference length is 4 bytes, unpacked length is ")
-               << m_primaryDnsIpv4AddrPrefLen << _T(" bytes.") << std::endl 
+               << m_primaryDnsIpv4AddrPrefLen << _T(" bytes.") << std::endl
                << std::endl;
         MessageManager::GetInstance().ReportStatus(stream.str(),ST_WARNING);
         return false;
@@ -484,12 +477,11 @@ bool WDSGetDefaultSettingsRsp::UnpackSecondaryDnsIpv4AddrPref(MsgBuf& msgBuf)
     m_secondaryDnsIpv4AddrPrefType = SECONDARY_DNS_IPV4_ADDR_PREF_TYPE;
 
     m_secondaryDnsIpv4AddrPrefLen = msgBuf.GetWord();
-    if (m_secondaryDnsIpv4AddrPrefLen != 4) 
-    {
+    if (m_secondaryDnsIpv4AddrPrefLen != 4) {
         std::stringstream stream;
         stream << _T("Warning: unable to unpack message:") << std::endl
                << _T("Expected Secondary Dns IPv4 Address Preference length is 4 bytes, unpacked length is ")
-               << m_secondaryDnsIpv4AddrPrefLen << _T(" bytes.") << std::endl 
+               << m_secondaryDnsIpv4AddrPrefLen << _T(" bytes.") << std::endl
                << std::endl;
         MessageManager::GetInstance().ReportStatus(stream.str(),ST_WARNING);
         return false;
@@ -514,12 +506,11 @@ bool WDSGetDefaultSettingsRsp::UnpackUmtsRequestedQos(MsgBuf& msgBuf)
     m_umtsRequestedQosType = UMTS_REQUESTED_QOS_TYPE;
 
     m_umtsRequestedQosLen = msgBuf.GetWord();
-    if (m_umtsRequestedQosLen != 33) 
-    {
+    if (m_umtsRequestedQosLen != 33) {
         std::stringstream stream;
         stream << _T("Warning: unable to unpack message:") << std::endl
                << _T("Expected UMTS Requested QoS length is 33 bytes, unpacked length is ")
-               << m_umtsRequestedQosLen << _T(" bytes.") << std::endl 
+               << m_umtsRequestedQosLen << _T(" bytes.") << std::endl
                << std::endl;
         MessageManager::GetInstance().ReportStatus(stream.str(),ST_WARNING);
         return false;
@@ -555,12 +546,11 @@ bool WDSGetDefaultSettingsRsp::UnpackUmtsMinimumQos(MsgBuf& msgBuf)
     m_umtsMinimumQosType = UMTS_MINIMUM_QOS_TYPE;
 
     m_umtsMinimumQosLen = msgBuf.GetWord();
-    if (m_umtsMinimumQosLen != 33) 
-    {
+    if (m_umtsMinimumQosLen != 33) {
         std::stringstream stream;
         stream << _T("Warning: unable to unpack message:") << std::endl
                << _T("Expected UMTS Minimum QoS length is 33 bytes, unpacked length is ")
-               << m_umtsMinimumQosLen << _T(" bytes.") << std::endl 
+               << m_umtsMinimumQosLen << _T(" bytes.") << std::endl
                << std::endl;
         MessageManager::GetInstance().ReportStatus(stream.str(),ST_WARNING);
         return false;
@@ -596,12 +586,11 @@ bool WDSGetDefaultSettingsRsp::UnpackGprsRequestedQos(MsgBuf& msgBuf)
     m_gprsRequestedQosType = GPRS_REQUESTED_QOS_TYPE;
 
     m_gprsRequestedQosLen = msgBuf.GetWord();
-    if (m_gprsRequestedQosLen != 20) 
-    {
+    if (m_gprsRequestedQosLen != 20) {
         std::stringstream stream;
         stream << _T("Warning: unable to unpack message:") << std::endl
                << _T("Expected GPRS Requested QoS length is 20 bytes, unpacked length is ")
-               << m_gprsRequestedQosLen << _T(" bytes.") << std::endl 
+               << m_gprsRequestedQosLen << _T(" bytes.") << std::endl
                << std::endl;
         MessageManager::GetInstance().ReportStatus(stream.str(),ST_WARNING);
         return false;
@@ -612,7 +601,7 @@ bool WDSGetDefaultSettingsRsp::UnpackGprsRequestedQos(MsgBuf& msgBuf)
     m_reqReliabilityClass = msgBuf.GetDWord();
     m_reqPeakThroughputClass = msgBuf.GetDWord();
     m_reqMeanThroughputClass = msgBuf.GetDWord();
- 
+
     return true;
 }
 
@@ -630,12 +619,11 @@ bool WDSGetDefaultSettingsRsp::UnpackGprsMinimumQos(MsgBuf& msgBuf)
     m_gprsMinimumQosType = GPRS_MINIMUM_QOS_TYPE;
 
     m_gprsMinimumQosLen = msgBuf.GetWord();
-    if (m_gprsMinimumQosLen != 20) 
-    {
+    if (m_gprsMinimumQosLen != 20) {
         std::stringstream stream;
         stream << _T("Warning: unable to unpack message:") << std::endl
                << _T("Expected GPRS Minimum QoS length is 20 bytes, unpacked length is ")
-               << m_gprsMinimumQosLen << _T(" bytes.") << std::endl 
+               << m_gprsMinimumQosLen << _T(" bytes.") << std::endl
                << std::endl;
         MessageManager::GetInstance().ReportStatus(stream.str(),ST_WARNING);
         return false;
@@ -646,7 +634,7 @@ bool WDSGetDefaultSettingsRsp::UnpackGprsMinimumQos(MsgBuf& msgBuf)
     m_minReliabilityClass = msgBuf.GetDWord();
     m_minPeakThroughputClass = msgBuf.GetDWord();
     m_minMeanThroughputClass = msgBuf.GetDWord();
- 
+
     return true;
 }
 
@@ -683,12 +671,11 @@ bool WDSGetDefaultSettingsRsp::UnpackAuthPref(MsgBuf& msgBuf)
     m_authPrefType = AUTH_PREF_TYPE;
 
     m_authPrefLen = msgBuf.GetWord();
-    if (m_authPrefLen != 1) 
-    {
+    if (m_authPrefLen != 1) {
         std::stringstream stream;
         stream << _T("Warning: unable to unpack message:") << std::endl
                << _T("Expected Authentication Preference length is 1 byte, unpacked length is ")
-               << m_authPrefLen << _T(" bytes.") << std::endl 
+               << m_authPrefLen << _T(" bytes.") << std::endl
                << std::endl;
         MessageManager::GetInstance().ReportStatus(stream.str(),ST_WARNING);
         return false;
@@ -713,12 +700,11 @@ bool WDSGetDefaultSettingsRsp::UnpackIpv4AddrPref(MsgBuf& msgBuf)
     m_ipv4AddrPrefType = IPV4_ADDR_PREF_TYPE;
 
     m_ipv4AddrPrefLen = msgBuf.GetWord();
-    if (m_ipv4AddrPrefLen != 4) 
-    {
+    if (m_ipv4AddrPrefLen != 4) {
         std::stringstream stream;
         stream << _T("Warning: unable to unpack message:") << std::endl
                << _T("Expected IPv4 Address Preference length is 4 bytes, unpacked length is ")
-               << m_ipv4AddrPrefLen << _T(" bytes.") << std::endl 
+               << m_ipv4AddrPrefLen << _T(" bytes.") << std::endl
                << std::endl;
         MessageManager::GetInstance().ReportStatus(stream.str(),ST_WARNING);
         return false;
@@ -743,41 +729,39 @@ void WDSGetDefaultSettingsRsp::Print(std::ostream& stream)
            << _T("  ResultCode ") << (uint32)m_result << std::endl
            << _T("  ErrorCode ") << (uint32)m_error << std::endl;
 
-    if (m_profileNameType == PROFILE_NAME_TYPE)
-    {
+    if (m_profileNameType == PROFILE_NAME_TYPE) {
         std::string profileName = m_profileName;
-        if (profileName.empty()) { profileName = "NULL"; }
+        if (profileName.empty()) {
+            profileName = "NULL";
+        }
         stream << _T("  ProfileName ") << profileName << std::endl;
     }
 
-    if (m_pdpTypeType == PDP_TYPE_TYPE)
-    {
+    if (m_pdpTypeType == PDP_TYPE_TYPE) {
         stream << _T("  PdpType ") << (uint32)m_pdpType << std::endl;
     }
 
-    if (m_apnNameType == APN_NAME_TYPE)
-    {
+    if (m_apnNameType == APN_NAME_TYPE) {
         std::string apnName = m_apnName;
-        if (apnName.empty()) { apnName = "NULL"; }
+        if (apnName.empty()) {
+            apnName = "NULL";
+        }
         stream << _T("  ApnName ") << apnName << std::endl;
     }
 
-    if (m_primaryDnsIpv4AddrPrefType == PRIMARY_DNS_IPV4_ADDR_PREF_TYPE)
-    {
+    if (m_primaryDnsIpv4AddrPrefType == PRIMARY_DNS_IPV4_ADDR_PREF_TYPE) {
         stream << _T("  PrimaryDnsIpv4AddrPref ");
         PrintIPv4Addr(m_primaryDnsIpv4AddrPref,stream);
         stream << std::endl;
     }
 
-    if (m_secondaryDnsIpv4AddrPrefType == SECONDARY_DNS_IPV4_ADDR_PREF_TYPE)
-    {
+    if (m_secondaryDnsIpv4AddrPrefType == SECONDARY_DNS_IPV4_ADDR_PREF_TYPE) {
         stream << _T("  SecondaryDnsIpv4AddrPref ");
         PrintIPv4Addr(m_secondaryDnsIpv4AddrPref,stream);
         stream << std::endl;
     }
 
-    if (m_umtsRequestedQosType == UMTS_REQUESTED_QOS_TYPE)
-    {
+    if (m_umtsRequestedQosType == UMTS_REQUESTED_QOS_TYPE) {
         stream << _T("  ReqTrafficClass ") << (uint32)m_reqTrafficClass << std::endl;
         stream << _T("  ReqMaxUplinkBitrate ") << (uint32)m_reqMaxUplinkBitrate << std::endl;
         stream << _T("  ReqMaxDownlinkBitrate ") << (uint32)m_reqMaxDownlinkBitrate << std::endl;
@@ -792,8 +776,7 @@ void WDSGetDefaultSettingsRsp::Print(std::ostream& stream)
         stream << _T("  ReqTrafficHandlingPriority ") << (uint32)m_reqTrafficHandlingPriority << std::endl;
     }
 
-    if (m_umtsMinimumQosType == UMTS_MINIMUM_QOS_TYPE)
-    {
+    if (m_umtsMinimumQosType == UMTS_MINIMUM_QOS_TYPE) {
         stream << _T("  MinTrafficClass ") << (uint32)m_minTrafficClass << std::endl;
         stream << _T("  MinMaxUplinkBitrate ") << (uint32)m_minMaxUplinkBitrate << std::endl;
         stream << _T("  MinMaxDownlinkBitrate ") << (uint32)m_minMaxDownlinkBitrate << std::endl;
@@ -808,8 +791,7 @@ void WDSGetDefaultSettingsRsp::Print(std::ostream& stream)
         stream << _T("  MinTrafficHandlingPriority ") << (uint32)m_minTrafficHandlingPriority << std::endl;
     }
 
-    if (m_gprsRequestedQosType == GPRS_REQUESTED_QOS_TYPE)
-    {
+    if (m_gprsRequestedQosType == GPRS_REQUESTED_QOS_TYPE) {
         stream << _T("  ReqPrecedenceClass ") << (uint32)m_reqPrecedenceClass << std::endl;
         stream << _T("  ReqDelayClass ") << (uint32)m_reqDelayClass << std::endl;
         stream << _T("  ReqReliabilityClass ") << (uint32)m_reqReliabilityClass << std::endl;
@@ -817,8 +799,7 @@ void WDSGetDefaultSettingsRsp::Print(std::ostream& stream)
         stream << _T("  ReqMeanThroughputClass ") << (uint32)m_reqMeanThroughputClass << std::endl;
     }
 
-    if (m_gprsMinimumQosType == GPRS_MINIMUM_QOS_TYPE)
-    {
+    if (m_gprsMinimumQosType == GPRS_MINIMUM_QOS_TYPE) {
         stream << _T("  MinPrecedenceClass ") << (uint32)m_minPrecedenceClass << std::endl;
         stream << _T("  MinDelayClass ") << (uint32)m_minDelayClass << std::endl;
         stream << _T("  MinReliabilityClass ") << (uint32)m_minReliabilityClass << std::endl;
@@ -826,20 +807,19 @@ void WDSGetDefaultSettingsRsp::Print(std::ostream& stream)
         stream << _T("  MinMeanThroughputClass ") << (uint32)m_minMeanThroughputClass << std::endl;
     }
 
-    if (m_usernameType == USERNAME_TYPE)
-    {
+    if (m_usernameType == USERNAME_TYPE) {
         std::string username = m_username;
-        if (username.empty()) { username = "NULL"; }
+        if (username.empty()) {
+            username = "NULL";
+        }
         stream << _T("  Username ") << username << std::endl;
     }
 
-    if (m_authPref == AUTH_PREF_TYPE)
-    {
+    if (m_authPref == AUTH_PREF_TYPE) {
         stream << _T("  AuthPref ") << (uint32)m_authPref << std::endl;
     }
 
-    if (m_ipv4AddrPrefType == IPV4_ADDR_PREF_TYPE)
-    {
+    if (m_ipv4AddrPrefType == IPV4_ADDR_PREF_TYPE) {
         stream << _T("  Ipv4AddrPref ");
         PrintIPv4Addr(m_ipv4AddrPref,stream);
         stream << std::endl;

@@ -26,8 +26,8 @@
 // ctor
 // --------------------------------------------------------------------------
 Message::Message(uint8 svcType,uint16 msgType,uint8 ctlType) :
-    m_svcType(svcType), 
-    m_msgType(msgType), 
+    m_svcType(svcType),
+    m_msgType(msgType),
     m_ctlType(ctlType),
     m_txId(0),
     m_length(0),
@@ -39,7 +39,9 @@ Message::Message(uint8 svcType,uint16 msgType,uint8 ctlType) :
 // --------------------------------------------------------------------------
 Message::~Message()
 {
-    if (m_pMsgBuf != NULL) { delete m_pMsgBuf; } 
+    if (m_pMsgBuf != NULL) {
+        delete m_pMsgBuf;
+    }
 }
 
 // --------------------------------------------------------------------------
@@ -57,10 +59,8 @@ bool Message::Build(std::string& nameValue)
     m_txId = QCWWAN_GenerateTransactionId();
 
     // check for empty name value string (no attributes)
-    if (nameValue.empty()) 
-    {
-        if (!m_nextName.empty())
-        {
+    if (nameValue.empty()) {
+        if (!m_nextName.empty()) {
             // report expected attribute not found
             std::stringstream stream;
             stream << _T("Warning: unable to build message:") << std::endl
@@ -70,7 +70,9 @@ bool Message::Build(std::string& nameValue)
             return false;
         }
         // build an internal MsgBuf representation of this message
-        if (!BuildMsgBuf()) { return false; }
+        if (!BuildMsgBuf()) {
+            return false;
+        }
         return true;
     }
 
@@ -79,14 +81,12 @@ bool Message::Build(std::string& nameValue)
     std::string value;
 
     // intialize message with name value pairs
-    while (!attribStream.eof())
-    {
+    while (!attribStream.eof()) {
         // get the attribute name
         attribStream >> m_name;
 
         // check for name/value pair mismatch
-        if (attribStream.eof())
-        {
+        if (attribStream.eof()) {
             // report name/value pair mismatch
             std::stringstream stream;
             stream << _T("Warning: unable to build message:") << std::endl
@@ -98,15 +98,13 @@ bool Message::Build(std::string& nameValue)
         }
 
         // check for attribute sequence error
-        if (!m_nextName.empty() && m_nextName.compare(m_name) != 0)
-        {
+        if (!m_nextName.empty() && m_nextName.compare(m_name) != 0) {
             // report expected attribute not found
             std::stringstream stream;
             stream << _T("Warning: unable to build message:") << std::endl
                    << _T("Expected attribute '") << m_nextName;
 
-            if (!m_prevName.empty())
-            {
+            if (!m_prevName.empty()) {
                 stream << _T("' to follow attribute '") << m_prevName;
             }
 
@@ -124,8 +122,7 @@ bool Message::Build(std::string& nameValue)
         // find the attribute name in the builder map and call its build method
         StringBuilderMap SBMap = GetBuilderMap();
         StringBuilderMap::iterator iter = SBMap.find(m_name);
-        if(iter == SBMap.end())
-        {
+        if(iter == SBMap.end()) {
             // report unknown attribute
             std::stringstream stream;
             stream << _T("Warning: unable to build message:") << std::endl
@@ -134,20 +131,16 @@ bool Message::Build(std::string& nameValue)
                    << std::endl;
             MessageManager::GetInstance().ReportStatus(stream.str(),ST_WARNING);
             return false;
-        }
-        else
-        {
+        } else {
             // call attribute's build method, check for failure
-            if(!(this->*iter->second)(value))
-            {
+            if(!(this->*iter->second)(value)) {
                 return false;
             }
         }
     }
 
     // check for exit when expecting an attribute
-    if (!m_nextName.empty())
-    {
+    if (!m_nextName.empty()) {
         // report end of string when attribute expected
         std::stringstream stream;
         stream << _T("Warning: unable to build message:") << std::endl
@@ -161,7 +154,9 @@ bool Message::Build(std::string& nameValue)
     }
 
     // build an internal MsgBuf representation of this message
-    if (!BuildMsgBuf()) { return false; }
+    if (!BuildMsgBuf()) {
+        return false;
+    }
 
     return true;
 }
@@ -205,16 +200,14 @@ bool Message::Unpack(MsgBuf& msgBuf)
     m_length = msgBuf.GetWord();
 
     // unpack tlv's while data exists in buffer
-    while (!msgBuf.EOB())
-    {
+    while (!msgBuf.EOB()) {
         //get the tlv type
         uint8 tlvType = msgBuf.GetByte();
 
         // find the tlv type in the unpacker map and call its unpack method
         Uint8UnpackerMap& UUMap = GetUnpackerMap();
         Uint8UnpackerMap::iterator iter = UUMap.find(tlvType);
-        if(iter == UUMap.end())
-        {
+        if(iter == UUMap.end()) {
             // report unknown tlv type
             std::stringstream stream;
             stream << _T("Warning: unable to unpack message:") << std::endl
@@ -224,12 +217,9 @@ bool Message::Unpack(MsgBuf& msgBuf)
                    << std::endl;
             MessageManager::GetInstance().ReportStatus(stream.str(),ST_WARNING);
             return false;
-        }
-        else
-        {
+        } else {
             // call tlv type's unpack method, check for failure
-            if(!(this->*iter->second)(msgBuf))
-            {
+            if(!(this->*iter->second)(msgBuf)) {
                 return false;
             }
         }
@@ -283,11 +273,9 @@ bool Message::ExtractIpv4Addr(std::string& value,uint32& addr)
 
     sscanf(value.c_str(),"%u.%u.%u.%u",&num[0],&num[1],&num[2],&num[3]);
 
-    for (int i = 0; i < 4; i++)
-    {
+    for (int i = 0; i < 4; i++) {
         // validate dotted quad
-        if (num[i] > 255)
-        {
+        if (num[i] > 255) {
             // report invalid IPv4 address
             std::stringstream stream;
             stream << _T("Warning: unable to extract IPv4 address:") << std::endl
@@ -320,7 +308,7 @@ void Message::PrintIPv4Addr(uint32 addr,std::ostream& stream)
     uint8* num = (uint8*)&addr;
 
     // the uint32 is stored little endian, so pull out in reverse order
-    stream << (uint32)num[3] << _T(".") 
+    stream << (uint32)num[3] << _T(".")
            << (uint32)num[2] << _T(".")
            << (uint32)num[1] << _T(".")
            << (uint32)num[0];
@@ -340,10 +328,10 @@ void Message::ReportInvalidSequence(std::string expectedPrev)
     // report invalid attribute sequence
     std::stringstream stream;
     stream << _T("Warning: unable to build message:") << std::endl
-            << _T("Expected attribute '") << m_name
-            << _T("' to follow attribute '" << expectedPrev << "'.") << std::endl
-            << _T("Previous attribute was '") << m_prevName
-            << _T("'.") << std::endl
-            << std::endl;
+           << _T("Expected attribute '") << m_name
+           << _T("' to follow attribute '" << expectedPrev << "'.") << std::endl
+           << _T("Previous attribute was '") << m_prevName
+           << _T("'.") << std::endl
+           << std::endl;
     MessageManager::GetInstance().ReportStatus(stream.str(),ST_WARNING);
 }

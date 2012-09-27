@@ -82,13 +82,11 @@ CSmsWriteDlg::CSmsWriteDlg(CWnd* pParent,LPCTSTR lpszNumber, LPCTSTR lpszContent
     memset(m_szSCNumber, 0x00, SMS_SC_NUM_MAX);
     m_WriteType = writeType;
 
-    if(lpszSCNum && wcslen(lpszSCNum))
-    {
+    if(lpszSCNum && wcslen(lpszSCNum)) {
         wcsncpy((TCHAR*)m_szSCNumber, lpszSCNum, SMS_SC_NUM_MAX);
     }
 
-    else if(wcslen(gSmsCentreNum) > 0)
-    {
+    else if(wcslen(gSmsCentreNum) > 0) {
         wcsncpy((TCHAR*)m_szSCNumber, gSmsCentreNum, SMS_SC_NUM_MAX);
     }
 
@@ -213,11 +211,9 @@ LRESULT CSmsWriteDlg::OnReceiveNum(WPARAM wParam, LPARAM lParam)
     int len;
     EnSelContactType SelType = (EnSelContactType)lParam;
 
-    if(SelType == SELCONTACT_SMSNUMBER)
-    {
+    if(SelType == SELCONTACT_SMSNUMBER) {
         UpdateData();
-        if((len = m_strNumber.GetLength()) > 0 && m_strNumber[len-1] != ';')
-        {
+        if((len = m_strNumber.GetLength()) > 0 && m_strNumber[len-1] != ';') {
             m_strNumber += _T(";");
         }
 
@@ -225,21 +221,16 @@ LRESULT CSmsWriteDlg::OnReceiveNum(WPARAM wParam, LPARAM lParam)
         UpdateData(FALSE);
 
         UpdateData(TRUE);
-        if(IsNumbersOver())
-        {
+        if(IsNumbersOver()) {
             AfxMessageBox(IDS_ERR_SMS_GROUPNUMBEROVER);
             m_strNumber=m_strLastGroupNumber;
             UpdateData(FALSE);
-        }
-        else
-        {
+        } else {
             m_strLastGroupNumber=m_strNumber;
         }
         //设置在最后
         m_editNumber.SetSel(m_strNumber.GetLength(), m_strNumber.GetLength());
-    }
-    else if(SelType == SELCONTACT_SMSCONTENT)
-    {
+    } else if(SelType == SELCONTACT_SMSCONTENT) {
         m_editSmsDetails.SetFocus();
         m_editSmsDetails.ReplaceSel((LPCTSTR)wParam);
         UpdateData();
@@ -261,8 +252,7 @@ void CSmsWriteDlg::OnButtonSmsSend()
         AfxMessageBox(IDS_WARNING_INPUTNUM, MB_OK | MB_ICONINFORMATION);
     else if(m_strSmsDetails == _T(""))
         AfxMessageBox(IDS_WARNING_INPUTSMS, MB_OK | MB_ICONINFORMATION);
-    else
-    {
+    else {
         CHSDPADlg* pMainWnd = (CHSDPADlg*)AfxGetMainWnd();
         ASSERT(pMainWnd);
 
@@ -276,13 +266,10 @@ void CSmsWriteDlg::OnButtonSmsSend()
         if(pMainWnd->m_bInComSms || pMainWnd->m_bInComCall)
             return;
 
-        if(pComm->CommIsReady())
-        {
-            if(RetrieveGroupNum())
-            {
+        if(pComm->CommIsReady()) {
+            if(RetrieveGroupNum()) {
                 m_nCurNum = 0;
-                if(m_nCurNum < m_nNumCount)
-                {
+                if(m_nCurNum < m_nNumCount) {
 #ifdef FEATURE_SMS_CONCATENATE
                     if(!DivideSmsConcatenate(m_strSmsDetails))
                         return;
@@ -290,13 +277,10 @@ void CSmsWriteDlg::OnButtonSmsSend()
 #ifdef FEATURE_SMS_PDUMODE
                     //in pdu mode, not need send csmp and csca, because
                     // all these info will include in sms pdu
-                    if(gSmsIsConcatenate && 0 == gSmsCurSege  && 0 != gSmsTotalSege)
-                    {
+                    if(gSmsIsConcatenate && 0 == gSmsCurSege  && 0 != gSmsTotalSege) {
                         PostMessage(WM_SMS_SEND_PROC, (WPARAM)AT_SMS_QCMGP, (LPARAM)TRUE);
                         //Lms
-                    }
-                    else
-                    {
+                    } else {
                         PostMessage(WM_SMS_SEND_PROC, (WPARAM)AT_SMS_QCMGP, (LPARAM)FALSE);
                         //sms
                     }
@@ -308,9 +292,7 @@ void CSmsWriteDlg::OnButtonSmsSend()
                     {
                         ::ResetEvent(g_BGPassEvt);
                         m_pMainWnd->CtlAllSmsRcvConcTimer(FALSE);
-                    }
-                    else
-                    {
+                    } else {
                         ::SetEvent(g_BGPassEvt);
                     }
                 }
@@ -327,20 +309,16 @@ void CSmsWriteDlg::SaveSMS(WPARAM wParam, LPARAM lParam)
     if(m_strSmsDetails == _T(""))
         //AfxMessageBox(IDS_WARNING_INPUTSMS, MB_OK | MB_ICONINFORMATION);
         ;
-    else
-    {
-        if(m_strNumber.GetLength() == 0 || RetrieveGroupNum())
-        {
-            if(m_strNumber.GetLength() == 0)
-            {
+    else {
+        if(m_strNumber.GetLength() == 0 || RetrieveGroupNum()) {
+            if(m_strNumber.GetLength() == 0) {
                 m_nNumCount = 1;
                 memset(m_szGroupNum[0], 0x00, sizeof(m_szGroupNum[0]));
             }
 
             USES_CONVERSION;
             int i = 0;
-            while(i < m_nNumCount)
-            {
+            while(i < m_nNumCount) {
                 if(!m_pSmsData->AddSmsRecord(SMS_TYPE_DRAFT,
                                              SMS_STATE_MO_NOT_SENT,
                                              A2W(m_szGroupNum[i]),
@@ -351,8 +329,7 @@ void CSmsWriteDlg::SaveSMS(WPARAM wParam, LPARAM lParam)
                 else
                     i++;
             }
-            if(i > 0)
-            {
+            if(i > 0) {
                 CWnd *pWnd = GetOwner();
                 pWnd->SendMessage(WM_SMS_SAVE_MSG, (WPARAM)SMS_TYPE_DRAFT, LOC_PC);
             }
@@ -360,8 +337,7 @@ void CSmsWriteDlg::SaveSMS(WPARAM wParam, LPARAM lParam)
                 AfxMessageBox(IDS_SMS_SAVESUCC, MB_OK | MB_ICONINFORMATION);
             else
                 AfxMessageBox(IDS_SMS_SAVEFAIL, MB_OK | MB_ICONINFORMATION);
-        }
-        else
+        } else
             AfxMessageBox(IDS_SMS_SAVEFAIL, MB_OK | MB_ICONINFORMATION);
     }
 
@@ -383,20 +359,16 @@ void CSmsWriteDlg::OnButtonSmsSave()
 
     if(m_strSmsDetails == _T(""))
         AfxMessageBox(IDS_WARNING_INPUTSMS, MB_OK | MB_ICONINFORMATION);
-    else
-    {
-        if(m_strNumber.GetLength() == 0 || RetrieveGroupNum())
-        {
-            if(m_strNumber.GetLength() == 0)
-            {
+    else {
+        if(m_strNumber.GetLength() == 0 || RetrieveGroupNum()) {
+            if(m_strNumber.GetLength() == 0) {
                 m_nNumCount = 1;
                 memset(m_szGroupNum[0], 0x00, sizeof(m_szGroupNum[0]));
             }
 
             USES_CONVERSION;
             int i = 0;
-            while(i < m_nNumCount)
-            {
+            while(i < m_nNumCount) {
                 if(!m_pSmsData->AddSmsRecord(SMS_TYPE_DRAFT,
                                              SMS_STATE_MO_NOT_SENT,
                                              A2W(m_szGroupNum[i]),
@@ -407,8 +379,7 @@ void CSmsWriteDlg::OnButtonSmsSave()
                 else
                     i++;
             }
-            if(i > 0)
-            {
+            if(i > 0) {
                 CWnd *pWnd = GetOwner();
                 pWnd->SendMessage(WM_SMS_SAVE_MSG, (WPARAM)SMS_TYPE_DRAFT, LOC_PC);
             }
@@ -416,8 +387,7 @@ void CSmsWriteDlg::OnButtonSmsSave()
                 AfxMessageBox(IDS_SMS_SAVESUCC, MB_OK | MB_ICONINFORMATION);
             else
                 AfxMessageBox(IDS_SMS_SAVEFAIL, MB_OK | MB_ICONINFORMATION);
-        }
-        else
+        } else
             AfxMessageBox(IDS_SMS_SAVEFAIL, MB_OK | MB_ICONINFORMATION);
     }
 
@@ -468,24 +438,17 @@ BOOL CSmsWriteDlg::RetrieveGroupNum()
 
     UpdateData(TRUE);
     USES_CONVERSION;
-    if((cnt = m_strNumber.GetLength()) > 0)
-    {
+    if((cnt = m_strNumber.GetLength()) > 0) {
         i = 0, state = 0;
 
-        while(i < cnt)
-        {
-            switch(state)
-            {
+        while(i < cnt) {
+            switch(state) {
             case 0:
-                if(m_strNumber[i] != ';')
-                {
-                    if(++m_nNumCount > SMS_GROUPSEND_MAX)
-                    {
+                if(m_strNumber[i] != ';') {
+                    if(++m_nNumCount > SMS_GROUPSEND_MAX) {
                         i = cnt;
                         m_nNumCount--;
-                    }
-                    else
-                    {
+                    } else {
                         j = 0;
                         m_szGroupNum[m_nNumCount-1][j++] = W2A(m_strNumber)[i];
                         state = 1;
@@ -493,18 +456,14 @@ BOOL CSmsWriteDlg::RetrieveGroupNum()
                 }
                 break;
             case 1:
-                if(m_strNumber[i] != ';')
-                {
+                if(m_strNumber[i] != ';') {
                     if(j < PB_NUM_MAX)
                         m_szGroupNum[m_nNumCount-1][j++] = W2A(m_strNumber)[i];
-                    else
-                    {
+                    else {
                         i = cnt;
                         m_nNumCount--;
                     }
-                }
-                else
-                {
+                } else {
                     state = 0;
                 }
                 break;
@@ -528,24 +487,18 @@ void CSmsWriteDlg::OnTimer(UINT nIDEvent)
     DeRegisterAtRespFunc(ATRESP_GENERAL_AT);
     ((CHSDPAApp*)AfxGetApp())->m_pSerialPort->SetSerialState(SERIAL_STATE_CMD);
 
-    if(IDT_QCSMP_TIMEOUT == nIDEvent)
-    {
+    if(IDT_QCSMP_TIMEOUT == nIDEvent) {
         KillTimer(IDT_QCSMP_TIMEOUT);
     }
-    if (IDT_QHMSGL_TIMEOUT == nIDEvent)//add by liub for CDMA2000
-    {
+    if (IDT_QHMSGL_TIMEOUT == nIDEvent) { //add by liub for CDMA2000
         KillTimer(IDT_QHMSGL_TIMEOUT);
     }
-    if(IDT_QCMMS_TIMEOUT == nIDEvent)
-    {
+    if(IDT_QCMMS_TIMEOUT == nIDEvent) {
         KillTimer(IDT_QCMMS_TIMEOUT);
     }
-    if(IDT_QCSCA_TIMEOUT == nIDEvent)
-    {
+    if(IDT_QCSCA_TIMEOUT == nIDEvent) {
         KillTimer(IDT_QCSCA_TIMEOUT);
-    }
-    else if(IDT_QCMGS_TIMEOUT == nIDEvent)
-    {
+    } else if(IDT_QCMGS_TIMEOUT == nIDEvent) {
         KillTimer(IDT_QCMGS_TIMEOUT);
         SaveSendSmsToOutbox(FALSE);
         CWnd *pWnd = GetOwner();
@@ -557,8 +510,7 @@ void CSmsWriteDlg::OnTimer(UINT nIDEvent)
         sprintf(szAtBuf, "%c", gccCtrl_Z);
         CSerialPort* pComm = ((CHSDPAApp*)AfxGetApp())->m_pSerialPort;
         ASSERT(pComm);
-        if(pComm->WriteToPort(szAtBuf, strlen(szAtBuf), FALSE))
-        {
+        if(pComm->WriteToPort(szAtBuf, strlen(szAtBuf), FALSE)) {
             RegisterAtRespFunc(ATRESP_GENERAL_AT, AtRespDummy, this);
         }
         //end
@@ -578,34 +530,25 @@ BOOL CSmsWriteDlg::SndAtSmsQCSMP()
     para1 = para2 = para3 = para4 = 0;
 
 #ifdef FEATURE_SMS_CONCATENATE
-    if(gSmsIsConcatenate)
-    {
-        if(gSmsIsAsciiCode)
-        {
+    if(gSmsIsConcatenate) {
+        if(gSmsIsAsciiCode) {
             para1 = 113;
             para2 = 167;
             para3 = 0;
             para4 = 0;
-        }
-        else
-        {
+        } else {
             para1 = 113;
             para2 = 167;
             para3 = 0;
             para4 = 2;
         }
-    }
-    else
-    {
-        if(IsAlphabetUnicode(m_strSmsDetails))
-        {
+    } else {
+        if(IsAlphabetUnicode(m_strSmsDetails)) {
             para1 = 17;
             para2 = 167;
             para3 = 0;
             para4 = 0;
-        }
-        else
-        {
+        } else {
             para1 = 17;
             para2 = 167;
             para3 = 0;
@@ -613,15 +556,12 @@ BOOL CSmsWriteDlg::SndAtSmsQCSMP()
         }
     }
 #else
-    if(IsAlphabetUnicode(m_strSmsDetails))
-    {
+    if(IsAlphabetUnicode(m_strSmsDetails)) {
         para1 = 17;
         para2 = 167;
         para3 = 0;
         para4 = 0;
-    }
-    else
-    {
+    } else {
         para1 = 17;
         para2 = 167;
         para3 = 0;
@@ -641,8 +581,7 @@ BOOL CSmsWriteDlg::SndAtSmsQCSMP()
 
     CSerialPort* pComm = ((CHSDPAApp*)AfxGetApp())->m_pSerialPort;
     ASSERT(pComm);
-    if(pComm->WriteToPort(szAtBuf, strlen(szAtBuf), FALSE))
-    {
+    if(pComm->WriteToPort(szAtBuf, strlen(szAtBuf), FALSE)) {
         SetTimer(IDT_QCSMP_TIMEOUT, 60000, NULL);
         RegisterAtRespFunc(ATRESP_GENERAL_AT, RspAtSmsQCSMP, this);
         return TRUE;
@@ -660,35 +599,23 @@ BOOL CSmsWriteDlg::SndAtSmsQHMSGL()
     para1 = para2 = 0;
 
 #ifdef FEATURE_SMS_CONCATENATE
-    if(gSmsIsConcatenate)
-    {
-        if(gSmsIsAsciiCode)
-        {
+    if(gSmsIsConcatenate) {
+        if(gSmsIsAsciiCode) {
             para2 = 2;
-        }
-        else
-        {
+        } else {
             para2 = 4;
         }
-    }
-    else
-    {
-        if(IsAlphabetUnicode(m_strSmsDetails))
-        {
+    } else {
+        if(IsAlphabetUnicode(m_strSmsDetails)) {
             para2 = 2;
-        }
-        else
-        {
+        } else {
             para2 = 4;
         }
     }
 #else
-    if(IsAlphabetUnicode(m_strSmsDetails))
-    {
+    if(IsAlphabetUnicode(m_strSmsDetails)) {
         para2 = 2;
-    }
-    else
-    {
+    } else {
         para2 = 4;
     }
 #endif
@@ -697,8 +624,7 @@ BOOL CSmsWriteDlg::SndAtSmsQHMSGL()
 
     CSerialPort* pComm = ((CHSDPAApp*)AfxGetApp())->m_pSerialPort;
     ASSERT(pComm);
-    if(pComm->WriteToPort(szAtBuf, strlen(szAtBuf), FALSE))
-    {
+    if(pComm->WriteToPort(szAtBuf, strlen(szAtBuf), FALSE)) {
         SetTimer(IDT_QHMSGL_TIMEOUT, 60000, NULL);
         RegisterAtRespFunc(ATRESP_GENERAL_AT, RspAtSmsQHMSGL, this);
         return TRUE;
@@ -715,48 +641,35 @@ BOOL CSmsWriteDlg::SndAtSmsQHMSGP()
     BYTE para1;
     para1 = 0;
 #ifdef FEATURE_SMS_CONCATENATE
-    if (gSmsIsConcatenate)
-    {
+    if (gSmsIsConcatenate) {
         para1 = 1;//Flexi modify by liub
-    }
-    else
+    } else
         para1 = 0;
 #endif
-    if (m_WriteType == SMS_WRITE_FORWORD)
-    {
+    if (m_WriteType == SMS_WRITE_FORWORD) {
 #ifdef FEATURE_SMS_CONCATENATE
-        if (gSmsIsConcatenate)
-        {
-            if (gSmsCurSege +1 == gSmsTotalSege)
-            {
+        if (gSmsIsConcatenate) {
+            if (gSmsCurSege +1 == gSmsTotalSege) {
                 sprintf(szAtBuf, "%s%d,,%d,%d\r", gcstrAtSms[AT_SMS_QHMSGP], g_SetData.Messages_nDeliReport,para1,m_pMainWnd->m_pSmsDlg->ForwardSMSpriority);
-            }
-            else
+            } else
                 sprintf(szAtBuf, "%s%d,,%d,%d\r", gcstrAtSms[AT_SMS_QHMSGP], 0,para1,m_pMainWnd->m_pSmsDlg->ForwardSMSpriority);
 
 
-        }
-        else
+        } else
             sprintf(szAtBuf, "%s%d,,%d,%d\r", gcstrAtSms[AT_SMS_QHMSGP], g_SetData.Messages_nDeliReport,para1,m_pMainWnd->m_pSmsDlg->ForwardSMSpriority);
 #else
         sprintf(szAtBuf, "%s%d,,%d,%d\r", gcstrAtSms[AT_SMS_QHMSGP], g_SetData.Messages_nDeliReport,para1,m_pMainWnd->m_pSmsDlg->ForwardSMSpriority);
 #endif
-    }
-    else
-    {
+    } else {
 #ifdef FEATURE_SMS_CONCATENATE
-        if (gSmsIsConcatenate)
-        {
-            if (gSmsCurSege +1 == gSmsTotalSege)
-            {
+        if (gSmsIsConcatenate) {
+            if (gSmsCurSege +1 == gSmsTotalSege) {
                 sprintf(szAtBuf, "%s%d,,%d,%d\r", gcstrAtSms[AT_SMS_QHMSGP], g_SetData.Messages_nDeliReport,para1,g_SetData.Messages_nPriority);
-            }
-            else
+            } else
                 sprintf(szAtBuf, "%s%d,,%d,%d\r", gcstrAtSms[AT_SMS_QHMSGP], 0,para1,g_SetData.Messages_nPriority);
 
 
-        }
-        else
+        } else
             sprintf(szAtBuf, "%s%d,,%d,%d\r", gcstrAtSms[AT_SMS_QHMSGP], g_SetData.Messages_nDeliReport,para1,g_SetData.Messages_nPriority);
 
 
@@ -768,13 +681,11 @@ BOOL CSmsWriteDlg::SndAtSmsQHMSGP()
     CSerialPort* pComm = ((CHSDPAApp*)AfxGetApp())->m_pSerialPort;
     ASSERT(pComm);
 
-    if(pComm->WriteToPort(szAtBuf, strlen(szAtBuf), FALSE))
-    {
+    if(pComm->WriteToPort(szAtBuf, strlen(szAtBuf), FALSE)) {
         RegisterAtRespFunc(ATRESP_GENERAL_AT, RspAtSmsQHMSGP, (LPVOID)this);
         SetTimer(IDT_QHMSGP_TIMEOUT, 60000, NULL);
         return TRUE;
-    }
-    else
+    } else
         return FALSE;
 }
 
@@ -789,12 +700,9 @@ void CSmsWriteDlg::RspAtSmsQHMSGP(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL], 
     if(strcmp((const char*)strArr[0], gc_dsatResCodeTbl[DSAT_OK][gc_dsatmode]) == 0)
         //	pDlg->SndAtSmsQCSMP();
     {
-        if (pDlg->thelastone == FALSE)
-        {
+        if (pDlg->thelastone == FALSE) {
             pDlg->PostMessage(WM_SMS_SEND_PROC, (WPARAM)AT_SMS_QHMSGP, (LPARAM)TRUE);
-        }
-        else
-        {
+        } else {
             gSmsCurSege--;
             pDlg->bSaveSendSms = FALSE;
             pDlg->PostMessage(WM_SMS_SEND_PROC, (WPARAM)AT_SMS_QCMGS, (LPARAM)TRUE);
@@ -811,8 +719,7 @@ void CSmsWriteDlg::RspAtSmsQHMSGL(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL], 
     CSmsWriteDlg* pDlg = (CSmsWriteDlg*)pWnd;
     pDlg->KillTimer(IDT_QHMSGL_TIMEOUT);
 
-    if(strcmp((const char*)strArr[0], gc_dsatResCodeTbl[DSAT_OK][gc_dsatmode]) == 0)
-    {
+    if(strcmp((const char*)strArr[0], gc_dsatResCodeTbl[DSAT_OK][gc_dsatmode]) == 0) {
         pDlg->SndAtSmsQHMSGP();
         // pDlg->PostMessage(WM_SMS_SEND_PROC, (WPARAM)AT_SMS_QHMSGL, (LPARAM)TRUE);
         return;
@@ -831,8 +738,7 @@ void CSmsWriteDlg::RspAtSmsQCSMP(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL], W
 
     if(strcmp((const char*)strArr[0], gc_dsatResCodeTbl[DSAT_ERROR][gc_dsatmode]) == 0
             || memcmp((const char*)strArr[0], gc_dsatResCodeTbl[DSAT_CMS_ERROR][gc_dsatmode],
-                      strlen(gc_dsatResCodeTbl[DSAT_CMS_ERROR][gc_dsatmode])) == 0)
-    {
+                      strlen(gc_dsatResCodeTbl[DSAT_CMS_ERROR][gc_dsatmode])) == 0) {
         pDlg->PostMessage(WM_SMS_SEND_PROC, (WPARAM)AT_SMS_QCSMP, (LPARAM)FALSE);
         return;
     }
@@ -854,13 +760,11 @@ BOOL CSmsWriteDlg::SndAtSmsQCSCA()
     CSerialPort* pComm = ((CHSDPAApp*)AfxGetApp())->m_pSerialPort;
     ASSERT(pComm);
 
-    if(pComm->WriteToPort(szAtBuf, strlen(szAtBuf), FALSE))
-    {
+    if(pComm->WriteToPort(szAtBuf, strlen(szAtBuf), FALSE)) {
         RegisterAtRespFunc(ATRESP_GENERAL_AT, RspAtSmsQCSCA, (LPVOID)this);
         SetTimer(IDT_QCSCA_TIMEOUT, 60000, NULL);
         return TRUE;
-    }
-    else
+    } else
         return FALSE;
 }
 
@@ -886,13 +790,11 @@ BOOL CSmsWriteDlg:: SndAtSmsQCMMS(int param)
     CSerialPort* pComm = ((CHSDPAApp*)AfxGetApp())->m_pSerialPort;
     ASSERT(pComm);
 
-    if(pComm->WriteToPort(szAtBuf, strlen(szAtBuf), FALSE))
-    {
+    if(pComm->WriteToPort(szAtBuf, strlen(szAtBuf), FALSE)) {
         RegisterAtRespFunc(ATRESP_GENERAL_AT, RspAtSmsQCMMS, (LPVOID)this);
         SetTimer(IDT_QCMMS_TIMEOUT, 60000, NULL);
         return TRUE;
-    }
-    else
+    } else
         return FALSE;
 }
 
@@ -924,13 +826,11 @@ BOOL CSmsWriteDlg::SndAtSmsQCMGS(int nStep)
     char *q;
     q = m_szGroupNum[m_nCurNum];
 
-    if (m_szGroupNum[m_nCurNum][0] == '+' && m_szGroupNum[m_nCurNum][1] == '6' && m_szGroupNum[m_nCurNum][2] == '2')
-    {
+    if (m_szGroupNum[m_nCurNum][0] == '+' && m_szGroupNum[m_nCurNum][1] == '6' && m_szGroupNum[m_nCurNum][2] == '2') {
         m_szGroupNumSendNum[0] = '0';
         q = q + 3;
         int i = 1;
-        while (*q != '\0')
-        {
+        while (*q != '\0') {
             m_szGroupNumSendNum[i] = *q;
             q++;
             i++;
@@ -938,9 +838,7 @@ BOOL CSmsWriteDlg::SndAtSmsQCMGS(int nStep)
         }
         m_szGroupNumSendNum[i] = '\0';
 
-    }
-    else
-    {
+    } else {
         strcat(m_szGroupNumSendNum,m_szGroupNum[m_nCurNum]);
     }
 
@@ -949,36 +847,30 @@ BOOL CSmsWriteDlg::SndAtSmsQCMGS(int nStep)
     else
         pNumType = gcstrNumType[1];
 
-    if(gSmsIsConcatenate){
-    buffsize = EncodeSmsPDU(szAtAscBuf, m_szGroupNumSendNum, (CString)gszSmsSege[gSmsCurSege]);
-    }else{
-    buffsize = EncodeSmsPDU(szAtAscBuf, m_szGroupNumSendNum, m_strSmsDetails);
+    if(gSmsIsConcatenate) {
+        buffsize = EncodeSmsPDU(szAtAscBuf, m_szGroupNumSendNum, (CString)gszSmsSege[gSmsCurSege]);
+    } else {
+        buffsize = EncodeSmsPDU(szAtAscBuf, m_szGroupNumSendNum, m_strSmsDetails);
     }
-    if(nStep == 1)
-    {
+    if(nStep == 1) {
         int scLen = EncodeSCNumberForSmsPDU(NULL);
         sprintf(szAtAscBuf, "%s%d\r",
                 gcstrAtSms[AT_SMS_QCMGS],
                 (buffsize - scLen)/2);
 
         buffsize=strlen(szAtAscBuf);
-    }
-    else
-    {
+    } else {
         szAtAscBuf[buffsize] = gccCtrl_Z;
         buffsize = buffsize + 1;
     }
 
     CSerialPort* pComm = ((CHSDPAApp*)AfxGetApp())->m_pSerialPort;
     ASSERT(pComm);
-    if(pComm->WriteToPort(szAtAscBuf, buffsize, FALSE))
-    {
+    if(pComm->WriteToPort(szAtAscBuf, buffsize, FALSE)) {
         SetTimer(IDT_QCMGS_TIMEOUT, 60000, NULL);
         RegisterAtRespFunc(ATRESP_GENERAL_AT, RspAtSmsQCMGS, this);
         return TRUE;
-    }
-    else
-    {
+    } else {
         SaveSendSmsToOutbox(FALSE);
         CWnd *pWnd = GetOwner();
         pWnd->PostMessage(WM_SMS_SAVE_MSG, (WPARAM)SMS_TYPE_OUTBOX, LOC_PC);
@@ -1006,19 +898,16 @@ BOOL CSmsWriteDlg::SndAtSmsQCMGS(int nStep)
 
     ASSERT(m_nCurNum < m_nNumCount);
 
-    if(nStep == 1)
-    {
+    if(nStep == 1) {
         const char *pNumType;
         char *q;
         q = m_szGroupNum[m_nCurNum];
 
-        if (m_szGroupNum[m_nCurNum][0] == '+' && m_szGroupNum[m_nCurNum][1] == '6' && m_szGroupNum[m_nCurNum][2] == '2')
-        {
+        if (m_szGroupNum[m_nCurNum][0] == '+' && m_szGroupNum[m_nCurNum][1] == '6' && m_szGroupNum[m_nCurNum][2] == '2') {
             m_szGroupNumSendNum[0] = '0';
             q = q + 3;
             int i = 1;
-            while (*q != '\0')
-            {
+            while (*q != '\0') {
                 m_szGroupNumSendNum[i] = *q;
                 q++;
                 i++;
@@ -1026,9 +915,7 @@ BOOL CSmsWriteDlg::SndAtSmsQCMGS(int nStep)
             }
             m_szGroupNumSendNum[i] = '\0';
 
-        }
-        else
-        {
+        } else {
             strcat(m_szGroupNumSendNum,m_szGroupNum[m_nCurNum]);
         }
 
@@ -1043,20 +930,16 @@ BOOL CSmsWriteDlg::SndAtSmsQCMGS(int nStep)
                 pNumType);
 
         buffsize=strlen(szAtAscBuf);
-    }
-    else
-    {
+    } else {
 #ifdef FEATURE_SMS_CONCATENATE
         BOOL bConcsms = FALSE;
         if(gSmsIsConcatenate)
             bConcsms = TRUE;
 
-        if(bConcsms)
-        {
+        if(bConcsms) {
             char szHead[30];
             memset(szHead, 0x00, sizeof(szHead));
-            if(SetConcatenateSmsParaA(szHead, gSmsRefCnt, gSmsCurSege+1, gSmsTotalSege, MinMaxChar))
-            {
+            if(SetConcatenateSmsParaA(szHead, gSmsRefCnt, gSmsCurSege+1, gSmsTotalSege, MinMaxChar)) {
 //               TCHAR *unicodStr = new TCHAR[strlen(szHead) * 2 + 1];
 //      	//memset(unicodStr, 0, strlen(szHead)  + 2);
 //                   ASCToUCS2((char*)szHead,(TCHAR *)unicodStr );
@@ -1074,17 +957,13 @@ BOOL CSmsWriteDlg::SndAtSmsQCMGS(int nStep)
 
             szAtAscBuf[szhlen] = gccCtrl_Z;
             buffsize=szhlen+1;
-        }
-        else
+        } else
 #endif
         {
             int len = 0;
-            if(IsAlphabetUnicode(m_strSmsDetails))
-            {
+            if(IsAlphabetUnicode(m_strSmsDetails)) {
                 len = WCharToChar(m_strSmsDetails, szAtAscBuf);
-            }
-            else
-            {
+            } else {
                 CString strUC = BTToUCS2((CString)m_strSmsDetails);
                 len =  WCharToChar(strUC, szAtAscBuf);
             }
@@ -1095,14 +974,11 @@ BOOL CSmsWriteDlg::SndAtSmsQCMGS(int nStep)
 
     CSerialPort* pComm = ((CHSDPAApp*)AfxGetApp())->m_pSerialPort;
     ASSERT(pComm);
-    if(pComm->WriteToPort(szAtAscBuf, buffsize, FALSE))
-    {
+    if(pComm->WriteToPort(szAtAscBuf, buffsize, FALSE)) {
         SetTimer(IDT_QCMGS_TIMEOUT, 60000, NULL);
         RegisterAtRespFunc(ATRESP_GENERAL_AT, RspAtSmsQCMGS, this);
         return TRUE;
-    }
-    else
-    {
+    } else {
         SaveSendSmsToOutbox(FALSE);
         CWnd *pWnd = GetOwner();
         pWnd->PostMessage(WM_SMS_SAVE_MSG, (WPARAM)SMS_TYPE_OUTBOX, LOC_PC);
@@ -1131,17 +1007,14 @@ void CSmsWriteDlg::RspAtSmsQCMGS(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL], W
 
     if(strcmp((const char*)strArr[0], gc_dsatResCodeTbl[DSAT_ERROR][gc_dsatmode]) == 0
             || memcmp((const char*)strArr[0], gc_dsatResCodeTbl[DSAT_CMS_ERROR][gc_dsatmode],
-                      strlen(gc_dsatResCodeTbl[DSAT_CMS_ERROR][gc_dsatmode])) == 0)
-    {
+                      strlen(gc_dsatResCodeTbl[DSAT_CMS_ERROR][gc_dsatmode])) == 0) {
         //if (IDOK == AfxMessageBox(_T("Send continue?"),MB_OKCANCEL))
-        if(IDOK == pDlg->MessageBox(_T("Send fail,continue?"),NULL,MB_OKCANCEL))
-        {
+        if(IDOK == pDlg->MessageBox(_T("Send fail,continue?"),NULL,MB_OKCANCEL)) {
             pDlg->bSaveSendSms = FALSE;
 #ifdef FEATURE_SMS_CONCATENATE
             if(gSmsIsConcatenate)
                 gSmsCurSege--;
-            else
-            {
+            else {
                 pDlg->m_nCurNum--;
                 //pDlg->ProgressPos(pDlg->m_nCurNum-1);
                 pDlg->pDlg->m_Progress.SetPos(pDlg->m_nCurNum);
@@ -1155,9 +1028,7 @@ void CSmsWriteDlg::RspAtSmsQCMGS(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL], W
             pDlg->PostMessage(WM_SMS_SEND_PROC, (WPARAM)AT_SMS_QCMGS, (LPARAM)TRUE);
             return;
 
-        }
-        else
-        {
+        } else {
             pDlg->PostMessage(WM_SMS_SEND_PROC, (WPARAM)AT_SMS_QCMGW, (LPARAM)FALSE);
             return;
         }
@@ -1167,27 +1038,21 @@ void CSmsWriteDlg::RspAtSmsQCMGS(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL], W
     ASSERT(wStrNum == 1 || wStrNum == 2);
 
     //Ready to Write Sms Content
-    if(wStrNum == 1 && strcmp((const char*)strArr[0], gcstrSmsPrompt) == 0)
-    {
+    if(wStrNum == 1 && strcmp((const char*)strArr[0], gcstrSmsPrompt) == 0) {
         pDlg->PostMessage(WM_SMS_SEND_PROC, (WPARAM)AT_SMS_QCMGW, (LPARAM)TRUE);
     }
     //Write Ok
     else if(wStrNum == 2
             && strcmp((const char*)strArr[1], gc_dsatResCodeTbl[DSAT_OK][gc_dsatmode]) == 0
-            && memcmp((const char*)strArr[0], gcstrResSms[AT_SMS_QCMGS], strlen(gcstrResSms[AT_SMS_QCMGS])) == 0)
-    {
-        if (TRUE == pDlg->thelastone)
-        {
+            && memcmp((const char*)strArr[0], gcstrResSms[AT_SMS_QCMGS], strlen(gcstrResSms[AT_SMS_QCMGS])) == 0) {
+        if (TRUE == pDlg->thelastone) {
             pDlg->theLMSSavenow = TRUE;
             pDlg->thelastone = FALSE;
 
         }
         pDlg->PostMessage(WM_SMS_SEND_PROC, (WPARAM)AT_SMS_QCMGS, (LPARAM)TRUE);
-    }
-    else
-    {
-        if(IDOK == pDlg->MessageBox(_T("Send fail,continue?"),NULL,MB_OKCANCEL))
-        {
+    } else {
+        if(IDOK == pDlg->MessageBox(_T("Send fail,continue?"),NULL,MB_OKCANCEL)) {
             pDlg->bSaveSendSms = FALSE;
 
 #ifdef FEATURE_SMS_CONCATENATE
@@ -1200,9 +1065,7 @@ void CSmsWriteDlg::RspAtSmsQCMGS(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL], W
 #endif
             pDlg->PostMessage(WM_SMS_SEND_PROC, (WPARAM)AT_SMS_QCMGS, (LPARAM)TRUE);
 
-        }
-        else
-        {
+        } else {
 // 			if (TRUE == pDlg->thelastone)
 // 			{
 // 				pDlg->theLMSSavenow = TRUE;
@@ -1227,52 +1090,38 @@ LRESULT CSmsWriteDlg::OnSmsSendPorc(WPARAM wParam, LPARAM lParam)
     CHSDPADlg* pMainWnd = (CHSDPADlg*)AfxGetMainWnd();
     ASSERT(pMainWnd);
 
-    if(bProcRst)
-    {
-        if(AtType == AT_SMS_QCSMP)
-        {
+    if(bProcRst) {
+        if(AtType == AT_SMS_QCSMP) {
             if(pMainWnd->m_bInComSms || pMainWnd->m_bInComCall)
                 goto STOPSEND;
             ProgressOpen(m_nNumCount, 1);
             bSndRes = SndAtSmsQCSCA();
-        }
-        else if(AtType == AT_SMS_QCSCA)
-        {
+        } else if(AtType == AT_SMS_QCSCA) {
 #ifdef FEATURE_SMS_CONCATENATE
-            if(gSmsIsConcatenate && 0 == gSmsCurSege  && 0 != gSmsTotalSege)
-            {
+            if(gSmsIsConcatenate && 0 == gSmsCurSege  && 0 != gSmsTotalSege) {
                 bSndRes = SndAtSmsQCMMS(1);
-            }
-            else
+            } else
 #endif
                 bSndRes = SndAtSmsQCMGS(1);
-        }
-        else if(AtType == AT_SMS_QCMGP){
+        } else if(AtType == AT_SMS_QCMGP) {
             if(pMainWnd->m_bInComSms || pMainWnd->m_bInComCall)
                 goto STOPSEND;
-            if((BOOL)lParam){
+            if((BOOL)lParam) {
                 bSndRes = SndAtSmsQCMMS(1);
-            }else{
+            } else {
                 bSndRes = SndAtSmsQCMGS(1);
             }
             ProgressOpen(m_nNumCount, 1);
             PostMessage(WM_UPDATA_SENDSMS_LMS,0,0);//flexi 发长短信刷新进度条
-        }
-        else if(AtType == AT_SMS_QCMMS)
-        {
+        } else if(AtType == AT_SMS_QCMMS) {
             bSndRes = SndAtSmsQCMGS(1);
-        }
-        else if(AtType == AT_SMS_QCMGW)
-        {
-            if(m_nCurNum == 0)
-            {
+        } else if(AtType == AT_SMS_QCMGW) {
+            if(m_nCurNum == 0) {
 #ifdef FEATURE_SMS_CONCATENATE
-                if(gSmsIsConcatenate)
-                {
+                if(gSmsIsConcatenate) {
                     if(gSmsCurSege == 0)
                         ProgressStep();
-                }
-                else
+                } else
                     ProgressStep();
 #else
                 ProgressStep();
@@ -1280,21 +1129,16 @@ LRESULT CSmsWriteDlg::OnSmsSendPorc(WPARAM wParam, LPARAM lParam)
             }
 //            Sleep(200);
             bSndRes = SndAtSmsQCMGS(2);
-        }
-        else
-        {
+        } else {
 
 #ifdef FEATURE_SMS_CONCATENATE
             //flexi需求更改，LMS发送成功后完整保存短信至发件箱
-            if (gSmsIsConcatenate)
-            {
-                if (TRUE == theLMSSavenow)
-                {
+            if (gSmsIsConcatenate) {
+                if (TRUE == theLMSSavenow) {
                     SaveSMStoOutbox();
                     theLMSSavenow = FALSE;
                 }
-            }
-            else
+            } else
                 SaveSMStoOutbox();
 #else
             SaveSMStoOutbox();
@@ -1313,26 +1157,21 @@ LRESULT CSmsWriteDlg::OnSmsSendPorc(WPARAM wParam, LPARAM lParam)
 #ifdef FEATURE_SMS_CONCATENATE
 
 
-            if(gSmsIsConcatenate && ++gSmsCurSege < gSmsTotalSege)
-            {
+            if(gSmsIsConcatenate && ++gSmsCurSege < gSmsTotalSege) {
                 PostMessage(WM_UPDATA_SENDSMS_LMS,0,0);//flexi 发长短信刷新进度条
-                if (gSmsCurSege +1 == gSmsTotalSege && FALSE == thelastone)
-                {
+                if (gSmsCurSege +1 == gSmsTotalSege && FALSE == thelastone) {
                     thelastone = TRUE;
                     SndAtSmsQCMMS(0);
-                }
-                else
+                } else
                     bSndRes = SndAtSmsQCMGS(1);
             }
 #endif
-            else if(++m_nCurNum < m_nNumCount)
-            {
+            else if(++m_nCurNum < m_nNumCount) {
 
                 if(pMainWnd->m_bInComSms || pMainWnd->m_bInComCall)
                     goto STOPSEND;
 #ifdef FEATURE_SMS_CONCATENATE
-                if(gSmsIsConcatenate)
-                {
+                if(gSmsIsConcatenate) {
                     gSmsRefCnt++;
                     gSmsCurSege = 0;
                 }
@@ -1340,9 +1179,7 @@ LRESULT CSmsWriteDlg::OnSmsSendPorc(WPARAM wParam, LPARAM lParam)
                 ProgressStep();
                 PostMessage(WM_UPDATA_SENDSMS_LMS,0,0);//flexi 发长短信刷新进度条
                 bSndRes = SndAtSmsQCMGS(1);
-            }
-            else
-            {
+            } else {
                 m_pMainWnd->CtlAllSmsRcvConcTimer(TRUE);
                 ::SetEvent(g_BGPassEvt);
 
@@ -1356,14 +1193,11 @@ LRESULT CSmsWriteDlg::OnSmsSendPorc(WPARAM wParam, LPARAM lParam)
                 ProgressClose();
             }
         }
-        if(!bSndRes)
-        {
+        if(!bSndRes) {
             m_pMainWnd->CtlAllSmsRcvConcTimer(TRUE);
             ::SetEvent(g_BGPassEvt);
         }
-    }
-    else
-    {
+    } else {
 STOPSEND:
         m_pMainWnd->CtlAllSmsRcvConcTimer(TRUE);
         ::SetEvent(g_BGPassEvt);
@@ -1411,10 +1245,8 @@ void CSmsWriteDlg::SaveSMStoOutbox()
     // TODO: Add your control notification handler code here
     UpdateData();
 
-    if(m_strNumber.GetLength() == 0 || RetrieveGroupNum())
-    {
-        if(m_strNumber.GetLength() == 0)
-        {
+    if(m_strNumber.GetLength() == 0 || RetrieveGroupNum()) {
+        if(m_strNumber.GetLength() == 0) {
             m_nNumCount = 1;
             memset(m_szGroupNum[0], 0x00, sizeof(m_szGroupNum[0]));
         }
@@ -1431,8 +1263,7 @@ void CSmsWriteDlg::SaveSMStoOutbox()
 
 
 
-        if(m_nCurNum)
-        {
+        if(m_nCurNum) {
             CWnd *pWnd = GetOwner();
             pWnd->SendMessage(WM_SMS_SAVE_MSG, (WPARAM)SMS_TYPE_OUTBOX, LOC_PC);
         }
@@ -1458,18 +1289,15 @@ void CSmsWriteDlg::SaveSMStoDraft()
     // TODO: Add your control notification handler code here
     UpdateData();
 
-    if(m_strNumber.GetLength() == 0 || RetrieveGroupNum())
-    {
-        if(m_strNumber.GetLength() == 0)
-        {
+    if(m_strNumber.GetLength() == 0 || RetrieveGroupNum()) {
+        if(m_strNumber.GetLength() == 0) {
             m_nNumCount = 1;
             memset(m_szGroupNum[0], 0x00, sizeof(m_szGroupNum[0]));
         }
 
         USES_CONVERSION;
         int i = m_nCurNum;
-        while(i < m_nNumCount)
-        {
+        while(i < m_nNumCount) {
             if(!m_pSmsData->AddSmsRecord(SMS_TYPE_DRAFT,
                                          SMS_STATE_MO_NOT_SENT,
                                          A2W(m_szGroupNum[i]),
@@ -1480,8 +1308,7 @@ void CSmsWriteDlg::SaveSMStoDraft()
             else
                 i++;
         }
-        if(i > 0)
-        {
+        if(i > 0) {
             CWnd *pWnd = GetOwner();
             pWnd->SendMessage(WM_SMS_SAVE_MSG, (WPARAM)SMS_TYPE_DRAFT, LOC_PC);
         }
@@ -1509,15 +1336,12 @@ LRESULT CSmsWriteDlg::OnCreateProgress(WPARAM wParam, LPARAM lParam)
     int nUpper = (int)wParam;
     int nStep = (int)lParam;
 
-    if(nUpper == 0 || nStep == 0)
-    {
+    if(nUpper == 0 || nStep == 0) {
         CProgressExDlg dlg(this);
         pDlg = &dlg;
         dlg.DoModal();
         pDlg = NULL;
-    }
-    else
-    {
+    } else {
         CProgressExDlg dlg(this, nUpper, nStep);
         pDlg = &dlg;
         dlg.DoModal();
@@ -1532,8 +1356,7 @@ LRESULT CSmsWriteDlg::OnCreateProgress(WPARAM wParam, LPARAM lParam)
 //输出：TRUE/FALSE
 BOOL CSmsWriteDlg::ProgressSet(int nLower, int nUpper, int nStep)
 {
-    if(pDlg)
-    {
+    if(pDlg) {
         m_nLower = nLower;
         m_nUpper = nUpper;
         m_nStep  = nStep;
@@ -1550,29 +1373,22 @@ BOOL CSmsWriteDlg::ProgressSet(int nLower, int nUpper, int nStep)
 //输出：TRUE/FALSE
 BOOL CSmsWriteDlg::ProgressStep()
 {
-    if(pDlg && pDlg->m_Progress.GetPos() < m_nUpper)
-    {
+    if(pDlg && pDlg->m_Progress.GetPos() < m_nUpper) {
         CString str;
         str.LoadString(IDS_SMS_SENDING_TIP);
         USES_CONVERSION;
 //        pDlg->m_strText.Format(_T("%s\"%s\", (%d/%d)"), str,
 //                                A2W(m_szGroupNum[m_nCurNum]), m_nCurNum+1, m_nNumCount);
         //flexi需求，增加长短信发送进度
-        if (gSmsTotalSege == 0)
-        {
+        if (gSmsTotalSege == 0) {
             pDlg->m_strText.Format(_T("%s\"%s(%d/%d)\", (%d/%d)"), str,
                                    A2W(m_szGroupNum[m_nCurNum]),1,1, m_nCurNum+1, m_nNumCount);
 
-        }
-        else
-        {
-            if (0 == gSmsCurSege)
-            {
+        } else {
+            if (0 == gSmsCurSege) {
                 pDlg->m_strText.Format(_T("%s\"%s(%d/%d)\", (%d/%d)"), str,
                                        A2W(m_szGroupNum[m_nCurNum]),gSmsCurSege+1,gSmsTotalSege, m_nCurNum+1, m_nNumCount);
-            }
-            else
-            {
+            } else {
                 pDlg->m_strText.Format(_T("%s\"%s(%d/%d)\", (%d/%d)"), str,
                                        A2W(m_szGroupNum[m_nCurNum]),gSmsCurSege,gSmsTotalSege, m_nCurNum+1, m_nNumCount);
             }
@@ -1589,20 +1405,16 @@ BOOL CSmsWriteDlg::ProgressStep()
 //输出：TRUE/FALSE
 LRESULT CSmsWriteDlg::UpdateProgressStep(WPARAM wParam, LPARAM lParam)
 {
-    if(pDlg && pDlg->m_Progress.GetPos() < m_nUpper)
-    {
+    if(pDlg && pDlg->m_Progress.GetPos() < m_nUpper) {
         CString str;
         str.LoadString(IDS_SMS_SENDING_TIP);
         USES_CONVERSION;
         //flexi需求，增加长短信发送进度
-        if (gSmsTotalSege == 0)
-        {
+        if (gSmsTotalSege == 0) {
             pDlg->m_strText.Format(_T("%s\"%s(%d/%d)\", (%d/%d)"), str,
                                    A2W(m_szGroupNum[m_nCurNum]),1,1, m_nCurNum+1, m_nNumCount);
 
-        }
-        else
-        {
+        } else {
             pDlg->m_strText.Format(_T("%s\"%s(%d/%d)\", (%d/%d)"), str,
                                    A2W(m_szGroupNum[m_nCurNum]),gSmsCurSege+1,gSmsTotalSege, m_nCurNum+1, m_nNumCount);
         }
@@ -1619,8 +1431,7 @@ LRESULT CSmsWriteDlg::UpdateProgressStep(WPARAM wParam, LPARAM lParam)
 //输出：TRUE/FALSE
 BOOL CSmsWriteDlg::ProgressClose()
 {
-    if(pDlg)
-    {
+    if(pDlg) {
         pDlg->PostMessage(WM_CLOSE);
         return TRUE;
     }
@@ -1641,8 +1452,7 @@ BOOL CSmsWriteDlg::ProgressOpen(int nUpper, int nStep)
 //输出：TRUE/FALSE
 BOOL CSmsWriteDlg::ProgressPos(int nPos)
 {
-    if(pDlg && pDlg->m_Progress.GetPos() < nPos && nPos <= m_nUpper)
-    {
+    if(pDlg && pDlg->m_Progress.GetPos() < nPos && nPos <= m_nUpper) {
         pDlg->m_Progress.SetPos(nPos);
         return TRUE;
     }
@@ -1763,25 +1573,21 @@ void CSmsWriteDlg::OnUpdateEditNumber()
     UpdateData(TRUE);
     length = m_strNumber.GetLength();
 
-    for(USHORT i = 0; i < length; i++)
-    {
-        if(!IsValidSmsNumChar(m_strNumber.GetAt(i)))
-        {
+    for(USHORT i = 0; i < length; i++) {
+        if(!IsValidSmsNumChar(m_strNumber.GetAt(i))) {
             m_strNumber = m_strNumber.Left(i);
             bUndo = TRUE;
             break;
         }
     }
 
-    if(bUndo)
-    {
+    if(bUndo) {
         wcsncpy(szEditNum, m_strNumber, m_strNumber.GetLength());
         m_strNumber.Format(_T("%s"), szEditNum);
         Beep(600, 50);
     }
     UpdateData(FALSE);
-    if (m_strNumber.GetLength()>255)
-    {
+    if (m_strNumber.GetLength()>255) {
         m_editNumber.SetSel(focus, m_strNumber.GetLength());
 
     }
@@ -1791,51 +1597,40 @@ void CSmsWriteDlg::OnUpdateEditNumber()
     int len;
     BOOL bSingleNumOver = FALSE;
     UpdateData(TRUE);
-    if((len = m_strNumber.GetLength()) > 0 && m_strNumber[len-1] != ';')
-    {
+    if((len = m_strNumber.GetLength()) > 0 && m_strNumber[len-1] != ';') {
         m_strNumber +=_T(";");
     }
     int indexhead,indextail;
-    for(indexhead=0,indextail=0; indexhead>=0;)
-    {
+    for(indexhead=0,indextail=0; indexhead>=0;) {
         indextail=m_strNumber.Find(';', indexhead);
-        if (indextail==-1)
-        {
+        if (indextail==-1) {
             //代表分号后还有一段号码
-            if (m_strNumber.GetLength()-indexhead>PB_NUM_MAX)
-            {
+            if (m_strNumber.GetLength()-indexhead>PB_NUM_MAX) {
                 bSingleNumOver=TRUE;
                 break;
             }
             break;
-        }
-        else if(indextail-indexhead>PB_NUM_MAX)
-        {
+        } else if(indextail-indexhead>PB_NUM_MAX) {
             bSingleNumOver=TRUE;
             break;
         }
         indexhead=indextail+1;
     }
 
-    if (IsNumbersOver())
-    {
+    if (IsNumbersOver()) {
         AfxMessageBox(IDS_ERR_SMS_GROUPNUMBEROVER);
         m_strNumber=m_strLastGroupNumber;
         UpdateData(FALSE);
         //设置在最后
         m_editNumber.SetSel(m_strNumber.GetLength(), m_strNumber.GetLength());
-    }
-    else if (bSingleNumOver)
-    {
+    } else if (bSingleNumOver) {
         //有号码长度超长
         Beep( 600, 50 );
         m_strNumber=m_strLastGroupNumber;
         UpdateData(FALSE);
         //设置在最后
         m_editNumber.SetSel(m_strNumber.GetLength(), m_strNumber.GetLength());
-    }
-    else
-    {
+    } else {
         m_strLastGroupNumber=m_strNumber;
     }
 }
@@ -1921,23 +1716,17 @@ BOOL CSmsWriteDlg::IsNumbersOver()
     */
     int len;
     BOOL nNumCount = 0;
-    if((len = m_strNumber.GetLength()) > 0 && m_strNumber[len-1] != ';')
-    {
+    if((len = m_strNumber.GetLength()) > 0 && m_strNumber[len-1] != ';') {
         m_strNumber += _T(";");
     }
     int indexhead,indextail;
-    for(indexhead=0,indextail=0; indexhead>=0;)
-    {
+    for(indexhead=0,indextail=0; indexhead>=0;) {
         indextail=m_strNumber.Find(';', indexhead);
-        if (indextail==-1)
-        {
-            if (m_strNumber.GetLength()-indexhead>0)
-            {
+        if (indextail==-1) {
+            if (m_strNumber.GetLength()-indexhead>0) {
                 nNumCount++;
             }
-        }
-        else if(indextail-indexhead>0)
-        {
+        } else if(indextail-indexhead>0) {
             nNumCount++;
         }
         if(indexhead>=len)
@@ -1976,18 +1765,14 @@ void CSmsWriteDlg::OnUpdateEditSmsdetails()
 
     UpdateData(TRUE);
 
-    if(IsAlphabetUnicode(m_strSmsDetails))
-    {
+    if(IsAlphabetUnicode(m_strSmsDetails)) {
         if(GetUnicodeCharNum(m_strSmsDetails) > nAsciiLimit)
             bUndo = TRUE;
-    }
-    else
-    {
+    } else {
         if(GetUnicodeCharNum(m_strSmsDetails) > nGbLimit)
             bUndo = TRUE;
     }
-    if(bUndo)
-    {
+    if(bUndo) {
         m_strSmsDetails.Format(_T("%s"), szDetails);
         m_editSmsDetails.SetWindowText(m_strSmsDetails);
         m_editSmsDetails.UpdateWindow();
@@ -2026,12 +1811,9 @@ void CSmsWriteDlg::SaveSendSmsToOutbox(BOOL bSndSucc)
     bConcsms = gSmsIsConcatenate;
 
     USES_CONVERSION;
-    if(bConcsms)
-    {
-        if(bSndSucc)
-        {
-            if(gSmsCurSege < gSmsTotalSege)
-            {
+    if(bConcsms) {
+        if(bSndSucc) {
+            if(gSmsCurSege < gSmsTotalSege) {
                 //Modified by Zhou Bin 2008.12.30
                 m_pSmsData->AddSmsRecord(SMS_TYPE_OUTBOX,
                                          SMS_STATE_MO_SENT,
@@ -2054,11 +1836,8 @@ void CSmsWriteDlg::SaveSendSmsToOutbox(BOOL bSndSucc)
 //                     gSmsCurSege+1,
 //                     gSmsTotalSege);
             }
-        }
-        else
-        {
-            while(gSmsCurSege < gSmsTotalSege)
-            {
+        } else {
+            while(gSmsCurSege < gSmsTotalSege) {
                 m_pSmsData->AddSmsRecord(/*SMS_TYPE_OUTBOX*/SMS_TYPE_DRAFT,//flexi 需求
                         SMS_STATE_MO_NOT_SENT,
                         A2W(m_szGroupNum[m_nCurNum]),
@@ -2083,21 +1862,17 @@ void CSmsWriteDlg::SaveSendSmsToOutbox(BOOL bSndSucc)
 //                 gSmsCurSege++;
             }
         }
-    }
-    else
+    } else
 #endif
     {
-        if(bSndSucc)
-        {
+        if(bSndSucc) {
             m_pSmsData->AddSmsRecord(SMS_TYPE_OUTBOX,
                                      SMS_STATE_MO_SENT,
                                      A2W(m_szGroupNum[m_nCurNum]),
                                      COleDateTime::GetCurrentTime(),
                                      m_strSmsDetails,
                                      A2W(m_szSCNumber));
-        }
-        else
-        {
+        } else {
             m_pSmsData->AddSmsRecord(/*SMS_TYPE_OUTBOX*/SMS_TYPE_DRAFT,//flexi 需求
                     SMS_STATE_MO_NOT_SENT,
                     A2W(m_szGroupNum[m_nCurNum]),
@@ -2116,39 +1891,28 @@ void CSmsWriteDlg::UpdateStatistic()
     int nSeg = 0;
     int nRemain = 0;
 
-    if(IsAlphabetUnicode(m_strSmsDetails))
-    {
-        if(GetACSIICharNum(m_strSmsDetails) <= SMS_CHAR_MAX)
-        {
+    if(IsAlphabetUnicode(m_strSmsDetails)) {
+        if(GetACSIICharNum(m_strSmsDetails) <= SMS_CHAR_MAX) {
             m_strStatistic.Format(_T("(%d)"), (SMS_CHAR_MAX - GetACSIICharNum(m_strSmsDetails)));
             m_strSegNum.Empty();
-        }
-        else
-        {
+        } else {
             nSeg = GetACSIICharNum(m_strSmsDetails) / SMS_CONCAT_ASCII_MAX;
             nRemain = GetACSIICharNum(m_strSmsDetails) % SMS_CONCAT_ASCII_MAX;
-            if(nRemain > 0)
-            {
+            if(nRemain > 0) {
                 nSeg++;
                 nRemain = SMS_CONCAT_ASCII_MAX - nRemain;
             }
             m_strStatistic.Format(_T("(%d)"), nRemain);
             m_strSegNum.Format(_T("%d/%d"), nSeg, SMS_CONCAT_SEGMENT_MAX);
         }
-    }
-    else
-    {
-        if(GetUnicodeCharNum(m_strSmsDetails) <= SMS_CHINESE_CHAR_MAX)
-        {
+    } else {
+        if(GetUnicodeCharNum(m_strSmsDetails) <= SMS_CHINESE_CHAR_MAX) {
             m_strStatistic.Format(_T("(%d)"), (SMS_CHINESE_CHAR_MAX - GetUnicodeCharNum(m_strSmsDetails)));
             m_strSegNum.Empty();
-        }
-        else
-        {
+        } else {
             nSeg = GetUnicodeCharNum(m_strSmsDetails) / SMS_CONCAT_GB_MAX;
             nRemain = GetUnicodeCharNum(m_strSmsDetails) % SMS_CONCAT_GB_MAX;
-            if(nRemain > 0)
-            {
+            if(nRemain > 0) {
                 nSeg++;
                 nRemain = SMS_CONCAT_GB_MAX - nRemain;
             }

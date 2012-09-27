@@ -42,7 +42,7 @@ static MessageCreator<DMSGetDeviceCapRsp> RspUint32Creator(DMSGetDeviceCapRspUID
 //
 /// Constructor for DMSGetDeviceCapReq.
 // --------------------------------------------------------------------------
-DMSGetDeviceCapReq::DMSGetDeviceCapReq() : 
+DMSGetDeviceCapReq::DMSGetDeviceCapReq() :
     Message(QMUX_TYPE_DMS,QMI_DMS_GET_DEVICE_CAP_MSG,QMI_CTL_FLAG_TYPE_CMD)
 {}
 
@@ -137,40 +137,34 @@ DMSGetDeviceCapRsp::~DMSGetDeviceCapRsp()
 bool DMSGetDeviceCapRsp::Unpack(MsgBuf& msgBuf)
 {
     // call the base unpack
-    if (!Message::Unpack(msgBuf))
-    {
+    if (!Message::Unpack(msgBuf)) {
         return false;
     }
-    
+
     // validate message length
-    if (m_result == QMI_RESULT_SUCCESS)
-    {
+    if (m_result == QMI_RESULT_SUCCESS) {
         // mandatory tlvs
         uint32 len = 21 + m_radioIfListCnt;
-        if (m_length != len) 
-        {
+        if (m_length != len) {
             std::stringstream stream;
             stream << _T("Warning: unable to unpack message:") << std::endl
-                << _T("Expected message length is ") << (int)len
-                << _T(" bytes, unpacked length is ")
-                << m_length << _T(" bytes.") << std::endl 
-                << std::endl;
+                   << _T("Expected message length is ") << (int)len
+                   << _T(" bytes, unpacked length is ")
+                   << m_length << _T(" bytes.") << std::endl
+                   << std::endl;
             MessageManager::GetInstance().ReportStatus(stream.str(),ST_WARNING);
-            return false; 
+            return false;
         }
-    }
-    else
-    {
+    } else {
         // only result code tlv on failure
-        if (m_length != 7) 
-        {
+        if (m_length != 7) {
             std::stringstream stream;
             stream << _T("Warning: unable to unpack message:") << std::endl
-                << _T("Expected message length is 7 bytes, unpacked length is ")
-                << m_length << _T(" bytes.") << std::endl 
-                << std::endl;
+                   << _T("Expected message length is 7 bytes, unpacked length is ")
+                   << m_length << _T(" bytes.") << std::endl
+                   << std::endl;
             MessageManager::GetInstance().ReportStatus(stream.str(),ST_WARNING);
-            return false; 
+            return false;
         }
     }
 
@@ -188,8 +182,7 @@ bool DMSGetDeviceCapRsp::Unpack(MsgBuf& msgBuf)
 Message::Uint8UnpackerMap& DMSGetDeviceCapRsp::GetUnpackerMap()
 {
     static Uint8UnpackerMap UUMap;
-    if (UUMap.empty())
-    {
+    if (UUMap.empty()) {
         bool bSuccess = UUMap.insert(UUPair(RESULT_CODE_TYPE,(Unpacker)UnpackResultCode)).second;
         assert(bSuccess);
         bSuccess = UUMap.insert(UUPair(DEVICE_CAPABILITIES_TYPE,(Unpacker)UnpackDeviceCapabilities)).second;
@@ -212,12 +205,11 @@ bool DMSGetDeviceCapRsp::UnpackResultCode(MsgBuf& msgBuf)
     m_resultCodeType = RESULT_CODE_TYPE;
 
     m_resultCodeLen = msgBuf.GetWord();
-    if (m_resultCodeLen != 4) 
-    {
+    if (m_resultCodeLen != 4) {
         std::stringstream stream;
         stream << _T("Warning: unable to unpack message:") << std::endl
                << _T("Expected Result Code length is 4 bytes, unpacked length is ")
-               << m_resultCodeLen << _T(" bytes.") << std::endl 
+               << m_resultCodeLen << _T(" bytes.") << std::endl
                << std::endl;
         MessageManager::GetInstance().ReportStatus(stream.str(),ST_WARNING);
         return false;
@@ -248,51 +240,46 @@ bool DMSGetDeviceCapRsp::UnpackDeviceCapabilities(MsgBuf& msgBuf)
     m_maxRxChannelRate = msgBuf.GetDWord();
 
     m_serviceCapability = msgBuf.GetByte();
-    if (m_serviceCapability < 1 || m_serviceCapability > 4) 
-    {
+    if (m_serviceCapability < 1 || m_serviceCapability > 4) {
         std::stringstream stream;
         stream << _T("Warning: unable to unpack message:") << std::endl
                << _T("Valid Service Capability values are 1 - 4 , unpacked value is ")
-               << m_serviceCapability << _T(" .") << std::endl 
+               << m_serviceCapability << _T(" .") << std::endl
                << std::endl;
         MessageManager::GetInstance().ReportStatus(stream.str(),ST_WARNING);
         return false;
     }
 
     m_simCapability = msgBuf.GetByte();
-    if (m_simCapability < 1 || m_simCapability > 2) 
-    {
+    if (m_simCapability < 1 || m_simCapability > 2) {
         std::stringstream stream;
         stream << _T("Warning: unable to unpack message:") << std::endl
                << _T("Valid Sim Capability values are 1 and 2, unpacked value is ")
-               << m_simCapability << _T(" .") << std::endl 
+               << m_simCapability << _T(" .") << std::endl
                << std::endl;
         MessageManager::GetInstance().ReportStatus(stream.str(),ST_WARNING);
         return false;
     }
 
     m_radioIfListCnt = msgBuf.GetByte();
-    for (int i = 0; i < m_radioIfListCnt; i++)
-    {
+    for (int i = 0; i < m_radioIfListCnt; i++) {
         m_radioIfList.push_back(msgBuf.GetByte());
     }
 
     uint32 len = 11 + m_radioIfListCnt;
-    if (m_deviceCapabilitiesLen != len) 
-    {
+    if (m_deviceCapabilitiesLen != len) {
         std::stringstream stream;
         stream << _T("Warning: unable to unpack message:") << std::endl
-               << _T("Expected Device Capabilities length is 4 ") 
+               << _T("Expected Device Capabilities length is 4 ")
                << (int)len << _T("bytes, unpacked length is ")
-               << m_deviceCapabilitiesLen << _T(" bytes.") << std::endl 
+               << m_deviceCapabilitiesLen << _T(" bytes.") << std::endl
                << std::endl;
         MessageManager::GetInstance().ReportStatus(stream.str(),ST_WARNING);
         return false;
     }
 
     // all tlvs are mandatory, so we should be at end of buffer
-    if (!msgBuf.EOB())
-    {
+    if (!msgBuf.EOB()) {
         std::stringstream stream;
         stream << _T("Warning: unable to unpack message:") << std::endl
                << _T("Finished unpacking message but end of buffer not reached")
@@ -319,15 +306,13 @@ void DMSGetDeviceCapRsp::Print(std::ostream& stream)
            << _T("  ErrorCode ") << (int)m_error << std::endl;
 
     // only print other mandatory tlvs if result code success
-    if (m_result == QMI_RESULT_SUCCESS)
-    {
+    if (m_result == QMI_RESULT_SUCCESS) {
         stream << _T("  MaxTxChannelRate ") << (int)m_maxTxChannelRate << std::endl
                << _T("  MaxRxChannelRate ") << (int)m_maxRxChannelRate << std::endl
                << _T("  ServiceCapability ") << (int)m_serviceCapability << std::endl
                << _T("  SimCapability ") << (int)m_simCapability << std::endl;
 
-        for (int i = 0; i < m_radioIfListCnt; i++)
-        {
+        for (int i = 0; i < m_radioIfListCnt; i++) {
             stream << _T("  RadioIf ") << (int)m_radioIfList[i] << std::endl;
         }
     }

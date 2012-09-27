@@ -25,29 +25,23 @@ int    CLogData::SearchList(stLogItem *pItem)
 {
 
     int    MemNum = -1;
-#if 1   
+#if 1
     int i=0;
 
-    if( mLogData.count >= 0)
-    {                                
-        for(i;i<mLogData.count;i++)
-        {
+    if( mLogData.count >= 0) {
+        for(i; i<mLogData.count; i++) {
             if(mLogData.mItemData[i].cTimeStamp == pItem->cTimeStamp)
-                break;                
+                break;
         }
-        if(i==mLogData.count)
-        {/*Not Found*/
+        if(i==mLogData.count) {
+            /*Not Found*/
             MemNum = SEARCH_NODATA;
-        }
-        else
-        {
+        } else {
             MemNum = i;
         }
+    } else {
+        return SEARCH_NODATA;
     }
-    else
-    {                        
-        return SEARCH_NODATA;    
-    }        
 #endif
     return MemNum;
 }
@@ -60,21 +54,17 @@ BOOL CLogData::SaveItem(stLogItem *pItem)
 
     /*'.'New Entry'.'*/
     index = mLogData.count;
-    if(mLogData.count<LOG_ITEM_MAX)
-    {
+    if(mLogData.count<LOG_ITEM_MAX) {
         memcpy(&(mLogData.mItemData[index]),pItem,sizeof(stLogItem));
         mLogData.count++;
-    }
-    else
-    {
-        for(i=0; i<LOG_ITEM_MAX-1; i++)
-        {
+    } else {
+        for(i=0; i<LOG_ITEM_MAX-1; i++) {
             mLogData.mItemData[i]=mLogData.mItemData[i+1];
         }
         memcpy(&(mLogData.mItemData[LOG_ITEM_MAX-1]),pItem,sizeof(stLogItem));
         mLogData.count=LOG_ITEM_MAX;
     }
-    
+
     //Write to the local file...
     m_bModifed = TRUE;
     SaveFile();
@@ -86,13 +76,11 @@ BOOL CLogData::ClearAll()
 {
     CFileStatus rStatus;
     CString strPath;
-    if(strPath.IsEmpty())
-    {
-        strPath = szLogDataPath;    
+    if(strPath.IsEmpty()) {
+        strPath = szLogDataPath;
     }
     // If file *.dat does not exist create it.
-    if (CFile::GetStatus( strPath, rStatus ) == TRUE) 
-    {
+    if (CFile::GetStatus( strPath, rStatus ) == TRUE) {
         CFile::Remove(strPath);
     }
     mLogData.count=0;
@@ -104,8 +92,7 @@ BOOL CLogData::ClearAll()
 BOOL CLogData::RemoveItem(int npos)
 {
     int i;
-    for(i=npos;i<mLogData.count-1;i++)
-    {
+    for(i=npos; i<mLogData.count-1; i++) {
         mLogData.mItemData[i]=mLogData.mItemData[i+1];
     }
     mLogData.count--;
@@ -117,8 +104,7 @@ BOOL CLogData::RemoveItem(int npos)
 //载入LogData，
 void CLogData::LoadLogData()
 {
-    if(!LoadFile())
-    {
+    if(!LoadFile()) {
         memset(&mLogData,0,sizeof(stLogList));
         m_bModifed = TRUE;
         SaveFile();
@@ -131,20 +117,16 @@ BOOL CLogData::LoadFile(LPCTSTR szFileName)
     CFileStatus rStatus;
     CString strPath;
     strPath = szFileName;
-    if(strPath.IsEmpty())
-    {
-        strPath = szLogDataPath;    
+    if(strPath.IsEmpty()) {
+        strPath = szLogDataPath;
     }
     // If file *.dat does not exist create it.
-    if (CFile::GetStatus( strPath, rStatus ) == FALSE) 
-    {
+    if (CFile::GetStatus( strPath, rStatus ) == FALSE) {
         CFile LogFile;
         LogFile.Open(strPath, CFile::modeCreate | CFile::modeWrite);
         LogFile.Close();
         return FALSE;
-    }
-    else
-    {
+    } else {
         CFile LogFile;
         LogFile.Open(strPath, CFile::modeRead);
         CArchive arLoad(&LogFile,CArchive::load);
@@ -162,12 +144,10 @@ BOOL CLogData::SaveFile(LPCTSTR szFileName)
     CFile LogFile;
     CFileStatus  filestatus;
     strPath = szFileName;
-    if(strPath.IsEmpty())
-    {
-        strPath = szLogDataPath;    
+    if(strPath.IsEmpty()) {
+        strPath = szLogDataPath;
     }
-    if (m_bModifed) 
-    {
+    if (m_bModifed) {
         if(CFile::GetStatus(strPath, filestatus))
             SetFileAttributes(strPath, FILE_ATTRIBUTE_ARCHIVE);
         LogFile.Open(strPath, CFile::modeCreate | CFile::modeWrite);
@@ -189,26 +169,21 @@ void CLogData::Serialize(CArchive& ar)
 
     CObject::Serialize(ar);
     pLogData = (stLogList*)(&mLogData);
-    
-    if(ar.IsStoring())
-    {
+
+    if(ar.IsStoring()) {
         ar<<pLogData->count;
-        
-        for(j = 0; j < pLogData->count; j++)
-        {
+
+        for(j = 0; j < pLogData->count; j++) {
             ar<<pLogData->mItemData[j].nLogType
               <<pLogData->mItemData[j].cTimeStamp
               <<pLogData->mItemData[j].cDuration
               <<pLogData->mItemData[j].dwByteIn
               <<pLogData->mItemData[j].dwByteOut;
         }
-    }
-    else
-    {
+    } else {
         ar>>pLogData->count;
-        
-        for(j = 0; j < pLogData->count; j++)
-        {
+
+        for(j = 0; j < pLogData->count; j++) {
             ar>>pLogData->mItemData[j].nLogType
               >>pLogData->mItemData[j].cTimeStamp
               >>pLogData->mItemData[j].cDuration
@@ -228,15 +203,13 @@ DWORD CLogData::CalculateTotalFlux(const COleDateTime &datetime)
 
     COleDateTime currtime = COleDateTime::GetCurrentTime();
 
-    for(cnt = 0; cnt < mLogData.count; cnt++)
-    {
+    for(cnt = 0; cnt < mLogData.count; cnt++) {
         if(mLogData.mItemData[cnt].cTimeStamp >= datetime
-            && mLogData.mItemData[cnt].cTimeStamp <= currtime)
-        {
+                && mLogData.mItemData[cnt].cTimeStamp <= currtime) {
             dwByte += (mLogData.mItemData[cnt].dwByteIn
-                + mLogData.mItemData[cnt].dwByteOut);
+                       + mLogData.mItemData[cnt].dwByteOut);
 
-			/*
+            /*
             dwM = dwByte / (1024 * 1024);
 
             if(dwM >= (1000))  //1GB
@@ -244,16 +217,16 @@ DWORD CLogData::CalculateTotalFlux(const COleDateTime &datetime)
                 dwMByte += dwM;
                 dwByte -= (dwM * 1024 * 1024);
             }
-			*/
+            */
         }
     }
-/*
-    dwM = dwByte / (1024 * 1024);
-    dwMByte += dwM;
+    /*
+        dwM = dwByte / (1024 * 1024);
+        dwMByte += dwM;
 
-    return (DWORD)dwMByte;
-	*/
-	return dwByte;
+        return (DWORD)dwMByte;
+    	*/
+    return dwByte;
 }
 
 //计算从给定日期到当前日期已上网时间(单位：Sec)
@@ -265,11 +238,9 @@ DWORD CLogData::CalculateTotalDuration(const COleDateTime &datetime)
 
     COleDateTime currtime = COleDateTime::GetCurrentTime();
 
-    for(cnt = 0; cnt < mLogData.count; cnt++)
-    {
+    for(cnt = 0; cnt < mLogData.count; cnt++) {
         if(mLogData.mItemData[cnt].cTimeStamp >= datetime
-            && mLogData.mItemData[cnt].cTimeStamp <= currtime)
-        {
+                && mLogData.mItemData[cnt].cTimeStamp <= currtime) {
             time += mLogData.mItemData[cnt].cDuration;
         }
     }

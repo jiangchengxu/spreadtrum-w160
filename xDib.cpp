@@ -23,20 +23,21 @@ CxDib::~CxDib()
     if (hDib) free(hDib);
 }
 /////////////////////////////////////////////////////////////////////
-bool CxDib::IsWin30Dib(){
+bool CxDib::IsWin30Dib()
+{
     return ((*(LPDWORD)(hDib))==sizeof(BITMAPINFOHEADER));
 }
 /////////////////////////////////////////////////////////////////////
 WORD CxDib::GetPaletteSize()
 {
 //    if (IsWin30Dib())
-        return (m_nColors * sizeof(RGBQUAD));
+    return (m_nColors * sizeof(RGBQUAD));
 //    else return (m_nColors * sizeof(RGBTRIPLE));
 }
 /////////////////////////////////////////////////////////////////////
 BYTE* CxDib::GetBits()
-{ 
-    if (hDib)    return ((BYTE*)hDib + *(LPDWORD)hDib + GetPaletteSize()); 
+{
+    if (hDib)    return ((BYTE*)hDib + *(LPDWORD)hDib + GetPaletteSize());
     return NULL;
 }
 /////////////////////////////////////////////////////////////////////
@@ -54,18 +55,18 @@ HDIB  CxDib::Create(DWORD dwWidth, DWORD dwHeight, WORD wBitCount)
     else if (wBitCount <= 8)    wBitCount = 8;
     else                        wBitCount = 24;
 
-    switch (wBitCount){
-        case 1:
-            m_nColors = 2;
-            break;
-        case 4:
-            m_nColors = 16;
-            break;
-        case 8:
-            m_nColors = 256;
-            break;
-        default:
-            m_nColors = 0;
+    switch (wBitCount) {
+    case 1:
+        m_nColors = 2;
+        break;
+    case 4:
+        m_nColors = 16;
+        break;
+    case 8:
+        m_nColors = 256;
+        break;
+    default:
+        m_nColors = 0;
     }
 
     m_LineWidth = WIDTHBYTES(wBitCount * dwWidth);
@@ -76,7 +77,7 @@ HDIB  CxDib::Create(DWORD dwWidth, DWORD dwHeight, WORD wBitCount)
     m_bi.biHeight = dwHeight;       // fill in height from parameter
     m_bi.biPlanes = 1;              // must be 1
     m_bi.biBitCount = wBitCount;    // from parameter
-    m_bi.biCompression = BI_RGB;    
+    m_bi.biCompression = BI_RGB;
     m_bi.biSizeImage = m_LineWidth * dwHeight;
     m_bi.biXPelsPerMeter = 0;
     m_bi.biYPelsPerMeter = 0;
@@ -105,13 +106,13 @@ long CxDib::Draw(HDC pDC, long xoffset, long yoffset)
     if((hDib)&&(pDC))  {
         //palette must be correctly filled
         LPSTR lpDIB = (char*)hDib;    //set image to hdc...
-        SetStretchBltMode(pDC,COLORONCOLOR);    
+        SetStretchBltMode(pDC,COLORONCOLOR);
         SetDIBitsToDevice(pDC, xoffset, yoffset,
-            m_bi.biWidth, m_bi.biHeight, 0, 0, 0,
-            m_bi.biHeight, GetBits(),
-            (BITMAPINFO*)lpDIB, DIB_RGB_COLORS);
+                          m_bi.biWidth, m_bi.biHeight, 0, 0, 0,
+                          m_bi.biHeight, GetBits(),
+                          (BITMAPINFO*)lpDIB, DIB_RGB_COLORS);
         return 1;
-    } 
+    }
     return 0;
 }
 /////////////////////////////////////////////////////////////////////
@@ -120,10 +121,10 @@ long CxDib::Stretch(HDC pDC, long xoffset, long yoffset, long xsize, long ysize)
     if((hDib)&&(pDC)) {
         //palette must be correctly filled
         LPSTR lpDIB = (char*)hDib;    //set image to hdc...
-        SetStretchBltMode(pDC,COLORONCOLOR);    
+        SetStretchBltMode(pDC,COLORONCOLOR);
         StretchDIBits(pDC, xoffset, yoffset,
-                    xsize, ysize, 0, 0, m_bi.biWidth, m_bi.biHeight,
-                    GetBits(),(BITMAPINFO*)lpDIB,DIB_RGB_COLORS,SRCCOPY);
+                      xsize, ysize, 0, 0, m_bi.biWidth, m_bi.biHeight,
+                      GetBits(),(BITMAPINFO*)lpDIB,DIB_RGB_COLORS,SRCCOPY);
         return 1;
     }
     return 0;
@@ -131,9 +132,9 @@ long CxDib::Stretch(HDC pDC, long xoffset, long yoffset, long xsize, long ysize)
 /////////////////////////////////////////////////////////////////////
 void CxDib::SetPaletteIndex(BYTE idx, BYTE r, BYTE g, BYTE b)
 {
-    if ((hDib)&&(m_nColors)){
+    if ((hDib)&&(m_nColors)) {
         BYTE* iDst = (BYTE*)(hDib) + sizeof(BITMAPINFOHEADER);
-        if ((idx>=0)&&(idx<m_nColors)){    
+        if ((idx>=0)&&(idx<m_nColors)) {
             long ldx=idx*sizeof(RGBQUAD);
             iDst[ldx++] = (BYTE) b;
             iDst[ldx++] = (BYTE) g;
@@ -146,9 +147,9 @@ void CxDib::SetPaletteIndex(BYTE idx, BYTE r, BYTE g, BYTE b)
 /////////////////////////////////////////////////////////////////////
 void CxDib::SetPaletteIndex(BYTE idx, RGBQUAD c)
 {
-    if ((hDib)&&(m_nColors)){
+    if ((hDib)&&(m_nColors)) {
         BYTE* iDst = (BYTE*)(hDib) + sizeof(BITMAPINFOHEADER);
-        if ((idx>=0)&&(idx<m_nColors)){    
+        if ((idx>=0)&&(idx<m_nColors)) {
             long ldx=idx*sizeof(RGBQUAD);
             iDst[ldx++] = (BYTE) c.rgbBlue;
             iDst[ldx++] = (BYTE) c.rgbGreen;
@@ -161,9 +162,9 @@ void CxDib::SetPaletteIndex(BYTE idx, RGBQUAD c)
 /////////////////////////////////////////////////////////////////////
 void CxDib::SetPaletteIndex(BYTE idx, COLORREF cr)
 {
-    if ((hDib)&&(m_nColors)){
+    if ((hDib)&&(m_nColors)) {
         BYTE* iDst = (BYTE*)(hDib) + sizeof(BITMAPINFOHEADER);
-        if ((idx>=0)&&(idx<m_nColors)){    
+        if ((idx>=0)&&(idx<m_nColors)) {
             long ldx=idx*sizeof(RGBQUAD);
             iDst[ldx++] = (BYTE) GetBValue(cr);
             iDst[ldx++] = (BYTE) GetGValue(cr);
@@ -177,9 +178,9 @@ void CxDib::SetPaletteIndex(BYTE idx, COLORREF cr)
 RGBQUAD CxDib::GetPaletteIndex(BYTE idx)
 {
     RGBQUAD rgb = {0,0,0,0};
-    if ((hDib)&&(m_nColors)){
+    if ((hDib)&&(m_nColors)) {
         BYTE* iDst = (BYTE*)(hDib) + sizeof(BITMAPINFOHEADER);
-        if ((idx>=0)&&(idx<m_nColors)){    
+        if ((idx>=0)&&(idx<m_nColors)) {
             long ldx=idx*sizeof(RGBQUAD);
             rgb.rgbBlue = iDst[ldx++];
             rgb.rgbGreen=iDst[ldx++];
@@ -193,16 +194,16 @@ RGBQUAD CxDib::GetPaletteIndex(BYTE idx)
 BYTE CxDib::GetPixelIndex(long x,long y)
 {
     if ((hDib==NULL)||(m_nColors==0)||
-        (x<0)||(y<0)||(x>=m_bi.biWidth)||(y>=m_bi.biHeight)) return 0;
+            (x<0)||(y<0)||(x>=m_bi.biWidth)||(y>=m_bi.biHeight)) return 0;
     BYTE* iDst = GetBits();
     return iDst[(m_bi.biHeight - y - 1)*m_LineWidth + x];
 }
 /////////////////////////////////////////////////////////////////////
 RGBQUAD CxDib::GetPixelColor(long x,long y)
 {
-    RGBQUAD rgb={0,0,0,0};
+    RGBQUAD rgb= {0,0,0,0};
     if ((hDib==NULL)||(x<0)||(y<0)||
-        (x>=m_bi.biWidth)||(y>=m_bi.biHeight)) return rgb;
+            (x>=m_bi.biWidth)||(y>=m_bi.biHeight)) return rgb;
     if (m_nColors) return GetPaletteIndex(GetPixelIndex(x,y));
     else {
         BYTE* iDst = GetBits()+(m_bi.biHeight - y - 1)*m_LineWidth + x*sizeof(RGBQUAD);
@@ -216,7 +217,7 @@ RGBQUAD CxDib::GetPixelColor(long x,long y)
 void CxDib::SetPixelIndex(long x,long y,BYTE i)
 {
     if ((hDib==NULL)||(m_nColors==0)||
-        (x<0)||(y<0)||(x>=m_bi.biWidth)||(y>=m_bi.biHeight)) return ;
+            (x<0)||(y<0)||(x>=m_bi.biWidth)||(y>=m_bi.biHeight)) return ;
     BYTE* iDst = GetBits();
     iDst[(m_bi.biHeight - y - 1)*m_LineWidth + x]=i;
     return;
@@ -231,7 +232,7 @@ void CxDib::SetPixelColor(long x,long y,COLORREF cr)
 void CxDib::SetPixelColor(long x,long y,RGBQUAD c)
 {
     if ((hDib==NULL)||(x<0)||(y<0)||
-        (x>=m_bi.biWidth)||(y>=m_bi.biHeight)) return;
+            (x>=m_bi.biWidth)||(y>=m_bi.biHeight)) return;
     if (m_nColors)
         SetPixelIndex(x,y,GetNearestIndex(c));
     else {
@@ -248,15 +249,15 @@ BYTE CxDib::GetNearestIndex(RGBQUAD c)
     long distance=200000;
     BYTE i,j;
     long k,l;
-    for(i=0,l=0;i<m_nColors;i++,l+=sizeof(RGBQUAD)){
+    for(i=0,l=0; i<m_nColors; i++,l+=sizeof(RGBQUAD)) {
         k = (iDst[l]-c.rgbBlue)*(iDst[l]-c.rgbBlue)+
             (iDst[l+1]-c.rgbGreen)*(iDst[l+1]-c.rgbGreen)+
             (iDst[l+2]-c.rgbRed)*(iDst[l+2]-c.rgbRed);
-        if (k==0){
+        if (k==0) {
             j=i;
             break;
         }
-        if (k<distance){
+        if (k<distance) {
             distance=k;
             j=i;
         }
@@ -266,8 +267,8 @@ BYTE CxDib::GetNearestIndex(RGBQUAD c)
 /////////////////////////////////////////////////////////////////////
 #define  HSLMAX   240    /* H,L, and S vary over 0-HSLMAX */
 #define  RGBMAX   255   /* R,G, and B vary over 0-RGBMAX */
-                        /* HSLMAX BEST IF DIVISIBLE BY 6 */
-                        /* RGBMAX, HSLMAX must each fit in a byte. */
+/* HSLMAX BEST IF DIVISIBLE BY 6 */
+/* RGBMAX, HSLMAX must each fit in a byte. */
 /* Hue is undefined if Saturation is 0 (grey-scale) */
 /* This value determines where the Hue scrollbar is */
 /* initially set for achromatic colors */
@@ -288,7 +289,7 @@ RGBQUAD CxDib::RGBtoHSL(RGBQUAD lRGBColor)
     cMin = min( min(R,G), B);
     L = (((cMax+cMin)*HSLMAX)+RGBMAX)/(2*RGBMAX);
 
-    if (cMax==cMin){            /* r=g=b --> achromatic case */
+    if (cMax==cMin) {           /* r=g=b --> achromatic case */
         S = 0;                    /* saturation */
         H = UNDEFINED;            /* hue */
     } else {                    /* chromatic case */
@@ -311,12 +312,12 @@ RGBQUAD CxDib::RGBtoHSL(RGBQUAD lRGBColor)
         if (H < 0) H += HSLMAX;
         if (H > HSLMAX) H -= HSLMAX;
     }
-    RGBQUAD hsl={L,S,H,0};
+    RGBQUAD hsl= {L,S,H,0};
     return hsl;
 }
 /////////////////////////////////////////////////////////////////////
 WORD CxDib::HueToRGB(WORD n1,WORD n2,WORD hue)
-{ 
+{
     /* range check: note values passed add/subtract thirds of range */
     if (hue < 0) hue += HSLMAX;
     if (hue > HSLMAX) hue -= HSLMAX;
@@ -327,10 +328,10 @@ WORD CxDib::HueToRGB(WORD n1,WORD n2,WORD hue)
     if (hue < (HSLMAX/2))
         return ( n2 );
     if (hue < ((HSLMAX*2)/3))
-        return ( n1 + (((n2-n1)*(((HSLMAX*2)/3)-hue)+(HSLMAX/12))/(HSLMAX/6))); 
+        return ( n1 + (((n2-n1)*(((HSLMAX*2)/3)-hue)+(HSLMAX/12))/(HSLMAX/6)));
     else
         return ( n1 );
-} 
+}
 /////////////////////////////////////////////////////////////////////
 RGBQUAD CxDib::HSLtoRGB(COLORREF cHSLColor)
 {
@@ -338,7 +339,7 @@ RGBQUAD CxDib::HSLtoRGB(COLORREF cHSLColor)
 }
 /////////////////////////////////////////////////////////////////////
 RGBQUAD CxDib::HSLtoRGB(RGBQUAD lHSLColor)
-{ 
+{
     WORD hue,lum,sat;
     BYTE R,G,B;                    /* RGB component values */
     WORD Magic1,Magic2;            /* calculated magic numbers (really!) */
@@ -358,11 +359,11 @@ RGBQUAD CxDib::HSLtoRGB(RGBQUAD lHSLColor)
         Magic1 = 2*lum-Magic2;
 
         /* get RGB, change units from HSLMAX to RGBMAX */
-        R = (HueToRGB(Magic1,Magic2,(WORD)(hue+(HSLMAX/3)))*RGBMAX+(HSLMAX/2))/HSLMAX; 
+        R = (HueToRGB(Magic1,Magic2,(WORD)(hue+(HSLMAX/3)))*RGBMAX+(HSLMAX/2))/HSLMAX;
         G = (HueToRGB(Magic1,Magic2,hue)*RGBMAX + (HSLMAX/2)) / HSLMAX;
-        B = (HueToRGB(Magic1,Magic2,(WORD)(hue-(HSLMAX/3)))*RGBMAX+(HSLMAX/2))/HSLMAX; 
+        B = (HueToRGB(Magic1,Magic2,(WORD)(hue-(HSLMAX/3)))*RGBMAX+(HSLMAX/2))/HSLMAX;
     }
-    RGBQUAD rgb={B,G,R,0};
+    RGBQUAD rgb= {B,G,R,0};
     return rgb;
 }
 /////////////////////////////////////////////////////////////////////
@@ -390,7 +391,9 @@ void CxDib::SetGrayPalette()
     int ni;
     ppal=(RGBQUAD*)&pal[0];
     iDst = (BYTE*)(hDib) + sizeof(BITMAPINFOHEADER);
-    for (ni=0;ni<m_nColors;ni++){ pal[ni]=RGB2RGBQUAD(RGB(ni,ni,ni));}
+    for (ni=0; ni<m_nColors; ni++) {
+        pal[ni]=RGB2RGBQUAD(RGB(ni,ni,ni));
+    }
     pal[0]=RGB2RGBQUAD(RGB(0,0,0));
     pal[m_nColors-1]=RGB2RGBQUAD(RGB(255,255,255));
     memcpy(iDst,ppal,GetPaletteSize());
@@ -407,7 +410,7 @@ void CxDib::BlendPalette(COLORREF cr,long perc)
     g = GetGValue(cr);
     b = GetBValue(cr);
     if (perc>100) perc=100;
-    for(i=0;i<m_nColors;i++){
+    for(i=0; i<m_nColors; i++) {
         pPal[i].rgbBlue=(BYTE)((pPal[i].rgbBlue*(100-perc)+b*perc)/100);
         pPal[i].rgbGreen =(BYTE)((pPal[i].rgbGreen*(100-perc)+g*perc)/100);
         pPal[i].rgbRed =(BYTE)((pPal[i].rgbRed*(100-perc)+r*perc)/100);
@@ -416,21 +419,21 @@ void CxDib::BlendPalette(COLORREF cr,long perc)
 }
 /////////////////////////////////////////////////////////////////////
 long CxDib::WriteBMP(LPTSTR bmpFileName)
-{                         
+{
     if ((*bmpFileName==_T('\0'))||(hDib==0)) return 0;
     BITMAPFILEHEADER    hdr;
     HANDLE    hFile;
     DWORD    nByteWrite;
 
     hFile=CreateFile(            // open if exist ini file
-        bmpFileName,                // pointer to name of the file 
-        GENERIC_WRITE,            // access mode 
-        0,                        // share mode 
-        NULL,                    // pointer to security descriptor 
-        TRUNCATE_EXISTING,        // how to create 
-        FILE_ATTRIBUTE_NORMAL,    // file attributes 
-        NULL                     // handle to file with attributes to copy  
-        );
+              bmpFileName,                // pointer to name of the file
+              GENERIC_WRITE,            // access mode
+              0,                        // share mode
+              NULL,                    // pointer to security descriptor
+              TRUNCATE_EXISTING,        // how to create
+              FILE_ATTRIBUTE_NORMAL,    // file attributes
+              NULL                     // handle to file with attributes to copy
+          );
     if (hFile==INVALID_HANDLE_VALUE) return 0;    //check if file exist
 
     /* Fill in the fields of the file header */
@@ -442,21 +445,21 @@ long CxDib::WriteBMP(LPTSTR bmpFileName)
 
     // Write the file header
     WriteFile(            // write ini (sync mode <-> no overlapped)
-        hFile,            // handle of file to write 
-        (LPSTR) &hdr,    // address of buffer that contains data  
-        sizeof(BITMAPFILEHEADER),    // number of bytes to write 
-        &nByteWrite,    // address of number of bytes written 
-        NULL             // address of structure for data 
-        );
+        hFile,            // handle of file to write
+        (LPSTR) &hdr,    // address of buffer that contains data
+        sizeof(BITMAPFILEHEADER),    // number of bytes to write
+        &nByteWrite,    // address of number of bytes written
+        NULL             // address of structure for data
+    );
 
     // Write the DIB header and the bits
     WriteFile(            // write ini (sync mode <-> no overlapped)
-        hFile,            // handle of file to write 
-        (LPSTR) hDib,    // address of buffer that contains data  
-        GetSize(),        // number of bytes to write 
-        &nByteWrite,    // address of number of bytes written 
-        NULL             // address of structure for data 
-        );
+        hFile,            // handle of file to write
+        (LPSTR) hDib,    // address of buffer that contains data
+        GetSize(),        // number of bytes to write
+        &nByteWrite,    // address of number of bytes written
+        NULL             // address of structure for data
+    );
 
     CloseHandle(hFile);        //free file handle
     return 1;
@@ -474,8 +477,8 @@ BOOL CxDib::IsValid()
 /////////////////////////////////////////////////////////////////////
 void CxDib::Clone(CxDib *src)
 {
-     Create(src->GetWidth(),src->GetHeight(),src->GetBitCount());
-     if (hDib) memcpy(hDib,src->hDib,GetSize());
+    Create(src->GetWidth(),src->GetHeight(),src->GetBitCount());
+    if (hDib) memcpy(hDib,src->hDib,GetSize());
     return;
 }
 /////////////////////////////////////////////////////////////////////

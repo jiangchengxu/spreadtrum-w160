@@ -16,11 +16,11 @@ class CSelPosition : public CBaseDialog
 public:
     CSelPosition(CWnd* pParent,const TCHAR *cNumber);   // standard constructor
 
-	CPbData   *m_pPbData;//PBGroup
+    CPbData   *m_pPbData;//PBGroup
 // Dialog Data
     //{{AFX_DATA(CSelPosition)
     enum { IDD = IDD_DIALOG_SELPOSITION };
-        // NOTE: the ClassWizard will add data members here
+    // NOTE: the ClassWizard will add data members here
 //    CTransparentStatic m_static_strTitle;
 //    CTransparentStatic m_static_strMobile;
 //    CTransparentStatic m_static_strHome;
@@ -31,7 +31,7 @@ public:
 // Overrides
     // ClassWizard generated virtual function overrides
     //{{AFX_VIRTUAL(CSelPosition)
-    protected:
+protected:
     virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
     //}}AFX_VIRTUAL
 

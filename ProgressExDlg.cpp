@@ -16,11 +16,11 @@ static char THIS_FILE[] = __FILE__;
 
 
 CProgressExDlg::CProgressExDlg(CWnd* pParent /*=NULL*/, int nUpper, int nStep)
-: m_nUpper(nUpper), m_nLower(0), m_nStep(nStep), CDialog(CProgressExDlg::IDD, pParent)
+    : m_nUpper(nUpper), m_nLower(0), m_nStep(nStep), CDialog(CProgressExDlg::IDD, pParent)
 {
     //{{AFX_DATA_INIT(CProgressExDlg)
-        // NOTE: the ClassWizard will add member initialization here
-    //}}AFX_DATA_INIT 
+    // NOTE: the ClassWizard will add member initialization here
+    //}}AFX_DATA_INIT
 }
 
 void CProgressExDlg::DoDataExchange(CDataExchange* pDX)
@@ -35,24 +35,22 @@ void CProgressExDlg::DoDataExchange(CDataExchange* pDX)
 
 BEGIN_MESSAGE_MAP(CProgressExDlg, CDialog)
     //{{AFX_MSG_MAP(CProgressExDlg)
-        // NOTE: the ClassWizard will add message map macros here
+    // NOTE: the ClassWizard will add message map macros here
     //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
 // CProgressExDlg message handlers
 
-BOOL CProgressExDlg::PreTranslateMessage(MSG* pMsg) 
+BOOL CProgressExDlg::PreTranslateMessage(MSG* pMsg)
 {
-    if(pMsg->message == WM_KEYDOWN)
-    {
-        switch(pMsg->wParam)
-        {
+    if(pMsg->message == WM_KEYDOWN) {
+        switch(pMsg->wParam) {
         case VK_RETURN:
         case VK_ESCAPE:
             return true;
         }
-    }    
+    }
     return CDialog::PreTranslateMessage(pMsg);
 }
 

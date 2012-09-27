@@ -48,7 +48,7 @@ static MessageCreator<WDSEventReportInd> IndUint32Creator(WDSEventReportIndUID);
 const uint8 WDSSetEventReportReq::CURRENT_CHANNEL_RATE_INDICATOR_TYPE = 0x10;
 const uint8 WDSSetEventReportReq::TRANSFER_STATISTICS_INDICATOR_TYPE = 0x11;
 const uint8 WDSSetEventReportReq::CURRENT_DATA_BEARER_TECH_INDICATOR_TYPE = 0x12;
-WDSSetEventReportReq::WDSSetEventReportReq() : 
+WDSSetEventReportReq::WDSSetEventReportReq() :
     Message(QMUX_TYPE_WDS,QMI_WDS_SET_EVENT_REPORT_MSG,QMI_CTL_FLAG_TYPE_CMD),
     m_currentChannelRateIndicatorType(TLV_TYPE_INVALID),
     m_currentChannelRateIndicatorLen(0),
@@ -82,20 +82,18 @@ WDSSetEventReportReq::~WDSSetEventReportReq()
 bool WDSSetEventReportReq::Build(std::string& nameValue)
 {
     // call the base build function
-    if (Message::Build(nameValue))
-    {
+    if (Message::Build(nameValue)) {
         // at least one optional tlv must be present
         if (m_currentChannelRateIndicatorType != CURRENT_CHANNEL_RATE_INDICATOR_TYPE &&
-            m_transferStatisticsIndicatorType != TRANSFER_STATISTICS_INDICATOR_TYPE &&
-            m_currentDataBearerTechIndicatorType != CURRENT_DATA_BEARER_TECH_INDICATOR_TYPE)
-        {
+                m_transferStatisticsIndicatorType != TRANSFER_STATISTICS_INDICATOR_TYPE &&
+                m_currentDataBearerTechIndicatorType != CURRENT_DATA_BEARER_TECH_INDICATOR_TYPE) {
             std::stringstream stream;
             stream << _T("Warning: unable to unpack message:") << std::endl
-                << _T("At least one of the following optional tlv's must be present:") << std::endl 
-                << _T("  Current Channel Rate Indicator") << std::endl
-                << _T("  Transfer Statistics Indicator") << std::endl
-                << _T("  Current Data Bearer Technology Indicator") << std::endl
-                << std::endl;
+                   << _T("At least one of the following optional tlv's must be present:") << std::endl
+                   << _T("  Current Channel Rate Indicator") << std::endl
+                   << _T("  Transfer Statistics Indicator") << std::endl
+                   << _T("  Current Data Bearer Technology Indicator") << std::endl
+                   << std::endl;
             MessageManager::GetInstance().ReportStatus(stream.str(),ST_WARNING);
             return false;
         }
@@ -114,8 +112,7 @@ bool WDSSetEventReportReq::Build(std::string& nameValue)
 Message::StringBuilderMap& WDSSetEventReportReq::GetBuilderMap()
 {
     static StringBuilderMap SBMap;
-    if (SBMap.empty())
-    {
+    if (SBMap.empty()) {
         bool bSuccess = SBMap.insert(SBPair("ReportChannelRate",(Builder)BuildReportChannelRate)).second;
         assert(bSuccess);
         bSuccess = SBMap.insert(SBPair("StatsPeriod",(Builder)BuildStatsPeriod)).second;
@@ -144,8 +141,7 @@ bool WDSSetEventReportReq::BuildReportChannelRate(std::string& value)
     sscanf(value.c_str(), "%i", &num);
 
     // validate entry
-    if (num != 0 && num != 1)
-    {
+    if (num != 0 && num != 1) {
         // report invalid profile type
         std::stringstream stream;
         stream << _T("Warning: unable to build message:") << std::endl
@@ -185,8 +181,7 @@ bool WDSSetEventReportReq::BuildStatsPeriod(std::string& value)
     sscanf(value.c_str(), "%i", &num);
 
     // validate entry
-    if (num > 256)
-    {
+    if (num > 256) {
         // report invalid profile type
         std::stringstream stream;
         stream << _T("Warning: unable to build message:") << std::endl
@@ -222,8 +217,7 @@ bool WDSSetEventReportReq::BuildStatsPeriod(std::string& value)
 bool WDSSetEventReportReq::BuildStatsMask(std::string& value)
 {
     // verify expected previous attribute
-    if (m_prevName.compare("StatsPeriod") != 0)
-    {
+    if (m_prevName.compare("StatsPeriod") != 0) {
         // report invalid attribute sequence
         ReportInvalidSequence("StatsPeriod");
         return false;
@@ -234,8 +228,7 @@ bool WDSSetEventReportReq::BuildStatsMask(std::string& value)
     sscanf(value.c_str(), "%i", &num);
 
     // validate entry
-    if (num > 63)
-    {
+    if (num > 63) {
         // report invalid profile type
         std::stringstream stream;
         stream << _T("Warning: unable to build message:") << std::endl
@@ -273,8 +266,7 @@ bool WDSSetEventReportReq::BuildReportDataBearerTech(std::string& value)
     sscanf(value.c_str(), "%i", &num);
 
     // validate entry
-    if (num != 0 && num != 1)
-    {
+    if (num != 0 && num != 1) {
         // report invalid profile type
         std::stringstream stream;
         stream << _T("Warning: unable to build message:") << std::endl
@@ -318,16 +310,14 @@ bool WDSSetEventReportReq::BuildMsgBuf()
     m_pMsgBuf->PutWord(m_length);
 
     // optional tlv, current channel rate indicator
-    if (m_currentChannelRateIndicatorType == CURRENT_CHANNEL_RATE_INDICATOR_TYPE)
-    {
+    if (m_currentChannelRateIndicatorType == CURRENT_CHANNEL_RATE_INDICATOR_TYPE) {
         m_pMsgBuf->PutByte(m_currentChannelRateIndicatorType);
         m_pMsgBuf->PutWord(m_currentChannelRateIndicatorLen);
         m_pMsgBuf->PutByte(m_reportChannelRate);
     }
 
     // optional tlv, transfer statistics indicator
-    if (m_transferStatisticsIndicatorType == TRANSFER_STATISTICS_INDICATOR_TYPE)
-    {
+    if (m_transferStatisticsIndicatorType == TRANSFER_STATISTICS_INDICATOR_TYPE) {
         m_pMsgBuf->PutByte(m_transferStatisticsIndicatorType);
         m_pMsgBuf->PutWord(m_transferStatisticsIndicatorLen);
         m_pMsgBuf->PutByte(m_statsPeriod);
@@ -335,8 +325,7 @@ bool WDSSetEventReportReq::BuildMsgBuf()
     }
 
     // optional tlv, current data bearer technology indicator
-    if (m_currentDataBearerTechIndicatorType == CURRENT_DATA_BEARER_TECH_INDICATOR_TYPE)
-    {
+    if (m_currentDataBearerTechIndicatorType == CURRENT_DATA_BEARER_TECH_INDICATOR_TYPE) {
         m_pMsgBuf->PutByte(m_currentDataBearerTechIndicatorType);
         m_pMsgBuf->PutWord(m_currentDataBearerTechIndicatorLen);
         m_pMsgBuf->PutByte(m_reportDataBearerTech);
@@ -357,20 +346,17 @@ void WDSSetEventReportReq::Print(std::ostream& stream)
 {
     stream << "QMI_WDS_SET_EVENT_REPORT_REQ" << std::endl
            << _T("{") << std::endl;
-    
-    if (m_currentChannelRateIndicatorType == CURRENT_CHANNEL_RATE_INDICATOR_TYPE)
-    {
+
+    if (m_currentChannelRateIndicatorType == CURRENT_CHANNEL_RATE_INDICATOR_TYPE) {
         stream << _T("  ReportChannelRate ") << (int)m_reportChannelRate << std::endl;
     }
 
-    if (m_transferStatisticsIndicatorType == TRANSFER_STATISTICS_INDICATOR_TYPE)
-    {
+    if (m_transferStatisticsIndicatorType == TRANSFER_STATISTICS_INDICATOR_TYPE) {
         stream << _T("  StatsPeriod ") << (int)m_statsPeriod << std::endl
                << _T("  StatsMask ") << (int)m_statsMask << std::endl;
     }
 
-    if (m_currentDataBearerTechIndicatorType == CURRENT_DATA_BEARER_TECH_INDICATOR_TYPE)
-    {
+    if (m_currentDataBearerTechIndicatorType == CURRENT_DATA_BEARER_TECH_INDICATOR_TYPE) {
         stream << _T("  ReportDataBearerTech ") << (int)m_reportDataBearerTech << std::endl;
     }
 
@@ -416,21 +402,19 @@ WDSSetEventReportRsp::~WDSSetEventReportRsp()
 bool WDSSetEventReportRsp::Unpack(MsgBuf& msgBuf)
 {
     // call the base unpack
-    if (!Message::Unpack(msgBuf))
-    {
+    if (!Message::Unpack(msgBuf)) {
         return false;
     }
-    
+
     // validate message length
-    if (m_length != 7) 
-    {
+    if (m_length != 7) {
         std::stringstream stream;
         stream << _T("Warning: unable to unpack message:") << std::endl
                << _T("Expected message length is 7 bytes, unpacked length is ")
-               << m_length << _T(" bytes.") << std::endl 
+               << m_length << _T(" bytes.") << std::endl
                << std::endl;
         MessageManager::GetInstance().ReportStatus(stream.str(),ST_WARNING);
-        return false; 
+        return false;
     }
 
     return true;
@@ -447,8 +431,7 @@ bool WDSSetEventReportRsp::Unpack(MsgBuf& msgBuf)
 Message::Uint8UnpackerMap& WDSSetEventReportRsp::GetUnpackerMap()
 {
     static Uint8UnpackerMap UUMap;
-    if (UUMap.empty())
-    {
+    if (UUMap.empty()) {
         bool bSuccess = UUMap.insert(UUPair(RESULT_CODE_TYPE,(Unpacker)UnpackResultCode)).second;
         assert(bSuccess);
     }
@@ -469,12 +452,11 @@ bool WDSSetEventReportRsp::UnpackResultCode(MsgBuf& msgBuf)
     m_resultCodeType = RESULT_CODE_TYPE;
 
     m_resultCodeLen = msgBuf.GetWord();
-    if (m_resultCodeLen != 4) 
-    {
+    if (m_resultCodeLen != 4) {
         std::stringstream stream;
         stream << _T("Warning: unable to unpack message:") << std::endl
                << _T("Expected Result Code length is 4 bytes, unpacked length is ")
-               << m_resultCodeLen << _T(" bytes.") << std::endl 
+               << m_resultCodeLen << _T(" bytes.") << std::endl
                << std::endl;
         MessageManager::GetInstance().ReportStatus(stream.str(),ST_WARNING);
         return false;
@@ -483,8 +465,7 @@ bool WDSSetEventReportRsp::UnpackResultCode(MsgBuf& msgBuf)
     m_result = msgBuf.GetWord();
     m_error = msgBuf.GetWord();
 
-    if (!msgBuf.EOB())
-    {
+    if (!msgBuf.EOB()) {
         std::stringstream stream;
         stream << _T("Warning: unable to unpack message:") << std::endl
                << _T("Finished unpacking message but end of buffer not reached")
@@ -579,24 +560,22 @@ WDSEventReportInd::~WDSEventReportInd()
 bool WDSEventReportInd::Unpack(MsgBuf& msgBuf)
 {
     // call the base unpack
-    if (!Message::Unpack(msgBuf))
-    {
+    if (!Message::Unpack(msgBuf)) {
         return false;
     }
 
     // at least one optional tlv must be present
     if (m_txPacketsOkType != TX_PACKETS_OK_TYPE &&
-        m_rxPacketsOkType != RX_PACKETS_OK_TYPE &&
-        m_txPacketErrorsType != TX_PACKET_ERRORS_TYPE &&
-        m_rxPacketErrorsType != RX_PACKET_ERRORS_TYPE &&
-        m_rxOverflowsType != TX_OVERFOLWS_TYPE &&
-        m_txOverflowsType != RX_OVERFOLWS_TYPE &&
-        m_channelRateType != CHANNEL_RATE_TYPE &&
-        m_dataBearerTechType != DATA_BEARER_TECH_TYPE)
-    {
+            m_rxPacketsOkType != RX_PACKETS_OK_TYPE &&
+            m_txPacketErrorsType != TX_PACKET_ERRORS_TYPE &&
+            m_rxPacketErrorsType != RX_PACKET_ERRORS_TYPE &&
+            m_rxOverflowsType != TX_OVERFOLWS_TYPE &&
+            m_txOverflowsType != RX_OVERFOLWS_TYPE &&
+            m_channelRateType != CHANNEL_RATE_TYPE &&
+            m_dataBearerTechType != DATA_BEARER_TECH_TYPE) {
         std::stringstream stream;
         stream << _T("Warning: unable to unpack message:") << std::endl
-               << _T("At least one of the following optional tlv's must be present:") << std::endl 
+               << _T("At least one of the following optional tlv's must be present:") << std::endl
                << _T("  TX Packets OK") << std::endl
                << _T("  RX Packets OK") << std::endl
                << _T("  TX Packet Errors") << std::endl
@@ -624,8 +603,7 @@ bool WDSEventReportInd::Unpack(MsgBuf& msgBuf)
 Message::Uint8UnpackerMap& WDSEventReportInd::GetUnpackerMap()
 {
     static Uint8UnpackerMap UUMap;
-    if (UUMap.empty())
-    {
+    if (UUMap.empty()) {
         bool bSuccess = UUMap.insert(UUPair(TX_PACKETS_OK_TYPE,(Unpacker)UnpackTxPacketsOk)).second;
         assert(bSuccess);
         bSuccess = UUMap.insert(UUPair(RX_PACKETS_OK_TYPE,(Unpacker)UnpackRxPacketsOk)).second;
@@ -660,12 +638,11 @@ bool WDSEventReportInd::UnpackTxPacketsOk(MsgBuf& msgBuf)
     m_txPacketsOkType = TX_PACKETS_OK_TYPE;
 
     m_txPacketsOkLen = msgBuf.GetWord();
-    if (m_txPacketsOkLen != 4) 
-    {
+    if (m_txPacketsOkLen != 4) {
         std::stringstream stream;
         stream << _T("Warning: unable to unpack message:") << std::endl
                << _T("Expected TX Packets OK length is 4 bytes, unpacked length is ")
-               << m_txPacketsOkLen << _T(" bytes.") << std::endl 
+               << m_txPacketsOkLen << _T(" bytes.") << std::endl
                << std::endl;
         MessageManager::GetInstance().ReportStatus(stream.str(),ST_WARNING);
         return false;
@@ -690,12 +667,11 @@ bool WDSEventReportInd::UnpackRxPacketsOk(MsgBuf& msgBuf)
     m_rxPacketsOkType = RX_PACKETS_OK_TYPE;
 
     m_rxPacketsOkLen = msgBuf.GetWord();
-    if (m_rxPacketsOkLen != 4) 
-    {
+    if (m_rxPacketsOkLen != 4) {
         std::stringstream stream;
         stream << _T("Warning: unable to unpack message:") << std::endl
                << _T("Expected RX Packets OK length is 4 bytes, unpacked length is ")
-               << m_rxPacketsOkLen << _T(" bytes.") << std::endl 
+               << m_rxPacketsOkLen << _T(" bytes.") << std::endl
                << std::endl;
         MessageManager::GetInstance().ReportStatus(stream.str(),ST_WARNING);
         return false;
@@ -720,12 +696,11 @@ bool WDSEventReportInd::UnpackTxPacketErrors(MsgBuf& msgBuf)
     m_txPacketErrorsType = TX_PACKET_ERRORS_TYPE;
 
     m_txPacketErrorsLen = msgBuf.GetWord();
-    if (m_txPacketErrorsLen != 4) 
-    {
+    if (m_txPacketErrorsLen != 4) {
         std::stringstream stream;
         stream << _T("Warning: unable to unpack message:") << std::endl
                << _T("Expected TX Packet Errors length is 4 bytes, unpacked length is ")
-               << m_txPacketErrorsLen << _T(" bytes.") << std::endl 
+               << m_txPacketErrorsLen << _T(" bytes.") << std::endl
                << std::endl;
         MessageManager::GetInstance().ReportStatus(stream.str(),ST_WARNING);
         return false;
@@ -750,12 +725,11 @@ bool WDSEventReportInd::UnpackRxPacketErrors(MsgBuf& msgBuf)
     m_rxPacketErrorsType = RX_PACKET_ERRORS_TYPE;
 
     m_rxPacketErrorsLen = msgBuf.GetWord();
-    if (m_rxPacketErrorsLen != 4) 
-    {
+    if (m_rxPacketErrorsLen != 4) {
         std::stringstream stream;
         stream << _T("Warning: unable to unpack message:") << std::endl
                << _T("Expected RX Packet Errors length is 4 bytes, unpacked length is ")
-               << m_rxPacketErrorsLen << _T(" bytes.") << std::endl 
+               << m_rxPacketErrorsLen << _T(" bytes.") << std::endl
                << std::endl;
         MessageManager::GetInstance().ReportStatus(stream.str(),ST_WARNING);
         return false;
@@ -780,12 +754,11 @@ bool WDSEventReportInd::UnpackTxOverflows(MsgBuf& msgBuf)
     m_txOverflowsType = TX_OVERFOLWS_TYPE;
 
     m_txOverflowsLen = msgBuf.GetWord();
-    if (m_txOverflowsLen != 4) 
-    {
+    if (m_txOverflowsLen != 4) {
         std::stringstream stream;
         stream << _T("Warning: unable to unpack message:") << std::endl
                << _T("Expected TX Overflows length is 4 bytes, unpacked length is ")
-               << m_txOverflowsLen << _T(" bytes.") << std::endl 
+               << m_txOverflowsLen << _T(" bytes.") << std::endl
                << std::endl;
         MessageManager::GetInstance().ReportStatus(stream.str(),ST_WARNING);
         return false;
@@ -810,12 +783,11 @@ bool WDSEventReportInd::UnpackRxOverflows(MsgBuf& msgBuf)
     m_rxOverflowsType = RX_OVERFOLWS_TYPE;
 
     m_rxOverflowsLen = msgBuf.GetWord();
-    if (m_rxOverflowsLen != 4) 
-    {
+    if (m_rxOverflowsLen != 4) {
         std::stringstream stream;
         stream << _T("Warning: unable to unpack message:") << std::endl
                << _T("Expected RX Overflows length is 4 bytes, unpacked length is ")
-               << m_rxOverflowsLen << _T(" bytes.") << std::endl 
+               << m_rxOverflowsLen << _T(" bytes.") << std::endl
                << std::endl;
         MessageManager::GetInstance().ReportStatus(stream.str(),ST_WARNING);
         return false;
@@ -840,12 +812,11 @@ bool WDSEventReportInd::UnpackChannelRate(MsgBuf& msgBuf)
     m_channelRateType = CHANNEL_RATE_TYPE;
 
     m_channelRateLen = msgBuf.GetWord();
-    if (m_channelRateLen != 8) 
-    {
+    if (m_channelRateLen != 8) {
         std::stringstream stream;
         stream << _T("Warning: unable to unpack message:") << std::endl
                << _T("Expected Channel Rate length is 8 bytes, unpacked length is ")
-               << m_channelRateLen << _T(" bytes.") << std::endl 
+               << m_channelRateLen << _T(" bytes.") << std::endl
                << std::endl;
         MessageManager::GetInstance().ReportStatus(stream.str(),ST_WARNING);
         return false;
@@ -871,24 +842,22 @@ bool WDSEventReportInd::UnpackDataBearerTech(MsgBuf& msgBuf)
     m_dataBearerTechType = DATA_BEARER_TECH_TYPE;
 
     m_dataBearerTechLen = msgBuf.GetWord();
-    if (m_dataBearerTechLen != 1) 
-    {
+    if (m_dataBearerTechLen != 1) {
         std::stringstream stream;
         stream << _T("Warning: unable to unpack message:") << std::endl
                << _T("Expected Data Bearer Technology length is 1 bytes, unpacked length is ")
-               << m_dataBearerTechLen << _T(" bytes.") << std::endl 
+               << m_dataBearerTechLen << _T(" bytes.") << std::endl
                << std::endl;
         MessageManager::GetInstance().ReportStatus(stream.str(),ST_WARNING);
         return false;
     }
 
     m_dataBearerTech = msgBuf.GetByte();
-    if (m_dataBearerTech < 1 || m_dataBearerTech > 5) 
-    {
+    if (m_dataBearerTech < 1 || m_dataBearerTech > 5) {
         std::stringstream stream;
         stream << _T("Warning: unable to unpack message:") << std::endl
                << _T("Valid Data Bearer Technology values are 1 - 5 , unpacked value is ")
-               << m_dataBearerTech << _T(" .") << std::endl 
+               << m_dataBearerTech << _T(" .") << std::endl
                << std::endl;
         MessageManager::GetInstance().ReportStatus(stream.str(),ST_WARNING);
         return false;
@@ -909,44 +878,36 @@ void WDSEventReportInd::Print(std::ostream& stream)
     stream << "QMI_WDS_EVENT_REPORT_IND" << std::endl
            << _T("{") << std::endl;
 
-    if (m_txPacketsOkType == TX_PACKETS_OK_TYPE)
-    {
+    if (m_txPacketsOkType == TX_PACKETS_OK_TYPE) {
         stream << _T("  TxOkCount ") << (int)m_txOkCount << std::endl;
     }
 
-    if (m_rxPacketsOkType == RX_PACKETS_OK_TYPE)
-    {
+    if (m_rxPacketsOkType == RX_PACKETS_OK_TYPE) {
         stream << _T("  RxOkCount ") << (int)m_rxOkCount << std::endl;
     }
 
-    if (m_txPacketErrorsType == TX_PACKET_ERRORS_TYPE)
-    {
+    if (m_txPacketErrorsType == TX_PACKET_ERRORS_TYPE) {
         stream << _T("  TxErrCount ") << (int)m_txErrCount << std::endl;
     }
 
-    if (m_rxPacketErrorsType == RX_PACKET_ERRORS_TYPE)
-    {
+    if (m_rxPacketErrorsType == RX_PACKET_ERRORS_TYPE) {
         stream << _T("  RxErrCount ") << (int)m_rxErrCount << std::endl;
     }
 
-    if (m_txOverflowsType == TX_OVERFOLWS_TYPE)
-    {
+    if (m_txOverflowsType == TX_OVERFOLWS_TYPE) {
         stream << _T("  TxOflCount ") << (int)m_txOflCount << std::endl;
     }
 
-    if (m_rxOverflowsType == RX_OVERFOLWS_TYPE)
-    {
+    if (m_rxOverflowsType == RX_OVERFOLWS_TYPE) {
         stream << _T("  RxOflCount ") << (int)m_txOflCount << std::endl;
     }
 
-    if (m_channelRateType == CHANNEL_RATE_TYPE)
-    {
+    if (m_channelRateType == CHANNEL_RATE_TYPE) {
         stream << _T("  CurrentChannelTXRate ") << (int)m_currentChannelTxRate << std::endl
                << _T("  CurrentChannelRXRate ") << (int)m_currentChannelRxRate << std::endl;
     }
 
-    if (m_dataBearerTechType == DATA_BEARER_TECH_TYPE)
-    {
+    if (m_dataBearerTechType == DATA_BEARER_TECH_TYPE) {
         stream << _T("  DataBearerTech ") << (int)m_dataBearerTech << std::endl;
     }
 

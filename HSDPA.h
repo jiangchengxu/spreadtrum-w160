@@ -9,7 +9,7 @@
 #endif // _MSC_VER > 1000
 
 #ifndef __AFXWIN_H__
-    #error include 'stdafx.h' before including this file for PCH
+#error include 'stdafx.h' before including this file for PCH
 #endif
 
 #include  <io.h>
@@ -36,46 +36,46 @@
 class CHSDPAApp : public CWinApp
 {
 private:
-	HANDLE m_hMutex;
+    HANDLE m_hMutex;
     CLogData  *m_pLogData;
     CHistData *m_pHistData;
     CSmsData  *m_pSmsData;
-	CSmsData  *m_pSmsTemplateData;
+    CSmsData  *m_pSmsTemplateData;
     CPbData   *m_pPbData;
     CConnProfile *m_pConnProf;
     CConnProfile *m_pNdisConnProf;
 public:
-	int MsgBox(LPCTSTR lpszPrompt, UINT nType, UINT nIDPrompt);
+    int MsgBox(LPCTSTR lpszPrompt, UINT nType, UINT nIDPrompt);
     /*Interface Function*/
 
-    CConnProfile *GetConnProfile(void){
+    CConnProfile *GetConnProfile(void) {
         return m_pConnProf;
     }
-    CConnProfile *GetNdisConnProfile(void){
+    CConnProfile *GetNdisConnProfile(void) {
         return m_pNdisConnProf;
     }
-    CLogData *GetLogData(void){
+    CLogData *GetLogData(void) {
         return m_pLogData;
     }
-    CHistData *GetHistData(void){
+    CHistData *GetHistData(void) {
         return m_pHistData;
     }
-    CSmsData * GetSmsData(void){
+    CSmsData * GetSmsData(void) {
         return m_pSmsData;
     }
-	CSmsData * GetSmsTemplateData(void){
+    CSmsData * GetSmsTemplateData(void) {
         return m_pSmsTemplateData;
     }
-    CPbData * GetPbData(void){
+    CPbData * GetPbData(void) {
         return m_pPbData;
     }
-	BOOL InitResource();
-	void SetResource(CString strResName);
+    BOOL InitResource();
+    void SetResource(CString strResName);
 public:
-	CStringList m_lstLang;
-	BOOL SndResetCmd();
-	CString GetOpenPortTip(EnOpenPortRet ret);
-	EnOpenPortRet OpenPort(BOOL bFirstTime, BYTE nRunTimes, USHORT nMilliSecond);
+    CStringList m_lstLang;
+    BOOL SndResetCmd();
+    CString GetOpenPortTip(EnOpenPortRet ret);
+    EnOpenPortRet OpenPort(BOOL bFirstTime, BYTE nRunTimes, USHORT nMilliSecond);
     TCHAR m_szDevName[50];
     BYTE m_CardState; //0:ÎÞ¿¨ 1:ÓÐ¿¨
     CSerialPort* m_pSerialPort;
@@ -86,25 +86,25 @@ public:
     void SetCurDir();
     BOOL FirstInstance();
     void CloseWorkThreads();
-	HINSTANCE m_hNew;
-	HINSTANCE m_hOld;
-    
+    HINSTANCE m_hNew;
+    HINSTANCE m_hOld;
+
 // Overrides
     // ClassWizard generated virtual function overrides
     //{{AFX_VIRTUAL(CHSDPAApp)
-	public:
+public:
     virtual BOOL InitInstance();
     virtual void WinHelp(DWORD dwData, UINT nCmd = HELP_CONTEXT);
-	virtual int DoMessageBox(LPCTSTR lpszPrompt, UINT nType, UINT nIDPrompt);
-	virtual int ExitInstance();
-	//}}AFX_VIRTUAL
+    virtual int DoMessageBox(LPCTSTR lpszPrompt, UINT nType, UINT nIDPrompt);
+    virtual int ExitInstance();
+    //}}AFX_VIRTUAL
     static CWinThread *MsgTrd;
 
 // Implementation
 
     //{{AFX_MSG(CHSDPAApp)
-        // NOTE - the ClassWizard will add and remove member functions here.
-        //    DO NOT EDIT what you see in these blocks of generated code !
+    // NOTE - the ClassWizard will add and remove member functions here.
+    //    DO NOT EDIT what you see in these blocks of generated code !
     //}}AFX_MSG
     DECLARE_MESSAGE_MAP()
 

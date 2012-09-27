@@ -27,7 +27,7 @@ static char THIS_FILE[]=__FILE__;
 IMPLEMENT_SERIAL(CSmsData, CObject, 1)
 CSmsData::CSmsData()
 {
-	
+
 }
 
 CSmsData::CSmsData(const TCHAR *fileName)
@@ -80,11 +80,10 @@ BOOL CSmsData::AddSmsRecord(EnSmsType type, EnSmsState nState, LPCTSTR pNumber,
                             BOOL bAutoReplace)
 {
     ASSERT(type >= SMS_TYPE_INBOX && type < SMS_TYPE_ALL);
-    
+
     ASSERT(m_SmsNum[type] <= SMS_RECORD_MAX);
-    
-    if(m_SmsNum[type] == SMS_RECORD_MAX)
-    {
+
+    if(m_SmsNum[type] == SMS_RECORD_MAX) {
         if(bAutoReplace)
             DeleteWhenFull(type);
         else
@@ -92,32 +91,31 @@ BOOL CSmsData::AddSmsRecord(EnSmsType type, EnSmsState nState, LPCTSTR pNumber,
     }
 
     int i, j;
-        
+
     USES_CONVERSION;
     for(i = 0; i < m_SmsNum[type]; i++)
         if(time >= m_SmsRecord[type][i].timestamp)
             break;
-    for(j = m_SmsNum[type]; j > i; j--)
-	  {  
+    for(j = m_SmsNum[type]; j > i; j--) {
         m_SmsRecord[type][j] = m_SmsRecord[type][j-1];
-    	}       
+    }
     m_SmsRecord[type][i].state = nState;
     m_SmsRecord[type][i].timestamp = time;
-	//Modified by Zhou Bin 2008.12.30
+    //Modified by Zhou Bin 2008.12.30
 //     wcsncpy(m_SmsRecord[type][i].szNumber, pNumber, PB_NUM_MAX);
 //     wcsncpy(m_SmsRecord[type][i].szContent, pContent, sizeof(m_SmsRecord[type][i].szContent));
-	char *pChNumber=W2A(pNumber);
-	char *WCharContent=W2A(pContent);
-	strncpy(m_SmsRecord[type][i].szNumber, pChNumber, PB_NUM_MAX);
+    char *pChNumber=W2A(pNumber);
+    char *WCharContent=W2A(pContent);
+    strncpy(m_SmsRecord[type][i].szNumber, pChNumber, PB_NUM_MAX);
     strncpy(m_SmsRecord[type][i].szContent, WCharContent, sizeof(m_SmsRecord[type][i].szContent));
     m_SmsRecord[type][i].flag = flag;
     m_SmsRecord[type][i].nRefCnt = nRefCnt;
     m_SmsRecord[type][i].nSeqCnt = nSeqCnt;
     m_SmsRecord[type][i].nTotalCnt = nTotalCnt;
-	m_SmsRecord[type][i].m_NoATRspCDS = TRUE;
-	char *pChSCNumber=W2A(pSCNum);
-   // wcsncpy(m_SmsRecord[type][i].szSCNumber, pSCNum, SMS_SC_NUM_MAX);
-	strncpy(m_SmsRecord[type][i].szSCNumber, pChSCNumber, SMS_SC_NUM_MAX);
+    m_SmsRecord[type][i].m_NoATRspCDS = TRUE;
+    char *pChSCNumber=W2A(pSCNum);
+    // wcsncpy(m_SmsRecord[type][i].szSCNumber, pSCNum, SMS_SC_NUM_MAX);
+    strncpy(m_SmsRecord[type][i].szSCNumber, pChSCNumber, SMS_SC_NUM_MAX);
     m_SmsNum[type]++;
     WriteDataToFile();
     return TRUE;
@@ -150,17 +148,13 @@ BOOL CSmsData::DelallSmsRecord(EnSmsType type)
 
     int i, j;
 
-    if(type == SMS_TYPE_ALL)
-    {
-        for(i = SMS_TYPE_INBOX; i < SMS_TYPE_ALL; i++)
-        {
+    if(type == SMS_TYPE_ALL) {
+        for(i = SMS_TYPE_INBOX; i < SMS_TYPE_ALL; i++) {
             m_SmsNum[i] = 0;
             for(j = 0; j < SMS_RECORD_MAX; j++)
                 ::ZeroMemory(&m_SmsRecord[i][j], sizeof(StSmsRecord));
         }
-    }
-    else
-    {
+    } else {
         m_SmsNum[type] = 0;
         for(j = 0; j < SMS_RECORD_MAX; j++)
             ::ZeroMemory(&m_SmsRecord[type][j], sizeof(StSmsRecord));
@@ -220,40 +214,35 @@ void CSmsData::Serialize(CArchive &ar)
 
     CObject::Serialize(ar);
 
-    if(ar.IsStoring())
-    {
+    if(ar.IsStoring()) {
         for(type = SMS_TYPE_INBOX; type < SMS_TYPE_ALL; type++)
             ar << m_SmsNum[type];
 
         for(type = SMS_TYPE_INBOX; type < SMS_TYPE_ALL; type++)
-            for(cnt = 0; cnt < m_SmsNum[type]; cnt++)
-            {
+            for(cnt = 0; cnt < m_SmsNum[type]; cnt++) {
                 ar << m_SmsRecord[type][cnt].nState;
-                
+
                 for(i = 0; i < (PB_NUM_MAX+2); i++)
                     ar << m_SmsRecord[type][cnt].szNumber[i];
-                
+
                 ar << m_SmsRecord[type][cnt].timestamp;
-                
+
                 for(i = 0; i < (SMS_CHAR_MAX+2); i++)
                     ar << m_SmsRecord[type][cnt].szContent[i];
-            }    
-    }
-    else
-    {
+            }
+    } else {
         for(type = SMS_TYPE_INBOX; type < SMS_TYPE_ALL; type++)
             ar >> m_SmsNum[type];
-        
+
         for(type = SMS_TYPE_INBOX; type < SMS_TYPE_ALL; type++)
-            for(cnt = 0; cnt < m_SmsNum[type]; cnt++)
-            {
+            for(cnt = 0; cnt < m_SmsNum[type]; cnt++) {
                 ar >> m_SmsRecord[type][cnt].nState;
-                
+
                 for(i = 0; i < (PB_NUM_MAX+2); i++)
                     ar >> m_SmsRecord[type][cnt].szNumber[i];
-                
+
                 ar >> m_SmsRecord[type][cnt].timestamp;
-                
+
                 for(i = 0; i < (SMS_CHAR_MAX+2); i++)
                     ar >> m_SmsRecord[type][cnt].szContent[i];
             }
@@ -268,11 +257,10 @@ BOOL CSmsData::ReadDataFromFile()
 {
     CFile        file;
     CFileStatus filestatus;
-    
-    if(CFile::GetStatus(m_strSmsFileName, filestatus))
-    {
+
+    if(CFile::GetStatus(m_strSmsFileName, filestatus)) {
         file.Open(m_strSmsFileName, CFile::modeRead|CFile::typeBinary );
-        
+
 #ifdef FEATURE_OBJECT_SERIAL
         CArchive ar(&file, CArchive::load);
         Serialize(ar);
@@ -282,17 +270,15 @@ BOOL CSmsData::ReadDataFromFile()
         WORD cnt;
 
         file.Read(m_SmsNum, sizeof(m_SmsNum));
-        
+
         for(type = SMS_TYPE_INBOX; type < SMS_TYPE_ALL; type++)
-            for(cnt = 0; cnt < m_SmsNum[type]; cnt++)
-            {
+            for(cnt = 0; cnt < m_SmsNum[type]; cnt++) {
                 file.Read(&m_SmsRecord[type][cnt], sizeof(StSmsRecord));
             }
 #endif
         file.Close();
         return TRUE;
-    }
-    else
+    } else
         return FALSE;
 }
 
@@ -303,10 +289,10 @@ BOOL CSmsData::WriteDataToFile()
 {
     CFile        file;
     CFileStatus  filestatus;
-    
+
     if(CFile::GetStatus(m_strSmsFileName, filestatus))
         SetFileAttributes(m_strSmsFileName, FILE_ATTRIBUTE_ARCHIVE);
-     
+
     file.Open(m_strSmsFileName, CFile::modeCreate | CFile::modeWrite);
 
 #ifdef FEATURE_OBJECT_SERIAL
@@ -316,12 +302,11 @@ BOOL CSmsData::WriteDataToFile()
 #else
     WORD type;
     WORD cnt;
-    
+
     file.Write(m_SmsNum, sizeof(m_SmsNum));
-    
+
     for(type = SMS_TYPE_INBOX; type < SMS_TYPE_ALL; type++)
-        for(cnt = 0; cnt < m_SmsNum[type]; cnt++)
-        {
+        for(cnt = 0; cnt < m_SmsNum[type]; cnt++) {
             file.Write(&m_SmsRecord[type][cnt], sizeof(StSmsRecord));
         }
 #endif
@@ -335,7 +320,7 @@ void CSmsData::TranslateRecordToString(const StSmsRecord &record, TCHAR *str)
     memset(str, 0, SMS_RECORDLINE_LENGTH);
 
     swprintf(str, _T("%d|%s|%ld|%s\r\n"), record.nState, record.szNumber,
-                                     record.timestamp.GetTime(), record.szContent);
+             record.timestamp.GetTime(), record.szContent);
 }
 
 void CSmsData::TranslateStringToRecord(const TCHAR *str, StSmsRecord *record)
@@ -353,7 +338,7 @@ void CSmsData::TranslateStringToRecord(const TCHAR *str, StSmsRecord *record)
     *ptr2 = 0;
     record->nState = _ttoi(ptr1);
     ptr1 = ++ptr2;
-    
+
     while(*ptr2 != '|') ptr2++;
     *ptr2 = 0;
     wcsncpy((TCHAR*)record->szNumber, ptr1, PB_NUM_MAX);
@@ -375,9 +360,8 @@ BOOL CSmsData::AddSmsRecord(EnSmsType type, StSmsRecord record, BOOL bAutoReplac
 {
     ASSERT(type >= SMS_TYPE_INBOX && type < SMS_TYPE_ALL);
     ASSERT(m_SmsNum[type] <= SMS_RECORD_MAX);
-    
-    if(m_SmsNum[type] == SMS_RECORD_MAX)
-    {
+
+    if(m_SmsNum[type] == SMS_RECORD_MAX) {
         if(bAutoReplace)
             DeleteWhenFull(type);
         else
@@ -385,19 +369,18 @@ BOOL CSmsData::AddSmsRecord(EnSmsType type, StSmsRecord record, BOOL bAutoReplac
     }
 
     int i, j;
-    
+
     for(i = 0; i < m_SmsNum[type]; i++)
         if(record.timestamp >= m_SmsRecord[type][i].timestamp)
             break;
     for(j = m_SmsNum[type]; j > i; j--)
         m_SmsRecord[type][j] = m_SmsRecord[type][j-1];
-        
-    m_SmsRecord[type][i] = record;    
+
+    m_SmsRecord[type][i] = record;
     m_SmsNum[type]++;
-	if (record.m_NoATRspCDS == TRUE)
-	{
-	    WriteDataToFile();
-	}
+    if (record.m_NoATRspCDS == TRUE) {
+        WriteDataToFile();
+    }
 
     return TRUE;
 }
@@ -425,8 +408,7 @@ void CSmsData::DeleteWhenFull(EnSmsType type)
 
     int cnt = -1;
 
-    if(type == SMS_TYPE_INBOX)
-    {
+    if(type == SMS_TYPE_INBOX) {
         for(cnt = SMS_RECORD_MAX-1; cnt >= 0; cnt--)
             if(m_SmsRecord[type][cnt].state == SMS_STATE_MT_READ)
                 break;
@@ -446,8 +428,7 @@ WORD CSmsData::GetUnreadSmsNum()
 {
     WORD nUnreadNum = 0;
 
-    for(WORD i = 0; i < m_SmsNum[SMS_TYPE_INBOX]; i++)
-    {
+    for(WORD i = 0; i < m_SmsNum[SMS_TYPE_INBOX]; i++) {
         if(m_SmsRecord[SMS_TYPE_INBOX][i].state == SMS_STATE_MT_NOT_READ)
             nUnreadNum++;
     }
@@ -465,10 +446,8 @@ BOOL CSmsData::ClearSmsFlag(EnSmsType type, BYTE Clearflag, BOOL bAll)
 
     BOOL ret = FALSE;
 
-    for(WORD i = 0; i < m_SmsNum[type]; i++)
-    {
-        if(m_SmsRecord[type][i].flag & Clearflag)
-        {
+    for(WORD i = 0; i < m_SmsNum[type]; i++) {
+        if(m_SmsRecord[type][i].flag & Clearflag) {
             ret = TRUE;
             m_SmsRecord[type][i].flag &= (BYTE)~Clearflag;
             if(!bAll)
@@ -478,7 +457,7 @@ BOOL CSmsData::ClearSmsFlag(EnSmsType type, BYTE Clearflag, BOOL bAll)
 
     if(ret)
         WriteDataToFile();
-    
+
     return ret;
 }
 
@@ -491,15 +470,13 @@ BOOL CSmsData::DelallRecordbyFlag(EnSmsType type, BYTE flag)
 
     BOOL ret = FALSE;
 
-    for(WORD i = 0; i < m_SmsNum[type]; i++)
-    {
-        if(m_SmsRecord[type][i].flag & flag)
-        {
+    for(WORD i = 0; i < m_SmsNum[type]; i++) {
+        if(m_SmsRecord[type][i].flag & flag) {
             ret = TRUE;
             DeleteSmsRecord(type, i);
             i--;
         }
     }
-    
+
     return ret;
 }

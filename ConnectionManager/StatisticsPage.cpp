@@ -33,7 +33,7 @@ END_MESSAGE_MAP()
 // --------------------------------------------------------------------------
 // ctor
 // --------------------------------------------------------------------------
-StatisticsPage::StatisticsPage() : 
+StatisticsPage::StatisticsPage() :
     CPropertyPage(IDD_STATISTICS_PAGE),
     m_pCMDlg(NULL),
     m_isConnected(false)
@@ -45,7 +45,7 @@ StatisticsPage::StatisticsPage() :
 
 #ifndef OPEN_PAGE_UI
 void StatisticsPage::SetHSDPADlg(CHSDPADlg* pDlg)
-{	
+{
     m_pCMDlg = pDlg;
 }
 #else
@@ -60,7 +60,7 @@ void StatisticsPage::SetCMDlg(ConnectionManagerDlg* pCMDlg)
 // --------------------------------------------------------------------------
 void StatisticsPage::DoDataExchange(CDataExchange* pDX)
 {
-	CDialog::DoDataExchange(pDX);
+    CDialog::DoDataExchange(pDX);
 
 
 #ifdef OPEN_PAGE_UI
@@ -85,9 +85,9 @@ void StatisticsPage::DoDataExchange(CDataExchange* pDX)
 // --------------------------------------------------------------------------
 BOOL StatisticsPage::OnInitDialog()
 {
-	CPropertyPage::OnInitDialog();
-	
-	return TRUE;  // return TRUE  unless you set the focus to a control
+    CPropertyPage::OnInitDialog();
+
+    return TRUE;  // return TRUE  unless you set the focus to a control
 }
 
 // --------------------------------------------------------------------------
@@ -121,8 +121,7 @@ void StatisticsPage::EnableSelectedState()
 void StatisticsPage::DisableSelectedState()
 {
     // disable started state if necessary
-    if (m_isConnected)
-    {
+    if (m_isConnected) {
         DisableConnectedState();
     }
 
@@ -151,7 +150,7 @@ std::string StatisticsPage::BuildWDSGetCurrentChannelRateString()
     std::stringstream stream;
 
     // msg type
-    stream << "QMI_WDS_GET_CURRENT_CHANNEL_RATE_REQ" << std::endl 
+    stream << "QMI_WDS_GET_CURRENT_CHANNEL_RATE_REQ" << std::endl
            << "{}";
 
     return stream.str();
@@ -167,14 +166,14 @@ std::string StatisticsPage::BuildWDSGetCurrentChannelRateString()
 void StatisticsPage::ProcessWDSGetCurrentChannelRateRsp(WDSGetCurrentChannelRateRspRCP rspRCP)
 {
     std::stringstream stream;
-    
+
     stream << _T("Max TX Rate: ") << (int)rspRCP->GetMaxChannelTxRate();
 
 
 #ifdef OPEN_PAGE_UI
     m_maxTxRateStatic.SetWindowText(stream.str().c_str());
 #else
-	// speed
+    // speed
 // 	CSetupDlg* pSetupWnd = (CSetupDlg*)(m_pCMDlg->m_pSetupDlg);
 
 // 	pInternetWnd->m_strSpeed.Format(_T("%d"), ((int)rspRCP->GetMaxChannelTxRate()));
@@ -219,9 +218,9 @@ void StatisticsPage::EnableConnectedState()
     // send event report request
     msgStr = BuildWDSEventReportString();
     m_pCMDlg->SendRequest(msgStr);
-    
 
-    
+
+
 }
 
 // --------------------------------------------------------------------------
@@ -271,9 +270,9 @@ std::string StatisticsPage::BuildWDSEventReportString()
     std::stringstream stream;
 
     // msg type
-    stream << "QMI_WDS_SET_EVENT_REPORT_REQ" << std::endl 
+    stream << "QMI_WDS_SET_EVENT_REPORT_REQ" << std::endl
            << "{" << std::endl;
-    
+
     // current channel rate indicator
     stream << "  ReportChannelRate " << 1 << std::endl;
 
@@ -301,8 +300,7 @@ void StatisticsPage::ProcessWDSEventReportInd(WDSEventReportIndRCP indRCP)
     std::stringstream stream;
 
     // populate fields
-    if (indRCP->IsCurrentChannelRate())
-    {
+    if (indRCP->IsCurrentChannelRate()) {
         stream << _T("TX Rate: ") << (uint32)indRCP->GetCurrentChannelTxRate();
 
 #ifdef OPEN_PAGE_UI
@@ -316,44 +314,41 @@ void StatisticsPage::ProcessWDSEventReportInd(WDSEventReportIndRCP indRCP)
 #endif
     }
 
-    if (indRCP->IsTxOkCount())
-    {
+    if (indRCP->IsTxOkCount()) {
         stream.str("");
         stream << _T("TX Packets OK: ") << (uint32)indRCP->GetTxOkCount();
 
 #ifdef OPEN_PAGE_UI
         m_txPacketsOkStatic.SetWindowText(stream.str().c_str());
-#else 
-		TRACE(_T("TX Packets OK: %u.\n"), (uint32)indRCP->GetTxOkCount());
+#else
+        TRACE(_T("TX Packets OK: %u.\n"), (uint32)indRCP->GetTxOkCount());
 
-		// TX
+        // TX
 // 		CSetupDlg* pSetupWnd = (CSetupDlg*)(m_pCMDlg->m_pSetupDlg);
 
 // 		pInternetWnd->onTxOkCount((uint32)indRCP->GetTxOkCount());
-		m_pCMDlg->m_pConnectDlg->onTxOkCount((uint32)indRCP->GetTxOkCount());
+        m_pCMDlg->m_pConnectDlg->onTxOkCount((uint32)indRCP->GetTxOkCount());
 #endif
     }
 
-    if (indRCP->IsRxOkCount())
-    {
+    if (indRCP->IsRxOkCount()) {
         stream.str("");
         stream << _T("RX Packets OK: ") << (uint32)indRCP->GetRxOkCount();
 
 #ifdef OPEN_PAGE_UI
         m_rxPacketsOkStatic.SetWindowText(stream.str().c_str());
-#else 
-		TRACE(_T("RX Packets OK: %u\n"), (uint32)indRCP->GetRxOkCount());
+#else
+        TRACE(_T("RX Packets OK: %u\n"), (uint32)indRCP->GetRxOkCount());
 
 
 // 		CSetupDlg* pSetupWnd = (CSetupDlg*)(m_pCMDlg->m_pSetupDlg);
 
 // 		pInternetWnd->onRxOkCount((uint32)indRCP->GetRxOkCount());
-		m_pCMDlg->m_pConnectDlg->onRxOkCount((uint32)indRCP->GetRxOkCount());
+        m_pCMDlg->m_pConnectDlg->onRxOkCount((uint32)indRCP->GetRxOkCount());
 #endif
     }
 
-    if (indRCP->IsTxErrCount())
-    {
+    if (indRCP->IsTxErrCount()) {
         stream.str("");
         stream << _T("TX Packet Errs: ") << (uint32)indRCP->GetTxErrCount();
 
@@ -362,8 +357,7 @@ void StatisticsPage::ProcessWDSEventReportInd(WDSEventReportIndRCP indRCP)
 #endif
     }
 
-    if (indRCP->IsRxErrCount())
-    {
+    if (indRCP->IsRxErrCount()) {
         stream.str("");
         stream << _T("RX Packet Errs: ") << (uint32)indRCP->GetRxErrCount();
 
@@ -372,8 +366,7 @@ void StatisticsPage::ProcessWDSEventReportInd(WDSEventReportIndRCP indRCP)
 #endif
     }
 
-    if (indRCP->IsTxOflCount())
-    {
+    if (indRCP->IsTxOflCount()) {
         stream.str("");
         stream << _T("TX Overflows: ") << (uint32)indRCP->GetTxOflCount();
 
@@ -381,10 +374,9 @@ void StatisticsPage::ProcessWDSEventReportInd(WDSEventReportIndRCP indRCP)
         m_txOverflowsStatic.SetWindowText(stream.str().c_str());
 #endif
     }
-        
 
-    if (indRCP->IsRxOflCount())
-    {
+
+    if (indRCP->IsRxOflCount()) {
         stream.str("");
         stream << _T("RX Overflows: ") << (uint32)indRCP->GetRxOflCount();
 
@@ -393,8 +385,7 @@ void StatisticsPage::ProcessWDSEventReportInd(WDSEventReportIndRCP indRCP)
 #endif
     }
 
-    if (indRCP->IsDataBearerTech())
-    {
+    if (indRCP->IsDataBearerTech()) {
         stream.str("");
         stream << _T("Data Bearer Technology: ") << DATA_BEARER_TECH_STRINGS[indRCP->GetDataBearerTech()];
 

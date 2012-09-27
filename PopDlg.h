@@ -19,45 +19,43 @@ public:
     DECLARE_DYNAMIC(CPopDlg)
 protected:
     int m_nWidth;            //  window width
-    int m_nHeight;           //  window height 
+    int m_nHeight;           //  window height
     int m_nDelay;
-    int m_dx; 
+    int m_dx;
     int m_dy;
 public:
-	int m_nPos;
+    int m_nPos;
     DWORD m_eState;
 // Construction
 public:
-	BOOL IsPopUp();
-	void ShowButton(BOOL bInComCallOrSms = TRUE);
+    BOOL IsPopUp();
+    void ShowButton(BOOL bInComCallOrSms = TRUE);
     CPopDlg(UINT nWaveID);
     virtual ~CPopDlg();
 
-    BOOL Create(UINT nID, CWnd* pWnd, int nPos)
-    {
+    BOOL Create(UINT nID, CWnd* pWnd, int nPos) {
         if(GetSafeHwnd() != NULL)
             return 0;
 
         if(m_nWaveID == IDR_WAVE_SMS)
             NULL;
-            //PlaySound((LPCTSTR)"wav\\sms.wav", NULL, SND_ASYNC | SND_NOSTOP);
-            //PlaySound((LPCTSTR)IDR_WAVE_SMS, AfxGetInstanceHandle(), SND_RESOURCE | SND_ASYNC | SND_NOSTOP);
+        //PlaySound((LPCTSTR)"wav\\sms.wav", NULL, SND_ASYNC | SND_NOSTOP);
+        //PlaySound((LPCTSTR)IDR_WAVE_SMS, AfxGetInstanceHandle(), SND_RESOURCE | SND_ASYNC | SND_NOSTOP);
         else if(m_nWaveID == IDR_WAVE_CALL)
             PlaySound(_T("wav\\call.wav"), NULL, SND_ASYNC | SND_LOOP);
-            //PlaySound((LPCTSTR)IDR_WAVE_CALL, AfxGetInstanceHandle(), SND_RESOURCE | SND_ASYNC | SND_LOOP);
+        //PlaySound((LPCTSTR)IDR_WAVE_CALL, AfxGetInstanceHandle(), SND_RESOURCE | SND_ASYNC | SND_LOOP);
 
         m_bIsPopUp = CBaseDialog::Create(nID, pWnd);
-		m_nPos = nPos;
+        m_nPos = nPos;
         return m_bIsPopUp;
     }
 
-    BOOL DestroyWindow()
-    {
+    BOOL DestroyWindow() {
         if(GetSafeHwnd() == NULL)
             return 0;
 
         m_bIsPopUp = !CBaseDialog::DestroyWindow();
-		m_nPos = 0;
+        m_nPos = 0;
 
         if(m_nWaveID == IDR_WAVE_CALL)
             PlaySound((LPCTSTR)NULL, NULL, SND_PURGE);
@@ -65,18 +63,17 @@ public:
         return !m_bIsPopUp;
     }
 
-    void PostNcDestroy()
-    {
+    void PostNcDestroy() {
 //        delete this;
     }
 
     enum { IDD = IDD_DIALOG_POP_TIP };
-	CString m_strTipInfo;
+    CString m_strTipInfo;
 
 // Overrides
     // ClassWizard generated virtual function overrides
     //{{AFX_VIRTUAL(CPopDlg)
-    protected:
+protected:
     virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
     //}}AFX_VIRTUAL
 
@@ -89,14 +86,14 @@ protected:
     afx_msg void OnMouseMove(UINT nFlags, CPoint point);
     afx_msg void OnButtonAnswer();
     afx_msg void OnButtonReject();
-	afx_msg void OnButtonPview();
-	afx_msg void OnButtonPcancel();
-	afx_msg void OnDestroy();
-	//}}AFX_MSG
-    afx_msg LRESULT OnDestroyWnd(WPARAM wParam, LPARAM lParam = 0);    
+    afx_msg void OnButtonPview();
+    afx_msg void OnButtonPcancel();
+    afx_msg void OnDestroy();
+    //}}AFX_MSG
+    afx_msg LRESULT OnDestroyWnd(WPARAM wParam, LPARAM lParam = 0);
     DECLARE_MESSAGE_MAP()
 private:
-	BOOL m_bIsPopUp;
+    BOOL m_bIsPopUp;
     UINT m_nWaveID;
 };
 //{{AFX_INSERT_LOCATION}}

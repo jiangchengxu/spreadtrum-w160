@@ -28,8 +28,8 @@
 // ProfileUmtsMinPage
 //
 /// The ProfileUmtsMinPage class represents the controls under the umts min
-/// qos tab of the profile sheet. Input from the user and output to the user 
-/// under the general tab is controlled by this class. 
+/// qos tab of the profile sheet. Input from the user and output to the user
+/// under the general tab is controlled by this class.
 // --------------------------------------------------------------------------
 
 class ProfileUmtsMinPage : public ProfileSheetPage
@@ -41,12 +41,12 @@ public:
     virtual std::string BuildTlvString();
 
 protected:
-	virtual void DoDataExchange(CDataExchange* pDX);
-	virtual BOOL OnInitDialog();
+    virtual void DoDataExchange(CDataExchange* pDX);
+    virtual BOOL OnInitDialog();
     virtual void DefaultInit();
     virtual void ProfileInit();
-    
-	DECLARE_MESSAGE_MAP()
+
+    DECLARE_MESSAGE_MAP()
 
 private:
     WDSGetDefaultSettingsRspRCP m_defaultSettingsRspRCP;

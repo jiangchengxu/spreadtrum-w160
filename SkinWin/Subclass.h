@@ -14,12 +14,12 @@
  * $Archive: /CodeJock/Include/Subclass.h $
  *
  * $History: Subclass.h $
- * 
+ *
  * *****************  Version 4  *****************
  * User: Kirk Stowell Date: 10/26/99   Time: 10:50p
  * Updated in $/CodeJock/Include
  * Made class methods virtual for inheritance purposes.
- * 
+ *
  * *****************  Version 3  *****************
  * User: Kirk Stowell Date: 10/14/99   Time: 12:41p
  * Updated in $/CodeJock/Include
@@ -50,7 +50,8 @@
 // widgets implemented in PixieLib. To see how it works, look at the HOOK
 // sample program.
 //
-class  CSubclassWnd : public CObject {
+class  CSubclassWnd : public CObject
+{
 public:
     DECLARE_DYNAMIC(CSubclassWnd);
     CSubclassWnd();
@@ -58,8 +59,12 @@ public:
 
     // Subclass a window. Hook(NULL) to unhook (automatic on WM_NCDESTROY)
     virtual BOOL    HookWindow(HWND  hwnd);
-    virtual BOOL    HookWindow(CWnd* pWnd)    { return HookWindow(pWnd->GetSafeHwnd()); }
-    virtual BOOL    IsHooked()                    { return m_hWnd!=NULL; }
+    virtual BOOL    HookWindow(CWnd* pWnd)    {
+        return HookWindow(pWnd->GetSafeHwnd());
+    }
+    virtual BOOL    IsHooked()                    {
+        return m_hWnd!=NULL;
+    }
 
     friend LRESULT CALLBACK HookWndProc(HWND, UINT, WPARAM, LPARAM);
     friend class CSubclassWndMap;

@@ -15,7 +15,7 @@ class CMenuBar : public CWnd
 {
 // Construction
 public:
-	static CMenuBar& GetInstance();
+    static CMenuBar& GetInstance();
 
 // Attributes
 public:
@@ -24,41 +24,41 @@ public:
 public:
 
 // Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(CMenuBar)
-	//}}AFX_VIRTUAL
+    // ClassWizard generated virtual function overrides
+    //{{AFX_VIRTUAL(CMenuBar)
+    //}}AFX_VIRTUAL
 
 // Implementation
 public:
-	void SetFont(int nHeight=0, int nWidth=0, LPCTSTR name=NULL);
-	BOOL PtInRect(POINT pt, CRect rc);
-	void OnHookMove(WPARAM wParam, LPARAM lParam);
-	void SetButtonItem(UINT item[], int count);
-	static LRESULT CALLBACK MessageProc(int code, WPARAM wParam, LPARAM lParam);
-	void TrackPopup(int nButton);
-	BOOL SetMenu(UINT nMenu, HWND hParentWnd, BOOL bRepaint = TRUE);
-	virtual ~CMenuBar();
+    void SetFont(int nHeight=0, int nWidth=0, LPCTSTR name=NULL);
+    BOOL PtInRect(POINT pt, CRect rc);
+    void OnHookMove(WPARAM wParam, LPARAM lParam);
+    void SetButtonItem(UINT item[], int count);
+    static LRESULT CALLBACK MessageProc(int code, WPARAM wParam, LPARAM lParam);
+    void TrackPopup(int nButton);
+    BOOL SetMenu(UINT nMenu, HWND hParentWnd, BOOL bRepaint = TRUE);
+    virtual ~CMenuBar();
 
-	// Generated message map functions
+    // Generated message map functions
 protected:
-	//{{AFX_MSG(CMenuBar)
-	//}}AFX_MSG
-	DECLARE_MESSAGE_MAP()
+    //{{AFX_MSG(CMenuBar)
+    //}}AFX_MSG
+    DECLARE_MESSAGE_MAP()
 
-	CMenuBar();
+    CMenuBar();
 
 private:
-	HMENU m_hMenu;
-	HWND m_hParentWnd;
+    HMENU m_hMenu;
+    HWND m_hParentWnd;
 
-	CFont *m_pFont;
+    CFont *m_pFont;
 
-	int m_nPopup;
-	int m_nNextPop;
+    int m_nPopup;
+    int m_nNextPop;
 
-	UINT m_item[4];
-	CMenuButtonST m_btnST[4];
-	int m_itemCount;
+    UINT m_item[4];
+    CMenuButtonST m_btnST[4];
+    int m_itemCount;
 };
 
 /////////////////////////////////////////////////////////////////////////////

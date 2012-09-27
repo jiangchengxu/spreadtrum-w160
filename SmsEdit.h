@@ -14,7 +14,7 @@ class CSmsEdit : public CEdit
 {
 // Construction
 public:
-	CSmsEdit();
+    CSmsEdit();
 
 // Attributes
 public:
@@ -23,21 +23,21 @@ public:
 public:
 
 // Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(CSmsEdit)
-	//}}AFX_VIRTUAL
+    // ClassWizard generated virtual function overrides
+    //{{AFX_VIRTUAL(CSmsEdit)
+    //}}AFX_VIRTUAL
 
 // Implementation
 public:
-	virtual ~CSmsEdit();
+    virtual ~CSmsEdit();
 
-	// Generated message map functions
+    // Generated message map functions
 protected:
-	//{{AFX_MSG(CSmsEdit)
-	afx_msg void OnChar(UINT nChar, UINT nRepCnt, UINT nFlags);
-	//}}AFX_MSG
+    //{{AFX_MSG(CSmsEdit)
+    afx_msg void OnChar(UINT nChar, UINT nRepCnt, UINT nFlags);
+    //}}AFX_MSG
 
-	DECLARE_MESSAGE_MAP()
+    DECLARE_MESSAGE_MAP()
 };
 
 /////////////////////////////////////////////////////////////////////////////

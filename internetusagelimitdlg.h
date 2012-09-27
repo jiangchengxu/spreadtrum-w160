@@ -14,50 +14,50 @@ class CInternetUsageLimitDlg : public CDialog
 {
 // Construction
 public:
-	CInternetUsageLimitDlg(CWnd* pParent = NULL);   // standard constructor
+    CInternetUsageLimitDlg(CWnd* pParent = NULL);   // standard constructor
 
 // Dialog Data
-	//{{AFX_DATA(CInternetUsageLimitDlg)
-	enum { IDD = IDD_DIALOG_INTERNET_USAGELIMIT };
-	int		m_nFluxOrDuration;
-	BOOL	m_bPrompt;
-	BOOL	m_bDisconnect;
-	BOOL	m_bPassword;
-	DWORD	m_nHours;
-	DWORD	m_nMinutes;
-	DWORD	m_nFlux;
-	COleDateTime	m_DateTime;
+    //{{AFX_DATA(CInternetUsageLimitDlg)
+    enum { IDD = IDD_DIALOG_INTERNET_USAGELIMIT };
+    int		m_nFluxOrDuration;
+    BOOL	m_bPrompt;
+    BOOL	m_bDisconnect;
+    BOOL	m_bPassword;
+    DWORD	m_nHours;
+    DWORD	m_nMinutes;
+    DWORD	m_nFlux;
+    COleDateTime	m_DateTime;
 
 
-	//}}AFX_DATA
+    //}}AFX_DATA
 
 
 // Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(CInternetUsageLimitDlg)
-	protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	//}}AFX_VIRTUAL
+    // ClassWizard generated virtual function overrides
+    //{{AFX_VIRTUAL(CInternetUsageLimitDlg)
+protected:
+    virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+    //}}AFX_VIRTUAL
 
 // Implementation
 protected:
 
-	// Generated message map functions
-	//{{AFX_MSG(CInternetUsageLimitDlg)
-	virtual BOOL OnInitDialog();
-	afx_msg void OnRadio1();
-	afx_msg void OnRadio2();
-	virtual void OnOK();
-	afx_msg void OnCheckDisconn();
-	afx_msg void OnCheckPWD();
-	afx_msg void OnModifyPWD();
-	//}}AFX_MSG
-	DECLARE_MESSAGE_MAP()
+    // Generated message map functions
+    //{{AFX_MSG(CInternetUsageLimitDlg)
+    virtual BOOL OnInitDialog();
+    afx_msg void OnRadio1();
+    afx_msg void OnRadio2();
+    virtual void OnOK();
+    afx_msg void OnCheckDisconn();
+    afx_msg void OnCheckPWD();
+    afx_msg void OnModifyPWD();
+    //}}AFX_MSG
+    DECLARE_MESSAGE_MAP()
 private:
-	void ResetToDefault();
-	void ReadFromFile();
-	void WriteToFile();
-	void ChangePWDCheckBoxStatus();
+    void ResetToDefault();
+    void ReadFromFile();
+    void WriteToFile();
+    void ChangePWDCheckBoxStatus();
 };
 
 //{{AFX_INSERT_LOCATION}}

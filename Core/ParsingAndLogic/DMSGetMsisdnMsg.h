@@ -24,9 +24,9 @@
 // --------------------------------------------------------------------------
 // Unique identifiers for DMSGetMsisdnMsg types
 // --------------------------------------------------------------------------
-static const uint32 DMSGetMsisdnReqUID = 
+static const uint32 DMSGetMsisdnReqUID =
     (QMUX_TYPE_DMS << 24 | QMI_CTL_FLAG_TYPE_CMD << 16 | QMI_DMS_GET_MSISDN_MSG);
-static const uint32 DMSGetMsisdnRspUID = 
+static const uint32 DMSGetMsisdnRspUID =
     (QMUX_TYPE_DMS << 24 | QMI_CTL_FLAG_TYPE_RSP << 16 | QMI_DMS_GET_MSISDN_MSG);
 
 // --------------------------------------------------------------------------
@@ -54,7 +54,9 @@ public:
 protected:
     DMSGetMsisdnReq();
     virtual bool BuildMsgBuf();
-    virtual bool Unpack(MsgBuf& msgBuf) { return false; }
+    virtual bool Unpack(MsgBuf& msgBuf) {
+        return false;
+    }
 };
 
 
@@ -62,7 +64,7 @@ protected:
 // DMSGetMsisdnRsp
 //
 /// This class represents a QMI_DMS_GET_MSISDN_RESP message which is the
-/// response to a request for the voice number of the service. 
+/// response to a request for the voice number of the service.
 // --------------------------------------------------------------------------
 
 class DMSGetMsisdnRsp : public Message
@@ -76,15 +78,25 @@ public:
 
     virtual void Print(std::ostream& stream);
 
-    uint16 GetResult() { return m_result; }
-    uint16 GetError() { return m_error; }
+    uint16 GetResult() {
+        return m_result;
+    }
+    uint16 GetError() {
+        return m_error;
+    }
 
-    std::string GetVoiceNumber() { return m_voiceNumber; }
+    std::string GetVoiceNumber() {
+        return m_voiceNumber;
+    }
 
 protected:
     DMSGetMsisdnRsp();
-    virtual bool Build(std::string& nameValue) { return false; }
-    virtual bool BuildMsgBuf() { return false; }
+    virtual bool Build(std::string& nameValue) {
+        return false;
+    }
+    virtual bool BuildMsgBuf() {
+        return false;
+    }
     virtual bool Unpack(MsgBuf& msgBuf);
     virtual Uint8UnpackerMap& GetUnpackerMap();
     virtual bool UnpackResultCode(MsgBuf& msgBuf);

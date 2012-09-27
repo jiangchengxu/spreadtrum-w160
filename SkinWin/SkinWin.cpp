@@ -7,11 +7,11 @@
 //
 //    History:
 //        2002.11.24
-//                CAN WORK NOW.            
+//                CAN WORK NOW.
 //        2002.11.23    intial version
 //
 //
-//        
+//
 //    AUthor:
 //        szhao00@mails.tsinghua.edu.cn
 //
@@ -53,8 +53,7 @@ COLORREF ReadColor( CString section, CString key, CString file, COLORREF defcolo
 {
     TCHAR buf[1000];
     GetPrivateProfileString( section, key, _T(""), buf, 1000, file );
-    if ( *buf )
-    {
+    if ( *buf ) {
         TCHAR token[255];
         TCHAR *p = buf;
         int r, g, b;
@@ -64,9 +63,8 @@ COLORREF ReadColor( CString section, CString key, CString file, COLORREF defcolo
         g = _ttoi(token);
         p = next_token( p, token, NULL );
         b = _ttoi(token);
-        return RGB(r, g, b );            
-    }
-    else
+        return RGB(r, g, b );
+    } else
         return defcolor;
 }
 
@@ -75,9 +73,8 @@ BOOL CSkinWin::LoadSkin( const TCHAR * skinfile )
     static const TCHAR * ps = _T("Personality");
     TCHAR buf[1000];
     CString path = GetPathName( skinfile );
-    
-    if ( m_bInit )
-    {
+
+    if ( m_bInit ) {
         //把GDI中旧的object删除掉
         m_bmpDlg.DeleteObject();
         m_bmpTitle.DeleteObject();
@@ -99,22 +96,22 @@ BOOL CSkinWin::LoadSkin( const TCHAR * skinfile )
     GetPrivateProfileString( ps, _T("DialogBmp"), _T(""), buf, 1000, skinfile );
     if ( *buf != 0 )
         m_bmpDlg.LoadBitmap( path + _T("/")  + GetFileName( buf,1 ));
-        
+
 
     GetPrivateProfileString( ps, _T("Top"), _T(""), buf, 1000, skinfile );
     if ( *buf == 0 || !m_bmpTitle.LoadBitmap( path + _T("/") + GetFileName( buf,1 )) )
         return FALSE;
     GetPrivateProfileString( ps, _T("Left"), _T(""), buf, 1000, skinfile );
-    if ( *buf == 0 || !m_bmpLeft.LoadBitmap( path + _T("/") + GetFileName( buf,1 ) )) 
+    if ( *buf == 0 || !m_bmpLeft.LoadBitmap( path + _T("/") + GetFileName( buf,1 ) ))
         return FALSE;
     GetPrivateProfileString( ps, _T("Right"), _T(""), buf, 1000, skinfile );
-    if ( *buf == 0 || !m_bmpRight.LoadBitmap( path + _T("/") + GetFileName( buf,1 ) )) 
+    if ( *buf == 0 || !m_bmpRight.LoadBitmap( path + _T("/") + GetFileName( buf,1 ) ))
         return FALSE;
     GetPrivateProfileString( ps, _T("Bottom"), _T(""), buf, 1000, skinfile );
-    if ( *buf == 0 || !m_bmpBottom.LoadBitmap( path + _T("/") + GetFileName( buf,1 ) )) 
+    if ( *buf == 0 || !m_bmpBottom.LoadBitmap( path + _T("/") + GetFileName( buf,1 ) ))
         return FALSE;
     //m_TitleHeight = m_bmpTitle.Height()/2;
-	m_TitleHeight = m_bmpTitle.Height()/2;// modify by liub 1113 for titleheight
+    m_TitleHeight = m_bmpTitle.Height()/2;// modify by liub 1113 for titleheight
     m_BorderLeftWidth = m_bmpLeft.Width()/2;
     m_BorderRightWidth = m_bmpRight.Width()/2;
     m_BorderBottomHeight = m_bmpBottom.Height()/2;//modify by liub 1113 for titleheight
@@ -141,8 +138,7 @@ BOOL CSkinWin::LoadSkin( const TCHAR * skinfile )
     //load buttons
     int count = GetPrivateProfileInt( ps, _T("ButtonCount"), 0, skinfile );
     int icount = GetPrivateProfileInt( ps, _T("ButtonImgCount"), 3, skinfile );
-    for ( int i = 0; i < count; i++ )
-    {
+    for ( int i = 0; i < count; i++ ) {
         CString sec;
         sec.Format( _T("Button%d"), i );
         GetPrivateProfileString( sec, _T("ButtonImage"), _T(""), buf, 1000, skinfile );
@@ -151,45 +147,38 @@ BOOL CSkinWin::LoadSkin( const TCHAR * skinfile )
         int y = GetPrivateProfileInt( sec, _T("YCoord"), 0, skinfile );
 
         int state = icount;
-        if ( action == 0 )
-        {
+        if ( action == 0 ) {
             //close
-            if ( !m_bmpCloseBtn.LoadBitmap( path + _T("/")+ GetFileName( buf,1 )) ) 
+            if ( !m_bmpCloseBtn.LoadBitmap( path + _T("/")+ GetFileName( buf,1 )) )
                 return FALSE;
             //state = m_bmpCloseBtn.Width()/m_bmpCloseBtn.Height();
             ///m_rectCloseBtn = CRect( x-m_bmpCloseBtn.Width()/state, y, x , y + m_bmpCloseBtn.Height() );//modify by liub 根据新UI按钮修改其位置
-			m_rectCloseBtn = CRect( x-m_bmpCloseBtn.Width()/state+30 ,0, x+30 ,  m_bmpCloseBtn.Height() );
+            m_rectCloseBtn = CRect( x-m_bmpCloseBtn.Width()/state+30 ,0, x+30 ,  m_bmpCloseBtn.Height() );
         }
-        if ( action == 2 )
-        {
+        if ( action == 2 ) {
             //min
-            if ( !m_bmpMinBtn.LoadBitmap( path + _T("/") + GetFileName( buf,1 )) ) 
+            if ( !m_bmpMinBtn.LoadBitmap( path + _T("/") + GetFileName( buf,1 )) )
                 return FALSE;
             //state = m_bmpMinBtn.Width()/m_bmpMinBtn.Height();
             //m_rectMinBtn = CRect( x-m_bmpMinBtn.Width()/state, y, x, y + m_bmpMinBtn.Height()  );//modify by liub 根据新UI按钮修改其位置
-			m_rectMinBtn = CRect( x-m_bmpMinBtn.Width()/state +19, 0, x+19, y + m_bmpMinBtn.Height()  );
+            m_rectMinBtn = CRect( x-m_bmpMinBtn.Width()/state +19, 0, x+19, y + m_bmpMinBtn.Height()  );
         }
-        if ( action == 1 )
-        {            
-            if ( !m_bmpMaxBtn.GetSafeHandle() )
-            {
+        if ( action == 1 ) {
+            if ( !m_bmpMaxBtn.GetSafeHandle() ) {
                 //max
-                if ( !m_bmpMaxBtn.LoadBitmap( path + _T("/") + GetFileName( buf,1 )) ) 
+                if ( !m_bmpMaxBtn.LoadBitmap( path + _T("/") + GetFileName( buf,1 )) )
                     return FALSE;
                 //state = m_bmpMaxBtn.Width()/m_bmpMaxBtn.Height();
                 m_rectMaxBtn = CRect( x-m_bmpMaxBtn.Width()/state, y, x , y + m_bmpMaxBtn.Height() );
-            }
-            else
-            {
+            } else {
                 //restore
-                if ( !m_bmpRestoreBtn.LoadBitmap( path + _T("/") + GetFileName( buf,1 )) ) 
+                if ( !m_bmpRestoreBtn.LoadBitmap( path + _T("/") + GetFileName( buf,1 )) )
                     return FALSE;
                 //state = m_bmpRestoreBtn.Width()/m_bmpRestoreBtn.Height();
                 m_rectRestoreBtn = CRect( x-m_bmpRestoreBtn.Width()/state, y, x , y + m_bmpRestoreBtn.Height() );
             }
         }
-        if ( action == 4 )
-        {
+        if ( action == 4 ) {
         }
     }
     m_textShift = GetPrivateProfileInt( ps, _T("TextShift"), 0, skinfile );
@@ -198,7 +187,7 @@ BOOL CSkinWin::LoadSkin( const TCHAR * skinfile )
     TCHAR * colours =L"Colours";
     m_colTitle1 = ReadColor(colours, L"TitleText", skinfile, GetSysColor(COLOR_CAPTIONTEXT) );
     m_colTitle2 = ReadColor(colours,L"InactiveTitleText", skinfile, GetSysColor(COLOR_CAPTIONTEXT) );
-    
+
     m_bTrans = GetPrivateProfileInt( ps, _T("UsesTran"), 0, skinfile );
     if ( m_bTrans )
         m_colTrans = ReadColor(colours, L"TransColor", skinfile, RGB(255,0,255) );
@@ -211,7 +200,7 @@ BOOL CSkinWin::LoadSkin( const TCHAR * skinfile )
     m_btntextcolor = ReadColor(colours,L"ButtonText", skinfile, GetSysColor(COLOR_BTNTEXT));
     m_btnhovercolor = ReadColor(colours, L"ButtonHilight", skinfile, GetSysColor(COLOR_BTNFACE) );
     m_btnfocuscolor = ReadColor(colours, L"ButtonFocus", skinfile, GetSysColor(COLOR_BTNFACE) );
-    
+
 
     m_bInit = TRUE;
     return TRUE;
@@ -219,7 +208,7 @@ BOOL CSkinWin::LoadSkin( const TCHAR * skinfile )
 
 BOOL CSkinWin::DrawTitle(CDC *pDC, int x, int y, int w, int state)
 {
-    int padding; 
+    int padding;
     int ox = x;
     padding = ( w - m_bmpTitle.Width() )/( m_titleoff2 - m_titleoff1 ) + 1 ;
     if ( padding < 0 ) padding = 0;
@@ -228,17 +217,16 @@ BOOL CSkinWin::DrawTitle(CDC *pDC, int x, int y, int w, int state)
     if ( state == 0 )
         sr = CRect( 0, 0, m_titleoff1, m_TitleHeight );
     else
-        sr = CRect( 0, m_TitleHeight, m_titleoff1, m_bmpTitle.Height()  );    
+        sr = CRect( 0, m_TitleHeight, m_titleoff1, m_bmpTitle.Height()  );
     m_bmpTitle.Draw( pDC, x, y, &sr );
-     
+
     x += m_titleoff1;
     if ( state == 0 )
         sr = CRect(  m_titleoff1, 0, m_titleoff2, m_TitleHeight );
     else
-        sr = CRect(  m_titleoff1, m_TitleHeight, m_titleoff2, m_bmpTitle.Height()  );    
+        sr = CRect(  m_titleoff1, m_TitleHeight, m_titleoff2, m_bmpTitle.Height()  );
 
-    for ( int i = 0; i <= padding; i++, x += m_titleoff2 - m_titleoff1 )
-    {
+    for ( int i = 0; i <= padding; i++, x += m_titleoff2 - m_titleoff1 ) {
         int d = ( x + m_titleoff2 - m_titleoff1 - ox - w);
         if ( d > 0 )
             sr.right = sr.right - d;
@@ -249,14 +237,14 @@ BOOL CSkinWin::DrawTitle(CDC *pDC, int x, int y, int w, int state)
     if ( state == 0 )
         sr = CRect(  m_titleoff2, 0, m_bmpTitle.Width()-1, m_TitleHeight);
     else
-        sr = CRect(  m_titleoff2, m_TitleHeight, m_bmpTitle.Width()-1, m_bmpTitle.Height()  );    
+        sr = CRect(  m_titleoff2, m_TitleHeight, m_bmpTitle.Width()-1, m_bmpTitle.Height()  );
     m_bmpTitle.Draw( pDC, x, y, &sr );
     return TRUE;
 }
 
 BOOL CSkinWin::DrawBottom(CDC *pDC, int x, int y, int w, int state)
 {
-    int padding; 
+    int padding;
     int ox = x;
     padding = ( w - m_bmpBottom.Width() )/( m_bottomoff2 - m_bottomoff1 ) + 1 ;
     if ( padding < 0 ) padding = 0;
@@ -265,17 +253,16 @@ BOOL CSkinWin::DrawBottom(CDC *pDC, int x, int y, int w, int state)
     if ( state == 0 )
         sr = CRect( 0, 0, m_bottomoff1, m_BorderBottomHeight);
     else
-        sr = CRect( 0, m_BorderBottomHeight, m_bottomoff1, m_bmpBottom.Height()  );    
+        sr = CRect( 0, m_BorderBottomHeight, m_bottomoff1, m_bmpBottom.Height()  );
     m_bmpBottom.Draw( pDC, x, y, &sr );
-    
+
     x += m_bottomoff1;
     if ( state == 0 )
         sr = CRect(  m_bottomoff1, 0, m_bottomoff2, m_BorderBottomHeight );
     else
-        sr = CRect(  m_bottomoff1, m_BorderBottomHeight, m_bottomoff2, m_bmpBottom.Height() );    
+        sr = CRect(  m_bottomoff1, m_BorderBottomHeight, m_bottomoff2, m_bmpBottom.Height() );
 
-    for ( int i = 0; i <= padding; i++, x += m_bottomoff2 - m_bottomoff1 )
-    {
+    for ( int i = 0; i <= padding; i++, x += m_bottomoff2 - m_bottomoff1 ) {
         int d = ( x + m_bottomoff2 - m_bottomoff1 - ox - w);
         if ( d > 0 )
             sr.right = sr.right - d;
@@ -286,14 +273,14 @@ BOOL CSkinWin::DrawBottom(CDC *pDC, int x, int y, int w, int state)
     if ( state == 0 )
         sr = CRect(  m_bottomoff2, 0, m_bmpBottom.Width()-1, m_BorderBottomHeight );
     else
-        sr = CRect(  m_bottomoff2, m_BorderBottomHeight, m_bmpBottom.Width()-1, m_bmpBottom.Height()  );    
+        sr = CRect(  m_bottomoff2, m_BorderBottomHeight, m_bmpBottom.Width()-1, m_bmpBottom.Height()  );
     m_bmpBottom.Draw( pDC, x, y, &sr );
     return TRUE;
 }
 
 BOOL CSkinWin::DrawLeft(CDC *pDC, int x, int y, int h, int state)
 {
-    int padding; 
+    int padding;
     int oy = y;
     padding = ( h - m_bmpLeft.Height() )/( m_leftoff2 - m_leftoff1 ) + 1 ;
     if ( padding < 0 ) padding = 0;
@@ -302,17 +289,16 @@ BOOL CSkinWin::DrawLeft(CDC *pDC, int x, int y, int h, int state)
     if ( state == 0 )
         sr = CRect( 0, 0, m_BorderLeftWidth, m_leftoff1 );
     else
-        sr = CRect( m_BorderLeftWidth, 0, m_bmpLeft.Width(), m_leftoff1  );    
+        sr = CRect( m_BorderLeftWidth, 0, m_bmpLeft.Width(), m_leftoff1  );
     m_bmpLeft.Draw( pDC, x, y, &sr );
-    
+
     y += m_leftoff1;
     if ( state == 0 )
         sr = CRect(  0, m_leftoff1,  m_BorderLeftWidth, m_leftoff2 );
     else
-        sr = CRect(  m_BorderLeftWidth, m_leftoff1, m_bmpLeft.Width(), m_leftoff2 );    
+        sr = CRect(  m_BorderLeftWidth, m_leftoff1, m_bmpLeft.Width(), m_leftoff2 );
 
-    for ( int i = 0; i <= padding; i++, y += m_leftoff2 - m_leftoff1 )
-    {
+    for ( int i = 0; i <= padding; i++, y += m_leftoff2 - m_leftoff1 ) {
         int d = ( y + m_leftoff2 - m_leftoff1 - oy - h);
         if ( d > 0 )
             sr.bottom = sr.bottom - d;
@@ -323,7 +309,7 @@ BOOL CSkinWin::DrawLeft(CDC *pDC, int x, int y, int h, int state)
     if ( state == 0 )
         sr = CRect(  0, m_leftoff2, m_BorderLeftWidth, m_bmpLeft.Height());
     else
-        sr = CRect(  m_BorderLeftWidth, m_leftoff2,  m_bmpLeft.Width(), m_bmpLeft.Height()  );    
+        sr = CRect(  m_BorderLeftWidth, m_leftoff2,  m_bmpLeft.Width(), m_bmpLeft.Height()  );
     m_bmpLeft.Draw( pDC, x, y, &sr );
 
     return TRUE;
@@ -331,7 +317,7 @@ BOOL CSkinWin::DrawLeft(CDC *pDC, int x, int y, int h, int state)
 
 BOOL CSkinWin::DrawRight(CDC *pDC, int x, int y, int h, int state)
 {
-    int padding; 
+    int padding;
     int oy = y;
     padding = ( h - m_bmpRight.Height() )/( m_rightoff2 - m_rightoff1 ) + 1 ;
     if ( padding < 0 ) padding = 0;
@@ -340,17 +326,16 @@ BOOL CSkinWin::DrawRight(CDC *pDC, int x, int y, int h, int state)
     if ( state == 0 )
         sr = CRect( 0, 0, m_BorderRightWidth, m_rightoff1 );
     else
-        sr = CRect( m_BorderRightWidth, 0, m_bmpRight.Width(), m_rightoff1  );    
+        sr = CRect( m_BorderRightWidth, 0, m_bmpRight.Width(), m_rightoff1  );
     m_bmpRight.Draw( pDC, x, y, &sr );
-    
+
     y += m_rightoff1;
     if ( state == 0 )
         sr = CRect(  0, m_rightoff1,  m_BorderRightWidth, m_rightoff2 );
     else
-        sr = CRect(  m_BorderRightWidth, m_rightoff1, m_bmpRight.Width(), m_rightoff2 );    
+        sr = CRect(  m_BorderRightWidth, m_rightoff1, m_bmpRight.Width(), m_rightoff2 );
 
-    for ( int i = 0; i <= padding; i++, y += m_rightoff2 - m_rightoff1 )
-    {
+    for ( int i = 0; i <= padding; i++, y += m_rightoff2 - m_rightoff1 ) {
         int d = ( y + m_rightoff2 - m_rightoff1 - oy - h);
         if ( d > 0 )
             sr.bottom = sr.bottom - d;
@@ -361,7 +346,7 @@ BOOL CSkinWin::DrawRight(CDC *pDC, int x, int y, int h, int state)
     if ( state == 0 )
         sr = CRect(  0, m_rightoff2, m_BorderRightWidth, m_bmpRight.Height());
     else
-        sr = CRect(  m_BorderRightWidth, m_rightoff2,  m_bmpRight.Width(), m_bmpRight.Height()  );    
+        sr = CRect(  m_BorderRightWidth, m_rightoff2,  m_bmpRight.Width(), m_bmpRight.Height()  );
     m_bmpRight.Draw( pDC, x, y, &sr );
 
     return TRUE;
@@ -371,13 +356,13 @@ BOOL CSkinWin::DrawRight(CDC *pDC, int x, int y, int h, int state)
 BOOL CSkinWin::DrawFrame(CDC *pDC, int x, int y, int w, int h, int state, int title )
 {
     //if ( title )
-    DrawTitle( pDC, x + m_BorderLeftWidth , y, 
+    DrawTitle( pDC, x + m_BorderLeftWidth , y,
                w - m_BorderRightWidth - m_BorderLeftWidth + 1, state );
     DrawLeft( pDC, x, y, h, state );
-	//SKIN_SHANG 右边框
+    //SKIN_SHANG 右边框
     DrawRight( pDC, x + w - m_BorderRightWidth , y, h, state );
-    DrawBottom( pDC, x + m_BorderLeftWidth, 
-        y + h - m_BorderBottomHeight, w - m_BorderRightWidth - m_BorderLeftWidth, state );
+    DrawBottom( pDC, x + m_BorderLeftWidth,
+                y + h - m_BorderBottomHeight, w - m_BorderRightWidth - m_BorderLeftWidth, state );
     return TRUE;
 
 }
@@ -399,7 +384,7 @@ BOOL CSkinWin::InstallSkin(CWnd *wnd)
     style &= ~(WS_MINIMIZEBOX);
     style &= ~WS_MAXIMIZEBOX;
     style &= ~WS_SYSMENU;
-    
+
     DWORD nCaption = style & WS_CAPTION ;
     SetWindowLong( m_hWnd, GWL_STYLE, style );
 
@@ -410,11 +395,10 @@ LRESULT CSkinWin::WindowProc(UINT msg, WPARAM wp, LPARAM lp)
 {
     if ( !IsWindow(m_hWnd) )
         return 0;
-    if ( !m_bInit  ) 
+    if ( !m_bInit  )
         return Default();
-        
-    switch ( msg )
-    {
+
+    switch ( msg ) {
     case WM_SHOWWINDOW:
         //call setwindowpos to force OnNcCalcSize when hWnd is a dialog
         if ( wp )
@@ -422,13 +406,13 @@ LRESULT CSkinWin::WindowProc(UINT msg, WPARAM wp, LPARAM lp)
         Default();
         return 0;
         break;
-    //case WM_ERASEBKGND:
+        //case WM_ERASEBKGND:
     case WM_INITMENUPOPUP:
         Default();
         return 0;
-    //    return OnEraseBkgnd(CDC::FromHandle((HDC)wp) );
+        //    return OnEraseBkgnd(CDC::FromHandle((HDC)wp) );
         /*
-    case WM_INITMENU:
+            case WM_INITMENU:
         //a hack, when popup sysmenu, redraw title bar
         HMENU h;
         h = (HMENU)wp;
@@ -460,7 +444,7 @@ LRESULT CSkinWin::WindowProc(UINT msg, WPARAM wp, LPARAM lp)
         return 0;
     case WM_SIZE:
         OnSize( wp, LOWORD(lp), HIWORD(lp) );
-        return 0;    
+        return 0;
     case WM_NCACTIVATE:
         return OnNcActivate( (BOOL)wp );
     case WM_NCHITTEST:
@@ -471,9 +455,9 @@ LRESULT CSkinWin::WindowProc(UINT msg, WPARAM wp, LPARAM lp)
     case WM_NCLBUTTONDOWN:
         OnNcLButtonDown(wp, CPoint(LOWORD(lp), HIWORD(lp)));
         return 0;
-   /* case WM_NCLBUTTONDBLCLK:
-        OnNcLButtonDblClk(wp, CPoint(LOWORD(lp), HIWORD(lp)));
-        return 0;*///liub_modify （去除双击弹出面板的响应事件）
+        /* case WM_NCLBUTTONDBLCLK:
+             OnNcLButtonDblClk(wp, CPoint(LOWORD(lp), HIWORD(lp)));
+             return 0;*///liub_modify （去除双击弹出面板的响应事件）
     case WM_NCRBUTTONUP:
         OnNcRButtonUp(wp, CPoint(LOWORD(lp), HIWORD(lp)));
         return 0;
@@ -501,13 +485,13 @@ LRESULT CSkinWin::WindowProc(UINT msg, WPARAM wp, LPARAM lp)
         return 0;
 
 #if 1
-		// @@
-	case WM_SETCURSOR:
-		if (OnHitTestSetCursor(LOWORD(lp)))
-			OnNcPaint(0);
-		else
-			Default();
-		return 0;
+        // @@
+    case WM_SETCURSOR:
+        if (OnHitTestSetCursor(LOWORD(lp)))
+            OnNcPaint(0);
+        else
+            Default();
+        return 0;
 #endif
 
     default:
@@ -517,82 +501,66 @@ LRESULT CSkinWin::WindowProc(UINT msg, WPARAM wp, LPARAM lp)
 
 BOOL CSkinWin::OnHitTestSetCursor(UINT nHitTest)
 {
-	//TRACE("%d\n", nHitTest);
-	BOOL bHitTest = FALSE;
-	LPCTSTR lpCursor = NULL;
-	if (HTLEFT == nHitTest || HTRIGHT == nHitTest) {
-		bHitTest = TRUE;
-		lpCursor = IDC_SIZEWE;
-	}
-	else if (HTTOP == nHitTest || HTBOTTOM == nHitTest) {
-		bHitTest = TRUE;
-		lpCursor = IDC_SIZENS;
-	}
-	else if (HTTOPLEFT == nHitTest || HTBOTTOMRIGHT == nHitTest) {
-		bHitTest = TRUE;
-		lpCursor = IDC_SIZENWSE;
-	}
-	else if (HTTOPRIGHT == nHitTest || HTBOTTOMLEFT == nHitTest) {
-		bHitTest = TRUE;
-		lpCursor = IDC_SIZENESW;
-	}
-	else if (HTCLIENT == nHitTest) 
-	{
-	}
-	else if (HTCAPTION == nHitTest)
-	{
-	}
-	else if (HTSYSMENU == nHitTest)
-	{
-	}
-	else if (HTMINBUTTON == nHitTest)
-	{
-	}
-	else if (HTMAXBUTTON == nHitTest)
-	{
-	}
-	else if (HTCLOSE == nHitTest)
-	{
-	}
-	if (bHitTest) {
-		::SetCursor(AfxGetApp()->LoadStandardCursor(lpCursor));
-	}
-	
-	return bHitTest;
+    //TRACE("%d\n", nHitTest);
+    BOOL bHitTest = FALSE;
+    LPCTSTR lpCursor = NULL;
+    if (HTLEFT == nHitTest || HTRIGHT == nHitTest) {
+        bHitTest = TRUE;
+        lpCursor = IDC_SIZEWE;
+    } else if (HTTOP == nHitTest || HTBOTTOM == nHitTest) {
+        bHitTest = TRUE;
+        lpCursor = IDC_SIZENS;
+    } else if (HTTOPLEFT == nHitTest || HTBOTTOMRIGHT == nHitTest) {
+        bHitTest = TRUE;
+        lpCursor = IDC_SIZENWSE;
+    } else if (HTTOPRIGHT == nHitTest || HTBOTTOMLEFT == nHitTest) {
+        bHitTest = TRUE;
+        lpCursor = IDC_SIZENESW;
+    } else if (HTCLIENT == nHitTest) {
+    } else if (HTCAPTION == nHitTest) {
+    } else if (HTSYSMENU == nHitTest) {
+    } else if (HTMINBUTTON == nHitTest) {
+    } else if (HTMAXBUTTON == nHitTest) {
+    } else if (HTCLOSE == nHitTest) {
+    }
+    if (bHitTest) {
+        ::SetCursor(AfxGetApp()->LoadStandardCursor(lpCursor));
+    }
+
+    return bHitTest;
 }
 
 void CSkinWin::OnNcPaint(HRGN rgn1)
-{  
+{
     CWnd *pWnd = CWnd::FromHandle(m_hWnd);
     CDC * pDC = pWnd->GetWindowDC();
     CRect wr;
     pWnd->GetWindowRect( wr );
     //SKIN_SHANG 右边框
-	//wr.left+=m_BorderRightWidth;
+    //wr.left+=m_BorderRightWidth;
 
     DWORD style = GetWindowLong( m_hWnd, GWL_STYLE );
     DWORD nCaption = style & WS_CAPTION ;
-    if (nCaption == 0)
-	{
-		//wyw
-		pWnd->ReleaseDC(pDC);
+    if (nCaption == 0) {
+        //wyw
+        pWnd->ReleaseDC(pDC);
 
         return;
     }
 
-//f ( (DWORD)rgn) 
+//f ( (DWORD)rgn)
 //pDC->SelectClipRgn( CRgn::FromHandle(rgn) );
 
     //m_bActive = GetActiveWindow() == m_hWnd;
     int state = 0;
     if ( m_bActive)
         state = 0;
-    else 
-		state = 1;
-    
+    else
+        state = 1;
+
     pDC->ExcludeClipRect(0, 0, wr.Width(), m_TitleHeight );
-    DrawFrame(pDC, 0, 0, wr.Width(), wr.Height(), state, 0);    
-    pDC->SelectClipRgn( NULL ); 
+    DrawFrame(pDC, 0, 0, wr.Width(), wr.Height(), state, 0);
+    pDC->SelectClipRgn( NULL );
 
     CDC memDC, *pNewDC;
     CMyBitmap bmp;
@@ -601,48 +569,46 @@ void CSkinWin::OnNcPaint(HRGN rgn1)
     bmp.CreateCompatibleBitmap( pDC, wr.Width(), m_TitleHeight );
     obmp = memDC.SelectObject(&bmp);
     pNewDC = &memDC;
-    
-    DrawTitle( pNewDC, m_BorderLeftWidth , 0, 
+
+    DrawTitle( pNewDC, m_BorderLeftWidth , 0,
                wr.Width() - m_BorderRightWidth - m_BorderLeftWidth + 1, state );
     DrawLeft( pNewDC, 0, 0, m_bmpLeft.Height(), state );
-	//SKIN_SHANG 右边框
+    //SKIN_SHANG 右边框
     DrawRight( pNewDC, wr.Width() - m_BorderRightWidth , 0, m_bmpRight.Height(), state );
-    
+
     CRgn newrgn;
     newrgn.CreateRectRgn( 0, 0, wr.Width(), wr.Height());
 
-    if ( m_bTrans )
-	{
-		CRgn rgn;
-		rgn.CreateRectRgn( 0, m_TitleHeight, wr.Width(), wr.Height() );
-		
- 		HRGN hrgn = bmp.CreateRgnFromFile( m_colTrans );
-//wyw 防止内存增大 		
+    if ( m_bTrans ) {
+        CRgn rgn;
+        rgn.CreateRectRgn( 0, m_TitleHeight, wr.Width(), wr.Height() );
+
+        HRGN hrgn = bmp.CreateRgnFromFile( m_colTrans );
+//wyw 防止内存增大
 //		newrgn.CombineRgn( &rgn, CRgn::FromHandle(hrgn), RGN_XOR);
 
- 		pDC->SelectClipRgn( &newrgn ); 
- 		
- 		//wyw
- 		DeleteObject(hrgn);
-		rgn.DeleteObject();
-	}
-	else
-		SetWindowRgn(m_hWnd, newrgn, FALSE);
+        pDC->SelectClipRgn( &newrgn );
 
-    if (m_sysmenu){
-		if( m_downHitTest == HTCLOSE )
-			DrawButton( pNewDC, 0, 1 );
-		else if ( m_moveHitTest == HTCLOSE)
-			DrawButton( pNewDC, 0, 2 );
-		else
-			DrawButton( pNewDC, 0, 0 );
-	}
-	/*if ( m_downHitTest == HTMAXBUTTON )
+        //wyw
+        DeleteObject(hrgn);
+        rgn.DeleteObject();
+    } else
+        SetWindowRgn(m_hWnd, newrgn, FALSE);
+
+    if (m_sysmenu) {
+        if( m_downHitTest == HTCLOSE )
+            DrawButton( pNewDC, 0, 1 );
+        else if ( m_moveHitTest == HTCLOSE)
+            DrawButton( pNewDC, 0, 2 );
+        else
+            DrawButton( pNewDC, 0, 0 );
+    }
+    /*if ( m_downHitTest == HTMAXBUTTON )
         DrawButton( pNewDC, 1, 1 );
     else if ( m_moveHitTest == HTMAXBUTTON)
         DrawButton( pNewDC, 1, 2 );
     else
-        DrawButton( pNewDC, 1, 0 );  
+        DrawButton( pNewDC, 1, 0 );
 
     if ( m_downHitTest == HTMINBUTTON )
         DrawButton( pNewDC, 2, 1 );
@@ -650,46 +616,45 @@ void CSkinWin::OnNcPaint(HRGN rgn1)
         DrawButton( pNewDC, 2, 2 );
     else
         DrawButton( pNewDC, 2, 0 ); // liub_modify 去除弹出面板（去掉按钮）
-   if ( m_downHitTest == HTMINBUTTON )
+       if ( m_downHitTest == HTMINBUTTON )
         DrawButton( pNewDC, 2, 1 );
     else if ( m_moveHitTest == HTMINBUTTON)
         DrawButton( pNewDC, 2, 2 );
     else
         DrawButton( pNewDC, 2, 0 );    */
-	if ( m_downHitTest == HTMINBUTTON )
+    if ( m_downHitTest == HTMINBUTTON )
         DrawButton( pNewDC, 1, 1 );
     else if ( m_moveHitTest == HTMINBUTTON)
         DrawButton( pNewDC, 1, 2 );
     else
-        DrawButton( pNewDC, 1, 0 ); 
+        DrawButton( pNewDC, 1, 0 );
 
-          
+
 
     int cx = GetSystemMetrics(SM_CXSMICON);
     int cy = GetSystemMetrics(SM_CYSMICON);
     HICON hi = (HICON)SendMessage( m_hWnd, WM_GETICON, ICON_SMALL, 0);
-    if ( !hi )
-    {
+    if ( !hi ) {
 //#ifdef IDR_MAINFRAME
         hi = AfxGetApp()->LoadIcon(g_SetData.Main_szMainIcon);
 //#endif
     }
     //draw icon
 //     ::DrawIconEx( pNewDC->GetSafeHdc(), m_BorderLeftWidth, 5, (HICON)
-//         CopyImage( hi, IMAGE_ICON, 
+//         CopyImage( hi, IMAGE_ICON,
 //         cx, cy, 0), cx, cy, 0, 0, DI_NORMAL);
 
 #if 0 //wyw
-	//draw icon
-	::DrawIconEx( pNewDC->GetSafeHdc(), m_BorderLeftWidth, 5, (HICON)
-		CopyImage( hi, IMAGE_ICON, cx, cy, 0), cx, cy, 0, 0, DI_NORMAL);
+    //draw icon
+    ::DrawIconEx( pNewDC->GetSafeHdc(), m_BorderLeftWidth, 5, (HICON)
+                  CopyImage( hi, IMAGE_ICON, cx, cy, 0), cx, cy, 0, 0, DI_NORMAL);
 #else
-	if (NULL != hi) {
-		HICON hIcon = (HICON)CopyImage( hi, IMAGE_ICON, cx, cy, 0);
-		ASSERT(NULL != hIcon);
-		::DrawIconEx( pNewDC->GetSafeHdc(), m_BorderLeftWidth, 5, hIcon, cx, cy, 0, 0, DI_NORMAL);
-		DestroyIcon(hIcon);
-	}
+    if (NULL != hi) {
+        HICON hIcon = (HICON)CopyImage( hi, IMAGE_ICON, cx, cy, 0);
+        ASSERT(NULL != hIcon);
+        ::DrawIconEx( pNewDC->GetSafeHdc(), m_BorderLeftWidth, 5, hIcon, cx, cy, 0, 0, DI_NORMAL);
+        DestroyIcon(hIcon);
+    }
 #endif
 
     //draw text
@@ -706,76 +671,72 @@ void CSkinWin::OnNcPaint(HRGN rgn1)
     ofont = pNewDC->SelectObject(&font);
 
     pNewDC->SetBkMode(TRANSPARENT);
-    pNewDC->DrawText( m_title, CRect( m_textShift, m_textShiftVer, wr.Width() - m_bmpTitle.Width() + m_titleoff2, 
-        m_TitleHeight ), DT_SINGLELINE | DT_LEFT | DT_VCENTER | DT_WORD_ELLIPSIS  );
+    pNewDC->DrawText( m_title, CRect( m_textShift, m_textShiftVer, wr.Width() - m_bmpTitle.Width() + m_titleoff2,
+                                      m_TitleHeight ), DT_SINGLELINE | DT_LEFT | DT_VCENTER | DT_WORD_ELLIPSIS  );
 
     pNewDC->SelectObject(&font);
 
     pDC->BitBlt( 0, 0, wr.Width(),
-        m_TitleHeight, pNewDC, 0, 0, SRCCOPY );
+                 m_TitleHeight, pNewDC, 0, 0, SRCCOPY );
 
     pDC->SelectClipRgn(NULL);
 
-	//wyw
-	memDC.SelectObject(obmp);
+    //wyw
+    memDC.SelectObject(obmp);
 
-	#ifdef FEATURE_VERSION_ITELCO
-		if(m_pHookedWnd == AfxGetMainWnd())
-		{
-			pWnd = CWnd::FromHandle(m_hWnd);
-			pDC = pWnd->GetWindowDC();
-			CRect rtWnd,rtTitle;
-			pWnd->GetWindowRect(&rtWnd); 
-			CRect m_rtIcon;
-			rtTitle.left = GetSystemMetrics(SM_CXFRAME); 
-			rtTitle.top = GetSystemMetrics(SM_CYFRAME); 
-			//rtTitle.right = rtWnd.right - rtWnd.left - GetSystemMetrics(SM_CXFRAME); 
-			rtTitle.bottom = rtTitle.top + GetSystemMetrics(SM_CYSIZE); 
+#ifdef FEATURE_VERSION_ITELCO
+    if(m_pHookedWnd == AfxGetMainWnd()) {
+        pWnd = CWnd::FromHandle(m_hWnd);
+        pDC = pWnd->GetWindowDC();
+        CRect rtWnd,rtTitle;
+        pWnd->GetWindowRect(&rtWnd);
+        CRect m_rtIcon;
+        rtTitle.left = GetSystemMetrics(SM_CXFRAME);
+        rtTitle.top = GetSystemMetrics(SM_CYFRAME);
+        //rtTitle.right = rtWnd.right - rtWnd.left - GetSystemMetrics(SM_CXFRAME);
+        rtTitle.bottom = rtTitle.top + GetSystemMetrics(SM_CYSIZE);
 
-			m_rtIcon.left = rtTitle.left + 350;  
-			m_rtIcon.top = rtTitle.top - 1; 
-			//m_rtIcon.right = m_rtIcon.left + 323;   //323
-			//m_rtIcon.bottom = m_rtIcon.top + 20;    //25
+        m_rtIcon.left = rtTitle.left + 350;
+        m_rtIcon.top = rtTitle.top - 1;
+        //m_rtIcon.right = m_rtIcon.left + 323;   //323
+        //m_rtIcon.bottom = m_rtIcon.top + 20;    //25
 
-			HICON hLogInfo;
+        HICON hLogInfo;
 
-			hLogInfo = (HICON)::LoadImage(NULL,
-										  g_SetData.Main_szTitleLogoIcon, 
-										  IMAGE_ICON,
-										  248, 24, 
-										  LR_LOADFROMFILE|LR_DEFAULTCOLOR);
-			DWORD dword = GetLastError();
+        hLogInfo = (HICON)::LoadImage(NULL,
+                                      g_SetData.Main_szTitleLogoIcon,
+                                      IMAGE_ICON,
+                                      248, 24,
+                                      LR_LOADFROMFILE|LR_DEFAULTCOLOR);
+        DWORD dword = GetLastError();
 
-			//IDR_MAINFRAME  IDI_ICON_INFO
-			BOOL BRes = ::DrawIconEx(pDC->m_hDC, m_rtIcon.left, m_rtIcon.top,
-									 hLogInfo, 0,
-									 0, 0, NULL, DI_NORMAL); 
-			dword = GetLastError();
+        //IDR_MAINFRAME  IDI_ICON_INFO
+        BOOL BRes = ::DrawIconEx(pDC->m_hDC, m_rtIcon.left, m_rtIcon.top,
+                                 hLogInfo, 0,
+                                 0, 0, NULL, DI_NORMAL);
+        dword = GetLastError();
 
-		}
-	#endif
+    }
+#endif
 
-	//wyw
-	font.DeleteObject();
-	bmp.DeleteObject();
-	newrgn.DeleteObject();
-	memDC.DeleteDC();
-	pWnd->ReleaseDC(pDC);
+    //wyw
+    font.DeleteObject();
+    bmp.DeleteObject();
+    newrgn.DeleteObject();
+    memDC.DeleteDC();
+    pWnd->ReleaseDC(pDC);
 }
 
 void CSkinWin::OnNcCalcSize(BOOL bCalcValidRects, NCCALCSIZE_PARAMS *lpncsp)
 {
-    if ( bCalcValidRects )
-    {
+    if ( bCalcValidRects ) {
         lpncsp->rgrc[0].left = lpncsp->rgrc[0].left + m_BorderLeftWidth;
         lpncsp->rgrc[0].right = lpncsp->rgrc[0].right - m_BorderRightWidth;
         lpncsp->rgrc[0].top = lpncsp->rgrc[0].top + m_TitleHeight;
         lpncsp->rgrc[0].bottom = lpncsp->rgrc[0].bottom - m_BorderBottomHeight;
         lpncsp->rgrc[1] = lpncsp->rgrc[0];
 
-    }
-    else
-    {
+    } else {
         Default();
     }
 
@@ -783,7 +744,7 @@ void CSkinWin::OnNcCalcSize(BOOL bCalcValidRects, NCCALCSIZE_PARAMS *lpncsp)
 
 void CSkinWin::OnSizing(UINT nSide, LPRECT lpRect)
 {
-        //Default();
+    //Default();
     CWnd *pWnd = CWnd::FromHandle(m_hWnd);
     CRect wr(lpRect);
 
@@ -800,29 +761,27 @@ void CSkinWin::OnSize(UINT nType, int cx, int cy)
 {
     //Default();
     CWnd *pWnd = CWnd::FromHandle(m_hWnd);
-    CRect wr;    
+    CRect wr;
     Default();
     pWnd->GetWindowRect(wr);
     pWnd->Invalidate();
     OnNcPaint(0);
-    
+
 //     if ( m_bTrans )
 //         SetWindowRgn( m_hWnd, GetRegion(wr.Width(), wr.Height() ), TRUE );
 //     else
 //         SetWindowRgn( m_hWnd, NULL, TRUE );
 
-	if (m_bTrans) 
-	{
-		// The operating system does not make a copy of the region, 
-		// so do not make any further function calls with this region handle, 
-		// and do not close this region handle
-		HRGN hrgn = GetRegion(wr.Width(), wr.Height());
-		SetWindowRgn(m_hWnd, hrgn, TRUE);
-		
-		DeleteObject(hrgn);		//wyw
-	}
-	else
-		SetWindowRgn(m_hWnd, NULL, TRUE);
+    if (m_bTrans) {
+        // The operating system does not make a copy of the region,
+        // so do not make any further function calls with this region handle,
+        // and do not close this region handle
+        HRGN hrgn = GetRegion(wr.Width(), wr.Height());
+        SetWindowRgn(m_hWnd, hrgn, TRUE);
+
+        DeleteObject(hrgn);		//wyw
+    } else
+        SetWindowRgn(m_hWnd, NULL, TRUE);
 
 
 }
@@ -832,12 +791,11 @@ HRGN CSkinWin::GetRegion(int w, int h)
     CWnd *pWnd = CWnd::FromHandle(m_hWnd);
     CRect wr;
     pWnd->GetWindowRect(wr);
-	//SKIN_SHANG 右边框
-	//wr.left+=m_BorderRightWidth;
-    
+    //SKIN_SHANG 右边框
+    //wr.left+=m_BorderRightWidth;
+
     CRgn rgn;
-    if ( m_bTrans )
-    {
+    if ( m_bTrans ) {
         CDC *pDC = pWnd->GetDC();
         CDC memDC;
         CMyBitmap bmp;
@@ -849,16 +807,16 @@ HRGN CSkinWin::GetRegion(int w, int h)
         memDC.FillSolidRect( 0, 0, w, h, 0 );
         DrawFrame( &memDC, 0, 0, w, h, 0 );
         */
-        DrawTitle( &memDC, m_BorderLeftWidth , 0, 
+        DrawTitle( &memDC, m_BorderLeftWidth , 0,
                    wr.Width() - m_BorderRightWidth - m_BorderLeftWidth + 1, 0 );
         DrawLeft( &memDC, 0, 0, m_bmpLeft.Height(), 0 );
-		//SKIN_SHANG 右边框
+        //SKIN_SHANG 右边框
         DrawRight( &memDC, wr.Width() - m_BorderRightWidth , 0, m_bmpRight.Height(), 0 );
-        
+
         memDC.SelectObject(obmp);
 
-		//wyw
-		memDC.DeleteDC();
+        //wyw
+        memDC.DeleteDC();
 
         pWnd->ReleaseDC( pDC );
 
@@ -868,17 +826,16 @@ HRGN CSkinWin::GetRegion(int w, int h)
         newrgn.CreateRectRgn( 0, m_TitleHeight, wr.Width(), wr.Height() );
         newrgn.CombineRgn( &rgn, CRgn::FromHandle(hrgn), RGN_XOR  );
 
-		//wyw
-		bmp.DeleteObject();
-		DeleteObject(hrgn);
-		rgn.DeleteObject();
-        
+        //wyw
+        bmp.DeleteObject();
+        DeleteObject(hrgn);
+        rgn.DeleteObject();
+
         return (HRGN)newrgn.Detach();
-    }
-    else
+    } else
         rgn.CreateRectRgn( 0, 0, wr.Width(), wr.Height() );
-        
-    
+
+
     return (HRGN)rgn.Detach();
 }
 
@@ -887,11 +844,9 @@ BOOL CSkinWin::OnNcActivate(BOOL bActive)
 {
     m_bActive = bActive;
     OnNcPaint(0);
-    if ( !bActive )
-    {
+    if ( !bActive ) {
         return 1;
-    }
-    else
+    } else
         return 0;
 }
 
@@ -902,23 +857,22 @@ UINT CSkinWin::OnNcHitTest(CPoint point)
     CWnd *pWnd = CWnd::FromHandle(m_hWnd);
     CRect wr;
     pWnd->GetWindowRect(wr);
-    
+
     point.x -= wr.left;
     point.y -= wr.top;
 
-    if ( PtInRect( GetButtonRect(0), point ) )
-	{
-		if (m_sysmenu) {
-			return HTCLOSE;
-		}else{
-			return HTCAPTION;
-		}
-        
-	}
-   // if ( PtInRect( GetButtonRect(2), point ) && m_minable )
-       // return HTMINBUTTON;
-   /* if ( PtInRect( GetButtonRect(1), point ) && m_maxable )
-        return HTMAXBUTTON;*///liub_modify (纠正去除最大化按钮后最小化按钮的位置)
+    if ( PtInRect( GetButtonRect(0), point ) ) {
+        if (m_sysmenu) {
+            return HTCLOSE;
+        } else {
+            return HTCAPTION;
+        }
+
+    }
+    // if ( PtInRect( GetButtonRect(2), point ) && m_minable )
+    // return HTMINBUTTON;
+    /* if ( PtInRect( GetButtonRect(1), point ) && m_maxable )
+         return HTMAXBUTTON;*///liub_modify (纠正去除最大化按钮后最小化按钮的位置)
     if ( PtInRect( GetButtonRect(1), point ) && m_minable )
         return HTMINBUTTON;
 
@@ -954,8 +908,7 @@ UINT CSkinWin::OnNcHitTest(CPoint point)
         return HTTOP;
     //set to boder 5
     r = CRect( m_BorderLeftWidth, 5 , wr.Width()-m_BorderRightWidth, m_TitleHeight );
-    if ( PtInRect( r, point ) )
-	{
+    if ( PtInRect( r, point ) ) {
         /*
         if(m_pHookedWnd->IsKindOf( RUNTIME_CLASS( CTabDialog ))){
                 return HTCLIENT;
@@ -970,13 +923,11 @@ UINT CSkinWin::OnNcHitTest(CPoint point)
 
 void CSkinWin::OnNcLButtonDblClk(UINT nHitTest, CPoint point)
 {
-	if(m_pHookedWnd->IsKindOf( RUNTIME_CLASS( CTabDialog )))
-	{
-		 if(nHitTest == HTCAPTION)
+    if(m_pHookedWnd->IsKindOf( RUNTIME_CLASS( CTabDialog ))) {
+        if(nHitTest == HTCAPTION)
             nHitTest = HTCLIENT;
-	}
-    if ( nHitTest == HTCAPTION )   //&& m_sizable 
-    {
+    }
+    if ( nHitTest == HTCAPTION ) { //&& m_sizable
         if ( m_winstate == 1 )
             Restore();
         else
@@ -995,57 +946,49 @@ void CSkinWin::OnNcLButtonDown(UINT nHitTest, CPoint point)
     //OnNcPaint(0);
     //如果是子窗体，则全部为客户区
     if(m_pHookedWnd->IsKindOf( RUNTIME_CLASS( CTabDialog ))
-		||m_pHookedWnd->IsKindOf(RUNTIME_CLASS(CPopDlg)))
-	{
+            ||m_pHookedWnd->IsKindOf(RUNTIME_CLASS(CPopDlg))) {
         m_bDrag=FALSE;
         if(nHitTest == HTCAPTION)
             nHitTest = HTCLIENT;
-        
-    }
-	else
-	{
+
+    } else {
         if(nHitTest == HTCAPTION)
-        m_bDrag=TRUE;
+            m_bDrag=TRUE;
     }
-    
-    if ( nHitTest >= HTLEFT && nHitTest <= HTBOTTOMRIGHT || 
-        nHitTest == HTCAPTION  )  //&& m_winstate != 1   !IsZoomed(m_hWnd) )
-    {
-       Default();
-		OnNcPaint(0);
-    }
-    else if ( nHitTest == HTSYSMENU )
-    {
+
+    if ( nHitTest >= HTLEFT && nHitTest <= HTBOTTOMRIGHT ||
+            nHitTest == HTCAPTION  ) { //&& m_winstate != 1   !IsZoomed(m_hWnd) )
+        Default();
+        OnNcPaint(0);
+    } else if ( nHitTest == HTSYSMENU ) {
         PopupSysMenu(point);
         /*
         CWnd * pWnd = CWnd::FromHandle(m_hWnd);
         //a tricky hack
-        pWnd->ModifyStyle( 0, WS_SYSMENU | WS_MINIMIZEBOX | WS_MAXIMIZEBOX );            
+        pWnd->ModifyStyle( 0, WS_SYSMENU | WS_MINIMIZEBOX | WS_MAXIMIZEBOX );
         Default();
-        pWnd->ModifyStyle( WS_SYSMENU | WS_MINIMIZEBOX | WS_MAXIMIZEBOX, 0 );            
+        pWnd->ModifyStyle( WS_SYSMENU | WS_MINIMIZEBOX | WS_MAXIMIZEBOX, 0 );
         */
     }
-	OnNcPaint(0);
+    OnNcPaint(0);
 
 }
 
 void CSkinWin::OnNcLButtonUp(UINT nHitTest, CPoint point)
 {
 
-    if ( nHitTest == HTCLOSE )
-    {
+    if ( nHitTest == HTCLOSE ) {
         SendMessage(m_hWnd, WM_CLOSE, 0, 0);
         return;
-    }
-    else if ( nHitTest == HTMINBUTTON )
+    } else if ( nHitTest == HTMINBUTTON )
         Minimize();
-   /* else if ( nHitTest == HTMAXBUTTON )
-    {
-        if ( m_winstate == 1 ) // IsZoomed(m_hWnd) )
-            Restore(); //ShowWindow(m_hWnd, SW_RESTORE);
-        else
-            Maximize(); //ShowWindow(m_hWnd, SW_MAXIMIZE);
-    }*/
+    /* else if ( nHitTest == HTMAXBUTTON )
+     {
+         if ( m_winstate == 1 ) // IsZoomed(m_hWnd) )
+             Restore(); //ShowWindow(m_hWnd, SW_RESTORE);
+         else
+             Maximize(); //ShowWindow(m_hWnd, SW_MAXIMIZE);
+     }*/
     else
         return;
     m_downHitTest = 0;
@@ -1055,14 +998,13 @@ void CSkinWin::OnNcLButtonUp(UINT nHitTest, CPoint point)
 
 void CSkinWin::OnNcMouseMove(UINT nHitTest, CPoint point)
 {
-    if ( nHitTest >= HTLEFT && nHitTest <= HTBOTTOMRIGHT || 
-         nHitTest == HTCAPTION  &&m_winstate != 1  ) //!IsZoomed(m_hWnd) )
+    if ( nHitTest >= HTLEFT && nHitTest <= HTBOTTOMRIGHT ||
+            nHitTest == HTCAPTION  &&m_winstate != 1  ) //!IsZoomed(m_hWnd) )
         Default();
-    
+
     m_moveHitTest = nHitTest;
     m_downHitTest = 0;
-    if ( m_oldHitTest != nHitTest )
-    {
+    if ( m_oldHitTest != nHitTest ) {
         /*
         CRect r;
         r = GetButtonRect(0);
@@ -1074,18 +1016,17 @@ void CSkinWin::OnNcMouseMove(UINT nHitTest, CPoint point)
         OnNcPaint(0);
         m_oldHitTest = nHitTest;
     }
-    
+
 }
 
 void CSkinWin::OnNcRButtonDown(UINT nHitTest, CPoint point)
 {
-    if ( nHitTest == HTCAPTION )
-    {
+    if ( nHitTest == HTCAPTION ) {
         /*
         CWnd * pWnd = CWnd::FromHandle(m_hWnd);
-        pWnd->ModifyStyle( 0, WS_SYSMENU | WS_MINIMIZEBOX | WS_MAXIMIZEBOX );            
+        pWnd->ModifyStyle( 0, WS_SYSMENU | WS_MINIMIZEBOX | WS_MAXIMIZEBOX );
         Default();
-        pWnd->ModifyStyle( WS_SYSMENU | WS_MINIMIZEBOX | WS_MAXIMIZEBOX, 0 );            
+        pWnd->ModifyStyle( WS_SYSMENU | WS_MINIMIZEBOX | WS_MAXIMIZEBOX, 0 );
         */
         PopupSysMenu(point);
     }
@@ -1103,33 +1044,27 @@ CRect CSkinWin::GetButtonRect(int i)
     pWnd->GetWindowRect(wr);
 
     CRect r;
-    if ( i == 0 && m_bmpCloseBtn.GetSafeHandle() )
-    {
+    if ( i == 0 && m_bmpCloseBtn.GetSafeHandle() ) {
         //close
         r = m_rectCloseBtn;
         r.left = wr.Width() - m_rectCloseBtn.right;
         r.right = wr.Width() - m_rectCloseBtn.left;
     }
-    if ( i == 2 && m_bmpMaxBtn.GetSafeHandle())
-    {
+    if ( i == 2 && m_bmpMaxBtn.GetSafeHandle()) {
         //max
-        
-        if ( m_winstate != 1 || !m_bmpRestoreBtn.GetSafeHandle() )
-        {
+
+        if ( m_winstate != 1 || !m_bmpRestoreBtn.GetSafeHandle() ) {
             r = m_rectMaxBtn;
             r.left = wr.Width() - m_rectMaxBtn.right;
             r.right = wr.Width() - m_rectMaxBtn.left;
-        }
-        else
-        {
+        } else {
             r = m_rectRestoreBtn;
             r.left = wr.Width() - m_rectRestoreBtn.right;
             r.right = wr.Width() - m_rectRestoreBtn.left;
         }
-            
+
     }
-    if ( i == 1/*2*/ && m_bmpMinBtn.GetSafeHandle())//modify by liu 修正最小化按钮鼠标进入的闪烁错误
-    {
+    if ( i == 1/*2*/ && m_bmpMinBtn.GetSafeHandle()) { //modify by liu 修正最小化按钮鼠标进入的闪烁错误
         //min
         r = m_rectMinBtn;
         r.left = wr.Width() - m_rectMinBtn.right;
@@ -1142,52 +1077,48 @@ CRect CSkinWin::GetButtonRect(int i)
 
 BOOL CSkinWin::DrawButton( CDC * pDC, int i, int state)
 {
-    if ( i == 0 )
-    {
-        if ( m_bmpCloseBtn.GetSafeHandle() )
-        {
+    if ( i == 0 ) {
+        if ( m_bmpCloseBtn.GetSafeHandle() ) {
             CRect r = GetButtonRect(0);
-            m_bmpCloseBtn.Draw( pDC, r.left, r.top, 
-                CRect( state * r.Width(), 0, (state + 1 ) * r.Width(), m_bmpCloseBtn.Height() ), m_colTrans, m_bTrans );
+            m_bmpCloseBtn.Draw( pDC, r.left, r.top,
+                                CRect( state * r.Width(), 0, (state + 1 ) * r.Width(), m_bmpCloseBtn.Height() ), m_colTrans, m_bTrans );
         }
     }
-    if ( i == 1 )
-    {
-       /* CRect r = GetButtonRect(1);
-        if ( m_maxable && m_bmpMaxBtn.GetSafeHandle() )
-            if ( m_winstate == 1&& m_bmpRestoreBtn.GetSafeHandle() )
-                m_bmpRestoreBtn.Draw( pDC, r.left, r.top, 
-                    CRect( state * r.Width(), 0, (state + 1 ) * r.Width(), m_bmpCloseBtn.Height() ), m_colTrans, m_bTrans );
-            else
-                m_bmpMaxBtn.Draw( pDC, r.left, r.top, 
-                    CRect( state * r.Width(), 0, (state + 1 ) * r.Width(), m_bmpCloseBtn.Height() ) , m_colTrans, m_bTrans);
-    }
-    if ( i == 2 )
-    {*///liub_modify
-        if ( m_minable && m_bmpMinBtn.GetSafeHandle() )
-        {
+    if ( i == 1 ) {
+        /* CRect r = GetButtonRect(1);
+         if ( m_maxable && m_bmpMaxBtn.GetSafeHandle() )
+             if ( m_winstate == 1&& m_bmpRestoreBtn.GetSafeHandle() )
+                 m_bmpRestoreBtn.Draw( pDC, r.left, r.top,
+                     CRect( state * r.Width(), 0, (state + 1 ) * r.Width(), m_bmpCloseBtn.Height() ), m_colTrans, m_bTrans );
+             else
+                 m_bmpMaxBtn.Draw( pDC, r.left, r.top,
+                     CRect( state * r.Width(), 0, (state + 1 ) * r.Width(), m_bmpCloseBtn.Height() ) , m_colTrans, m_bTrans);
+            }
+            if ( i == 2 )
+            {*///liub_modify
+        if ( m_minable && m_bmpMinBtn.GetSafeHandle() ) {
             CRect r = GetButtonRect(1);
-           // CRect r = GetButtonRect(2);
-            m_bmpMinBtn.Draw( pDC, r.left, r.top, 
-                CRect( state * r.Width(), 0, (state + 1 ) * r.Width(), m_bmpCloseBtn.Height() ) , m_colTrans, m_bTrans);
+            // CRect r = GetButtonRect(2);
+            m_bmpMinBtn.Draw( pDC, r.left, r.top,
+                              CRect( state * r.Width(), 0, (state + 1 ) * r.Width(), m_bmpCloseBtn.Height() ) , m_colTrans, m_bTrans);
 
         }
     }
     return TRUE;
-    
+
 }
 
 void CSkinWin::OnGetMinMaxInfo(MINMAXINFO *lpMMI)
 {
     lpMMI->ptMinTrackSize = CPoint( m_bmpTitle.Width() + m_bmpLeft.Width() +
-        m_bmpRight.Width(),  m_bmpLeft.Height() + 20 );
-	
-	/*
-	lpMMI->ptMinTrackSize.x = 638;
-	lpMMI->ptMinTrackSize.y = 148;
-	lpMMI->ptMaxTrackSize.x = 638;
-	lpMMI->ptMaxTrackSize.y = 458;
-	*/
+                                    m_bmpRight.Width(),  m_bmpLeft.Height() + 20 );
+
+    /*
+    lpMMI->ptMinTrackSize.x = 638;
+    lpMMI->ptMinTrackSize.y = 148;
+    lpMMI->ptMaxTrackSize.x = 638;
+    lpMMI->ptMaxTrackSize.y = 458;
+    */
 
 }
 
@@ -1199,20 +1130,17 @@ void CSkinWin::OnWindowPosChanging(WINDOWPOS *lpwndpos)
 
 BOOL CSkinWin::OnEraseBkgnd(CDC *pDC)
 {
-    if ( m_bmpDlg.GetSafeHandle() )
-    {
+    if ( m_bmpDlg.GetSafeHandle() ) {
         CRect r;
         GetClientRect( m_hWnd, r);
         for ( int i = 0; i < r.Width()/m_bmpDlg.Width() + 1; i++ )
-            for ( int j = 0; j < r.Height()/m_bmpDlg.Height() + 1; j++ )
-            {
+            for ( int j = 0; j < r.Height()/m_bmpDlg.Height() + 1; j++ ) {
                 m_bmpDlg.Draw( pDC, CRect( i *  m_bmpDlg.Width(), j * m_bmpDlg.Height(),
-                    i *  m_bmpDlg.Width() + m_bmpDlg.Width(), j * m_bmpDlg.Height() + m_bmpDlg.Height() ) );
+                                           i *  m_bmpDlg.Width() + m_bmpDlg.Width(), j * m_bmpDlg.Height() + m_bmpDlg.Height() ) );
             }
 
         return TRUE;
-    }
-    else
+    } else
         return FALSE;
 }
 
@@ -1220,7 +1148,7 @@ CRect CSkinWin::GetMaximizeRect()
 {
     CRect r;
     SystemParametersInfo(SPI_GETWORKAREA, 0, r, 0);
-    
+
     return r;
 }
 
@@ -1228,8 +1156,8 @@ BOOL CSkinWin::Maximize()
 {
     //CRect r = GetMaximizeRect();
     //GetWindowRect( m_hWnd, m_rectRestoreWin );
-	CWnd*  hWnd = AfxGetMainWnd();
-	hWnd->SendMessage(WM_WINDOWS_MAX,0,0);
+    CWnd*  hWnd = AfxGetMainWnd();
+    hWnd->SendMessage(WM_WINDOWS_MAX,0,0);
     m_winstate = 1;
     //::MoveWindow( m_hWnd, r.left, r.top, r.Width(), r.Height(), TRUE  );
     //UpdateWindow( m_hWnd );
@@ -1246,21 +1174,20 @@ BOOL CSkinWin::Minimize()
 
 BOOL CSkinWin::Restore()
 {
-    if ( m_winstate == 1 )
-    {
-		CWnd*  hWnd = AfxGetMainWnd();
-		hWnd->SendMessage(WM_WINDOWS_RESTORE,0,0);
-       
+    if ( m_winstate == 1 ) {
+        CWnd*  hWnd = AfxGetMainWnd();
+        hWnd->SendMessage(WM_WINDOWS_RESTORE,0,0);
+
         m_winstate = 0;
-		/*
-		 ::MoveWindow( m_hWnd, m_rectRestoreWin.left, m_rectRestoreWin.top,
+        /*
+         ::MoveWindow( m_hWnd, m_rectRestoreWin.left, m_rectRestoreWin.top,
             m_rectRestoreWin.Width(), m_rectRestoreWin.Height(), TRUE  );
         UpdateWindow( m_hWnd );
-		*/
-		return TRUE;
+        */
+        return TRUE;
     }
-	return FALSE;
-    
+    return FALSE;
+
 }
 
 //void OnActivate(UINT nState,CWnd* pWndOther, BOOL bMinimized );
@@ -1284,79 +1211,61 @@ LRESULT CSkinWin::OnSetText(WPARAM wp, LPARAM lp)
 
 void CSkinWin::OnSysCommand(UINT nID, LPARAM lParam)
 {
-    if ( nID == SC_MAXIMIZE )
-	{
+    if ( nID == SC_MAXIMIZE ) {
         Maximize();
-	}
-    else if ( nID == SC_RESTORE && m_winstate == 1 )
-	{
+    } else if ( nID == SC_RESTORE && m_winstate == 1 ) {
         Restore();
-	}
-    else if ( nID == SC_RESTORE && m_winstate == 2 )
-    {
+    } else if ( nID == SC_RESTORE && m_winstate == 2 ) {
         ShowWindow( m_hWnd, SW_RESTORE );
         m_winstate = m_oldwinstate;
         OnNcPaint(0);
-    }
-	else if(nID == SC_MINIMIZE)
-	{
-		Minimize();
-	}
-    else 
+    } else if(nID == SC_MINIMIZE) {
+        Minimize();
+    } else
         Default();
-	OnNcPaint(0);
+    OnNcPaint(0);
 }
 
 BOOL CSkinWin::PopupSysMenu(CPoint point)
 {
     CWnd * pWnd = CWnd::FromHandle(m_hWnd);
     CMenu SysMenu;
-    HMENU HTest;  
+    HMENU HTest;
     HTest = GetSystemMenu(m_hWnd, FALSE) ;
-    if ( ! HTest )
-	{
+    if ( ! HTest ) {
         return FALSE;
     }
     SysMenu.Attach( GetSystemMenu(m_hWnd, FALSE) );
 //  when gray menuitem, a strange line appears!!
-  
-    try
-    {
+
+    try {
 #if 0
-		SysMenu.EnableMenuItem( SC_SIZE, MF_BYCOMMAND|MF_DISABLED|MF_GRAYED );
-        if ( m_winstate == 0 )
-        {
+        SysMenu.EnableMenuItem( SC_SIZE, MF_BYCOMMAND|MF_DISABLED|MF_GRAYED );
+        if ( m_winstate == 0 ) {
             SysMenu.EnableMenuItem( SC_MINIMIZE, MF_BYCOMMAND|MF_ENABLED );
             SysMenu.EnableMenuItem( SC_MAXIMIZE, MF_BYCOMMAND|MF_ENABLED );
             SysMenu.EnableMenuItem( SC_RESTORE, MF_BYCOMMAND|MF_DISABLED|MF_GRAYED );
-        }    
-        else if ( m_winstate == 1 )
-        {
+        } else if ( m_winstate == 1 ) {
             SysMenu.EnableMenuItem( SC_MAXIMIZE, MF_BYCOMMAND|MF_DISABLED|MF_GRAYED );
             SysMenu.EnableMenuItem( SC_RESTORE, MF_BYCOMMAND|MF_ENABLED );
-        }
-        else if ( m_winstate == 2 )
-        {
+        } else if ( m_winstate == 2 ) {
             SysMenu.EnableMenuItem( SC_MINIMIZE, MF_BYCOMMAND|MF_DISABLED|MF_GRAYED );
             SysMenu.EnableMenuItem( SC_RESTORE, MF_BYCOMMAND|MF_ENABLED );
         }
-        
-        if (!m_minable) 
-        {
+
+        if (!m_minable) {
             SysMenu.EnableMenuItem( SC_MINIMIZE, MF_BYCOMMAND|MF_DISABLED|MF_GRAYED);
         }
-        
-        if (!m_maxable) 
-        {
+
+        if (!m_maxable) {
             SysMenu.EnableMenuItem( SC_MAXIMIZE, MF_BYCOMMAND|MF_DISABLED|MF_GRAYED);
         }
-#endif            
-        SysMenu.TrackPopupMenu( 0, point.x, point.y, pWnd  );        
+#endif
+        SysMenu.TrackPopupMenu( 0, point.x, point.y, pWnd  );
         SysMenu.Detach();
     }
 
-    catch (...) 
-    {
+    catch (...) {
 
     }
     OnNcPaint(0);
@@ -1366,14 +1275,12 @@ BOOL CSkinWin::PopupSysMenu(CPoint point)
 BOOL CSkinWin::HandleSysCommand(WPARAM wp, LPARAM lp)
 {
     int i;
-    if ( lp == 0 )
-    {
+    if ( lp == 0 ) {
         CMenu SysMenu;
         BOOL bBack = SysMenu.Attach( GetSystemMenu(m_hWnd, FALSE) );
-		if (!bBack)
-		{
-			return FALSE;
-		}
+        if (!bBack) {
+            return FALSE;
+        }
         int count = SysMenu.GetMenuItemCount();
         for( i = 0; i < count ; i++ )
             if ( SysMenu.GetMenuItemID(i) == wp )
@@ -1387,14 +1294,12 @@ BOOL CSkinWin::HandleSysCommand(WPARAM wp, LPARAM lp)
             Minimize();
         else if ( wp == SC_RESTORE && m_winstate == 1 )
             Restore();
-        else if ( wp == SC_RESTORE && m_winstate == 2 )
-        {
+        else if ( wp == SC_RESTORE && m_winstate == 2 ) {
             ShowWindow( m_hWnd, SW_RESTORE );
             m_winstate = m_oldwinstate;
-        }
-        else 
+        } else
             SendMessage( m_hWnd, WM_SYSCOMMAND, wp, lp );
-		OnNcPaint(0);
+        OnNcPaint(0);
         return TRUE;
     }
 

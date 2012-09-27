@@ -24,9 +24,9 @@
 // --------------------------------------------------------------------------
 // Unique identifiers for DMSGetDeviceRevIdMsg types
 // --------------------------------------------------------------------------
-static const uint32 DMSGetDeviceRevIdReqUID = 
+static const uint32 DMSGetDeviceRevIdReqUID =
     (QMUX_TYPE_DMS << 24 | QMI_CTL_FLAG_TYPE_CMD << 16 | QMI_DMS_GET_DEVICE_REV_ID_MSG);
-static const uint32 DMSGetDeviceRevIdRspUID = 
+static const uint32 DMSGetDeviceRevIdRspUID =
     (QMUX_TYPE_DMS << 24 | QMI_CTL_FLAG_TYPE_RSP << 16 | QMI_DMS_GET_DEVICE_REV_ID_MSG);
 
 // --------------------------------------------------------------------------
@@ -54,7 +54,9 @@ public:
 protected:
     DMSGetDeviceRevIdReq();
     virtual bool BuildMsgBuf();
-    virtual bool Unpack(MsgBuf& msgBuf) { return false; }
+    virtual bool Unpack(MsgBuf& msgBuf) {
+        return false;
+    }
 };
 
 
@@ -62,7 +64,7 @@ protected:
 // DMSGetDeviceRevIdRsp
 //
 /// This class represents a QMI_DMS_GET_DEVICE_REV_ID_RESP message which is the
-/// response to a request for the the device firmware revision ID. 
+/// response to a request for the the device firmware revision ID.
 // --------------------------------------------------------------------------
 
 class DMSGetDeviceRevIdRsp : public Message
@@ -76,15 +78,25 @@ public:
 
     virtual void Print(std::ostream& stream);
 
-    uint16 GetResult() { return m_result; }
-    uint16 GetError() { return m_error; }
+    uint16 GetResult() {
+        return m_result;
+    }
+    uint16 GetError() {
+        return m_error;
+    }
 
-    std::string GetDeviceRevId() { return m_deviceRevId; }
+    std::string GetDeviceRevId() {
+        return m_deviceRevId;
+    }
 
 protected:
     DMSGetDeviceRevIdRsp();
-    virtual bool Build(std::string& nameValue) { return false; }
-    virtual bool BuildMsgBuf() { return false; }
+    virtual bool Build(std::string& nameValue) {
+        return false;
+    }
+    virtual bool BuildMsgBuf() {
+        return false;
+    }
     virtual bool Unpack(MsgBuf& msgBuf);
     virtual Uint8UnpackerMap& GetUnpackerMap();
     virtual bool UnpackResultCode(MsgBuf& msgBuf);

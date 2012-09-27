@@ -44,7 +44,9 @@ public:
 
     bool OpenService(std::string& deviceName);
     bool CloseService();
-    bool IsOpen() { return m_isOpen; }
+    bool IsOpen() {
+        return m_isOpen;
+    }
     bool SendMsgBuf(MsgBuf& msgBuf);
 
 private:

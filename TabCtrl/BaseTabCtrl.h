@@ -10,8 +10,7 @@
 /////////////////////////////////////////////////////////////////////////////
 // CBaseTabCtrl window
 
-enum
-{
+enum {
     BTC_NONE = 0,
     BTC_TABS = 1,
     BTC_ALL = 2,
@@ -41,7 +40,7 @@ public:
     // Generated message map functions
 protected:
     //{{AFX_MSG(CBaseTabCtrl)
-        // NOTE - the ClassWizard will add and remove member functions here.
+    // NOTE - the ClassWizard will add and remove member functions here.
     //}}AFX_MSG
     afx_msg BOOL OnEraseBkgnd(CDC* pDC);
     afx_msg void OnPaint();

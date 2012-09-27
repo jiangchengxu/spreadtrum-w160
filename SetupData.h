@@ -34,11 +34,11 @@ CString PWDXOR(const char* strData);
 TCHAR *strrrc(TCHAR *str, TCHAR c);
 char *strrrcA(char *str, char c);
 
-class CSetupData  
+class CSetupData
 {
 public:
-	CSetupData();
-	virtual ~CSetupData();
+    CSetupData();
+    virtual ~CSetupData();
 
 };
 

@@ -17,7 +17,7 @@ static char THIS_FILE[] = __FILE__;
 
 CNumEdit::CNumEdit()
 {
-	m_bFlag = false;
+    m_bFlag = false;
 }
 
 CNumEdit::~CNumEdit()
@@ -34,18 +34,15 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // CNumEdit message handlers
 
-void CNumEdit::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags) 
+void CNumEdit::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
     BOOL bIsValid;
 
-	/* m_bFlag为true表示打电话模块的调用, false表示发短信模块的调用 */
-    if(m_bFlag)
-	{
-	   bIsValid = IsValidCallNumChar(nChar);
-	}
-    else
-    {
-       bIsValid = IsValidSmsNumChar(nChar);
+    /* m_bFlag为true表示打电话模块的调用, false表示发短信模块的调用 */
+    if(m_bFlag) {
+        bIsValid = IsValidCallNumChar(nChar);
+    } else {
+        bIsValid = IsValidSmsNumChar(nChar);
     }
 
     if(bIsValid)

@@ -4,12 +4,12 @@
 #include "SplashScreenEx.h"
 
 #ifndef AW_HIDE
-    #define AW_HIDE 0x00010000
-    #define AW_BLEND 0x00080000
+#define AW_HIDE 0x00010000
+#define AW_BLEND 0x00080000
 #endif
 
 #ifndef CS_DROPSHADOW
-    #define CS_DROPSHADOW   0x00020000
+#define CS_DROPSHADOW   0x00020000
 #endif
 
 // CSplashScreenEx
@@ -47,7 +47,7 @@ BOOL CSplashScreenEx::Create(CWnd *pWndParent,LPCTSTR szText,DWORD dwTimeout,DWO
 {
     ASSERT(pWndParent!=NULL);
     m_pWndParent = pWndParent;
-    
+
     if (szText!=NULL)
         m_strText = szText;
     else
@@ -55,8 +55,8 @@ BOOL CSplashScreenEx::Create(CWnd *pWndParent,LPCTSTR szText,DWORD dwTimeout,DWO
 
     m_dwTimeout = dwTimeout;
     m_dwStyle = dwStyle;
-    
-    WNDCLASSEX wcx; 
+
+    WNDCLASSEX wcx;
 
     wcx.cbSize = sizeof(wcx);
     wcx.lpfnWndProc = AfxWndProc;
@@ -75,17 +75,14 @@ BOOL CSplashScreenEx::Create(CWnd *pWndParent,LPCTSTR szText,DWORD dwTimeout,DWO
         wcx.style|=CS_DROPSHADOW;
 
     ATOM classAtom = RegisterClassEx(&wcx);
-      
+
     // didn't work? try not using dropshadow (may not be supported)
 
-    if (classAtom==NULL)
-    {
-        if (m_dwStyle & CSS_SHADOW)
-        {
+    if (classAtom==NULL) {
+        if (m_dwStyle & CSS_SHADOW) {
             wcx.style &= ~CS_DROPSHADOW;
             classAtom = RegisterClassEx(&wcx);
-        }
-        else
+        } else
             return FALSE;
     }
 
@@ -102,19 +99,16 @@ BOOL CSplashScreenEx::SetBitmap(UINT nBitmapID,short red,short green,short blue)
     m_bitmap.DeleteObject();
     if (!m_bitmap.LoadBitmap(nBitmapID))
         return FALSE;
-    
+
     GetObject(m_bitmap.GetSafeHandle(), sizeof(bm), &bm);
     m_nBitmapWidth=bm.bmWidth;
     m_nBitmapHeight=bm.bmHeight;
     m_rcText.SetRect(0,0,bm.bmWidth,bm.bmHeight);
-    
-    if (m_dwStyle & CSS_CENTERSCREEN)
-    {
+
+    if (m_dwStyle & CSS_CENTERSCREEN) {
         m_nxPos=(GetSystemMetrics(SM_CXFULLSCREEN)-bm.bmWidth)/2;
         m_nyPos=(GetSystemMetrics(SM_CYFULLSCREEN)-bm.bmHeight)/2;
-    }
-    else if (m_dwStyle & CSS_CENTERAPP)
-    {
+    } else if (m_dwStyle & CSS_CENTERAPP) {
         CRect rcParentWindow;
         ASSERT(m_pWndParent!=NULL);
         m_pWndParent->GetWindowRect(&rcParentWindow);
@@ -122,8 +116,7 @@ BOOL CSplashScreenEx::SetBitmap(UINT nBitmapID,short red,short green,short blue)
         m_nyPos=rcParentWindow.top+(rcParentWindow.bottom-rcParentWindow.top-bm.bmHeight)/2;
     }
 
-    if (red!=-1 && green!=-1 && blue!=-1)
-    {
+    if (red!=-1 && green!=-1 && blue!=-1) {
         m_hRegion=CreateRgnFromBitmap((HBITMAP)m_bitmap.GetSafeHandle(),RGB(red,green,blue));
         SetWindowRgn(m_hRegion, TRUE);
     }
@@ -142,19 +135,16 @@ BOOL CSplashScreenEx::SetBitmap(LPCTSTR szFileName,short red,short green,short b
 
     m_bitmap.DeleteObject();
     m_bitmap.Attach(hBmp);
-    
+
     GetObject(m_bitmap.GetSafeHandle(), sizeof(bm), &bm);
     m_nBitmapWidth=bm.bmWidth;
     m_nBitmapHeight=bm.bmHeight;
     m_rcText.SetRect(0,0,bm.bmWidth,bm.bmHeight);
-    
-    if (m_dwStyle & CSS_CENTERSCREEN)
-    {
+
+    if (m_dwStyle & CSS_CENTERSCREEN) {
         m_nxPos=(GetSystemMetrics(SM_CXFULLSCREEN)-bm.bmWidth)/2;
         m_nyPos=(GetSystemMetrics(SM_CYFULLSCREEN)-bm.bmHeight)/2;
-    }
-    else if (m_dwStyle & CSS_CENTERAPP)
-    {
+    } else if (m_dwStyle & CSS_CENTERAPP) {
         CRect rcParentWindow;
         ASSERT(m_pWndParent!=NULL);
         m_pWndParent->GetWindowRect(&rcParentWindow);
@@ -162,8 +152,7 @@ BOOL CSplashScreenEx::SetBitmap(LPCTSTR szFileName,short red,short green,short b
         m_nyPos=rcParentWindow.top+(rcParentWindow.bottom-rcParentWindow.top-bm.bmHeight)/2;
     }
 
-    if (red!=-1 && green!=-1 && blue!=-1)
-    {
+    if (red!=-1 && green!=-1 && blue!=-1) {
         m_hRegion=CreateRgnFromBitmap((HBITMAP)m_bitmap.GetSafeHandle(),RGB(red,green,blue));
         SetWindowRgn(m_hRegion,TRUE);
     }
@@ -177,17 +166,17 @@ void CSplashScreenEx::SetTextFont(LPCTSTR szFont,int nSize,int nStyle)
     m_myFont.DeleteObject();
     m_myFont.CreatePointFont(nSize,szFont);
     m_myFont.GetLogFont(&lf);
-    
+
     if (nStyle & CSS_TEXT_BOLD)
         lf.lfWeight = FW_BOLD;
     else
         lf.lfWeight = FW_NORMAL;
-    
+
     if (nStyle & CSS_TEXT_ITALIC)
         lf.lfItalic=TRUE;
     else
         lf.lfItalic=FALSE;
-    
+
     if (nStyle & CSS_TEXT_UNDERLINE)
         lf.lfUnderline=TRUE;
     else
@@ -233,13 +222,11 @@ void CSplashScreenEx::Show()
 {
     SetWindowPos(NULL,m_nxPos,m_nyPos,m_nBitmapWidth,m_nBitmapHeight,SWP_NOOWNERZORDER | SWP_NOZORDER | SWP_NOACTIVATE);
 
-    if ((m_dwStyle & CSS_FADEIN) && (m_fnAnimateWindow!=NULL))
-    {
+    if ((m_dwStyle & CSS_FADEIN) && (m_fnAnimateWindow!=NULL)) {
         m_fnAnimateWindow(m_hWnd,500,AW_BLEND);
-    }
-    else
+    } else
         ShowWindow(SW_SHOW);
-    
+
     if (m_dwTimeout!=0)
         SetTimer(0,m_dwTimeout,NULL);
 }
@@ -270,7 +257,7 @@ HRGN CSplashScreenEx::CreateRgnFromBitmap(HBITMAP hBmp, COLORREF color)
     const DWORD RDHDR = sizeof(RGNDATAHEADER);
     const DWORD MAXBUF = 40;        // size of one block in RECTs
     // (i.e. MAXBUF*sizeof(RECT) in bytes)
-    LPRECT    pRects;                                
+    LPRECT    pRects;
     DWORD    cBlocks = 0;            // number of allocated blocks
 
     INT        i, j;                    // current position in mask image
@@ -287,55 +274,54 @@ HRGN CSplashScreenEx::CreateRgnFromBitmap(HBITMAP hBmp, COLORREF color)
     pRgnData->iType        = RDH_RECTANGLES;
     pRgnData->nCount    = 0;
     for ( i = 0; i < bm.bmHeight; i++ )
-        for ( j = 0; j < bm.bmWidth; j++ ){
+        for ( j = 0; j < bm.bmWidth; j++ ) {
             // get color
             ismask=(dcBmp.GetPixel(j,bm.bmHeight-i-1)!=color);
             // place part of scan line as RECT region if transparent color found after mask color or
             // mask color found at the end of mask image
-            if (wasfirst && ((ismask && (j==(bm.bmWidth-1)))||(ismask ^ (j<bm.bmWidth)))){
+            if (wasfirst && ((ismask && (j==(bm.bmWidth-1)))||(ismask ^ (j<bm.bmWidth)))) {
                 // get offset to RECT array if RGNDATA buffer
                 pRects = (LPRECT)((LPBYTE)pRgnData + RDHDR);
                 // save current RECT
                 pRects[ pRgnData->nCount++ ] = CRect( first, bm.bmHeight - i - 1, j+(j==(bm.bmWidth-1)), bm.bmHeight - i );
                 // if buffer full reallocate it
-                if ( pRgnData->nCount >= cBlocks * MAXBUF ){
+                if ( pRgnData->nCount >= cBlocks * MAXBUF ) {
                     LPBYTE pRgnDataNew = new BYTE[ RDHDR + ++cBlocks * MAXBUF * sizeof(RECT) ];
                     memcpy( pRgnDataNew, pRgnData, RDHDR + (cBlocks - 1) * MAXBUF * sizeof(RECT) );
                     delete pRgnData;
                     pRgnData = (RGNDATAHEADER*)pRgnDataNew;
                 }
                 wasfirst = false;
-            } else if ( !wasfirst && ismask ){        // set wasfirst when mask is found
+            } else if ( !wasfirst && ismask ) {       // set wasfirst when mask is found
                 first = j;
                 wasfirst = true;
             }
         }
-        dcBmp.DeleteDC();    //release the bitmap
-        // create region
-        /*  Under WinNT the ExtCreateRegion returns NULL (by Fable@aramszu.net) */
-        //    HRGN hRgn = ExtCreateRegion( NULL, RDHDR + pRgnData->nCount * sizeof(RECT), (LPRGNDATA)pRgnData );
-        /* ExtCreateRegion replacement { */
-        HRGN hRgn=CreateRectRgn(0, 0, 0, 0);
-        ASSERT( hRgn!=NULL );
-        pRects = (LPRECT)((LPBYTE)pRgnData + RDHDR);
-        for(i=0;i<(int)pRgnData->nCount;i++)
-        {
-            HRGN hr=CreateRectRgn(pRects[i].left, pRects[i].top, pRects[i].right, pRects[i].bottom);
-            VERIFY(CombineRgn(hRgn, hRgn, hr, RGN_OR)!=ERROR);
-            if (hr) DeleteObject(hr);
-        }
-        ASSERT( hRgn!=NULL );
-        /* } ExtCreateRegion replacement */
+    dcBmp.DeleteDC();    //release the bitmap
+    // create region
+    /*  Under WinNT the ExtCreateRegion returns NULL (by Fable@aramszu.net) */
+    //    HRGN hRgn = ExtCreateRegion( NULL, RDHDR + pRgnData->nCount * sizeof(RECT), (LPRGNDATA)pRgnData );
+    /* ExtCreateRegion replacement { */
+    HRGN hRgn=CreateRectRgn(0, 0, 0, 0);
+    ASSERT( hRgn!=NULL );
+    pRects = (LPRECT)((LPBYTE)pRgnData + RDHDR);
+    for(i=0; i<(int)pRgnData->nCount; i++) {
+        HRGN hr=CreateRectRgn(pRects[i].left, pRects[i].top, pRects[i].right, pRects[i].bottom);
+        VERIFY(CombineRgn(hRgn, hRgn, hr, RGN_OR)!=ERROR);
+        if (hr) DeleteObject(hr);
+    }
+    ASSERT( hRgn!=NULL );
+    /* } ExtCreateRegion replacement */
 
-        delete pRgnData;
-        return hRgn;
+    delete pRgnData;
+    return hRgn;
 }
 
 void CSplashScreenEx::DrawWindow(CDC *pDC)
 {
     CDC memDC;
     CBitmap *pOldBitmap;
-    
+
     // Blit Background
     memDC.CreateCompatibleDC(pDC);
     pOldBitmap=memDC.SelectObject(&m_bitmap);
@@ -383,17 +369,15 @@ LRESULT CSplashScreenEx::OnPrintClient(WPARAM wParam, LPARAM lParam)
 BOOL CSplashScreenEx::PreTranslateMessage(MSG* pMsg)
 {
     // If a key is pressed, Hide the Splash Screen and destroy it
-    if (m_dwStyle & CSS_HIDEONCLICK)
-    {
+    if (m_dwStyle & CSS_HIDEONCLICK) {
         if (pMsg->message == WM_KEYDOWN ||
-            pMsg->message == WM_SYSKEYDOWN ||
-            pMsg->message == WM_LBUTTONDOWN ||
-            pMsg->message == WM_RBUTTONDOWN ||
-            pMsg->message == WM_MBUTTONDOWN ||
-            pMsg->message == WM_NCLBUTTONDOWN ||
-            pMsg->message == WM_NCRBUTTONDOWN ||
-            pMsg->message == WM_NCMBUTTONDOWN)
-        {
+                pMsg->message == WM_SYSKEYDOWN ||
+                pMsg->message == WM_LBUTTONDOWN ||
+                pMsg->message == WM_RBUTTONDOWN ||
+                pMsg->message == WM_MBUTTONDOWN ||
+                pMsg->message == WM_NCLBUTTONDOWN ||
+                pMsg->message == WM_NCRBUTTONDOWN ||
+                pMsg->message == WM_NCMBUTTONDOWN) {
             Hide();
             return TRUE;
         }

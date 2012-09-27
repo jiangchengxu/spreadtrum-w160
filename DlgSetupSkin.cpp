@@ -46,19 +46,19 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // CDlgSetupSkin message handlers
 
-void CDlgSetupSkin::OnRadioSetupSkin() 
+void CDlgSetupSkin::OnRadioSetupSkin()
 {
     // TODO: Add your control notification handler code here
     UpdateData(TRUE);
 
     WPARAM wParam = 0;
     LPARAM lParam = m_nStyle;
-    ::SendMessage(GetActiveWindow()->GetSafeHwnd(),WM_CHANGE_SKIN, wParam,lParam);  
+    ::SendMessage(GetActiveWindow()->GetSafeHwnd(),WM_CHANGE_SKIN, wParam,lParam);
     g_SetData.Setup_nSkinStyle = m_nStyle;
     SaveIniFile();
 }
 
-//DEL void CDlgSetupSkin::OnButtonSetupSkinBrowseskinfile() 
+//DEL void CDlgSetupSkin::OnButtonSetupSkinBrowseskinfile()
 //DEL {
 //DEL     // TODO: —°‘ÒSkin File
 //DEL //    CFileDialog dlgFile(TRUE);
@@ -69,14 +69,14 @@ void CDlgSetupSkin::OnRadioSetupSkin()
 //DEL //    }
 //DEL }
 
-BOOL CDlgSetupSkin::OnInitDialog() 
+BOOL CDlgSetupSkin::OnInitDialog()
 {
     CBaseDialog::OnInitDialog();
-    
+
     // TODO: Add extra initialization here
     m_nStyle = g_SetData.Setup_nSkinStyle;
     UpdateData(FALSE);
 
     return TRUE;  // return TRUE unless you set the focus to a control
-                  // EXCEPTION: OCX Property Pages should return FALSE
+    // EXCEPTION: OCX Property Pages should return FALSE
 }

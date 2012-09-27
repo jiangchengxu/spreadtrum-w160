@@ -16,7 +16,7 @@ class CWaitDlg : public CDialog
 public:
     /*CWaitDlg构造函数，nUpper代表进度条的最大值，nSetp代表每次递增的值*/
     CWaitDlg(CWnd* pParent = NULL,int nUpper = 100,int nSetp = 1);   // standard constructor
-	~CWaitDlg();
+    ~CWaitDlg();
 
 // Dialog Data
     //{{AFX_DATA(CWaitDlg)
@@ -29,14 +29,14 @@ public:
 // Overrides
     // ClassWizard generated virtual function overrides
     //{{AFX_VIRTUAL(CWaitDlg)
-    public:
+public:
     //预处理消息函数，用于拦截WM_CLOSE以外的所有消息
     virtual BOOL PreTranslateMessage(MSG* pMsg);
-    protected:
+protected:
     virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
     //}}AFX_VIRTUAL
-    public:
-    
+public:
+
     //设置进度条的范围和递增值
     void SetProgressRange(int nLower,int nUpper,int nStep = 1);
 

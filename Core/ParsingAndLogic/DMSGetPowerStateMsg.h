@@ -22,13 +22,13 @@
 // --------------------------------------------------------------------------
 // Unique identifiers for DMSGetPowerStateMsg types
 // --------------------------------------------------------------------------
-static const uint32 DMSGetPowerStateReqUID = 
-    (QMUX_TYPE_DMS << 24 | 
-     QMI_CTL_FLAG_TYPE_CMD << 16 | 
+static const uint32 DMSGetPowerStateReqUID =
+    (QMUX_TYPE_DMS << 24 |
+     QMI_CTL_FLAG_TYPE_CMD << 16 |
      QMI_DMS_GET_POWER_STATE_MSG);
-static const uint32 DMSGetPowerStateRspUID = 
-    (QMUX_TYPE_DMS << 24 | 
-     QMI_CTL_FLAG_TYPE_RSP << 16 | 
+static const uint32 DMSGetPowerStateRspUID =
+    (QMUX_TYPE_DMS << 24 |
+     QMI_CTL_FLAG_TYPE_RSP << 16 |
      QMI_DMS_GET_POWER_STATE_MSG);
 
 // --------------------------------------------------------------------------
@@ -56,14 +56,16 @@ public:
 protected:
     DMSGetPowerStateReq();
     virtual bool BuildMsgBuf();
-    virtual bool Unpack(MsgBuf& msgBuf) { return false; }
+    virtual bool Unpack(MsgBuf& msgBuf) {
+        return false;
+    }
 };
 
 
 // --------------------------------------------------------------------------
 // DMSGetPowerStateRsp
 //
-/// This class represents a QMI_DMS_GET_POWER_STATE_RESP message 
+/// This class represents a QMI_DMS_GET_POWER_STATE_RESP message
 /// which is the response to the get power state request.
 // --------------------------------------------------------------------------
 class DMSGetPowerStateRsp : public Message
@@ -77,15 +79,27 @@ public:
 
     virtual void Print(std::ostream& stream);
 
-    uint16 GetResult() { return m_result; }
-    uint16 GetError() { return m_error; }
-    virtual uint8 GetPowerStatus() { return m_powerStatus; }
-    virtual uint8 GetBatteryLvl() { return m_batteryLvl; }
+    uint16 GetResult() {
+        return m_result;
+    }
+    uint16 GetError() {
+        return m_error;
+    }
+    virtual uint8 GetPowerStatus() {
+        return m_powerStatus;
+    }
+    virtual uint8 GetBatteryLvl() {
+        return m_batteryLvl;
+    }
 
 protected:
     DMSGetPowerStateRsp();
-    virtual bool Build(std::string& nameValue) { return false; }
-    virtual bool BuildMsgBuf() { return false; }
+    virtual bool Build(std::string& nameValue) {
+        return false;
+    }
+    virtual bool BuildMsgBuf() {
+        return false;
+    }
     virtual bool Unpack(MsgBuf& msgBuf);
     virtual Uint8UnpackerMap& GetUnpackerMap();
     virtual bool UnpackResultCode(MsgBuf& msgBuf);

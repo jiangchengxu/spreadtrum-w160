@@ -42,7 +42,7 @@ public:
 // Overrides
     // ClassWizard generated virtual function overrides
     //{{AFX_VIRTUAL(CCallHistoryDlg)
-    protected:
+protected:
     virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
     //}}AFX_VIRTUAL
 // Implementation
@@ -61,7 +61,7 @@ protected:
     afx_msg void OnButtonDeleteall();
     //}}AFX_MSG
     afx_msg LRESULT OnMenuItemClick(WPARAM wParam, LPARAM lParam);
-	afx_msg LRESULT OnAbstractPb(WPARAM wParam, LPARAM lParam);
+    afx_msg LRESULT OnAbstractPb(WPARAM wParam, LPARAM lParam);
     afx_msg LRESULT OnSaveHist(WPARAM wParam, LPARAM lParam = 0);
     DECLARE_MESSAGE_MAP()
 };

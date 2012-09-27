@@ -14,30 +14,30 @@ class CDlgSMSPriorityCDMA : public CBaseDialog
 {
 // Construction
 public:
-	CDlgSMSPriorityCDMA(CWnd* pParent = NULL);   // standard constructor
+    CDlgSMSPriorityCDMA(CWnd* pParent = NULL);   // standard constructor
 
 // Dialog Data
-	//{{AFX_DATA(CDlgSMSPriorityCDMA)
-	enum { IDD = IDD_DIALOG_SMSPRIORITY_CDMA };
+    //{{AFX_DATA(CDlgSMSPriorityCDMA)
+    enum { IDD = IDD_DIALOG_SMSPRIORITY_CDMA };
 
-	
-	int m_nSMSPriority;
 
-	protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+    int m_nSMSPriority;
+
+protected:
+    virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 
 
 
 protected:
 
-	// Generated message map functions
-	//{{AFX_MSG(CDlgSMSPriorityCDMA)
-		// NOTE: the ClassWizard will add member functions here
-	//}}AFX_MSG
-	DECLARE_MESSAGE_MAP()
+    // Generated message map functions
+    //{{AFX_MSG(CDlgSMSPriorityCDMA)
+    // NOTE: the ClassWizard will add member functions here
+    //}}AFX_MSG
+    DECLARE_MESSAGE_MAP()
 public:
-	virtual BOOL OnInitDialog();
-	afx_msg OnPaint();
+    virtual BOOL OnInitDialog();
+    afx_msg OnPaint();
 };
 
 //{{AFX_INSERT_LOCATION}}

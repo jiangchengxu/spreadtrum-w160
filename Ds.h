@@ -296,38 +296,36 @@ const UINT szVersionTitle[VERSION_MAX] = {
 /*
 ** Define a type for the type of network.
 */
-typedef enum uinetwk_network_type_e
-{
-   UI_NETWK_TYPE_UNKNOWN_TYPE,
-   UI_NETWK_TYPE_GSM_900,
-   UI_NETWK_TYPE_DCS_1800,
-   UI_NETWK_TYPE_PCS_1900,
-   UI_NETWK_TYPE_GSM_SAT,
-   UI_NETWK_TYPE_UMTS
+typedef enum uinetwk_network_type_e {
+    UI_NETWK_TYPE_UNKNOWN_TYPE,
+    UI_NETWK_TYPE_GSM_900,
+    UI_NETWK_TYPE_DCS_1800,
+    UI_NETWK_TYPE_PCS_1900,
+    UI_NETWK_TYPE_GSM_SAT,
+    UI_NETWK_TYPE_UMTS
 } uinetwk_network_type_e_type;
 
 /*
 ** Define a type that contains the networks, country code, network code
 ** and name.
 */
-typedef struct uinetwk_network_info_s
-{
+typedef struct uinetwk_network_info_s {
 
-   unsigned int                  mcc;
-     /* Mobile Network Code                                */
+    unsigned int                  mcc;
+    /* Mobile Network Code                                */
 
-   unsigned int                  mnc;
+    unsigned int                  mnc;
     /* Mobile Country Code                                 */
 
-   uinetwk_network_type_e_type   network_type;
+    uinetwk_network_type_e_type   network_type;
 
-   char                         *short_name_ptr;
-     /* Pointer to a null terminated string containing the */
-     /* network's short name.                              */
+    char                         *short_name_ptr;
+    /* Pointer to a null terminated string containing the */
+    /* network's short name.                              */
 
-   char                         *full_name_ptr;
-     /* Pointer to a null terminated string containing the */
-     /* network's full name.                               */
+    char                         *full_name_ptr;
+    /* Pointer to a null terminated string containing the */
+    /* network's full name.                               */
 
 } uinetwk_network_info_s_type;
 

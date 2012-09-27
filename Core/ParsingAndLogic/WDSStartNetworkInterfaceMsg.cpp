@@ -52,7 +52,7 @@ const uint8 WDSStartNetworkInterfaceReq::IPV4_ADDR_PREF_TYPE = 0x15;
 const uint8 WDSStartNetworkInterfaceReq::AUTH_PREF_TYPE = 0x16;
 const uint8 WDSStartNetworkInterfaceReq::USERNAME_TYPE = 0x17;
 const uint8 WDSStartNetworkInterfaceReq::PASSWORD_TYPE = 0x18;
-WDSStartNetworkInterfaceReq::WDSStartNetworkInterfaceReq() : 
+WDSStartNetworkInterfaceReq::WDSStartNetworkInterfaceReq() :
     Message(QMUX_TYPE_WDS,QMI_WDS_START_NETWORK_INTERFACE_MSG,QMI_CTL_FLAG_TYPE_CMD),
     m_techPrefType(TLV_TYPE_INVALID),
     m_techPrefLen(0),
@@ -120,8 +120,7 @@ bool WDSStartNetworkInterfaceReq::Build(std::string& nameValue)
 Message::StringBuilderMap& WDSStartNetworkInterfaceReq::GetBuilderMap()
 {
     static StringBuilderMap SBMap;
-    if (SBMap.empty())
-    {
+    if (SBMap.empty()) {
         bool bSuccess = SBMap.insert(SBPair("TechPref",(Builder)BuildTechPref)).second;
         assert(bSuccess);
         bSuccess = SBMap.insert(SBPair("ProfileId",(Builder)BuildConfiguredProfileId3gpp)).second;
@@ -164,8 +163,7 @@ bool WDSStartNetworkInterfaceReq::BuildTechPref(std::string& value)
     sscanf(value.c_str(), "%i", &num);
 
     // validate entry
-    if (num < 1 && num > 2)
-    {
+    if (num < 1 && num > 2) {
         // report invalid technology preference
         std::stringstream stream;
         stream << _T("Warning: unable to build message:") << std::endl
@@ -205,8 +203,7 @@ bool WDSStartNetworkInterfaceReq::BuildConfiguredProfileId3gpp(std::string& valu
     sscanf(value.c_str(), "%i", &num);
 
     // validate entry
-    if (num < 0 && num > 255)
-    {
+    if (num < 0 && num > 255) {
         // report invalid technology preference
         std::stringstream stream;
         stream << _T("Warning: unable to build message:") << std::endl
@@ -241,8 +238,7 @@ bool WDSStartNetworkInterfaceReq::BuildConfiguredProfileId3gpp(std::string& valu
 // --------------------------------------------------------------------------
 bool WDSStartNetworkInterfaceReq::BuildPrimaryDnsIpv4AddrPref(std::string& value)
 {
-    if (ExtractIpv4Addr(value,m_primaryDnsIpv4AddrPref))
-    {
+    if (ExtractIpv4Addr(value,m_primaryDnsIpv4AddrPref)) {
         // set member data
         m_primaryDnsIpv4AddrPrefType = PRIMARY_DNS_IPV4_ADDR_PREF_TYPE;
         m_primaryDnsIpv4AddrPrefLen = 4;
@@ -267,8 +263,7 @@ bool WDSStartNetworkInterfaceReq::BuildPrimaryDnsIpv4AddrPref(std::string& value
 // --------------------------------------------------------------------------
 bool WDSStartNetworkInterfaceReq::BuildSecondaryDnsIpv4AddrPref(std::string& value)
 {
-    if (ExtractIpv4Addr(value,m_secondaryDnsIpv4AddrPref))
-    {
+    if (ExtractIpv4Addr(value,m_secondaryDnsIpv4AddrPref)) {
         // set member data
         m_secondaryDnsIpv4AddrPrefType = SECONDARY_DNS_IPV4_ADDR_PREF_TYPE;
         m_secondaryDnsIpv4AddrPrefLen = 4;
@@ -293,8 +288,7 @@ bool WDSStartNetworkInterfaceReq::BuildSecondaryDnsIpv4AddrPref(std::string& val
 // --------------------------------------------------------------------------
 bool WDSStartNetworkInterfaceReq::BuildPrimaryNbnsAddrPref(std::string& value)
 {
-    if (ExtractIpv4Addr(value,m_primaryNbnsAddrPref))
-    {
+    if (ExtractIpv4Addr(value,m_primaryNbnsAddrPref)) {
         // set member data
         m_primaryNbnsAddrPrefType = PRIMARY_NBNS_ADDR_PREF_TYPE;
         m_primaryNbnsAddrPrefLen = 4;
@@ -319,8 +313,7 @@ bool WDSStartNetworkInterfaceReq::BuildPrimaryNbnsAddrPref(std::string& value)
 // --------------------------------------------------------------------------
 bool WDSStartNetworkInterfaceReq::BuildSecondaryNbnsAddrPref(std::string& value)
 {
-    if (ExtractIpv4Addr(value,m_secondaryNbnsAddrPref))
-    {
+    if (ExtractIpv4Addr(value,m_secondaryNbnsAddrPref)) {
         // set member data
         m_secondaryNbnsAddrPrefType = SECONDARY_NBNS_ADDR_PREF_TYPE;
         m_secondaryNbnsAddrPrefLen = 4;
@@ -346,7 +339,9 @@ bool WDSStartNetworkInterfaceReq::BuildSecondaryNbnsAddrPref(std::string& value)
 bool WDSStartNetworkInterfaceReq::BuildApnName(std::string& value)
 {
     // check for null string indication
-    if (value == "NULL") { value = ""; }
+    if (value == "NULL") {
+        value = "";
+    }
 
     // set member data
     m_apnNameType = APN_NAME_TYPE;
@@ -371,8 +366,7 @@ bool WDSStartNetworkInterfaceReq::BuildApnName(std::string& value)
 // --------------------------------------------------------------------------
 bool WDSStartNetworkInterfaceReq::BuildIpv4AddrPref(std::string& value)
 {
-    if (ExtractIpv4Addr(value,m_ipv4AddrPref))
-    {
+    if (ExtractIpv4Addr(value,m_ipv4AddrPref)) {
         // set member data
         m_ipv4AddrPrefType = IPV4_ADDR_PREF_TYPE;
         m_ipv4AddrPrefLen = 4;
@@ -402,8 +396,7 @@ bool WDSStartNetworkInterfaceReq::BuildAuthPref(std::string& value)
     sscanf(value.c_str(), "%i", &num);
 
     // validate entry
-    if (num < 1 && num > 3)
-    {
+    if (num < 1 && num > 3) {
         // report invalid technology preference
         std::stringstream stream;
         stream << _T("Warning: unable to build message:") << std::endl
@@ -439,7 +432,9 @@ bool WDSStartNetworkInterfaceReq::BuildAuthPref(std::string& value)
 bool WDSStartNetworkInterfaceReq::BuildUsername(std::string& value)
 {
     // check for null string indication
-    if (value == "NULL") { value = ""; }
+    if (value == "NULL") {
+        value = "";
+    }
 
     // set member data
     m_usernameType = USERNAME_TYPE;
@@ -465,7 +460,9 @@ bool WDSStartNetworkInterfaceReq::BuildUsername(std::string& value)
 bool WDSStartNetworkInterfaceReq::BuildPassword(std::string& value)
 {
     // check for null string indication
-    if (value == "NULL") { value = ""; }
+    if (value == "NULL") {
+        value = "";
+    }
 
     // set member data
     m_passwordType = PASSWORD_TYPE;
@@ -499,88 +496,77 @@ bool WDSStartNetworkInterfaceReq::BuildMsgBuf()
     m_pMsgBuf->PutWord(m_length);
 
     // optional tlv, technology preference
-    if (m_techPrefType == TECH_PREF_TYPE)
-    {
+    if (m_techPrefType == TECH_PREF_TYPE) {
         m_pMsgBuf->PutByte(m_techPrefType);
         m_pMsgBuf->PutWord(m_techPrefLen);
         m_pMsgBuf->PutByte(m_techPref);
     }
 
     // optional tlv, 3gpp configured profile id
-    if (m_configuredProfileId3gppType == CONFIGURED_PROFILE_ID_3GPP_TYPE)
-    {
+    if (m_configuredProfileId3gppType == CONFIGURED_PROFILE_ID_3GPP_TYPE) {
         m_pMsgBuf->PutByte(m_configuredProfileId3gppType);
         m_pMsgBuf->PutWord(m_configuredProfileId3gppLen);
         m_pMsgBuf->PutByte(m_configuredProfileId3gpp);
     }
 
     // optional tlv, primary dns ipv4 address preference
-    if (m_primaryDnsIpv4AddrPrefType == PRIMARY_DNS_IPV4_ADDR_PREF_TYPE)
-    {
+    if (m_primaryDnsIpv4AddrPrefType == PRIMARY_DNS_IPV4_ADDR_PREF_TYPE) {
         m_pMsgBuf->PutByte(m_primaryDnsIpv4AddrPrefType);
         m_pMsgBuf->PutWord(m_primaryDnsIpv4AddrPrefLen);
         m_pMsgBuf->PutDWord(m_primaryDnsIpv4AddrPref);
     }
 
     // optional tlv, secondary dns ipv4 address preference
-    if (m_secondaryDnsIpv4AddrPrefType == SECONDARY_DNS_IPV4_ADDR_PREF_TYPE)
-    {
+    if (m_secondaryDnsIpv4AddrPrefType == SECONDARY_DNS_IPV4_ADDR_PREF_TYPE) {
         m_pMsgBuf->PutByte(m_secondaryDnsIpv4AddrPrefType);
         m_pMsgBuf->PutWord(m_secondaryDnsIpv4AddrPrefLen);
         m_pMsgBuf->PutDWord(m_secondaryDnsIpv4AddrPref);
     }
 
     // optional tlv, primary nbns address preference
-    if (m_primaryNbnsAddrPrefType == PRIMARY_NBNS_ADDR_PREF_TYPE)
-    {
+    if (m_primaryNbnsAddrPrefType == PRIMARY_NBNS_ADDR_PREF_TYPE) {
         m_pMsgBuf->PutByte(m_primaryNbnsAddrPrefType);
         m_pMsgBuf->PutWord(m_primaryNbnsAddrPrefLen);
         m_pMsgBuf->PutDWord(m_primaryNbnsAddrPref);
     }
 
     // optional tlv, secondary nbns address preference
-    if (m_secondaryNbnsAddrPrefType == SECONDARY_NBNS_ADDR_PREF_TYPE)
-    {
+    if (m_secondaryNbnsAddrPrefType == SECONDARY_NBNS_ADDR_PREF_TYPE) {
         m_pMsgBuf->PutByte(m_secondaryNbnsAddrPrefType);
         m_pMsgBuf->PutWord(m_secondaryNbnsAddrPrefLen);
         m_pMsgBuf->PutDWord(m_secondaryNbnsAddrPref);
     }
 
     // optional tlv, apn name
-    if (m_apnNameType == APN_NAME_TYPE)
-    {
+    if (m_apnNameType == APN_NAME_TYPE) {
         m_pMsgBuf->PutByte(m_apnNameType);
         m_pMsgBuf->PutWord(m_apnNameLen);
         m_pMsgBuf->PutCopy(m_apnName.c_str(),m_apnNameLen);
     }
 
     // optional tlv, ipv4 address preference
-    if (m_ipv4AddrPrefType == IPV4_ADDR_PREF_TYPE)
-    {
+    if (m_ipv4AddrPrefType == IPV4_ADDR_PREF_TYPE) {
         m_pMsgBuf->PutByte(m_ipv4AddrPrefType);
         m_pMsgBuf->PutWord(m_ipv4AddrPrefLen);
         m_pMsgBuf->PutDWord(m_ipv4AddrPref);
     }
 
     // optional tlv, authentication preference
-    if (m_authPrefType == AUTH_PREF_TYPE)
-    {
+    if (m_authPrefType == AUTH_PREF_TYPE) {
         m_pMsgBuf->PutByte(m_authPrefType);
         m_pMsgBuf->PutWord(m_authPrefLen);
         m_pMsgBuf->PutByte(m_authPref);
     }
 
     // optional tlv, username
-    if (m_usernameType == USERNAME_TYPE)
-    {
+    if (m_usernameType == USERNAME_TYPE) {
         m_pMsgBuf->PutByte(m_usernameType);
         m_pMsgBuf->PutWord(m_usernameLen);
         m_pMsgBuf->PutCopy(m_username.c_str(),m_usernameLen);
     }
 
     // optional tlv, password
-    if (m_passwordType == PASSWORD_TYPE)
-    {
+    if (m_passwordType == PASSWORD_TYPE) {
         m_pMsgBuf->PutByte(m_passwordType);
         m_pMsgBuf->PutWord(m_passwordLen);
         m_pMsgBuf->PutCopy(m_password.c_str(),m_passwordLen);
@@ -601,75 +587,70 @@ void WDSStartNetworkInterfaceReq::Print(std::ostream& stream)
 {
     stream << _T("QMI_WDS_START_NETWORK_INTERFACE_REQ") << std::endl
            << _T("{") << std::endl;
-    
-    if (m_techPrefType == TECH_PREF_TYPE)
-    {
+
+    if (m_techPrefType == TECH_PREF_TYPE) {
         stream << _T("  TechPref ") << (int)m_techPref << std::endl;
     }
 
-    if (m_configuredProfileId3gppType == CONFIGURED_PROFILE_ID_3GPP_TYPE)
-    {
+    if (m_configuredProfileId3gppType == CONFIGURED_PROFILE_ID_3GPP_TYPE) {
         stream << _T("  ProfileId ") << (int)m_configuredProfileId3gpp << std::endl;
     }
 
-    if (m_primaryDnsIpv4AddrPrefType == PRIMARY_DNS_IPV4_ADDR_PREF_TYPE)
-    {
+    if (m_primaryDnsIpv4AddrPrefType == PRIMARY_DNS_IPV4_ADDR_PREF_TYPE) {
         stream << _T("  PrimaryDnsPref ");
         PrintIPv4Addr(m_primaryDnsIpv4AddrPref,stream);
         stream << std::endl;
     }
 
-    if (m_secondaryDnsIpv4AddrPrefType == SECONDARY_DNS_IPV4_ADDR_PREF_TYPE)
-    {
+    if (m_secondaryDnsIpv4AddrPrefType == SECONDARY_DNS_IPV4_ADDR_PREF_TYPE) {
         stream << _T("  SecondaryDnsPref ");
         PrintIPv4Addr(m_secondaryDnsIpv4AddrPref,stream);
         stream << std::endl;
     }
 
-    if (m_primaryNbnsAddrPrefType == PRIMARY_NBNS_ADDR_PREF_TYPE)
-    {
+    if (m_primaryNbnsAddrPrefType == PRIMARY_NBNS_ADDR_PREF_TYPE) {
         stream << _T("  PrimaryNbnsPref ");
         PrintIPv4Addr(m_primaryNbnsAddrPref,stream);
         stream << std::endl;
     }
 
-    if (m_secondaryNbnsAddrPrefType == SECONDARY_NBNS_ADDR_PREF_TYPE)
-    {
+    if (m_secondaryNbnsAddrPrefType == SECONDARY_NBNS_ADDR_PREF_TYPE) {
         stream << _T("  SecondaryNbnsPref ");
         PrintIPv4Addr(m_secondaryNbnsAddrPref,stream);
         stream << std::endl;
     }
 
-    if (m_apnNameType == APN_NAME_TYPE)
-    {
+    if (m_apnNameType == APN_NAME_TYPE) {
         std::string apnName = m_apnName;
-        if (apnName == "") { apnName = "NULL"; }
+        if (apnName == "") {
+            apnName = "NULL";
+        }
         stream << _T("  ApnName ") << apnName << std::endl;
     }
 
-    if (m_ipv4AddrPrefType == IPV4_ADDR_PREF_TYPE)
-    {
+    if (m_ipv4AddrPrefType == IPV4_ADDR_PREF_TYPE) {
         stream << _T("  Ipv4AddrPref ");
         PrintIPv4Addr(m_ipv4AddrPref,stream);
         stream << std::endl;
     }
 
-    if (m_authPrefType == AUTH_PREF_TYPE)
-    {
+    if (m_authPrefType == AUTH_PREF_TYPE) {
         stream << _T("  AuthPref ") << (int)m_authPref << std::endl;
     }
 
-    if (m_usernameType == USERNAME_TYPE)
-    {
+    if (m_usernameType == USERNAME_TYPE) {
         std::string username = m_username;
-        if (username == "") { username = "NULL"; }
+        if (username == "") {
+            username = "NULL";
+        }
         stream << _T("  Username ") << username << std::endl;
     }
 
-    if (m_passwordType == PASSWORD_TYPE)
-    {
+    if (m_passwordType == PASSWORD_TYPE) {
         std::string password = m_password;
-        if (password == "") { password = "NULL"; }
+        if (password == "") {
+            password = "NULL";
+        }
         stream << _T("  Password ") << password << std::endl;
     }
 
@@ -719,38 +700,32 @@ WDSStartNetworkInterfaceRsp::~WDSStartNetworkInterfaceRsp()
 bool WDSStartNetworkInterfaceRsp::Unpack(MsgBuf& msgBuf)
 {
     // call the base unpack
-    if (!Message::Unpack(msgBuf))
-    {
+    if (!Message::Unpack(msgBuf)) {
         return false;
     }
-    
+
     // validate message length
-    if (m_result == QMI_RESULT_SUCCESS)
-    {
+    if (m_result == QMI_RESULT_SUCCESS) {
         // mandatory tlvs
-        if (m_length != 14)
-        {
+        if (m_length != 14) {
             std::stringstream stream;
             stream << _T("Warning: unable to unpack message:") << std::endl
-                << _T("Expected message length is 14 bytes, unpacked length is ")
-                << m_length << _T(" bytes.") << std::endl 
-                << std::endl;
+                   << _T("Expected message length is 14 bytes, unpacked length is ")
+                   << m_length << _T(" bytes.") << std::endl
+                   << std::endl;
             MessageManager::GetInstance().ReportStatus(stream.str(),ST_WARNING);
-            return false; 
+            return false;
         }
-    }
-    else
-    {
+    } else {
         // only result code tlv on failure
-        if (m_length != 7) 
-        {
+        if (m_length != 7) {
             std::stringstream stream;
             stream << _T("Warning: unable to unpack message:") << std::endl
-                << _T("Expected message length is 7 bytes, unpacked length is ")
-                << m_length << _T(" bytes.") << std::endl 
-                << std::endl;
+                   << _T("Expected message length is 7 bytes, unpacked length is ")
+                   << m_length << _T(" bytes.") << std::endl
+                   << std::endl;
             MessageManager::GetInstance().ReportStatus(stream.str(),ST_WARNING);
-            return false; 
+            return false;
         }
     }
 
@@ -768,8 +743,7 @@ bool WDSStartNetworkInterfaceRsp::Unpack(MsgBuf& msgBuf)
 Message::Uint8UnpackerMap& WDSStartNetworkInterfaceRsp::GetUnpackerMap()
 {
     static Uint8UnpackerMap UUMap;
-    if (UUMap.empty())
-    {
+    if (UUMap.empty()) {
         bool bSuccess = UUMap.insert(UUPair(RESULT_CODE_TYPE,(Unpacker)UnpackResultCode)).second;
         assert(bSuccess);
         bSuccess = UUMap.insert(UUPair(REQUIRED_PARAMETERS_TYPE,(Unpacker)UnpackRequiredParameters)).second;
@@ -792,12 +766,11 @@ bool WDSStartNetworkInterfaceRsp::UnpackResultCode(MsgBuf& msgBuf)
     m_resultCodeType = RESULT_CODE_TYPE;
 
     m_resultCodeLen = msgBuf.GetWord();
-    if (m_resultCodeLen != 4) 
-    {
+    if (m_resultCodeLen != 4) {
         std::stringstream stream;
         stream << _T("Warning: unable to unpack message:") << std::endl
                << _T("Expected Result Code length is 4 bytes, unpacked length is ")
-               << m_resultCodeLen << _T(" bytes.") << std::endl 
+               << m_resultCodeLen << _T(" bytes.") << std::endl
                << std::endl;
         MessageManager::GetInstance().ReportStatus(stream.str(),ST_WARNING);
         return false;
@@ -823,12 +796,11 @@ bool WDSStartNetworkInterfaceRsp::UnpackRequiredParameters(MsgBuf& msgBuf)
     m_requiredParametersType = REQUIRED_PARAMETERS_TYPE;
 
     m_requiredParametersLen = msgBuf.GetWord();
-    if (m_requiredParametersLen != 4)
-    {
+    if (m_requiredParametersLen != 4) {
         std::stringstream stream;
         stream << _T("Warning: unable to unpack message:") << std::endl
                << _T("Expected Required Parameter length is 4 bytes, unpacked length is ")
-               << m_requiredParametersLen << _T(" bytes.") << std::endl 
+               << m_requiredParametersLen << _T(" bytes.") << std::endl
                << std::endl;
         MessageManager::GetInstance().ReportStatus(stream.str(),ST_WARNING);
         return false;
@@ -837,8 +809,7 @@ bool WDSStartNetworkInterfaceRsp::UnpackRequiredParameters(MsgBuf& msgBuf)
     m_pktDataHandle = msgBuf.GetDWord();
 
     // all tlvs are mandatory, so we should be at end of buffer
-    if (!msgBuf.EOB())
-    {
+    if (!msgBuf.EOB()) {
         std::stringstream stream;
         stream << _T("Warning: unable to unpack message:") << std::endl
                << _T("Finished unpacking message but end of buffer not reached")
@@ -864,8 +835,7 @@ void WDSStartNetworkInterfaceRsp::Print(std::ostream& stream)
            << _T("  ErrorCode ") << (int)m_error << std::endl;
 
     // only print other mandatory tlvs if result code success
-    if (m_result == QMI_RESULT_SUCCESS)
-    {
+    if (m_result == QMI_RESULT_SUCCESS) {
         stream << _T("  PktDataHandle ") << (int)m_pktDataHandle << std::endl;
     }
 

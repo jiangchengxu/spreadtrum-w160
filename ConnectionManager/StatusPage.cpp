@@ -39,12 +39,13 @@ static const COLORREF textColor[] = { RGB(0xFF,0x00,0x00),
 // firebrick, dark orange, black
 static const COLORREF textColor[] = { RGB(0xB2,0x22,0x22),
                                       RGB(0xFF,0x7F,0x50),
-                                      RGB(0x00,0x00,0x00) };
+                                      RGB(0x00,0x00,0x00)
+                                    };
 
 // --------------------------------------------------------------------------
 // ctor
 // --------------------------------------------------------------------------
-StatusPage::StatusPage() : 
+StatusPage::StatusPage() :
     CPropertyPage(IDD_STATUS_PAGE)
 {}
 
@@ -54,7 +55,7 @@ StatusPage::StatusPage() :
 // @@@@@@
 #ifndef OPEN_PAGE_UI
 void StatusPage::SetHSDPADlg(CHSDPADlg* pDlg)
-{	
+{
     m_pCMDlg = pDlg;
 }
 #else
@@ -69,8 +70,8 @@ void StatusPage::SetCMDlg(ConnectionManagerDlg* pCMDlg)
 // --------------------------------------------------------------------------
 void StatusPage::DoDataExchange(CDataExchange* pDX)
 {
-	// @@
-	CPropertyPage::DoDataExchange(pDX);
+    // @@
+    CPropertyPage::DoDataExchange(pDX);
 
 // @@@@@@
 #ifdef OPEN_PAGE_UI
@@ -86,7 +87,7 @@ void StatusPage::DoDataExchange(CDataExchange* pDX)
     DDX_Control(pDX, IDC_EVENTS_STATIC, m_eventsStatic);
 #endif
 
-	// @@
+    // @@
 #if 0
     DDX_Control(pDX, IDC_EVENTS_RICHEDIT, m_eventsRichEdit);
 #endif
@@ -97,9 +98,9 @@ void StatusPage::DoDataExchange(CDataExchange* pDX)
 // --------------------------------------------------------------------------
 BOOL StatusPage::OnInitDialog()
 {
-	CPropertyPage::OnInitDialog();
-	
-	return TRUE;  // return TRUE  unless you set the focus to a control
+    CPropertyPage::OnInitDialog();
+
+    return TRUE;  // return TRUE  unless you set the focus to a control
 }
 
 // --------------------------------------------------------------------------
@@ -177,7 +178,7 @@ void StatusPage::DisableSelectedState()
     m_maxTxRateCapStatic.SetWindowText(_T("Max TX Rate Cap:"));
     m_maxRxRateCapStatic.EnableWindow(FALSE);
     m_maxRxRateCapStatic.SetWindowText(_T("Max RX Rate Cap:"));
-	// @@
+    // @@
 #endif
 }
 
@@ -194,7 +195,7 @@ std::string StatusPage::BuildDMSGetDeviceMfrString()
     std::stringstream stream;
 
     // msg type
-    stream << "QMI_DMS_GET_DEVICE_MFR_REQ" << std::endl 
+    stream << "QMI_DMS_GET_DEVICE_MFR_REQ" << std::endl
            << "{}";
 
     return stream.str();
@@ -213,7 +214,7 @@ std::string StatusPage::BuildDMSGetDeviceModelIdString()
     std::stringstream stream;
 
     // msg type
-    stream << "QMI_DMS_GET_DEVICE_MODEL_ID_REQ" << std::endl 
+    stream << "QMI_DMS_GET_DEVICE_MODEL_ID_REQ" << std::endl
            << "{}";
 
     return stream.str();
@@ -232,7 +233,7 @@ std::string StatusPage::BuildDMSGetDeviceRevIdString()
     std::stringstream stream;
 
     // msg type
-    stream << "QMI_DMS_GET_DEVICE_REV_ID_REQ" << std::endl 
+    stream << "QMI_DMS_GET_DEVICE_REV_ID_REQ" << std::endl
            << "{}";
 
     return stream.str();
@@ -251,7 +252,7 @@ std::string StatusPage::BuildDMSGetMsisdnString()
     std::stringstream stream;
 
     // msg type
-    stream << "QMI_DMS_GET_MSISDN_REQ" << std::endl 
+    stream << "QMI_DMS_GET_MSISDN_REQ" << std::endl
            << "{}";
 
     return stream.str();
@@ -270,7 +271,7 @@ std::string StatusPage::BuildDMSGetDeviceSerialNumbersString()
     std::stringstream stream;
 
     // msg type
-    stream << "QMI_DMS_GET_DEVICE_SERIAL_NUMBERS_REQ" << std::endl 
+    stream << "QMI_DMS_GET_DEVICE_SERIAL_NUMBERS_REQ" << std::endl
            << "{}";
 
     return stream.str();
@@ -289,7 +290,7 @@ std::string StatusPage::BuildDMSGetDeviceCapString()
     std::stringstream stream;
 
     // msg type
-    stream << "QMI_DMS_GET_DEVICE_CAP_REQ" << std::endl 
+    stream << "QMI_DMS_GET_DEVICE_CAP_REQ" << std::endl
            << "{}";
 
     return stream.str();
@@ -379,21 +380,18 @@ void StatusPage::ProcessDMSGetDeviceSerialNumbersRsp(DMSGetDeviceSerialNumbersRs
 {
     std::stringstream stream;
 
-    if (rspRCP->IsEsn())
-    {
+    if (rspRCP->IsEsn()) {
         // display esn
         stream << _T("ESN: ") << rspRCP->GetEsn();
 
     }
 
-    if (rspRCP->IsImei())
-    {
+    if (rspRCP->IsImei()) {
         // display imei
         stream << _T("IMEI: ") << rspRCP->GetImei();
     }
 
-    if (rspRCP->IsMeid())
-    {
+    if (rspRCP->IsMeid()) {
         // display meid
         stream << _T("  MEID: ") << rspRCP->GetMeid();
     }
@@ -414,15 +412,12 @@ void StatusPage::ProcessDMSGetDeviceSerialNumbersRsp(DMSGetDeviceSerialNumbersRs
 void StatusPage::ProcessDMSGetDeviceCapRsp(DMSGetDeviceCapRspRCP rspRCP)
 {
     std::stringstream stream;
-    
+
     stream << _T("SIM: ");
 
-    if (rspRCP->GetSimCapability() == 1)
-    {
+    if (rspRCP->GetSimCapability() == 1) {
         stream << _T("Not Supported");
-    }
-    else
-    {
+    } else {
         stream << _T("Supported");
     }
 
@@ -468,7 +463,7 @@ void StatusPage::AddEventMessage(std::string& event,uint8 severity)
     cf.dwEffects = 0; // To disable CFE_AUTOCOLOR
     cf.crTextColor = textColor[severity];
 
-	// @@
+    // @@
 #if 0
     m_eventsRichEdit.SetSel(m_eventsRichEdit.GetWindowTextLength(), -1);
     m_eventsRichEdit.SetSelectionCharFormat(cf);

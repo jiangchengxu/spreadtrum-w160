@@ -29,14 +29,14 @@ public:
 // Overrides
     // ClassWizard generated virtual function overrides
     //{{AFX_VIRTUAL(CSmsListCtrl)
-    protected:
+protected:
     virtual void PreSubclassWindow();
     //}}AFX_VIRTUAL
 
 // Implementation
 public:
     void SetDspFilter(EnSmsType type);
-	void SetLocType(EnLocType loctype);
+    void SetLocType(EnLocType loctype);
     virtual ~CSmsListCtrl();
 
     // Generated message map functions
@@ -50,7 +50,7 @@ protected:
 private:
     BOOL      m_bEnableRB;
     EnSmsType m_DispFilter;
-	EnLocType loctype;
+    EnLocType loctype;
 };
 
 /////////////////////////////////////////////////////////////////////////////

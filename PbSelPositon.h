@@ -21,7 +21,7 @@ public:
 // Dialog Data
     //{{AFX_DATA(CPbSelPositon)
     enum { IDD = IDD_DIALOG_PBSELPOSITION };
-    
+
     CTransparentStatic m_Mobile;
     CTransparentStatic m_Home;
     CTransparentStatic m_company;
@@ -33,14 +33,14 @@ public:
     CTransparentStatic m_StaNameIn;
     CTransparentStatic m_staNumIn;
 
-        // NOTE: the ClassWizard will add data members here
+    // NOTE: the ClassWizard will add data members here
     //}}AFX_DATA
 
 
 // Overrides
     // ClassWizard generated virtual function overrides
     //{{AFX_VIRTUAL(CPbSelPositon)
-    protected:
+protected:
     virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
     //}}AFX_VIRTUAL
 
@@ -54,7 +54,7 @@ protected:
     //}}AFX_MSG
     DECLARE_MESSAGE_MAP()
 
-public:            
+public:
     CButton            m_RMobile;
     CButton            m_RHome;
     CButton            m_RCompany;

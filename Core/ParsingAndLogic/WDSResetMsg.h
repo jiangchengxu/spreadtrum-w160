@@ -23,9 +23,9 @@
 // --------------------------------------------------------------------------
 // Unique identifiers for WDSResetMsg types
 // --------------------------------------------------------------------------
-static const uint32 WDSResetReqUID = 
+static const uint32 WDSResetReqUID =
     (QMUX_TYPE_WDS << 24 | QMI_CTL_FLAG_TYPE_CMD << 16 | QMI_WDS_RESET_MSG);
-static const uint32 WDSResetRspUID = 
+static const uint32 WDSResetRspUID =
     (QMUX_TYPE_WDS << 24 | QMI_CTL_FLAG_TYPE_RSP << 16 | QMI_WDS_RESET_MSG);
 
 // --------------------------------------------------------------------------
@@ -53,7 +53,9 @@ public:
 protected:
     WDSResetReq();
     virtual bool BuildMsgBuf();
-    virtual bool Unpack(MsgBuf& msgBuf) { return false; }
+    virtual bool Unpack(MsgBuf& msgBuf) {
+        return false;
+    }
 };
 
 
@@ -76,8 +78,12 @@ public:
 
 protected:
     WDSResetRsp();
-    virtual bool Build(std::string& nameValue) { return false; }
-    virtual bool BuildMsgBuf() { return false; }
+    virtual bool Build(std::string& nameValue) {
+        return false;
+    }
+    virtual bool BuildMsgBuf() {
+        return false;
+    }
     virtual bool Unpack(MsgBuf& msgBuf);
     virtual Uint8UnpackerMap& GetUnpackerMap();
     virtual bool UnpackResultCode(MsgBuf& msgBuf);
@@ -87,5 +93,5 @@ private:
     uint8 m_resultCodeType;
     uint16 m_resultCodeLen;
     uint16 m_result;
-    uint16 m_error; 
+    uint16 m_error;
 };

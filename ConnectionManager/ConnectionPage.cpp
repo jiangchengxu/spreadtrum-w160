@@ -66,7 +66,7 @@ END_MESSAGE_MAP()
 // --------------------------------------------------------------------------
 // ctor
 // --------------------------------------------------------------------------
-ConnectionPage::ConnectionPage() : 
+ConnectionPage::ConnectionPage() :
     CPropertyPage(IDD_CONNECTION_PAGE),
     m_pCMDlg(NULL),
     m_useWaitCursor(false),
@@ -75,7 +75,7 @@ ConnectionPage::ConnectionPage() :
     m_pktDataHandle(0),
     m_txId(0)
 {
-	memset((void *)&m_NdisProfile, 0, sizeof(StConnProfile));
+    memset((void *)&m_NdisProfile, 0, sizeof(StConnProfile));
 }
 
 // --------------------------------------------------------------------------
@@ -99,7 +99,7 @@ void ConnectionPage::SetCMDlg(ConnectionManagerDlg* pCMDlg)
 // --------------------------------------------------------------------------
 void ConnectionPage::DoDataExchange(CDataExchange* pDX)
 {
-	CDialog::DoDataExchange(pDX);
+    CDialog::DoDataExchange(pDX);
     DDX_Control(pDX, IDC_SELECT_DEVICE_STATIC, m_selectDeviceStatic);
     DDX_Control(pDX, IDC_DEVICE_NAME_COMBO, m_deviceNameCombo);
     DDX_Control(pDX, IDC_OVERRIDE_GROUP, m_overrideGoup);
@@ -140,7 +140,7 @@ void ConnectionPage::DoDataExchange(CDataExchange* pDX)
 // --------------------------------------------------------------------------
 BOOL ConnectionPage::OnInitDialog()
 {
-	CPropertyPage::OnInitDialog();
+    CPropertyPage::OnInitDialog();
 
     DisableSelectedState();
 
@@ -159,7 +159,7 @@ BOOL ConnectionPage::OnInitDialog()
     m_authPrefCombo.AddString(_T("PAP and CHAP"));
     m_authPrefCombo.SetCurSel(0);
 
-	return TRUE;  // return TRUE  unless you set the focus to a control
+    return TRUE;  // return TRUE  unless you set the focus to a control
 }
 
 // --------------------------------------------------------------------------
@@ -179,26 +179,23 @@ void ConnectionPage::PopulateDeviceNames(std::vector<std::string>& networkAdapte
     int size = (int)networkAdapters.size();
 
     // check for an empty list
-    if (size == 0)
-    {
+    if (size == 0) {
         m_deviceNameCombo.AddString(_T("No Device Detected"));
         m_deviceNameCombo.SetCurSel(0);
         return;
     }
 
     // add device names
-    for (int i = 0; i < size; i++)
-    {
+    for (int i = 0; i < size; i++) {
         m_deviceNameCombo.AddString(networkAdapters[i].c_str());
     }
 #else
-	// @@@@@@
+    // @@@@@@
     int size = (int)networkAdapters.size();
     // check for an empty list
-    if (0 != size)
-    {
-		TRACE(_T("%s\n"), networkAdapters[0].c_str());
-		m_deviceName = networkAdapters[0];
+    if (0 != size) {
+        TRACE(_T("%s\n"), networkAdapters[0].c_str());
+        m_deviceName = networkAdapters[0];
     }
 
 #endif
@@ -213,10 +210,9 @@ BOOL ConnectionPage::OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message)
 {
     CPoint point(GetMessagePos());
     ScreenToClient(&point);
-    
+
     // use wait cursor, if set, but not over the connect button
-    if (m_useWaitCursor && !(&m_connectButton == ChildWindowFromPoint(point)))
-    {
+    if (m_useWaitCursor && !(&m_connectButton == ChildWindowFromPoint(point))) {
         ::SetCursor(AfxGetApp()->LoadStandardCursor(IDC_WAIT));
         return TRUE;
     }
@@ -236,31 +232,28 @@ void ConnectionPage::OnDeviceSelect()
 #ifdef OPEN_PAGE_UI
     // get device name from combo box
     CString deviceName;
-    m_deviceNameCombo.GetWindowText(deviceName);   
+    m_deviceNameCombo.GetWindowText(deviceName);
 
     // device name required to connect
     if (deviceName.Compare("No Device Detected") == 0 ||
-        deviceName.Compare("") == 0)
-    {
+            deviceName.Compare("") == 0) {
         return;
     }
 
     // do nothing if device is already selected
-    if (deviceName.Compare(m_deviceName.c_str()) == 0)
-    {
+    if (deviceName.Compare(m_deviceName.c_str()) == 0) {
         return;
     }
 
     // disconnect existing conection
-    if (m_isSelected)
-    {
+    if (m_isSelected) {
         m_pCMDlg->DeselectDevice();
         return;
     }
 
     m_deviceName = deviceName;
 #else
-	m_deviceName = "Qualcomm Wireless Ethernet Adapter 7002 #8";
+    m_deviceName = "Qualcomm Wireless Ethernet Adapter 7002 #8";
 #endif
 
     // connect to device
@@ -278,7 +271,7 @@ void ConnectionPage::OnDeviceSelect(std::string& deviceName)
 // --------------------------------------------------------------------------
 // BuildDeviceNames
 //
-/// Populate the device name combo box with successful device names from 
+/// Populate the device name combo box with successful device names from
 /// previous sessions.
 // --------------------------------------------------------------------------
 void ConnectionPage::BuildDeviceNames()
@@ -290,30 +283,29 @@ void ConnectionPage::BuildDeviceNames()
 
 
     CString deviceNames;
-	deviceNames= pApp->GetProfileString(DEVICE_SECTION,DEVICE_ENTRY);
+    deviceNames= pApp->GetProfileString(DEVICE_SECTION,DEVICE_ENTRY);
 
     // add them to the device name combo box
 
-	char seps[] = ",";
-	char *token = NULL;
+    char seps[] = ",";
+    char *token = NULL;
 
-	int nLen = deviceNames.GetLength() + 1;
-	char *pszTempText = new char[nLen];
-	memset((void *)pszTempText, 0, nLen);
-	USES_CONVERSION; 
-	strcpy(pszTempText, W2A(deviceNames));
+    int nLen = deviceNames.GetLength() + 1;
+    char *pszTempText = new char[nLen];
+    memset((void *)pszTempText, 0, nLen);
+    USES_CONVERSION;
+    strcpy(pszTempText, W2A(deviceNames));
 
-	token = strtok(pszTempText, seps);
-	while (token != NULL)
-	{
-		/* While there are tokens in "string" */
-	//	TRACE("%s\n", token);
-		m_deviceNameCombo.AddString(A2W(token));
+    token = strtok(pszTempText, seps);
+    while (token != NULL) {
+        /* While there are tokens in "string" */
+        //	TRACE("%s\n", token);
+        m_deviceNameCombo.AddString(A2W(token));
 
-		/* Get next token: */
-		token = strtok(NULL, seps);
-	}
-	delete [] pszTempText;
+        /* Get next token: */
+        token = strtok(NULL, seps);
+    }
+    delete [] pszTempText;
 
 
 
@@ -341,11 +333,12 @@ void ConnectionPage::StoreDeviceNames(CString& deviceName)
     int pos = deviceNames.Find(deviceName);
 
     // if already at head of list, we're done
-    if (pos == 0) { return; }
+    if (pos == 0) {
+        return;
+    }
 
     // if in the list but not at the head, delete from list
-    if (pos != -1)
-    {
+    if (pos != -1) {
         deviceNames.Delete(pos,deviceName.GetLength());
     }
 
@@ -397,26 +390,26 @@ void ConnectionPage::EnableSelectedState()
     OnPasswordCheck();
     m_connectButton.EnableWindow(TRUE);
     m_batteryStatic.SetIcon((HICON)LoadImage(
-        AfxGetInstanceHandle(),
-			// @@
+                                AfxGetInstanceHandle(),
+                                // @@
 #if 0
-        MAKEINTRESOURCE(IDI_BATTERY_ICON),
+                                MAKEINTRESOURCE(IDI_BATTERY_ICON),
 #else
-        MAKEINTRESOURCE(IDI_ICON_HELP),
+                                MAKEINTRESOURCE(IDI_ICON_HELP),
 #endif
-        IMAGE_ICON,0,0,LR_LOADTRANSPARENT
-        ));
+                                IMAGE_ICON,0,0,LR_LOADTRANSPARENT
+                            ));
     m_batteryProgress.EnableWindow(TRUE);
     m_signalStatic.SetIcon((HICON)LoadImage(
-        AfxGetInstanceHandle(),
-			// @@
+                               AfxGetInstanceHandle(),
+                               // @@
 #if 0
-        MAKEINTRESOURCE(IDI_SIGNAL_ICON),
+                               MAKEINTRESOURCE(IDI_SIGNAL_ICON),
 #else
-        MAKEINTRESOURCE(IDI_ICON_HELP),
+                               MAKEINTRESOURCE(IDI_ICON_HELP),
 #endif
-        IMAGE_ICON,0,0,LR_LOADTRANSPARENT
-        ));
+                               IMAGE_ICON,0,0,LR_LOADTRANSPARENT
+                           ));
     m_signalProgress.EnableWindow(TRUE);
 #endif // OPEN_PAGE_UI
 
@@ -442,17 +435,16 @@ void ConnectionPage::DisableSelectedState()
 // @@@@@@
 #ifdef OPEN_PAGE_UI
     // disable started state if necessary
-    if (m_isConnected)
-    {
+    if (m_isConnected) {
         DisableConnectedState();
     }
 
     // set the device connected flag, clear the device name
     m_isSelected = false;
 
-	// @@
+    // @@
     //m_deviceName.clear();
-	m_deviceName.erase(m_deviceName.begin(), m_deviceName.end());
+    m_deviceName.erase(m_deviceName.begin(), m_deviceName.end());
 
     // enable/disable appropriate fields
     m_overrideGoup.EnableWindow(FALSE);
@@ -481,45 +473,44 @@ void ConnectionPage::DisableSelectedState()
     m_passwordEdit.EnableWindow(FALSE);
     m_connectButton.EnableWindow(FALSE);
     m_batteryStatic.SetIcon((HICON)LoadImage(
-        AfxGetInstanceHandle(),
-			// @@
+                                AfxGetInstanceHandle(),
+                                // @@
 #if 0
-        MAKEINTRESOURCE(IDI_DIM_BATTERY_ICON),
+                                MAKEINTRESOURCE(IDI_DIM_BATTERY_ICON),
 #else
-        MAKEINTRESOURCE(IDI_ICON_HELP),
+                                MAKEINTRESOURCE(IDI_ICON_HELP),
 #endif
-        IMAGE_ICON,0,0,LR_LOADTRANSPARENT
-        ));
+                                IMAGE_ICON,0,0,LR_LOADTRANSPARENT
+                            ));
     m_batteryProgress.SetPos(0);
     m_batteryProgress.EnableWindow(FALSE);
     m_extPowerStatic.ShowWindow(SW_HIDE);
     m_csStatic.ShowWindow(SW_HIDE);
     m_psStatic.ShowWindow(SW_HIDE);
     m_signalStatic.SetIcon((HICON)LoadImage(
-        AfxGetInstanceHandle(),
-			// @@
+                               AfxGetInstanceHandle(),
+                               // @@
 #if 0
-        MAKEINTRESOURCE(IDI_DIM_SIGNAL_ICON),
+                               MAKEINTRESOURCE(IDI_DIM_SIGNAL_ICON),
 #else
-        MAKEINTRESOURCE(IDI_ICON_HELP),
+                               MAKEINTRESOURCE(IDI_ICON_HELP),
 #endif
-        IMAGE_ICON,0,0,LR_LOADTRANSPARENT
-        ));
+                               IMAGE_ICON,0,0,LR_LOADTRANSPARENT
+                           ));
     m_signalProgress.SetPos(0);
     m_signalProgress.EnableWindow(FALSE);
 #else
     // disable started state if necessary
-    if (m_isConnected)
-    {
+    if (m_isConnected) {
         DisableConnectedState();
     }
 
     // set the device connected flag, clear the device name
     m_isSelected = false;
 
-	// @@
+    // @@
     //m_deviceName.clear();
-	m_deviceName.erase(m_deviceName.begin(), m_deviceName.end());
+    m_deviceName.erase(m_deviceName.begin(), m_deviceName.end());
 #endif
 }
 
@@ -536,9 +527,9 @@ std::string ConnectionPage::BuildDMSPowerStatusString()
     std::stringstream stream;
 
     // msg type
-    stream << "QMI_DMS_GET_POWER_STATE_REQ" << std::endl 
+    stream << "QMI_DMS_GET_POWER_STATE_REQ" << std::endl
            << "{}";
-    
+
     return stream.str();
 }
 
@@ -555,9 +546,9 @@ std::string ConnectionPage::BuildDMSEventReportString()
     std::stringstream stream;
 
     // msg type
-    stream << "QMI_DMS_SET_EVENT_REPORT_REQ" << std::endl 
+    stream << "QMI_DMS_SET_EVENT_REPORT_REQ" << std::endl
            << "{" << std::endl;
-    
+
     // power state reporting mode
     stream << "  PowerStateReportMode " << 1 << std::endl;
 
@@ -583,9 +574,9 @@ std::string ConnectionPage::BuildNASSignalStrengthString()
     std::stringstream stream;
 
     // msg type
-    stream << "QMI_NAS_GET_SIGNAL_STRENGTH_REQ" << std::endl 
+    stream << "QMI_NAS_GET_SIGNAL_STRENGTH_REQ" << std::endl
            << "{}" << std::endl;
-    
+
     return stream.str();
 }
 
@@ -602,9 +593,9 @@ std::string ConnectionPage::BuildNASEventReportString()
     std::stringstream stream;
 
     // msg type
-    stream << "QMI_NAS_SET_EVENT_REPORT_REQ" << std::endl 
+    stream << "QMI_NAS_SET_EVENT_REPORT_REQ" << std::endl
            << "{" << std::endl;
-    
+
     // signal strength reporting mode
     stream << "  ReportSigStrength " << 1 << std::endl;
 
@@ -633,9 +624,9 @@ std::string ConnectionPage::BuildNASServingSystemString()
     std::stringstream stream;
 
     // msg type
-    stream << "QMI_NAS_GET_SERVING_SYSTEM_REQ" << std::endl 
+    stream << "QMI_NAS_GET_SERVING_SYSTEM_REQ" << std::endl
            << "{}";
-    
+
     return stream.str();
 }
 
@@ -693,56 +684,49 @@ void ConnectionPage::ProcessPowerState(uint8 powerStatus,uint8 batteryLvl)
     m_batteryProgress.SetPos(batteryLvl);
 
     // show/hide external power source icon
-    if (powerStatus & PWR_EXT)
-    {
+    if (powerStatus & PWR_EXT) {
         m_extPowerStatic.ShowWindow(SW_SHOW);
-    }
-    else
-    {
+    } else {
         m_extPowerStatic.ShowWindow(SW_HIDE);
     }
 
     // set battery connected/disconnected icon
-    if (powerStatus & PWR_BAT)
-    {
+    if (powerStatus & PWR_BAT) {
         m_batteryStatic.SetIcon((HICON)LoadImage(
-            AfxGetInstanceHandle(),
-			// @@
+                                    AfxGetInstanceHandle(),
+                                    // @@
 #if 0
-            MAKEINTRESOURCE(IDI_BATTERY_ICON),
+                                    MAKEINTRESOURCE(IDI_BATTERY_ICON),
 #else
-        MAKEINTRESOURCE(IDI_ICON_HELP),
+                                    MAKEINTRESOURCE(IDI_ICON_HELP),
 #endif
-            IMAGE_ICON,0,0,LR_LOADTRANSPARENT
-            ));
-    }
-    else
-    {
+                                    IMAGE_ICON,0,0,LR_LOADTRANSPARENT
+                                ));
+    } else {
         m_batteryStatic.SetIcon((HICON)LoadImage(
-            AfxGetInstanceHandle(),
-			// @@
+                                    AfxGetInstanceHandle(),
+                                    // @@
 #if 0
-            MAKEINTRESOURCE(IDI_NO_BATTERY_ICON),
+                                    MAKEINTRESOURCE(IDI_NO_BATTERY_ICON),
 #else
-        MAKEINTRESOURCE(IDI_ICON_HELP),
+                                    MAKEINTRESOURCE(IDI_ICON_HELP),
 #endif
-            IMAGE_ICON,0,0,LR_LOADTRANSPARENT
-            ));
+                                    IMAGE_ICON,0,0,LR_LOADTRANSPARENT
+                                ));
     }
 
     // set battery connected/disconnected icon
-    if (powerStatus & PWR_CHG)
-    {
+    if (powerStatus & PWR_CHG) {
         m_batteryStatic.SetIcon((HICON)LoadImage(
-            AfxGetInstanceHandle(),
-			// @@
+                                    AfxGetInstanceHandle(),
+                                    // @@
 #if 0
-            MAKEINTRESOURCE(IDI_CHG_BATTERY_ICON),
+                                    MAKEINTRESOURCE(IDI_CHG_BATTERY_ICON),
 #else
-        MAKEINTRESOURCE(IDI_ICON_HELP),
+                                    MAKEINTRESOURCE(IDI_ICON_HELP),
 #endif
-            IMAGE_ICON,0,0,LR_LOADTRANSPARENT
-            ));
+                                    IMAGE_ICON,0,0,LR_LOADTRANSPARENT
+                                ));
     }
 #endif // OPEN_PAGE_UI
 }
@@ -851,22 +835,16 @@ void ConnectionPage::ProcessNASServingSystemInd(NASServingSystemIndRCP indRCP)
 void ConnectionPage::ProcessAttachState(uint8 csAttachState,uint8 psAttachState)
 {
     // cs attach state
-    if (csAttachState == 1)
-    {
+    if (csAttachState == 1) {
         m_csStatic.ShowWindow(SW_SHOW);
-    }
-    else
-    {
+    } else {
         m_csStatic.ShowWindow(SW_HIDE);
     }
 
     // ps attach state
-    if (psAttachState == 1)
-    {
+    if (psAttachState == 1) {
         m_psStatic.ShowWindow(SW_SHOW);
-    }
-    else
-    {
+    } else {
         m_psStatic.ShowWindow(SW_HIDE);
     }
 }
@@ -882,9 +860,8 @@ void ConnectionPage::ProcessWDSPktSrvcStatusInd(WDSPktSrvcStatusIndRCP indRCP)
 {
     // disable connected state on disconnection with no reconfigure required
     if (m_isConnected &&
-        indRCP->GetConnectionStatus() == 1 && 
-        indRCP->GetReconfigurationRequired() == 0)
-    {
+            indRCP->GetConnectionStatus() == 1 &&
+            indRCP->GetReconfigurationRequired() == 0) {
         DisableConnectedState();
     }
 }
@@ -901,7 +878,7 @@ void ConnectionPage::ProcessWDSGetProfileListRsp(WDSGetProfileListRspRCP rspRCP)
 // @@@@@@
 #ifdef OPEN_PAGE_UI
     // populate profile id dropdown
-    std::vector<ProfileListInstance*> profileList = 
+    std::vector<ProfileListInstance*> profileList =
         rspRCP->GetProfileListInstances();
 
     // clear the current entries
@@ -909,28 +886,25 @@ void ConnectionPage::ProcessWDSGetProfileListRsp(WDSGetProfileListRspRCP rspRCP)
 
     // add reported profiles
     size_t numProfiles = profileList.size();
-    for (uint32 i = 0; i < numProfiles; i++)
-    {
+    for (uint32 i = 0; i < numProfiles; i++) {
         // filter by type
-        if (profileList[i]->GetProfileType() == 0)
-        {
+        if (profileList[i]->GetProfileType() == 0) {
             int idx = profileList[i]->GetProfileIndex();
 
             // build string for combo box
             std::stringstream stream;
-            stream << idx << ": " << profileList[i]->GetProfileName() 
+            stream << idx << ": " << profileList[i]->GetProfileName()
                    << std::ends;
 
             // insert string in combo box
             int result = m_3gppProfileIdCombo.AddString(stream.str().c_str());
 
-            if (result != LB_ERR)
-            {
+            if (result != LB_ERR) {
                 // set index as item data
                 m_3gppProfileIdCombo.SetItemData(result,idx);
             }
         }
-     }
+    }
 #endif
 }
 
@@ -1071,24 +1045,17 @@ void ConnectionPage::OnConnect()
     m_connectButton.GetWindowText(text);
 
     // determine action by button label
-    if (text.Compare(_T("Connect")) == 0)
-    {
+    if (text.Compare(_T("Connect")) == 0) {
         // build start network interface string, enable abort
         msgStr = BuildWDSStartString();
         EnableAbortState();
-    }
-    else if (text.Compare(_T("Abort")) == 0)
-    {
+    } else if (text.Compare(_T("Abort")) == 0) {
         // build abort string
         msgStr = BuildWDSAbortString();
-    }
-    else if (text.Compare(_T("Disconnect")) == 0)
-    {
+    } else if (text.Compare(_T("Disconnect")) == 0) {
         // build stop network interface string
         msgStr = BuildWDSStopString();
-    }
-    else
-    {
+    } else {
         AfxMessageBox(_T("Connect button has invalid text."));
     }
 
@@ -1105,40 +1072,33 @@ void ConnectionPage::OnConnectEx(NdisStateRet ndisStatus, StConnProfile *profile
 {
     std::string msgStr;
 
-	//if (NDIS_STATE_ABORT == ndisStatus) {
-	//}
+    //if (NDIS_STATE_ABORT == ndisStatus) {
+    //}
 
     // determine action by button label
-    if (NDIS_STATE_DISCONNECT == ndisStatus)	// 如果当前是Disconnect的话，可以连接
-    {
-		// 取得当前的profile
-		if (NULL != profile) {
-			memcpy((void *)(&m_NdisProfile), (void *)profile, sizeof(StConnProfile));
-		}
-		OnDeviceSelect(m_deviceName);
+    if (NDIS_STATE_DISCONNECT == ndisStatus) {	// 如果当前是Disconnect的话，可以连接
+        // 取得当前的profile
+        if (NULL != profile) {
+            memcpy((void *)(&m_NdisProfile), (void *)profile, sizeof(StConnProfile));
+        }
+        OnDeviceSelect(m_deviceName);
 
         // build start network interface string, enable abort
         msgStr = BuildWDSStartString();
         EnableAbortState();
 
-		// @@@@@@
-		if (!bIsNotFirstReportSpeed)
-			m_pCMDlg->m_statisticsPage.EnableSelectedState();
-		else
-			bIsNotFirstReportSpeed = FALSE;
-    }
-    else if (NDIS_STATE_ABORT == ndisStatus)	// 如果当前是Connect的话，可以Abort
-    {
+        // @@@@@@
+        if (!bIsNotFirstReportSpeed)
+            m_pCMDlg->m_statisticsPage.EnableSelectedState();
+        else
+            bIsNotFirstReportSpeed = FALSE;
+    } else if (NDIS_STATE_ABORT == ndisStatus) {	// 如果当前是Connect的话，可以Abort
         // build abort string
         msgStr = BuildWDSAbortString();
-    }
-    else if (NDIS_STATE_CONNECT == ndisStatus)	// 如果当前是Connect的话，可以断开
-    {
+    } else if (NDIS_STATE_CONNECT == ndisStatus) {	// 如果当前是Connect的话，可以断开
         // build stop network interface string
         msgStr = BuildWDSStopString();
-    }
-    else
-    {
+    } else {
         AfxMessageBox(_T("Connect button has invalid text."));
     }
 
@@ -1165,145 +1125,139 @@ std::string ConnectionPage::BuildWDSStartString()
            << "{" << std::endl;
 
     // technology preference
-    if (m_techPrefCheck.GetCheck() == BST_CHECKED)
-    {
+    if (m_techPrefCheck.GetCheck() == BST_CHECKED) {
         int idx = m_techPrefCombo.GetCurSel();
         stream << "  TechPref " << (int)(idx + 1) << std::endl;
     }
 
     // 3gpp profile id
-    if (m_3gppProfileIdCheck.GetCheck() == BST_CHECKED)
-    {
+    if (m_3gppProfileIdCheck.GetCheck() == BST_CHECKED) {
         int idx = m_3gppProfileIdCombo.GetCurSel();
-        if (idx != CB_ERR)
-        {
-            stream << "  ProfileId " << (int)m_3gppProfileIdCombo.GetItemData(idx) 
+        if (idx != CB_ERR) {
+            stream << "  ProfileId " << (int)m_3gppProfileIdCombo.GetItemData(idx)
                    << std::endl;
         }
     }
 
     // primary dns
-    if (m_primaryDnsCheck.GetCheck() == BST_CHECKED)
-    {
+    if (m_primaryDnsCheck.GetCheck() == BST_CHECKED) {
         CString primaryDns;
         m_primaryDnsIpAddr.GetWindowText(primaryDns);
         stream << "  PrimaryDnsPref " << primaryDns << std::endl;
     }
 
     // secondary dns
-    if (m_secondaryDnsCheck.GetCheck() == BST_CHECKED)
-    {
+    if (m_secondaryDnsCheck.GetCheck() == BST_CHECKED) {
         CString secondaryDns;
         m_secondaryDnsIpAddr.GetWindowText(secondaryDns);
         stream << "  SecondaryDnsPref " << secondaryDns << std::endl;
     }
 
     // primary Nbns
-    if (m_primaryNbnsCheck.GetCheck() == BST_CHECKED)
-    {
+    if (m_primaryNbnsCheck.GetCheck() == BST_CHECKED) {
         CString primaryNbns;
         m_primaryNbnsIpAddr.GetWindowText(primaryNbns);
         stream << "  PrimaryNbnsPref " << primaryNbns << std::endl;
     }
 
     // secondary nbns
-    if (m_secondaryNbnsCheck.GetCheck() == BST_CHECKED)
-    {
+    if (m_secondaryNbnsCheck.GetCheck() == BST_CHECKED) {
         CString secondaryNbns;
         m_secondaryNbnsIpAddr.GetWindowText(secondaryNbns);
         stream << "  SecondaryNbnsPref " << secondaryNbns << std::endl;
     }
 
     // apn name
-    if (m_apnNameCheck.GetCheck() == BST_CHECKED)
-    {
-	// @@@@@@
-	#if 0
+    if (m_apnNameCheck.GetCheck() == BST_CHECKED) {
+        // @@@@@@
+#if 0
         CString apnName;
         m_apnNameEdit.GetWindowText(apnName);
 
-		apnName.TrimRight().TrimLeft();
-		apnName.TrimRight();
-		apnName.TrimLeft();
-        if (apnName == "") { apnName = "NULL"; }
-	#else
-		char szText[MAX_PATH] = { 0 };
-		::SendMessage(m_apnNameEdit.m_hWnd, WM_GETTEXT, (WPARAM)MAX_PATH, (LPARAM)szText);
-	
-		if (0 == strcmp(szText, "")) {
-			strcpy(szText, "NULL");
-		}
-	#endif
+        apnName.TrimRight().TrimLeft();
+        apnName.TrimRight();
+        apnName.TrimLeft();
+        if (apnName == "") {
+            apnName = "NULL";
+        }
+#else
+        char szText[MAX_PATH] = { 0 };
+        ::SendMessage(m_apnNameEdit.m_hWnd, WM_GETTEXT, (WPARAM)MAX_PATH, (LPARAM)szText);
+
+        if (0 == strcmp(szText, "")) {
+            strcpy(szText, "NULL");
+        }
+#endif
 
         stream << "  ApnName " << szText << std::endl;
     }
 
     // ip address
-    if (m_ipAddressCheck.GetCheck() == BST_CHECKED)
-    {
+    if (m_ipAddressCheck.GetCheck() == BST_CHECKED) {
         CString ipAddress;
         m_ipAddressIpAddr.GetWindowText(ipAddress);
         stream << "  Ipv4AddrPref " << ipAddress << std::endl;
     }
 
     // authentication preference
-    if (m_authPrefCheck.GetCheck() == BST_CHECKED)
-    {
-	// @@@@@@
-	#if 0
+    if (m_authPrefCheck.GetCheck() == BST_CHECKED) {
+        // @@@@@@
+#if 0
         int idx = m_authPrefCombo.GetCurSel();
-	#else
-		int idx = 1;
+#else
+        int idx = 1;
         stream << "  AuthPref " << (int)(idx + 1) << std::endl;
-	#endif
+#endif
     }
 
     // username
-    if (m_usernameCheck.GetCheck() == BST_CHECKED)
-    {
-	// @@@@@@
-	#if 0
+    if (m_usernameCheck.GetCheck() == BST_CHECKED) {
+        // @@@@@@
+#if 0
         CString username;
         m_usernameEdit.GetWindowText(username);
 
         username.TrimRight().TrimLeft();
-		username.TrimRight();
-		username.TrimLeft();
+        username.TrimRight();
+        username.TrimLeft();
 
-        if (username == "") { username = "NULL"; }
-	#else
-		char szText[MAX_PATH] = { 0 };
-		::SendMessage(m_usernameEdit.m_hWnd, WM_GETTEXT, (WPARAM)MAX_PATH, (LPARAM)szText);
-	
-		if (0 == strcmp(szText, "")) {
-			strcpy(szText, "NULL");
-		}
-	#endif
+        if (username == "") {
+            username = "NULL";
+        }
+#else
+        char szText[MAX_PATH] = { 0 };
+        ::SendMessage(m_usernameEdit.m_hWnd, WM_GETTEXT, (WPARAM)MAX_PATH, (LPARAM)szText);
+
+        if (0 == strcmp(szText, "")) {
+            strcpy(szText, "NULL");
+        }
+#endif
 
         stream << "  Username " << username << std::endl;
     }
 
     // password
-    if (m_passwordCheck.GetCheck() == BST_CHECKED)
-    {
+    if (m_passwordCheck.GetCheck() == BST_CHECKED) {
 
-	#if 0
+#if 0
         CString password;
         m_passwordEdit.GetWindowText(password);
 
         password.TrimRight().TrimLeft();
-		password.TrimRight();
-		password.TrimLeft();
+        password.TrimRight();
+        password.TrimLeft();
 
-        if (password == "") { password = "NULL"; }
-	#else
-		char szText[MAX_PATH] = { 0 };
-		::SendMessage(m_passwordEdit.m_hWnd, WM_GETTEXT, (WPARAM)MAX_PATH, (LPARAM)szText);
+        if (password == "") {
+            password = "NULL";
+        }
+#else
+        char szText[MAX_PATH] = { 0 };
+        ::SendMessage(m_passwordEdit.m_hWnd, WM_GETTEXT, (WPARAM)MAX_PATH, (LPARAM)szText);
 
-		if (0 == strcmp(szText, "")) {
-			strcpy(szText, "NULL");
-		}
-	#endif
+        if (0 == strcmp(szText, "")) {
+            strcpy(szText, "NULL");
+        }
+#endif
 
         stream << "  Password " << password << std::endl;
     }
@@ -1317,7 +1271,7 @@ std::string ConnectionPage::BuildWDSStartString()
 {
     std::stringstream stream;
 
-	int idx = 0;
+    int idx = 0;
 
     // msg type
     stream << "QMI_WDS_START_NETWORK_INTERFACE_REQ" << std::endl
@@ -1328,57 +1282,51 @@ std::string ConnectionPage::BuildWDSStartString()
     stream << "  TechPref " << (int)(idx + 1) << std::endl;
 
     // 3gpp profile id
-	// ...
+    // ...
 
     // primary dns
-	// ...
+    // ...
 
     // secondary dns
-	// ...
+    // ...
 
     // primary Nbns
-	// ...
+    // ...
 
     // secondary nbns
-	// ...
+    // ...
 
     // apn name
 
-USES_CONVERSION;
+    USES_CONVERSION;
 
-    if (0 == strcmp(W2A(m_NdisProfile.szAPN), "")) 
-	{ 
-		wcscpy(m_NdisProfile.szAPN, _T("NULL")); 
-	}
-	stream << "  ApnName " << W2A(m_NdisProfile.szAPN) << std::endl;
+    if (0 == strcmp(W2A(m_NdisProfile.szAPN), "")) {
+        wcscpy(m_NdisProfile.szAPN, _T("NULL"));
+    }
+    stream << "  ApnName " << W2A(m_NdisProfile.szAPN) << std::endl;
 
     // ip address
     // ...
 
     // authentication preference
-	idx = 0;
-	if(m_NdisProfile.AuthProtocol == AUTHPROTOCOL_CHAP)
-	{
-		stream << "  AuthPref " << (int)(idx + 2) << std::endl;
-	}
-	else 
-	{
-		stream << "  AuthPref " << (int)(idx + 1) << std::endl;
-	}
+    idx = 0;
+    if(m_NdisProfile.AuthProtocol == AUTHPROTOCOL_CHAP) {
+        stream << "  AuthPref " << (int)(idx + 2) << std::endl;
+    } else {
+        stream << "  AuthPref " << (int)(idx + 1) << std::endl;
+    }
 
     // username
-    if (0 == strcmp(W2A(m_NdisProfile.szUserName) , "")) 
-	{ 
-		wcscpy(m_NdisProfile.szUserName, _T("NULL")); 
-	}
-	stream << "  Username " << W2A(m_NdisProfile.szUserName) << std::endl;
+    if (0 == strcmp(W2A(m_NdisProfile.szUserName) , "")) {
+        wcscpy(m_NdisProfile.szUserName, _T("NULL"));
+    }
+    stream << "  Username " << W2A(m_NdisProfile.szUserName) << std::endl;
 
     // password
-    if (0 == strcmp(W2A(m_NdisProfile.szPassword) , "")) 
-	{ 
-		wcscpy(m_NdisProfile.szPassword, _T("NULL")); 
-	}
-	stream << "  Password " << W2A(m_NdisProfile.szPassword) << std::endl;
+    if (0 == strcmp(W2A(m_NdisProfile.szPassword) , "")) {
+        wcscpy(m_NdisProfile.szPassword, _T("NULL"));
+    }
+    stream << "  Password " << W2A(m_NdisProfile.szPassword) << std::endl;
 
     stream << "}";
 
@@ -1424,7 +1372,7 @@ std::string ConnectionPage::BuildWDSStopString()
     // msg type
     stream << "QMI_WDS_STOP_NETWORK_INTERFACE_REQ" << std::endl
            << "{" << std::endl;
-    
+
     // packet data handle
     stream << "  PktDataHandle " << m_pktDataHandle << std::endl
            << "}";
@@ -1478,12 +1426,12 @@ void ConnectionPage::EnableConnectedState(uint32 pktDataHandle)
     m_passwordEdit.EnableWindow(FALSE);
     m_connectButton.SetWindowText(_T("Disconnect"));
 #else
-	//m_pCMDlg->m_pTabDialog->m_btn4.SetWindowText(_T("Disconnect"));
+    //m_pCMDlg->m_pTabDialog->m_btn4.SetWindowText(_T("Disconnect"));
 
 //	CSetupDlg* pSetupWnd = (CSetupDlg*)(m_pCMDlg->m_pSetupDlg);
 
 
- 	m_pCMDlg->m_pConnectDlg->PostMessage(WM_UPDATE_CONNECT_STATE, NDIS_STATE_CONNECT, NULL);
+    m_pCMDlg->m_pConnectDlg->PostMessage(WM_UPDATE_CONNECT_STATE, NDIS_STATE_CONNECT, NULL);
 #endif
 }
 
@@ -1527,11 +1475,11 @@ void ConnectionPage::EnableAbortState()
     m_passwordEdit.EnableWindow(FALSE);
     m_connectButton.SetWindowText(_T("Abort"));
 #else
-	//m_pCMDlg->m_pTabDialog->m_btn4.SetWindowText(_T("Abort"));
+    //m_pCMDlg->m_pTabDialog->m_btn4.SetWindowText(_T("Abort"));
 
 //	CSetupDlg* pSetupWnd = (CSetupDlg*)(m_pCMDlg->m_pSetupDlg);
 
- m_pCMDlg->m_pConnectDlg->PostMessage(WM_UPDATE_CONNECT_STATE, NDIS_STATE_ABORT, NULL);
+    m_pCMDlg->m_pConnectDlg->PostMessage(WM_UPDATE_CONNECT_STATE, NDIS_STATE_ABORT, NULL);
 #endif
 }
 
@@ -1581,11 +1529,11 @@ void ConnectionPage::DisableConnectedState()
     OnPasswordCheck();
     m_connectButton.SetWindowText(_T("Connect"));
 #else
-	//m_pCMDlg->m_pTabDialog->m_btn4.SetWindowText(_T("Connect"));
+    //m_pCMDlg->m_pTabDialog->m_btn4.SetWindowText(_T("Connect"));
 
 //	CSetupDlg* pSetupWnd = (CSetupDlg*)(m_pCMDlg->m_pSetupDlg);
 
 // 	pInternetWnd->PostMessage(WM_UPDATE_CONNECT_STATE, NDIS_STATE_DISCONNECT, NULL);
-	m_pCMDlg->m_pConnectDlg->PostMessage(WM_UPDATE_CONNECT_STATE, NDIS_STATE_DISCONNECT, NULL);
+    m_pCMDlg->m_pConnectDlg->PostMessage(WM_UPDATE_CONNECT_STATE, NDIS_STATE_DISCONNECT, NULL);
 #endif
 }

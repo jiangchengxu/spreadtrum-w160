@@ -14,31 +14,31 @@ class CPwdConfirmDlg : public CDialog
 {
 // Construction
 public:
-	CPwdConfirmDlg(CWnd* pParent = NULL);   // standard constructor
+    CPwdConfirmDlg(CWnd* pParent = NULL);   // standard constructor
 
 // Dialog Data
-	//{{AFX_DATA(CPwdConfirmDlg)
-	enum { IDD = IDD_DIALOG_INTERNET_PWDCONFIRM };
-	CString	m_strCurrPwd;
-	//}}AFX_DATA
+    //{{AFX_DATA(CPwdConfirmDlg)
+    enum { IDD = IDD_DIALOG_INTERNET_PWDCONFIRM };
+    CString	m_strCurrPwd;
+    //}}AFX_DATA
 
 
 // Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(CPwdConfirmDlg)
-	protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	//}}AFX_VIRTUAL
+    // ClassWizard generated virtual function overrides
+    //{{AFX_VIRTUAL(CPwdConfirmDlg)
+protected:
+    virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+    //}}AFX_VIRTUAL
 
 // Implementation
 protected:
 
-	// Generated message map functions
-	//{{AFX_MSG(CPwdConfirmDlg)
-	virtual BOOL OnInitDialog();
-	virtual void OnOK();
-	//}}AFX_MSG
-	DECLARE_MESSAGE_MAP()
+    // Generated message map functions
+    //{{AFX_MSG(CPwdConfirmDlg)
+    virtual BOOL OnInitDialog();
+    virtual void OnOK();
+    //}}AFX_MSG
+    DECLARE_MESSAGE_MAP()
 };
 
 //{{AFX_INSERT_LOCATION}}

@@ -42,7 +42,7 @@ static MessageCreator<WDSGetCurrentChannelRateRsp> RspUint32Creator(WDSGetCurren
 //
 /// Constructor for WDSGetCurrentChannelRateReq.
 // --------------------------------------------------------------------------
-WDSGetCurrentChannelRateReq::WDSGetCurrentChannelRateReq() : 
+WDSGetCurrentChannelRateReq::WDSGetCurrentChannelRateReq() :
     Message(QMUX_TYPE_WDS,QMI_WDS_GET_CURRENT_CHANNEL_RATE_MSG,QMI_CTL_FLAG_TYPE_CMD)
 {}
 
@@ -136,38 +136,32 @@ WDSGetCurrentChannelRateRsp::~WDSGetCurrentChannelRateRsp()
 bool WDSGetCurrentChannelRateRsp::Unpack(MsgBuf& msgBuf)
 {
     // call the base unpack
-    if (!Message::Unpack(msgBuf))
-    {
+    if (!Message::Unpack(msgBuf)) {
         return false;
     }
-    
+
     // validate message length
-    if (m_result == QMI_RESULT_SUCCESS)
-    {
+    if (m_result == QMI_RESULT_SUCCESS) {
         // mandatory tlvs
-        if (m_length != 26)
-        {
+        if (m_length != 26) {
             std::stringstream stream;
             stream << _T("Warning: unable to unpack message:") << std::endl
-                << _T("Expected message length is 26 bytes, unpacked length is ")
-                << m_length << _T(" bytes.") << std::endl 
-                << std::endl;
+                   << _T("Expected message length is 26 bytes, unpacked length is ")
+                   << m_length << _T(" bytes.") << std::endl
+                   << std::endl;
             MessageManager::GetInstance().ReportStatus(stream.str(),ST_WARNING);
-            return false; 
+            return false;
         }
-    }
-    else
-    {
+    } else {
         // only result code tlv on failure
-        if (m_length != 7) 
-        {
+        if (m_length != 7) {
             std::stringstream stream;
             stream << _T("Warning: unable to unpack message:") << std::endl
-                << _T("Expected message length is 7 bytes, unpacked length is ")
-                << m_length << _T(" bytes.") << std::endl 
-                << std::endl;
+                   << _T("Expected message length is 7 bytes, unpacked length is ")
+                   << m_length << _T(" bytes.") << std::endl
+                   << std::endl;
             MessageManager::GetInstance().ReportStatus(stream.str(),ST_WARNING);
-            return false; 
+            return false;
         }
     }
 
@@ -185,8 +179,7 @@ bool WDSGetCurrentChannelRateRsp::Unpack(MsgBuf& msgBuf)
 Message::Uint8UnpackerMap& WDSGetCurrentChannelRateRsp::GetUnpackerMap()
 {
     static Uint8UnpackerMap UUMap;
-    if (UUMap.empty())
-    {
+    if (UUMap.empty()) {
         bool bSuccess = UUMap.insert(UUPair(RESULT_CODE_TYPE,(Unpacker)UnpackResultCode)).second;
         assert(bSuccess);
         bSuccess = UUMap.insert(UUPair(CHANNEL_RATE_TYPE,(Unpacker)UnpackChannelRate)).second;
@@ -209,12 +202,11 @@ bool WDSGetCurrentChannelRateRsp::UnpackResultCode(MsgBuf& msgBuf)
     m_resultCodeType = RESULT_CODE_TYPE;
 
     m_resultCodeLen = msgBuf.GetWord();
-    if (m_resultCodeLen != 4) 
-    {
+    if (m_resultCodeLen != 4) {
         std::stringstream stream;
         stream << _T("Warning: unable to unpack message:") << std::endl
                << _T("Expected Result Code length is 4 bytes, unpacked length is ")
-               << m_resultCodeLen << _T(" bytes.") << std::endl 
+               << m_resultCodeLen << _T(" bytes.") << std::endl
                << std::endl;
         MessageManager::GetInstance().ReportStatus(stream.str(),ST_WARNING);
         return false;
@@ -240,12 +232,11 @@ bool WDSGetCurrentChannelRateRsp::UnpackChannelRate(MsgBuf& msgBuf)
     m_channelRateType = CHANNEL_RATE_TYPE;
 
     m_channelRateLen = msgBuf.GetWord();
-    if (m_channelRateLen != 16)
-    {
+    if (m_channelRateLen != 16) {
         std::stringstream stream;
         stream << _T("Warning: unable to unpack message:") << std::endl
                << _T("Expected Channel Rate length is 16 bytes, unpacked length is ")
-               << m_channelRateLen << _T(" bytes.") << std::endl 
+               << m_channelRateLen << _T(" bytes.") << std::endl
                << std::endl;
         MessageManager::GetInstance().ReportStatus(stream.str(),ST_WARNING);
         return false;
@@ -257,8 +248,7 @@ bool WDSGetCurrentChannelRateRsp::UnpackChannelRate(MsgBuf& msgBuf)
     m_maxChannelRxRate = msgBuf.GetDWord();
 
     // all tlvs are mandatory, so we should be at end of buffer
-    if (!msgBuf.EOB())
-    {
+    if (!msgBuf.EOB()) {
         std::stringstream stream;
         stream << _T("Warning: unable to unpack message:") << std::endl
                << _T("Finished unpacking message but end of buffer not reached")
@@ -284,8 +274,7 @@ void WDSGetCurrentChannelRateRsp::Print(std::ostream& stream)
            << _T("  ErrorCode ") << (int)m_error << std::endl;
 
     // only print other mandatory tlvs if result code success
-    if (m_result == QMI_RESULT_SUCCESS)
-    {
+    if (m_result == QMI_RESULT_SUCCESS) {
         stream << _T("  CurrentChannelTXRate ") << (uint32)m_currentChannelTxRate << std::endl
                << _T("  CurrentChannelRXRate ") << (uint32)m_currentChannelRxRate << std::endl
                << _T("  MaxChannelTXRate ") << (uint32)m_maxChannelTxRate << std::endl

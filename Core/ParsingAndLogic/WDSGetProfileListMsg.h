@@ -24,9 +24,9 @@
 // --------------------------------------------------------------------------
 // Unique identifiers for WDSGetProfileListMsg types
 // --------------------------------------------------------------------------
-static const uint32 WDSGetProfileListReqUID = 
+static const uint32 WDSGetProfileListReqUID =
     (QMUX_TYPE_WDS << 24 | QMI_CTL_FLAG_TYPE_CMD << 16 | QMI_WDS_GET_PROFILE_LIST_MSG);
-static const uint32 WDSGetProfileListRspUID = 
+static const uint32 WDSGetProfileListRspUID =
     (QMUX_TYPE_WDS << 24 | QMI_CTL_FLAG_TYPE_RSP << 16 | QMI_WDS_GET_PROFILE_LIST_MSG);
 
 // --------------------------------------------------------------------------
@@ -49,19 +49,27 @@ public:
         uint8 profileIndex,
         uint8 profileNameLen,
         std::string profileName
-    ) : 
-        m_profileType(profileType), 
-        m_profileIndex(profileIndex), 
+    ) :
+        m_profileType(profileType),
+        m_profileIndex(profileIndex),
         m_profileNameLen(profileNameLen),
         m_profileName(profileName)
     {}
 
     ~ProfileListInstance() {}
 
-    uint8 GetProfileType() { return m_profileType; }
-    uint8 GetProfileIndex() { return m_profileIndex; }
-    uint8 GetProfileNameLen() { return m_profileNameLen; }
-    std::string GetProfileName() { return m_profileName; }
+    uint8 GetProfileType() {
+        return m_profileType;
+    }
+    uint8 GetProfileIndex() {
+        return m_profileIndex;
+    }
+    uint8 GetProfileNameLen() {
+        return m_profileNameLen;
+    }
+    std::string GetProfileName() {
+        return m_profileName;
+    }
 
 private:
     uint8 m_profileType;
@@ -73,7 +81,7 @@ private:
 // --------------------------------------------------------------------------
 // WDSGetProfileListReq
 //
-/// This class represents a QMI_WDS_GET_PROFILE_LIST_REQ message which 
+/// This class represents a QMI_WDS_GET_PROFILE_LIST_REQ message which
 /// retrieves a list of configured profiles present on the wireless device.
 // --------------------------------------------------------------------------
 class WDSGetProfileListReq : public Message
@@ -86,7 +94,9 @@ public:
 protected:
     WDSGetProfileListReq();
     virtual bool BuildMsgBuf();
-    virtual bool Unpack(MsgBuf& msgBuf) { return false; }
+    virtual bool Unpack(MsgBuf& msgBuf) {
+        return false;
+    }
 };
 
 
@@ -94,8 +104,8 @@ protected:
 // WDSGetProfileListRsp
 //
 /// This class represents a QMI_WDS_GET_PROFILE_LIST_RESP message which is the
-/// response to a request for a list of configured profiles present on the 
-/// wireless device. 
+/// response to a request for a list of configured profiles present on the
+/// wireless device.
 // --------------------------------------------------------------------------
 
 class WDSGetProfileListRsp : public Message
@@ -109,18 +119,32 @@ public:
 
     virtual void Print(std::ostream& stream);
 
-    virtual uint16 GetResult() { return m_result; }
-    virtual uint16 GetError() { return m_error; }
+    virtual uint16 GetResult() {
+        return m_result;
+    }
+    virtual uint16 GetError() {
+        return m_error;
+    }
 
-    virtual bool IsProfileList() { return m_profileListType == PROFILE_LIST_TYPE; }
+    virtual bool IsProfileList() {
+        return m_profileListType == PROFILE_LIST_TYPE;
+    }
 
-    virtual const uint8 GetNumInstances() { return m_numInstances; }
-    virtual const std::vector<ProfileListInstance*> GetProfileListInstances() { return m_profileListInstances; }
+    virtual const uint8 GetNumInstances() {
+        return m_numInstances;
+    }
+    virtual const std::vector<ProfileListInstance*> GetProfileListInstances() {
+        return m_profileListInstances;
+    }
 
 protected:
     WDSGetProfileListRsp();
-    virtual bool Build(std::string& nameValue) { return false; }
-    virtual bool BuildMsgBuf() { return false; }
+    virtual bool Build(std::string& nameValue) {
+        return false;
+    }
+    virtual bool BuildMsgBuf() {
+        return false;
+    }
     virtual bool Unpack(MsgBuf& msgBuf);
     virtual Uint8UnpackerMap& GetUnpackerMap();
     virtual bool UnpackResultCode(MsgBuf& msgBuf);

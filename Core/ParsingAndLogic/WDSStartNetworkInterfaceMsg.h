@@ -22,13 +22,13 @@
 // --------------------------------------------------------------------------
 // Unique identifiers for WDSStartNetworkInterfaceMsg types
 // --------------------------------------------------------------------------
-static const uint32 WDSStartNetworkInterfaceReqUID = 
-    (QMUX_TYPE_WDS << 24 | 
-     QMI_CTL_FLAG_TYPE_CMD << 16 | 
+static const uint32 WDSStartNetworkInterfaceReqUID =
+    (QMUX_TYPE_WDS << 24 |
+     QMI_CTL_FLAG_TYPE_CMD << 16 |
      QMI_WDS_START_NETWORK_INTERFACE_MSG);
-static const uint32 WDSStartNetworkInterfaceRspUID = 
-    (QMUX_TYPE_WDS << 24 | 
-     QMI_CTL_FLAG_TYPE_RSP << 16 | 
+static const uint32 WDSStartNetworkInterfaceRspUID =
+    (QMUX_TYPE_WDS << 24 |
+     QMI_CTL_FLAG_TYPE_RSP << 16 |
      QMI_WDS_START_NETWORK_INTERFACE_MSG);
 
 // --------------------------------------------------------------------------
@@ -85,7 +85,9 @@ protected:
     virtual bool BuildUsername(std::string& value);
     virtual bool BuildPassword(std::string& value);
     virtual bool BuildMsgBuf();
-    virtual bool Unpack(MsgBuf& msgBuf) { return false; }
+    virtual bool Unpack(MsgBuf& msgBuf) {
+        return false;
+    }
 
 private:
     // Technology Preference, optional tlv 0x30
@@ -148,10 +150,10 @@ private:
 // --------------------------------------------------------------------------
 // WDSStartNetworkInterfaceRsp
 //
-/// This class represents a QMI_WDS_START_NETWORK_INTERFACE_RESP message 
+/// This class represents a QMI_WDS_START_NETWORK_INTERFACE_RESP message
 /// which is the response to the activate packet data call request.
 // --------------------------------------------------------------------------
-    // define tlv types
+// define tlv types
 
 class WDSStartNetworkInterfaceRsp : public Message
 {
@@ -164,14 +166,24 @@ public:
 
     virtual void Print(std::ostream& stream);
 
-    uint32 GetPktDataHandle() { return m_pktDataHandle; }
-    uint16 GetResult() { return m_result; }
-    uint16 GetError() { return m_error; }
+    uint32 GetPktDataHandle() {
+        return m_pktDataHandle;
+    }
+    uint16 GetResult() {
+        return m_result;
+    }
+    uint16 GetError() {
+        return m_error;
+    }
 
 protected:
     WDSStartNetworkInterfaceRsp();
-    virtual bool Build(std::string& nameValue) { return false; }
-    virtual bool BuildMsgBuf() { return false; }
+    virtual bool Build(std::string& nameValue) {
+        return false;
+    }
+    virtual bool BuildMsgBuf() {
+        return false;
+    }
     virtual bool Unpack(MsgBuf& msgBuf);
     virtual Uint8UnpackerMap& GetUnpackerMap();
     virtual bool UnpackResultCode(MsgBuf& msgBuf);

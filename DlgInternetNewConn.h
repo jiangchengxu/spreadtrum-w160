@@ -17,21 +17,21 @@ public:
     CDlgInternetNewConn(CWnd* pParent = NULL, INT nProfileType = 1);   // standard constructor
 // Dialog Data
     //{{AFX_DATA(CDlgInternetNewConn)
-	enum { IDD = IDD_DIALOG_INTERNET_NEWCONN };
-	CNumEdit	m_NumEditPhoneNumber;
+    enum { IDD = IDD_DIALOG_INTERNET_NEWCONN };
+    CNumEdit	m_NumEditPhoneNumber;
     CString    m_strConnName;
-	CString	m_strUserName;
-	CString	m_strPassWord;
-	CString	m_strPhoneNumber;
-	CString m_strAPN;
-	BOOL	m_bSetDefault;
+    CString	m_strUserName;
+    CString	m_strPassWord;
+    CString	m_strPhoneNumber;
+    CString m_strAPN;
+    BOOL	m_bSetDefault;
     int		m_nAuthRadio;
-	//}}AFX_DATA
+    //}}AFX_DATA
 
 protected:
     CConnProfile *m_pConnProf;
     CConnProfile *m_pNdisConnProf;
-	int m_nProfileType;
+    int m_nProfileType;
 
 // Overrides
     // ClassWizard generated virtual function overrides

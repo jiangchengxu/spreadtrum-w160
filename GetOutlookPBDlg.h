@@ -19,59 +19,59 @@ class CGetOutlookPBDlg : public CBaseDialog
 {
 // Construction
 public:
-	CGetOutlookPBDlg(CWnd* pParent = NULL);   // standard constructor
+    CGetOutlookPBDlg(CWnd* pParent = NULL);   // standard constructor
 
-	void SetContactListPtr(CPbData *pListPtr);
+    void SetContactListPtr(CPbData *pListPtr);
 // Dialog Data
-	//{{AFX_DATA(CGetOutlookPBDlg)
-	enum { IDD = IDD_DIALOG_PBGETOUTLOOK };
-		// NOTE: the ClassWizard will add data members here
-	//}}AFX_DATA
+    //{{AFX_DATA(CGetOutlookPBDlg)
+    enum { IDD = IDD_DIALOG_PBGETOUTLOOK };
+    // NOTE: the ClassWizard will add data members here
+    //}}AFX_DATA
 
 
 // Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(CGetOutlookPBDlg)
-	protected:	
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	//}}AFX_VIRTUAL
+    // ClassWizard generated virtual function overrides
+    //{{AFX_VIRTUAL(CGetOutlookPBDlg)
+protected:
+    virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+    //}}AFX_VIRTUAL
 
 // Implementation
 protected:
 
-	// Generated message map functions
-	//{{AFX_MSG(CGetOutlookPBDlg)
-	virtual BOOL OnInitDialog();
-	afx_msg void OnDestroy();
-	afx_msg void OnButtonBrowse();
-	virtual void OnOK();
-	//}}AFX_MSG
-	DECLARE_MESSAGE_MAP()
-	BOOL InitOutlookContactApp();
-	BOOL GetContactItem(_ContactItem contact);
-	void SetOulContactValue(_ContactItem contact);
-	void InitRecordMapping();
-	int ReadMAPIFolder(MAPIFolder pFolder);
-	void ClearOulContactValue();
-	bool CheckContactRule(StPbRecord *pPBRecord);
-	bool CheckPbName(const char* ch);
-	bool CheckPbNumber(CString strNum);
-	bool  CheckPbNameUnicode(const TCHAR* ch);
-	BOOL isChsCharUnicode(const TCHAR* ch);
-	BOOL isChsChar(const char* ch);
+    // Generated message map functions
+    //{{AFX_MSG(CGetOutlookPBDlg)
+    virtual BOOL OnInitDialog();
+    afx_msg void OnDestroy();
+    afx_msg void OnButtonBrowse();
+    virtual void OnOK();
+    //}}AFX_MSG
+    DECLARE_MESSAGE_MAP()
+    BOOL InitOutlookContactApp();
+    BOOL GetContactItem(_ContactItem contact);
+    void SetOulContactValue(_ContactItem contact);
+    void InitRecordMapping();
+    int ReadMAPIFolder(MAPIFolder pFolder);
+    void ClearOulContactValue();
+    bool CheckContactRule(StPbRecord *pPBRecord);
+    bool CheckPbName(const char* ch);
+    bool CheckPbNumber(CString strNum);
+    bool  CheckPbNameUnicode(const TCHAR* ch);
+    BOOL isChsCharUnicode(const TCHAR* ch);
+    BOOL isChsChar(const char* ch);
 
 protected:
-	CPbData *pContactsPtr;
-	_Application m_pApp;  //outlook应用程序
-	_NameSpace m_pNS;     
-	MAPIFolder m_pFolder;
-	RecordMapping m_RM;
-	CStringArray m_OulContact;
+    CPbData *pContactsPtr;
+    _Application m_pApp;  //outlook应用程序
+    _NameSpace m_pNS;
+    MAPIFolder m_pFolder;
+    RecordMapping m_RM;
+    CStringArray m_OulContact;
 };
 
 inline void CGetOutlookPBDlg::SetContactListPtr(CPbData *pListPtr)
 {
-	pContactsPtr = pListPtr;	
+    pContactsPtr = pListPtr;
 }
 
 

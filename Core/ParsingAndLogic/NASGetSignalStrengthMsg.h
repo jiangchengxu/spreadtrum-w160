@@ -24,13 +24,13 @@
 // --------------------------------------------------------------------------
 // Unique identifiers for NASSetEventReportMsg types
 // --------------------------------------------------------------------------
-static const uint32 NASGetSignalStrengthReqUID = 
-    (QMUX_TYPE_NAS << 24 | 
-     QMI_CTL_FLAG_TYPE_CMD << 16 | 
+static const uint32 NASGetSignalStrengthReqUID =
+    (QMUX_TYPE_NAS << 24 |
+     QMI_CTL_FLAG_TYPE_CMD << 16 |
      QMI_NAS_GET_SIGNAL_STRENGTH_MSG);
-static const uint32 NASGetSignalStrengthRspUID = 
-    (QMUX_TYPE_NAS << 24 | 
-     QMI_CTL_FLAG_TYPE_RSP << 16 | 
+static const uint32 NASGetSignalStrengthRspUID =
+    (QMUX_TYPE_NAS << 24 |
+     QMI_CTL_FLAG_TYPE_RSP << 16 |
      QMI_NAS_GET_SIGNAL_STRENGTH_MSG);
 
 
@@ -60,14 +60,16 @@ public:
 protected:
     NASGetSignalStrengthReq();
     virtual bool BuildMsgBuf();
-    virtual bool Unpack(MsgBuf& msgBuf) { return false; }
+    virtual bool Unpack(MsgBuf& msgBuf) {
+        return false;
+    }
 };
 
 
 // --------------------------------------------------------------------------
 // NASGetSignalStrengthRsp
 //
-/// This class represents a QMI_NAS_GET_SIGNAL_STRENGTH_RESP message 
+/// This class represents a QMI_NAS_GET_SIGNAL_STRENGTH_RESP message
 /// which is the response to the get signal strength request.
 // --------------------------------------------------------------------------
 
@@ -82,15 +84,27 @@ public:
 
     virtual void Print(std::ostream& stream);
 
-    uint16 GetResult() { return m_result; }
-    uint16 GetError() { return m_error; }
-    int8 GetSignalStrength() { return m_signalStrength; }
-    uint8 GetRadioIf() { return m_radioIf; }
+    uint16 GetResult() {
+        return m_result;
+    }
+    uint16 GetError() {
+        return m_error;
+    }
+    int8 GetSignalStrength() {
+        return m_signalStrength;
+    }
+    uint8 GetRadioIf() {
+        return m_radioIf;
+    }
 
 protected:
     NASGetSignalStrengthRsp();
-    virtual bool Build(std::string& nameValue) { return false; }
-    virtual bool BuildMsgBuf() { return false; }
+    virtual bool Build(std::string& nameValue) {
+        return false;
+    }
+    virtual bool BuildMsgBuf() {
+        return false;
+    }
     virtual bool Unpack(MsgBuf& msgBuf);
     virtual Uint8UnpackerMap& GetUnpackerMap();
     virtual bool UnpackResultCode(MsgBuf& msgBuf);

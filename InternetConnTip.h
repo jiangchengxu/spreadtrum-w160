@@ -14,34 +14,34 @@ class CInternetConnTip : public CDialog
 {
 // Construction
 public:
-	CInternetConnTip(CString strTip = _T(""), CWnd* pParent = NULL);   // standard constructor
+    CInternetConnTip(CString strTip = _T(""), CWnd* pParent = NULL);   // standard constructor
 
 // Dialog Data
-	//{{AFX_DATA(CInternetConnTip)
-	enum { IDD = IDD_DIALOG_INTERNET_TIP };
-	CString  m_strTip;
-		// NOTE: the ClassWizard will add data members here
-	//}}AFX_DATA
+    //{{AFX_DATA(CInternetConnTip)
+    enum { IDD = IDD_DIALOG_INTERNET_TIP };
+    CString  m_strTip;
+    // NOTE: the ClassWizard will add data members here
+    //}}AFX_DATA
 
 
 // Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(CInternetConnTip)
-	protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	//}}AFX_VIRTUAL
+    // ClassWizard generated virtual function overrides
+    //{{AFX_VIRTUAL(CInternetConnTip)
+protected:
+    virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+    //}}AFX_VIRTUAL
 
 // Implementation
 protected:
 
-	// Generated message map functions
-	//{{AFX_MSG(CInternetConnTip)
-	virtual BOOL OnInitDialog();
-	virtual void OnButtonCancel();
-	//}}AFX_MSG
-	DECLARE_MESSAGE_MAP()
+    // Generated message map functions
+    //{{AFX_MSG(CInternetConnTip)
+    virtual BOOL OnInitDialog();
+    virtual void OnButtonCancel();
+    //}}AFX_MSG
+    DECLARE_MESSAGE_MAP()
 public:
-	HRASCONN m_hRasConn;
+    HRASCONN m_hRasConn;
 };
 
 //{{AFX_INSERT_LOCATION}}

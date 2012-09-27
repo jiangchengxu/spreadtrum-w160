@@ -20,13 +20,13 @@
 typedef signed char int8;
 typedef signed short int16;
 typedef signed int int32;
-typedef  __int64 int64;  
+typedef  __int64 int64;
 
 typedef unsigned char uint8;
 typedef unsigned short uint16;
 typedef unsigned int uint32;
 typedef unsigned __int64 uint64;
-        
+
 typedef uint8 byte;
 typedef uint16 word;
 typedef uint32 dword;
@@ -35,10 +35,9 @@ typedef uint32 dword;
 #ifdef QWORD_IS_STRUCT
 //For clients who prefer to think of qwords
 // as a struct of 2 integers
-typedef struct tagQword
-{
-   dword lo;
-   dword hi;
+typedef struct tagQword {
+    dword lo;
+    dword hi;
 } qword;
 
 #else
@@ -53,14 +52,12 @@ typedef qword time_type;
 typedef unsigned char boolean;
 
 // --------------------------------------------------------------------------
-// DeleteObjectFunctor - a function object used for deleting a container of 
+// DeleteObjectFunctor - a function object used for deleting a container of
 // newed up pointers (e.g. via std::for_each).
 // --------------------------------------------------------------------------
-struct DeleteObjectFunctor
-{
-	template<typename T>
-	void operator()(const T* ptr) const
-	{
-		delete ptr;
-	}
+struct DeleteObjectFunctor {
+    template<typename T>
+    void operator()(const T* ptr) const {
+        delete ptr;
+    }
 };

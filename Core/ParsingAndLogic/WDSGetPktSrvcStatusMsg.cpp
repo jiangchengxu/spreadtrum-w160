@@ -45,7 +45,7 @@ static MessageCreator<WDSPktSrvcStatusInd> IndUint32Creator(WDSPktSrvcStatusIndU
 //
 /// Constructor for WDSGetPktSrvcStatusReq.
 // --------------------------------------------------------------------------
-WDSGetPktSrvcStatusReq::WDSGetPktSrvcStatusReq() : 
+WDSGetPktSrvcStatusReq::WDSGetPktSrvcStatusReq() :
     Message(QMUX_TYPE_WDS,QMI_WDS_GET_PKT_SRVC_STATUS_MSG,QMI_CTL_FLAG_TYPE_CMD)
 {}
 
@@ -136,38 +136,32 @@ WDSGetPktSrvcStatusRsp::~WDSGetPktSrvcStatusRsp()
 bool WDSGetPktSrvcStatusRsp::Unpack(MsgBuf& msgBuf)
 {
     // call the base unpack
-    if (!Message::Unpack(msgBuf))
-    {
+    if (!Message::Unpack(msgBuf)) {
         return false;
     }
-    
+
     // validate message length
-    if (m_result == QMI_RESULT_SUCCESS)
-    {
+    if (m_result == QMI_RESULT_SUCCESS) {
         // mandatory tlvs
-        if (m_length != 11)
-        {
+        if (m_length != 11) {
             std::stringstream stream;
             stream << _T("Warning: unable to unpack message:") << std::endl
-                << _T("Expected message length is 11 bytes, unpacked length is ")
-                << m_length << _T(" bytes.") << std::endl 
-                << std::endl;
+                   << _T("Expected message length is 11 bytes, unpacked length is ")
+                   << m_length << _T(" bytes.") << std::endl
+                   << std::endl;
             MessageManager::GetInstance().ReportStatus(stream.str(),ST_WARNING);
-            return false; 
+            return false;
         }
-    }
-    else
-    {
+    } else {
         // only result code tlv on failure
-        if (m_length != 7) 
-        {
+        if (m_length != 7) {
             std::stringstream stream;
             stream << _T("Warning: unable to unpack message:") << std::endl
-                << _T("Expected message length is 7 bytes, unpacked length is ")
-                << m_length << _T(" bytes.") << std::endl 
-                << std::endl;
+                   << _T("Expected message length is 7 bytes, unpacked length is ")
+                   << m_length << _T(" bytes.") << std::endl
+                   << std::endl;
             MessageManager::GetInstance().ReportStatus(stream.str(),ST_WARNING);
-            return false; 
+            return false;
         }
     }
 
@@ -185,8 +179,7 @@ bool WDSGetPktSrvcStatusRsp::Unpack(MsgBuf& msgBuf)
 Message::Uint8UnpackerMap& WDSGetPktSrvcStatusRsp::GetUnpackerMap()
 {
     static Uint8UnpackerMap UUMap;
-    if (UUMap.empty())
-    {
+    if (UUMap.empty()) {
         bool bSuccess = UUMap.insert(UUPair(RESULT_CODE_TYPE,(Unpacker)UnpackResultCode)).second;
         assert(bSuccess);
         bSuccess = UUMap.insert(UUPair(REQUIRED_PARAMETERS_TYPE,(Unpacker)UnpackRequiredParameters)).second;
@@ -209,12 +202,11 @@ bool WDSGetPktSrvcStatusRsp::UnpackResultCode(MsgBuf& msgBuf)
     m_resultCodeType = RESULT_CODE_TYPE;
 
     m_resultCodeLen = msgBuf.GetWord();
-    if (m_resultCodeLen != 4) 
-    {
+    if (m_resultCodeLen != 4) {
         std::stringstream stream;
         stream << _T("Warning: unable to unpack message:") << std::endl
                << _T("Expected Result Code length is 4 bytes, unpacked length is ")
-               << m_resultCodeLen << _T(" bytes.") << std::endl 
+               << m_resultCodeLen << _T(" bytes.") << std::endl
                << std::endl;
         MessageManager::GetInstance().ReportStatus(stream.str(),ST_WARNING);
         return false;
@@ -240,32 +232,29 @@ bool WDSGetPktSrvcStatusRsp::UnpackRequiredParameters(MsgBuf& msgBuf)
     m_requiredParametersType = REQUIRED_PARAMETERS_TYPE;
 
     m_requiredParametersLen = msgBuf.GetWord();
-    if (m_requiredParametersLen != 1)
-    {
+    if (m_requiredParametersLen != 1) {
         std::stringstream stream;
         stream << _T("Warning: unable to unpack message:") << std::endl
                << _T("Expected Required Parameter length is 1 bytes, unpacked length is ")
-               << m_requiredParametersLen << _T(" bytes.") << std::endl 
+               << m_requiredParametersLen << _T(" bytes.") << std::endl
                << std::endl;
         MessageManager::GetInstance().ReportStatus(stream.str(),ST_WARNING);
         return false;
     }
 
     m_connectionStatus = msgBuf.GetByte();
-    if (m_connectionStatus < 1 || m_connectionStatus > 3) 
-    {
+    if (m_connectionStatus < 1 || m_connectionStatus > 3) {
         std::stringstream stream;
         stream << _T("Warning: unable to unpack message:") << std::endl
                << _T("Valid Connection Status values are 1 - 3 , unpacked value is ")
-               << m_connectionStatus << _T(" .") << std::endl 
+               << m_connectionStatus << _T(" .") << std::endl
                << std::endl;
         MessageManager::GetInstance().ReportStatus(stream.str(),ST_WARNING);
         return false;
     }
 
     // all tlvs are mandatory, so we should be at end of buffer
-    if (!msgBuf.EOB())
-    {
+    if (!msgBuf.EOB()) {
         std::stringstream stream;
         stream << _T("Warning: unable to unpack message:") << std::endl
                << _T("Finished unpacking message but end of buffer not reached")
@@ -291,8 +280,7 @@ void WDSGetPktSrvcStatusRsp::Print(std::ostream& stream)
            << _T("  ErrorCode ") << (int)m_error << std::endl;
 
     // only print other mandatory tlvs if result code success
-    if (m_result == QMI_RESULT_SUCCESS)
-    {
+    if (m_result == QMI_RESULT_SUCCESS) {
         stream << _T("  ConnectionStatus ") << (int)m_connectionStatus << std::endl;
     }
 
@@ -338,29 +326,26 @@ WDSPktSrvcStatusInd::~WDSPktSrvcStatusInd()
 bool WDSPktSrvcStatusInd::Unpack(MsgBuf& msgBuf)
 {
     // call the base unpack
-    if (!Message::Unpack(msgBuf))
-    {
+    if (!Message::Unpack(msgBuf)) {
         return false;
     }
 
     // validate message length
-    if (m_length != 5) 
-    {
+    if (m_length != 5) {
         std::stringstream stream;
         stream << _T("Warning: unable to unpack message:") << std::endl
                << _T("Expected message length is 5 bytes, unpacked length is ")
-               << m_length << _T(" bytes.") << std::endl 
+               << m_length << _T(" bytes.") << std::endl
                << std::endl;
         MessageManager::GetInstance().ReportStatus(stream.str(),ST_WARNING);
-        return false; 
+        return false;
     }
 
     // verify mandatory tlvs are present
-    if (m_packetServiceStatusType != PACKET_SERVICE_STATUS_TYPE) 
-    {
+    if (m_packetServiceStatusType != PACKET_SERVICE_STATUS_TYPE) {
         std::stringstream stream;
         stream << _T("Warning: unable to unpack message:") << std::endl
-               << _T("Mandatory TLV Packet Service Status is not present.") << std::endl 
+               << _T("Mandatory TLV Packet Service Status is not present.") << std::endl
                << std::endl;
         MessageManager::GetInstance().ReportStatus(stream.str(),ST_WARNING);
         return false;
@@ -380,8 +365,7 @@ bool WDSPktSrvcStatusInd::Unpack(MsgBuf& msgBuf)
 Message::Uint8UnpackerMap& WDSPktSrvcStatusInd::GetUnpackerMap()
 {
     static Uint8UnpackerMap UUMap;
-    if (UUMap.empty())
-    {
+    if (UUMap.empty()) {
         bool bSuccess = UUMap.insert(UUPair(PACKET_SERVICE_STATUS_TYPE,(Unpacker)UnpackPacketServiceStatus)).second;
         assert(bSuccess);
     }
@@ -402,44 +386,40 @@ bool WDSPktSrvcStatusInd::UnpackPacketServiceStatus(MsgBuf& msgBuf)
     m_packetServiceStatusType = PACKET_SERVICE_STATUS_TYPE;
 
     m_packetServiceStatusLen = msgBuf.GetWord();
-    if (m_packetServiceStatusLen != 2) 
-    {
+    if (m_packetServiceStatusLen != 2) {
         std::stringstream stream;
         stream << _T("Warning: unable to unpack message:") << std::endl
                << _T("Expected Poacket Service Status length is 2 bytes, unpacked length is ")
-               << m_packetServiceStatusLen << _T(" bytes.") << std::endl 
+               << m_packetServiceStatusLen << _T(" bytes.") << std::endl
                << std::endl;
         MessageManager::GetInstance().ReportStatus(stream.str(),ST_WARNING);
         return false;
     }
 
     m_connectionStatus = msgBuf.GetByte();
-    if (m_connectionStatus < 1 || m_connectionStatus > 3) 
-    {
+    if (m_connectionStatus < 1 || m_connectionStatus > 3) {
         std::stringstream stream;
         stream << _T("Warning: unable to unpack message:") << std::endl
                << _T("Valid Connection Status values are 1 - 3 , unpacked value is ")
-               << m_connectionStatus << _T(" .") << std::endl 
+               << m_connectionStatus << _T(" .") << std::endl
                << std::endl;
         MessageManager::GetInstance().ReportStatus(stream.str(),ST_WARNING);
         return false;
     }
 
     m_reconfigurationRequired = msgBuf.GetByte();
-    if (m_reconfigurationRequired > 1)
-    {
+    if (m_reconfigurationRequired > 1) {
         std::stringstream stream;
         stream << _T("Warning: unable to unpack message:") << std::endl
                << _T("Valid Reconfiguration Required values are 0 and 1, unpacked value is ")
-               << m_reconfigurationRequired << _T(" .") << std::endl 
+               << m_reconfigurationRequired << _T(" .") << std::endl
                << std::endl;
         MessageManager::GetInstance().ReportStatus(stream.str(),ST_WARNING);
         return false;
     }
 
     // all tlvs are mandatory, so we should be at end of buffer
-    if (!msgBuf.EOB())
-    {
+    if (!msgBuf.EOB()) {
         std::stringstream stream;
         stream << _T("Warning: unable to unpack message:") << std::endl
                << _T("Finished unpacking message but end of buffer not reached")

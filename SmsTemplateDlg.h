@@ -14,38 +14,38 @@
 
 class CSmsTemplateEditDlg : public CBaseDialog
 {
-	// Construction
+    // Construction
 public:
-	CString m_strEditContent;
+    CString m_strEditContent;
 
-	int m_nType;
+    int m_nType;
 
-	void OnButtonClear();
-	CSmsTemplateEditDlg(const TCHAR *pSzText = NULL, CWnd* pParent = NULL);   // standard constructor
-	
-	// Dialog Data
-	//{{AFX_DATA(CSmsTemplateDlg)
-	enum { IDD = IDD_DIALOG_TEMPLATE_EDIT };
-	// NOTE: the ClassWizard will add data members here
-	//}}AFX_DATA
-	
-	
-	// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(CSmsTemplateDlg)
+    void OnButtonClear();
+    CSmsTemplateEditDlg(const TCHAR *pSzText = NULL, CWnd* pParent = NULL);   // standard constructor
+
+    // Dialog Data
+    //{{AFX_DATA(CSmsTemplateDlg)
+    enum { IDD = IDD_DIALOG_TEMPLATE_EDIT };
+    // NOTE: the ClassWizard will add data members here
+    //}}AFX_DATA
+
+
+    // Overrides
+    // ClassWizard generated virtual function overrides
+    //{{AFX_VIRTUAL(CSmsTemplateDlg)
 protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	//}}AFX_VIRTUAL
-	
-	// Implementation
+    virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+    //}}AFX_VIRTUAL
+
+    // Implementation
 protected:
-	
-	// Generated message map functions
-	//{{AFX_MSG(CSmsTemplateDlg)
-	virtual void OnOK();
-	virtual BOOL OnInitDialog();
-	//}}AFX_MSG
-	DECLARE_MESSAGE_MAP()
+
+    // Generated message map functions
+    //{{AFX_MSG(CSmsTemplateDlg)
+    virtual void OnOK();
+    virtual BOOL OnInitDialog();
+    //}}AFX_MSG
+    DECLARE_MESSAGE_MAP()
 
 };
 
@@ -56,45 +56,45 @@ class CSmsTemplateDlg : public CBaseDialog
 {
 // Construction
 public:
-	void OnListDBLCLK(NMHDR* pNMHDR, LRESULT* pResult);
-	void OnTemplateAddOrEdit(WPARAM wp, LPARAM lp);
-	void OnButtonDelete();
-	void OnButtonEdit();
-	void OnButtonNew();
-	void OnButtonInsert();
-	BOOL InitList();
-	CSmsTemplateDlg(CWnd* pParent = NULL);   // standard constructor
+    void OnListDBLCLK(NMHDR* pNMHDR, LRESULT* pResult);
+    void OnTemplateAddOrEdit(WPARAM wp, LPARAM lp);
+    void OnButtonDelete();
+    void OnButtonEdit();
+    void OnButtonNew();
+    void OnButtonInsert();
+    BOOL InitList();
+    CSmsTemplateDlg(CWnd* pParent = NULL);   // standard constructor
 
 // Dialog Data
-	//{{AFX_DATA(CSmsTemplateDlg)
-	enum { IDD = IDD_DIALOG_SMS_TEMPLATE };
-		// NOTE: the ClassWizard will add data members here
-	CListCtrl	m_listCtrl;
-	//}}AFX_DATA
+    //{{AFX_DATA(CSmsTemplateDlg)
+    enum { IDD = IDD_DIALOG_SMS_TEMPLATE };
+    // NOTE: the ClassWizard will add data members here
+    CListCtrl	m_listCtrl;
+    //}}AFX_DATA
 
 
 // Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(CSmsTemplateDlg)
-	protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	//}}AFX_VIRTUAL
+    // ClassWizard generated virtual function overrides
+    //{{AFX_VIRTUAL(CSmsTemplateDlg)
+protected:
+    virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+    //}}AFX_VIRTUAL
 
 // Implementation
 protected:
 
-	// Generated message map functions
-	//{{AFX_MSG(CSmsTemplateDlg)
-	virtual void OnOK();
-	virtual BOOL OnInitDialog();
-	afx_msg void OnListSel(NMHDR* pNMHDR, LRESULT* pResult);
-	//}}AFX_MSG
-	DECLARE_MESSAGE_MAP()
+    // Generated message map functions
+    //{{AFX_MSG(CSmsTemplateDlg)
+    virtual void OnOK();
+    virtual BOOL OnInitDialog();
+    afx_msg void OnListSel(NMHDR* pNMHDR, LRESULT* pResult);
+    //}}AFX_MSG
+    DECLARE_MESSAGE_MAP()
 
 private:
-	CSmsData *m_pSmsTemplateData;
+    CSmsData *m_pSmsTemplateData;
 
-	int m_nIndex;
+    int m_nIndex;
 };
 
 //{{AFX_INSERT_LOCATION}}

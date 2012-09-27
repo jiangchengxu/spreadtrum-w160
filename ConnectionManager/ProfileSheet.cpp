@@ -42,7 +42,7 @@ ProfileSheet::ProfileSheet(ConnectionManagerDlg* pCMDlg,uint8 profileType) :
     m_profileType(profileType),
     m_profileIndex(-1),
     m_profileSheetType(PST_CREATE)
-    
+
 {}
 
 // --------------------------------------------------------------------------
@@ -52,13 +52,13 @@ ProfileSheet::ProfileSheet(
     ConnectionManagerDlg* pCMDlg,
     uint8 profileType,
     uint8 profileIndex
-    ) :
+) :
     CPropertySheet(_T("View/Modify Profile")),
     m_pCMDlg(pCMDlg),
     m_profileType(profileType),
     m_profileIndex(profileIndex),
     m_profileSheetType(PST_MODIFY)
-    
+
 {}
 
 // --------------------------------------------------------------------------
@@ -70,12 +70,11 @@ BOOL ProfileSheet::OnInitDialog()
 
     // causes dodataexchange call, linking controls to data members
     int numPages = GetPageCount();
-    while (--numPages >= 0)
-    {
+    while (--numPages >= 0) {
         SetActivePage(numPages);
     }
-    
-	return TRUE;  // return TRUE  unless you set the focus to a control
+
+    return TRUE;  // return TRUE  unless you set the focus to a control
 }
 
 // --------------------------------------------------------------------------
@@ -86,12 +85,9 @@ BOOL ProfileSheet::OnInitDialog()
 void ProfileSheet::OnOk()
 {
     std::string msgString = BuildCreateModifyProfileString();
-    if (!msgString.empty())
-    {
+    if (!msgString.empty()) {
         m_pCMDlg->SendRequest(msgString);
-    }
-    else
-    {
+    } else {
         // no message to send, same effect as cancel
         EndDialog(IDCANCEL);
     }
@@ -111,43 +107,39 @@ void ProfileSheet::OnCancel()
     std::string tlvString = BuildTlvString();
 
     // prompt to save profile if changes have been made
-    if (!tlvString.empty())
-    {
+    if (!tlvString.empty()) {
         int result = IDNO;
         std::stringstream stream;
 
-        switch (m_profileSheetType)
-        {
-            case PST_CREATE:
-                result = AfxMessageBox((PTCHAR)"Changes have been made to the "
+        switch (m_profileSheetType) {
+        case PST_CREATE:
+            result = AfxMessageBox((PTCHAR)"Changes have been made to the "
                                    "default profile settings.\n"
                                    "Do you want to create this profile?",
                                    MB_YESNOCANCEL | MB_ICONEXCLAMATION);
-                break;
+            break;
 
-            case PST_MODIFY:
-                result = AfxMessageBox((PTCHAR)"Changes have been made to this"
+        case PST_MODIFY:
+            result = AfxMessageBox((PTCHAR)"Changes have been made to this"
                                    " profile's settings.\n"
                                    "Do you want to modify this profile?",
                                    MB_YESNOCANCEL | MB_ICONEXCLAMATION);
-                break;
+            break;
 
-            default:
-                stream << _T("Error: Unknown ProfileSheet type:") 
-                       << (int)m_profileSheetType;
-                AfxMessageBox((PTCHAR)stream.str().c_str());
+        default:
+            stream << _T("Error: Unknown ProfileSheet type:")
+                   << (int)m_profileSheetType;
+            AfxMessageBox((PTCHAR)stream.str().c_str());
         }
 
         // save changes
-        if (result == IDYES)
-        {
+        if (result == IDYES) {
             m_pCMDlg->SendRequest(msgString);
             EndDialog(IDOK);
         }
 
         // continue dialog
-        if (result == IDCANCEL)
-        {
+        if (result == IDCANCEL) {
             return;
         }
     }
@@ -172,30 +164,31 @@ std::string ProfileSheet::BuildCreateModifyProfileString()
     // collect tlv's from profile sheet pages
     tlvString = BuildTlvString();
 
-    switch (m_profileSheetType)
-    {
-        case PST_CREATE:
-            stream << _T("QMI_WDS_CREATE_PROFILE_REQ") << std::endl 
-                   << _T("{") << std::endl
-                   << _T("  ProfileType ") << (uint32)m_profileType << std::endl;
-            break;
+    switch (m_profileSheetType) {
+    case PST_CREATE:
+        stream << _T("QMI_WDS_CREATE_PROFILE_REQ") << std::endl
+               << _T("{") << std::endl
+               << _T("  ProfileType ") << (uint32)m_profileType << std::endl;
+        break;
 
-        case PST_MODIFY:
-            // if no tlv's return empty string (nothing to modify)
-            if (tlvString.empty()) { return tlvString; }
+    case PST_MODIFY:
+        // if no tlv's return empty string (nothing to modify)
+        if (tlvString.empty()) {
+            return tlvString;
+        }
 
-            // msg type
-            stream << _T("QMI_WDS_MODIFY_PROFILE_SETTINGS_REQ") << std::endl 
-                   << _T("{") << std::endl
-                   << _T("  ProfileType ") << (uint32)m_profileType << std::endl
-                   << _T("  ProfileIndex ") << (uint32)m_profileIndex << std::endl;
-            break;
+        // msg type
+        stream << _T("QMI_WDS_MODIFY_PROFILE_SETTINGS_REQ") << std::endl
+               << _T("{") << std::endl
+               << _T("  ProfileType ") << (uint32)m_profileType << std::endl
+               << _T("  ProfileIndex ") << (uint32)m_profileIndex << std::endl;
+        break;
 
-        default:
-            stream << _T("Error: Unknown ProfileSheet type:") 
-                   << (int)m_profileSheetType;
-            AfxMessageBox((PTCHAR)stream.str().c_str());
-            return "";
+    default:
+        stream << _T("Error: Unknown ProfileSheet type:")
+               << (int)m_profileSheetType;
+        AfxMessageBox((PTCHAR)stream.str().c_str());
+        return "";
     }
 
     stream << tlvString << _T("}");
@@ -205,7 +198,7 @@ std::string ProfileSheet::BuildCreateModifyProfileString()
 // --------------------------------------------------------------------------
 // BuildTlvString
 //
-/// Build a string of message type and name/value pairs representing the 
+/// Build a string of message type and name/value pairs representing the
 /// tlv's reported by the ProfileSheet pages.
 ///
 /// @returns std::string - string representation of the tlv's.
@@ -216,9 +209,8 @@ std::string ProfileSheet::BuildTlvString()
 
     // add tlv's from profile sheet pages
     int numPages = GetPageCount();
-    for (int i = 0; i < numPages; i++)
-    {
-		// @@
+    for (int i = 0; i < numPages; i++) {
+        // @@
 #if 0
         ProfileSheetPage* pPage = dynamic_cast<ProfileSheetPage*>(GetPage(i));
 #else
@@ -227,6 +219,6 @@ std::string ProfileSheet::BuildTlvString()
         assert(pPage);
         stream << pPage->BuildTlvString();
     }
-    
+
     return stream.str();
 }

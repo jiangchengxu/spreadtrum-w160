@@ -42,7 +42,7 @@ static MessageCreator<WDSAbortRsp> RspUint32Creator(WDSAbortRspUID);
 /// Constructor for WDSAbortReq.
 // --------------------------------------------------------------------------
 const uint8 WDSAbortReq::TX_ID_TYPE = 0x01;
-WDSAbortReq::WDSAbortReq() : 
+WDSAbortReq::WDSAbortReq() :
     Message(QMUX_TYPE_WDS,QMI_WDS_ABORT_MSG,QMI_CTL_FLAG_TYPE_CMD),
     m_txIdType(TLV_TYPE_INVALID),
     m_txIdLen(0),
@@ -86,8 +86,7 @@ bool WDSAbortReq::Build(std::string& nameValue)
 Message::StringBuilderMap& WDSAbortReq::GetBuilderMap()
 {
     static StringBuilderMap SBMap;
-    if (SBMap.empty())
-    {
+    if (SBMap.empty()) {
         bool bSuccess = SBMap.insert(SBPair("TxId",(Builder)BuildTxId)).second;
         assert(bSuccess);
     }
@@ -117,7 +116,7 @@ bool WDSAbortReq::BuildTxId(std::string& value)
 
     // set previous name to current name and set expectations for next name.
     m_prevName = m_name;
-	m_nextName.erase(m_nextName.begin(), m_nextName.end());
+    m_nextName.erase(m_nextName.begin(), m_nextName.end());
     return true;
 }
 
@@ -203,21 +202,19 @@ WDSAbortRsp::~WDSAbortRsp()
 bool WDSAbortRsp::Unpack(MsgBuf& msgBuf)
 {
     // call the base unpack
-    if (!Message::Unpack(msgBuf))
-    {
+    if (!Message::Unpack(msgBuf)) {
         return false;
     }
-    
+
     // validate message length
-    if (m_length != 7) 
-    {
+    if (m_length != 7) {
         std::stringstream stream;
         stream << _T("Warning: unable to unpack message:") << std::endl
-            << _T("Expected message length is 7 bytes, unpacked length is ")
-            << m_length << _T(" bytes.") << std::endl 
-            << std::endl;
+               << _T("Expected message length is 7 bytes, unpacked length is ")
+               << m_length << _T(" bytes.") << std::endl
+               << std::endl;
         MessageManager::GetInstance().ReportStatus(stream.str(),ST_WARNING);
-        return false; 
+        return false;
     }
 
     return true;
@@ -234,8 +231,7 @@ bool WDSAbortRsp::Unpack(MsgBuf& msgBuf)
 Message::Uint8UnpackerMap& WDSAbortRsp::GetUnpackerMap()
 {
     static Uint8UnpackerMap UUMap;
-    if (UUMap.empty())
-    {
+    if (UUMap.empty()) {
         bool bSuccess = UUMap.insert(UUPair(RESULT_CODE_TYPE,(Unpacker)UnpackResultCode)).second;
         assert(bSuccess);
     }
@@ -256,12 +252,11 @@ bool WDSAbortRsp::UnpackResultCode(MsgBuf& msgBuf)
     m_resultCodeType = RESULT_CODE_TYPE;
 
     m_resultCodeLen = msgBuf.GetWord();
-    if (m_resultCodeLen != 4) 
-    {
+    if (m_resultCodeLen != 4) {
         std::stringstream stream;
         stream << _T("Warning: unable to unpack message:") << std::endl
                << _T("Expected Result Code length is 4 bytes, unpacked length is ")
-               << m_resultCodeLen << _T(" bytes.") << std::endl 
+               << m_resultCodeLen << _T(" bytes.") << std::endl
                << std::endl;
         MessageManager::GetInstance().ReportStatus(stream.str(),ST_WARNING);
         return false;
@@ -270,8 +265,7 @@ bool WDSAbortRsp::UnpackResultCode(MsgBuf& msgBuf)
     m_result = msgBuf.GetWord();
     m_error = msgBuf.GetWord();
 
-    if (!msgBuf.EOB())
-    {
+    if (!msgBuf.EOB()) {
         std::stringstream stream;
         stream << _T("Warning: unable to unpack message:") << std::endl
                << _T("Finished unpacking message but end of buffer not reached")

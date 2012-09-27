@@ -42,7 +42,7 @@ static MessageCreator<DMSGetDeviceSerialNumbersRsp> RspUint32Creator(DMSGetDevic
 //
 /// Constructor for DMSGetDeviceSerialNumbersReq.
 // --------------------------------------------------------------------------
-DMSGetDeviceSerialNumbersReq::DMSGetDeviceSerialNumbersReq() : 
+DMSGetDeviceSerialNumbersReq::DMSGetDeviceSerialNumbersReq() :
     Message(QMUX_TYPE_DMS,QMI_DMS_GET_DEVICE_SERIAL_NUMBERS_MSG,QMI_CTL_FLAG_TYPE_CMD)
 {}
 
@@ -138,20 +138,18 @@ DMSGetDeviceSerialNumbersRsp::~DMSGetDeviceSerialNumbersRsp()
 bool DMSGetDeviceSerialNumbersRsp::Unpack(MsgBuf& msgBuf)
 {
     // call the base unpack
-    if (!Message::Unpack(msgBuf))
-    {
+    if (!Message::Unpack(msgBuf)) {
         return false;
     }
-    
-    // if successful at least one optional tlv must be present 
+
+    // if successful at least one optional tlv must be present
     if (m_result == QMI_RESULT_SUCCESS &&
-        m_esnType != ESN_TYPE &&
-        m_imeiType != IMEI_TYPE &&
-        m_meidType != MEID_TYPE)
-    {
+            m_esnType != ESN_TYPE &&
+            m_imeiType != IMEI_TYPE &&
+            m_meidType != MEID_TYPE) {
         std::stringstream stream;
         stream << _T("Warning: unable to unpack message:") << std::endl
-               << _T("At least one of the following optional tlv's must be present:") << std::endl 
+               << _T("At least one of the following optional tlv's must be present:") << std::endl
                << _T("  ESN") << std::endl
                << _T("  IMEI") << std::endl
                << _T("  MEID") << std::endl
@@ -174,8 +172,7 @@ bool DMSGetDeviceSerialNumbersRsp::Unpack(MsgBuf& msgBuf)
 Message::Uint8UnpackerMap& DMSGetDeviceSerialNumbersRsp::GetUnpackerMap()
 {
     static Uint8UnpackerMap UUMap;
-    if (UUMap.empty())
-    {
+    if (UUMap.empty()) {
         bool bSuccess = UUMap.insert(UUPair(RESULT_CODE_TYPE,(Unpacker)UnpackResultCode)).second;
         assert(bSuccess);
         bSuccess = UUMap.insert(UUPair(ESN_TYPE,(Unpacker)UnpackEsn)).second;
@@ -202,12 +199,11 @@ bool DMSGetDeviceSerialNumbersRsp::UnpackResultCode(MsgBuf& msgBuf)
     m_resultCodeType = RESULT_CODE_TYPE;
 
     m_resultCodeLen = msgBuf.GetWord();
-    if (m_resultCodeLen != 4) 
-    {
+    if (m_resultCodeLen != 4) {
         std::stringstream stream;
         stream << _T("Warning: unable to unpack message:") << std::endl
                << _T("Expected Result Code length is 4 bytes, unpacked length is ")
-               << m_resultCodeLen << _T(" bytes.") << std::endl 
+               << m_resultCodeLen << _T(" bytes.") << std::endl
                << std::endl;
         MessageManager::GetInstance().ReportStatus(stream.str(),ST_WARNING);
         return false;
@@ -296,18 +292,15 @@ void DMSGetDeviceSerialNumbersRsp::Print(std::ostream& stream)
            << _T("  ResultCode ") << (int)m_result << std::endl
            << _T("  ErrorCode ") << (int)m_error << std::endl;
 
-    if (m_esnType == ESN_TYPE)
-    {
+    if (m_esnType == ESN_TYPE) {
         stream << _T("  Esn ") << m_esn << std::endl;
     }
 
-    if (m_imeiType == IMEI_TYPE)
-    {
+    if (m_imeiType == IMEI_TYPE) {
         stream << _T("  Imei ") << m_imei << std::endl;
     }
 
-    if (m_meidType == MEID_TYPE)
-    {
+    if (m_meidType == MEID_TYPE) {
         stream << _T("  Meid ") << m_meid << std::endl;
     }
 

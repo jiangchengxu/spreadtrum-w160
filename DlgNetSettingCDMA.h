@@ -14,34 +14,34 @@ class CDlgNetSettingCDMA : public CBaseDialog
 {
 // Construction
 public:
-	CDlgNetSettingCDMA(CWnd* pParent = NULL);   // standard constructor
+    CDlgNetSettingCDMA(CWnd* pParent = NULL);   // standard constructor
 
 // Dialog Data
-	//{{AFX_DATA(CDlgNetSettingCDMA)
-	enum { IDD = IDD_DIALOG_NETWORKSETTING_CDMA };
-	
-	int m_nRoamingMode;
+    //{{AFX_DATA(CDlgNetSettingCDMA)
+    enum { IDD = IDD_DIALOG_NETWORKSETTING_CDMA };
+
+    int m_nRoamingMode;
 
 
-	protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+protected:
+    virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 
-	
-	
+
+
 
 protected:
 
-	// Generated message map functions
-	//{{AFX_MSG(CDlgNetSettingCDMA)
-		// NOTE: the ClassWizard will add member functions here
-	//}}AFX_MSG
-	DECLARE_MESSAGE_MAP()
+    // Generated message map functions
+    //{{AFX_MSG(CDlgNetSettingCDMA)
+    // NOTE: the ClassWizard will add member functions here
+    //}}AFX_MSG
+    DECLARE_MESSAGE_MAP()
 
 public:
-	virtual BOOL OnInitDialog();
-	void OnButtonAutomatic();
-	void OnButtonManual();
-	virtual void OnCancel();
+    virtual BOOL OnInitDialog();
+    void OnButtonAutomatic();
+    void OnButtonManual();
+    virtual void OnCancel();
 };
 
 //{{AFX_INSERT_LOCATION}}

@@ -787,10 +787,12 @@ void CHSDPADlg::AtRespCMTI(LPVOID pWnd, BYTE(*strArr)[DSAT_STRING_COL], WORD wSt
 
     ASSERT(wStrNum == 1);
 
-    BOOL bSnd = FALSE; BYTE cnt = 0;
+    BOOL bSnd = FALSE;
+    BYTE cnt = 0;
     char *p = (char*)(strArr[0] + strlen(gc_dsatResCodeTbl[DSAT_CMTI][gc_dsatmode]));
     char *p1, *p2;
-    p1 = p; p2 = 0;
+    p1 = p;
+    p2 = 0;
     int nItemIndex = -1;
     StSmsCardRecord CardRecord;
 
@@ -1035,12 +1037,13 @@ void CHSDPADlg::AtRespCVMI(LPVOID pWnd, BYTE(*strArr)[DSAT_STRING_COL], WORD wSt
 }
 
 #ifdef FEATURE_SMS_PDUMODE
-void CHSDPADlg::AtRespCMT(LPVOID pWnd, BYTE(*strArr)[DSAT_STRING_COL], WORD wStrNum){
+void CHSDPADlg::AtRespCMT(LPVOID pWnd, BYTE(*strArr)[DSAT_STRING_COL], WORD wStrNum)
+{
     char *p;
     CHSDPADlg* pDlg = (CHSDPADlg*)pWnd;
 
-    if(strncmp((char *)strArr[0], (gc_dsatResCodeTbl[DSAT_CMT][gc_dsatmode]), 
-strlen(gc_dsatResCodeTbl[DSAT_CMT][gc_dsatmode]))){
+    if(strncmp((char *)strArr[0], (gc_dsatResCodeTbl[DSAT_CMT][gc_dsatmode]),
+               strlen(gc_dsatResCodeTbl[DSAT_CMT][gc_dsatmode]))) {
         return;
     }
 
@@ -1058,7 +1061,7 @@ strlen(gc_dsatResCodeTbl[DSAT_CMT][gc_dsatmode]))){
     p = (char *)&strArr[1];
     DecodeSmsPDU(p, strlen(p), &record);
 
-	pDlg->RcvNewSmsProc(LOC_PC, record);
+    pDlg->RcvNewSmsProc(LOC_PC, record);
     Sleep(100);
 }
 #else
@@ -1114,16 +1117,17 @@ void CHSDPADlg::AtRespCMT(LPVOID pWnd, BYTE(*strArr)[DSAT_STRING_COL], WORD wStr
 
 
     record.state = SMS_STATE_MT_NOT_READ;
-	
-	if (!(ptr[0] && *ptr[0])){
-		memset(record.szNumber, 0x00, SMS_SC_NUM_MAX);
-	}else{
-		CString strGb = UCS2ToGB(A2W((char*)ptr[0]));
-		strncpy((char*)record.szNumber, W2A(strGb), SMS_SC_NUM_MAX*2);
-	}
+
+    if (!(ptr[0] && *ptr[0])) {
+        memset(record.szNumber, 0x00, SMS_SC_NUM_MAX);
+    } else {
+        CString strGb = UCS2ToGB(A2W((char*)ptr[0]));
+        strncpy((char*)record.szNumber, W2A(strGb), SMS_SC_NUM_MAX*2);
+    }
 
     int time, scnum, concatenate;
-    time = 1; scnum = 0, concatenate = 3;
+    time = 1;
+    scnum = 0, concatenate = 3;
 
     if (!(ptr[time] && *ptr[time]))
         record.timestamp = COleDateTime::GetCurrentTime();
@@ -1135,7 +1139,7 @@ void CHSDPADlg::AtRespCMT(LPVOID pWnd, BYTE(*strArr)[DSAT_STRING_COL], WORD wStr
     //  CString ptrsc=(char*)(ptr[scnum]);
     if (!(ptr[scnum] && *ptr[scnum]))
         memset(record.szSCNumber, 0x00, SMS_SC_NUM_MAX);
-    else{
+    else {
         CString strGb = UCS2ToGB(A2W((char*)ptr[scnum]));
         strncpy((char*)record.szSCNumber, W2A(strGb), SMS_SC_NUM_MAX*2);
     }
@@ -1231,7 +1235,8 @@ void CHSDPADlg::AtRespReadNewSms(LPVOID pWnd, BYTE(*strArr)[DSAT_STRING_COL], WO
             ASSERT(0);
         }
 
-        BOOL bSnd = FALSE; BYTE cnt = 0;
+        BOOL bSnd = FALSE;
+        BYTE cnt = 0;
         char szAtBuf[50] = {0};
         sprintf(szAtBuf, "%s%d\r", gcstrAtSms[AT_SMS_QCMGR], pDlg->m_nNewSmsIndex);
         CSerialPort* pComm = ((CHSDPAApp*)AfxGetApp())->m_pSerialPort;
@@ -1621,33 +1626,33 @@ void CHSDPADlg::AtRespSIND(LPVOID pWnd, BYTE(*strArr)[DSAT_STRING_COL], WORD wSt
 
 void CHSDPADlg::AtRespMODE(LPVOID pWnd, BYTE(*strArr)[DSAT_STRING_COL], WORD wStrNum)
 {
-	CHSDPADlg* pDlg = (CHSDPADlg*)pWnd;
+    CHSDPADlg* pDlg = (CHSDPADlg*)pWnd;
     if (!memcmp((const char*)strArr[0], gc_dsatResCodeTbl[DSAT_MODE][gc_dsatmode],
                 strlen(gc_dsatResCodeTbl[DSAT_MODE][gc_dsatmode]))) {
         char *ptr = (char*)strArr[0] + strlen(gc_dsatResCodeTbl[DSAT_MODE][gc_dsatmode]);
         char *p = strchr(ptr, ',');
         int sys_mode = 0;
-		BYTE nwsrv = 0;
+        BYTE nwsrv = 0;
         *p = '\0';
         sys_mode = atoi(ptr);
         pDlg->m_NetworkSrv = (EnNetWorkSrv)atoi(p+1);
 
-        switch(sys_mode){
-            case 0:
-				pDlg->m_NetworkType = NW_TYPE_NOSRV;
-				break;
-            case 3:
-				pDlg->m_NetworkType = NW_TYPE_GSM;
-				break;
-            case 5:
-				pDlg->m_NetworkType = NW_TYPE_WCDMA;
-				break;
-            case 15:
-				pDlg->m_NetworkType = NW_TYPE_TDSCDMA;
-				break;
-            default:
-				pDlg->m_NetworkType = NW_TYPE_UNKNOWN;
-				break;
+        switch(sys_mode) {
+        case 0:
+            pDlg->m_NetworkType = NW_TYPE_NOSRV;
+            break;
+        case 3:
+            pDlg->m_NetworkType = NW_TYPE_GSM;
+            break;
+        case 5:
+            pDlg->m_NetworkType = NW_TYPE_WCDMA;
+            break;
+        case 15:
+            pDlg->m_NetworkType = NW_TYPE_TDSCDMA;
+            break;
+        default:
+            pDlg->m_NetworkType = NW_TYPE_UNKNOWN;
+            break;
         }
 
         pDlg->m_NetCallLog = NW_CALLLOG_NOSRV;
@@ -2000,8 +2005,8 @@ void CHSDPADlg::AtRespCDS(LPVOID pWnd, BYTE(*strArr)[DSAT_STRING_COL], WORD wStr
 
     int cnt = 0;
     char *p;
-    if(strncmp((char *)strArr[0], (gc_dsatResCodeTbl[DSAT_CDS][gc_dsatmode]), 
-strlen(gc_dsatResCodeTbl[DSAT_CDS][gc_dsatmode]))){
+    if(strncmp((char *)strArr[0], (gc_dsatResCodeTbl[DSAT_CDS][gc_dsatmode]),
+               strlen(gc_dsatResCodeTbl[DSAT_CDS][gc_dsatmode]))) {
         return;
     }
 
@@ -2075,7 +2080,8 @@ void CHSDPADlg::AtRespCDS(LPVOID pWnd, BYTE(*strArr)[DSAT_STRING_COL], WORD wStr
     strcpy(record.szNumber, ptr[0]);
 
     int time, scnum, concatenate;
-    time = 1; scnum = 0, concatenate = 2;
+    time = 1;
+    scnum = 0, concatenate = 2;
 
     if (!(ptr[time] && *ptr[time]))
         record.timestamp = COleDateTime::GetCurrentTime();
@@ -2672,53 +2678,53 @@ LRESULT CHSDPADlg::OnTrayNotify(WPARAM wParam, LPARAM lParam)
 
     switch (lParam) {
     case WM_RBUTTONUP: { //右键起来时弹出快捷菜单
-            LPPOINT lpoint = new tagPOINT;
-            ::GetCursorPos(lpoint);//得到鼠标位置
-            switch (m_skinWin.m_winstate) {
-            case 0:
-            case 1:
-                str.LoadString(IDS_TRAY_TOTRAY);
-                break;
-            case 2:
-            default:
-                temp.LoadString(IDS_TRAY_OPENDLG);
-                str.Format(temp, g_SetData.Main_szPrefixName);
-                break;
-            }
-            menu.GetSubMenu(0)->ModifyMenu(0, MF_BYPOSITION,
-                                           ID_APP_TRAY_MAXI, str);
-            menu.GetSubMenu(0)->TrackPopupMenu(TPM_LEFTALIGN,
-                                               lpoint->x, lpoint->y, this);
-            //资源回收
-            HMENU hmenu = menu.Detach();
-            menu.DestroyMenu();
-            delete lpoint;
+        LPPOINT lpoint = new tagPOINT;
+        ::GetCursorPos(lpoint);//得到鼠标位置
+        switch (m_skinWin.m_winstate) {
+        case 0:
+        case 1:
+            str.LoadString(IDS_TRAY_TOTRAY);
+            break;
+        case 2:
+        default:
+            temp.LoadString(IDS_TRAY_OPENDLG);
+            str.Format(temp, g_SetData.Main_szPrefixName);
+            break;
         }
-        break;
+        menu.GetSubMenu(0)->ModifyMenu(0, MF_BYPOSITION,
+                                       ID_APP_TRAY_MAXI, str);
+        menu.GetSubMenu(0)->TrackPopupMenu(TPM_LEFTALIGN,
+                                           lpoint->x, lpoint->y, this);
+        //资源回收
+        HMENU hmenu = menu.Detach();
+        menu.DestroyMenu();
+        delete lpoint;
+    }
+    break;
 
     case WM_LBUTTONDBLCLK: { //双击左键的处理
-            this->ShowWindow(SW_SHOW);//显示主窗口
-            if (m_bWinSize) {
-                m_skinWin.m_winstate = 0;
-            } else {
-                m_skinWin.m_winstate = 1;
-            }
-            m_skinWin.OnNcPaint(0);
-            switch (m_skinWin.m_winstate) {
-            case 0:
-            case 1:
-                str.LoadString(IDS_TRAY_TOTRAY);
-                break;
-            case 2:
-            default:
-                temp.LoadString(IDS_TRAY_OPENDLG);
-                str.Format(temp, g_SetData.Main_szPrefixName);
-                break;
-            }
-            menu.GetSubMenu(0)->ModifyMenu(0, MF_BYPOSITION,
-                                           ID_APP_TRAY_MAXI, str);
+        this->ShowWindow(SW_SHOW);//显示主窗口
+        if (m_bWinSize) {
+            m_skinWin.m_winstate = 0;
+        } else {
+            m_skinWin.m_winstate = 1;
         }
-        break;
+        m_skinWin.OnNcPaint(0);
+        switch (m_skinWin.m_winstate) {
+        case 0:
+        case 1:
+            str.LoadString(IDS_TRAY_TOTRAY);
+            break;
+        case 2:
+        default:
+            temp.LoadString(IDS_TRAY_OPENDLG);
+            str.Format(temp, g_SetData.Main_szPrefixName);
+            break;
+        }
+        menu.GetSubMenu(0)->ModifyMenu(0, MF_BYPOSITION,
+                                       ID_APP_TRAY_MAXI, str);
+    }
+    break;
     }
     return 0;
 }
@@ -2955,8 +2961,8 @@ void CHSDPADlg::AtRespCSCA(LPVOID pWnd, BYTE(*strArr)[DSAT_STRING_COL], WORD wSt
             } else
                 q++;
         }
-    
-       CString szptr = (char*)ptr;
+
+        CString szptr = (char*)ptr;
         wcsncpy(gSmsCentreNum, szptr, SMS_SC_NUM_MAX);
     }
 
@@ -3119,74 +3125,74 @@ BOOL CHSDPADlg::SyncInitFunc(int nStatus)
                 while (!bSimStatus) {
                     switch (m_cHandlePin.m_nSimStat) {
                     case CPIN_SIM_PIN_REQUIRED: { //需要进行PIN码验证
-                            if (m_cHandlePin.m_nPinStat == 1) {
-                                CDlgSignIn* dlgSI;
-                                dlgSI = new CDlgSignIn(PreMsgDlg);
-                                int nResp = dlgSI->DoModal();
-
-                                if (nResp == IDOK) {
-                                    bSimlock++;
-                                    if (CPIN_SIM_PUK_REQUIRED != m_cHandlePin.m_nSimStat) {
-                                        res = TRUE;
-                                        bSimStatus = true;
-                                    }
-                                } else if (nResp == IDCANCEL) {
-                                    res = FALSE;
-                                    bSimStatus = true;
-                                }
-
-                                MSG msg;
-                                while (::PeekMessage(&msg, NULL, WM_PAINT, WM_PAINT, PM_NOREMOVE)) {
-                                    if (!GetMessage(&msg, NULL, WM_PAINT, WM_PAINT))
-                                        break;
-                                    DispatchMessage(&msg);
-                                }
-
-                                Sleep(1000);
-
-                                if (NULL != dlgSI) {
-                                    delete dlgSI;
-                                }
-                            }
-
-                            break;
-                        }
-
-                    case CPIN_SIM_PUK_REQUIRED: {  //需要使用PUK码来解锁
-                            CModifyPinDlg* ModifyPindlg;
-                            ModifyPindlg = new CModifyPinDlg(PreMsgDlg, 1);
-                            int nResp = ModifyPindlg->DoModal();
+                        if (m_cHandlePin.m_nPinStat == 1) {
+                            CDlgSignIn* dlgSI;
+                            dlgSI = new CDlgSignIn(PreMsgDlg);
+                            int nResp = dlgSI->DoModal();
 
                             if (nResp == IDOK) {
-                                res = TRUE;
-                                bSimStatus = true;
+                                bSimlock++;
+                                if (CPIN_SIM_PUK_REQUIRED != m_cHandlePin.m_nSimStat) {
+                                    res = TRUE;
+                                    bSimStatus = true;
+                                }
                             } else if (nResp == IDCANCEL) {
                                 res = FALSE;
                                 bSimStatus = true;
                             }
-                            if (NULL != ModifyPindlg) {
-                                delete ModifyPindlg;
+
+                            MSG msg;
+                            while (::PeekMessage(&msg, NULL, WM_PAINT, WM_PAINT, PM_NOREMOVE)) {
+                                if (!GetMessage(&msg, NULL, WM_PAINT, WM_PAINT))
+                                    break;
+                                DispatchMessage(&msg);
                             }
 
-                            break;
+                            Sleep(1000);
+
+                            if (NULL != dlgSI) {
+                                delete dlgSI;
+                            }
                         }
+
+                        break;
+                    }
+
+                    case CPIN_SIM_PUK_REQUIRED: {  //需要使用PUK码来解锁
+                        CModifyPinDlg* ModifyPindlg;
+                        ModifyPindlg = new CModifyPinDlg(PreMsgDlg, 1);
+                        int nResp = ModifyPindlg->DoModal();
+
+                        if (nResp == IDOK) {
+                            res = TRUE;
+                            bSimStatus = true;
+                        } else if (nResp == IDCANCEL) {
+                            res = FALSE;
+                            bSimStatus = true;
+                        }
+                        if (NULL != ModifyPindlg) {
+                            delete ModifyPindlg;
+                        }
+
+                        break;
+                    }
 
                     case CPIN_SIM_NONE_REQUIRED: { //PIN码验证未打开，暂保留
-                            bSimStatus = true;
-                            break;
-                        }
+                        bSimStatus = true;
+                        break;
+                    }
 
                     case CPIN_SIM_DESTROYED: {
-                            bSimStatus = true;
-                            res = FALSE;
+                        bSimStatus = true;
+                        res = FALSE;
 
-                            break;
-                        }
+                        break;
+                    }
 
                     default: {
-                            bSimStatus = true;
-                            res = FALSE;
-                        }
+                        bSimStatus = true;
+                        res = FALSE;
+                    }
                     } // switch
                 }
             }
@@ -3342,7 +3348,7 @@ BOOL CHSDPADlg::SyncInitFunc(int nStatus)
 
         Sleep(50);
 #endif
-        if( m_pSyncFuncTbl[cnt] != NULL ){
+        if( m_pSyncFuncTbl[cnt] != NULL ) {
             InitType = (this->*m_pSyncFuncTbl[cnt])();
             switch (InitType) {
             case SYNCINITFUNCRET_DONE:
@@ -3837,22 +3843,22 @@ LRESULT CHSDPADlg::UpdateIcon(WPARAM wParam, LPARAM lParam)
         //}
         break;
     case ICON_TYPE_PLMN: {
-            m_cPlmnInfo.SetBitmap(IDB_ICON_LONGNULL);
+        m_cPlmnInfo.SetBitmap(IDB_ICON_LONGNULL);
 
-            if ((value == 1) && (m_SrvStatus == 2)) { //value为1代表找到网络
-                if (wcslen(m_szPLMN)) {
-                    m_cPlmnInfo.SetText(m_szPLMN);
-                }
-
-            } else {
-                m_cPlmnInfo.SetText(_T(""));
+        if ((value == 1) && (m_SrvStatus == 2)) { //value为1代表找到网络
+            if (wcslen(m_szPLMN)) {
+                m_cPlmnInfo.SetText(m_szPLMN);
             }
-#ifdef FEATURE_VERSION_BRAZIL
-            m_pTabDialog->ReLoadLogo(m_szPLMN);
-#endif
-            m_cPlmnInfo.Invalidate();
-            break;
+
+        } else {
+            m_cPlmnInfo.SetText(_T(""));
         }
+#ifdef FEATURE_VERSION_BRAZIL
+        m_pTabDialog->ReLoadLogo(m_szPLMN);
+#endif
+        m_cPlmnInfo.Invalidate();
+        break;
+    }
     case ICON_TYPE_PLMN2:
         m_cPlmnInfo2.SetBitmap(IDB_ICON_LONGNULL);
         switch (value) {
@@ -4092,7 +4098,7 @@ EnSyncInitFuncRetType CHSDPADlg::AtSndCSCS()
 {
     char szAtBuf[30] = {0};
     char szChSet[10] = {0};
-	USES_CONVERSION;
+    USES_CONVERSION;
     sprintf(szAtBuf, "AT+CSCS=\"%s\"\r", W2A(g_SetData.Main_CharSet));
 
     if (m_pComm->WriteToPort(szAtBuf, strlen(szAtBuf))) {
@@ -4131,7 +4137,7 @@ void CHSDPADlg::RegSyncInitFunc()               //wyw_0120 remove all Sleep
     m_pSyncFuncTbl[SYNCINITFUNCID_CGMR] = &CHSDPADlg::AtSndCGMR;
 
     if (!wcsicmp(g_SetData.Setup_sz3GType, _T("WCDMA"))) {
-          m_pSyncFuncTbl[SYNCINITFUNCID_CSCA] = &CHSDPADlg::AtSndCSCA;
+        m_pSyncFuncTbl[SYNCINITFUNCID_CSCA] = &CHSDPADlg::AtSndCSCA;
     }
 
     m_pSyncFuncTbl[SYNCINITFUNCID_CSDH] = &CHSDPADlg::AtSndCSDH;
@@ -5202,9 +5208,9 @@ LRESULT CHSDPADlg::OnNewNotice(WPARAM wParam, LPARAM lParam)
 
     switch (noticeType) {
     case NT_MESSAGE: {
-            ProcessMsgNotice(noticeRCP);
-            break;
-        }
+        ProcessMsgNotice(noticeRCP);
+        break;
+    }
     case NT_STATUS:
         ProcessStatusNotice(noticeRCP);
         break;

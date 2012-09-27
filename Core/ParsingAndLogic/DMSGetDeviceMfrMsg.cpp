@@ -42,7 +42,7 @@ static MessageCreator<DMSGetDeviceMfrRsp> RspUint32Creator(DMSGetDeviceMfrRspUID
 //
 /// Constructor for DMSGetDeviceMfrReq.
 // --------------------------------------------------------------------------
-DMSGetDeviceMfrReq::DMSGetDeviceMfrReq() : 
+DMSGetDeviceMfrReq::DMSGetDeviceMfrReq() :
     Message(QMUX_TYPE_DMS,QMI_DMS_GET_DEVICE_MFR_MSG,QMI_CTL_FLAG_TYPE_CMD)
 {}
 
@@ -132,40 +132,34 @@ DMSGetDeviceMfrRsp::~DMSGetDeviceMfrRsp()
 bool DMSGetDeviceMfrRsp::Unpack(MsgBuf& msgBuf)
 {
     // call the base unpack
-    if (!Message::Unpack(msgBuf))
-    {
+    if (!Message::Unpack(msgBuf)) {
         return false;
     }
-    
+
     // validate message length
-    if (m_result == QMI_RESULT_SUCCESS)
-    {
+    if (m_result == QMI_RESULT_SUCCESS) {
         // mandatory tlvs
         uint32 len = 10 + (uint32)m_deviceManufacturer.length();
-        if (m_length != len) 
-        {
+        if (m_length != len) {
             std::stringstream stream;
             stream << _T("Warning: unable to unpack message:") << std::endl
-                << _T("Expected message length is ") << (int)len
-                << _T(" bytes, unpacked length is ")
-                << m_length << _T(" bytes.") << std::endl 
-                << std::endl;
+                   << _T("Expected message length is ") << (int)len
+                   << _T(" bytes, unpacked length is ")
+                   << m_length << _T(" bytes.") << std::endl
+                   << std::endl;
             MessageManager::GetInstance().ReportStatus(stream.str(),ST_WARNING);
-            return false; 
+            return false;
         }
-    }
-    else
-    {
+    } else {
         // only result code tlv on failure
-        if (m_length != 7) 
-        {
+        if (m_length != 7) {
             std::stringstream stream;
             stream << _T("Warning: unable to unpack message:") << std::endl
-                << _T("Expected message length is 7 bytes, unpacked length is ")
-                << m_length << _T(" bytes.") << std::endl 
-                << std::endl;
+                   << _T("Expected message length is 7 bytes, unpacked length is ")
+                   << m_length << _T(" bytes.") << std::endl
+                   << std::endl;
             MessageManager::GetInstance().ReportStatus(stream.str(),ST_WARNING);
-            return false; 
+            return false;
         }
     }
 
@@ -183,8 +177,7 @@ bool DMSGetDeviceMfrRsp::Unpack(MsgBuf& msgBuf)
 Message::Uint8UnpackerMap& DMSGetDeviceMfrRsp::GetUnpackerMap()
 {
     static Uint8UnpackerMap UUMap;
-    if (UUMap.empty())
-    {
+    if (UUMap.empty()) {
         bool bSuccess = UUMap.insert(UUPair(RESULT_CODE_TYPE,(Unpacker)UnpackResultCode)).second;
         assert(bSuccess);
         bSuccess = UUMap.insert(UUPair(DEVICE_MANUFACTURER_TYPE,(Unpacker)UnpackDeviceManufacturer)).second;
@@ -207,12 +200,11 @@ bool DMSGetDeviceMfrRsp::UnpackResultCode(MsgBuf& msgBuf)
     m_resultCodeType = RESULT_CODE_TYPE;
 
     m_resultCodeLen = msgBuf.GetWord();
-    if (m_resultCodeLen != 4) 
-    {
+    if (m_resultCodeLen != 4) {
         std::stringstream stream;
         stream << _T("Warning: unable to unpack message:") << std::endl
                << _T("Expected Result Code length is 4 bytes, unpacked length is ")
-               << m_resultCodeLen << _T(" bytes.") << std::endl 
+               << m_resultCodeLen << _T(" bytes.") << std::endl
                << std::endl;
         MessageManager::GetInstance().ReportStatus(stream.str(),ST_WARNING);
         return false;
@@ -243,8 +235,7 @@ bool DMSGetDeviceMfrRsp::UnpackDeviceManufacturer(MsgBuf& msgBuf)
     msgBuf.GetCopy(&m_deviceManufacturer[0],m_deviceManufacturerLen);
 
     // all tlvs are mandatory, so we should be at end of buffer
-    if (!msgBuf.EOB())
-    {
+    if (!msgBuf.EOB()) {
         std::stringstream stream;
         stream << _T("Warning: unable to unpack message:") << std::endl
                << _T("Finished unpacking message but end of buffer not reached")
@@ -271,8 +262,7 @@ void DMSGetDeviceMfrRsp::Print(std::ostream& stream)
            << _T("  ErrorCode ") << (int)m_error << std::endl;
 
     // only print other mandatory tlvs if result code success
-    if (m_result == QMI_RESULT_SUCCESS)
-    {
+    if (m_result == QMI_RESULT_SUCCESS) {
         stream << _T("  DeviceManufacturer ") << m_deviceManufacturer << std::endl;
     }
 

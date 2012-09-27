@@ -10,8 +10,7 @@
 
 const EnDsatResMode gc_dsatmode = DSAT_MODE_STRING;
 
-const char gc_dsatResCodeTbl[DSAT_MAX][DSAT_MODE_MAX][30] =
-{
+const char gc_dsatResCodeTbl[DSAT_MAX][DSAT_MODE_MAX][30] = {
     "0", "OK",
     "4", "ERROR",
     "2", "RING",
@@ -95,8 +94,7 @@ static WORD g_BGClipStrNum;
 //短消息CMTI通知缓存队列
 static StBGSmsQueue g_BGSmsQueue;
 
-static const uinetwk_network_info_s_type uinetwk_network_table[] =
-{
+static const uinetwk_network_info_s_type uinetwk_network_table[] = {
     {001 , 1 , UI_NETWK_TYPE_GSM_900 , "Test Net 001 01" , "Test PLMN 1-1"},
     {001 , 2 , UI_NETWK_TYPE_GSM_900 , "Test Net 001 02" , "Test PLMN 1-2"},
     {002 , 1 , UI_NETWK_TYPE_GSM_900 , "Test2-1" , "Test PLMN 2-1"},
@@ -702,15 +700,13 @@ void BGEvtSms(LPVOID pWnd, BYTE(*strArr)[DSAT_STRING_COL], WORD wStrNum)
 {
     ASSERT(wStrNum <= BG_STRING_ROW);
 
-    if (wStrNum > BG_STRING_ROW)
-    {
+    if (wStrNum > BG_STRING_ROW) {
 
         return;
     }
 
     ::EnterCriticalSection(&g_BGSmsQueue.cs);
-    if (g_BGSmsQueue.wRxCount < BG_SMS_ARRNUM)
-    {
+    if (g_BGSmsQueue.wRxCount < BG_SMS_ARRNUM) {
         g_BGSmsQueue.StrNum[g_BGSmsQueue.nWriteIndex] = wStrNum;
         for (WORD cnt = 0; cnt < wStrNum; cnt++)
             strncpy((char*)g_BGSmsQueue.StrArr[g_BGSmsQueue.nWriteIndex][cnt], (char*)strArr[cnt], DSAT_STRING_COL);
@@ -775,25 +771,21 @@ UINT BGThreadProc(LPVOID pParam)
     g_BGReadNewSmsEvt = ::CreateEvent(NULL, FALSE, TRUE, NULL);
 
     DWORD dwEvent;
-    while (true)
-    {
+    while (true) {
         dwEvent = ::WaitForMultipleObjects(BGEVT_ARRNUM, g_BGEvtArr, FALSE, INFINITE);
         dwEvent -= WAIT_OBJECT_0;
 
-        switch (dwEvent)
-        {
+        switch (dwEvent) {
         case BGEVT_SMS:
             //pMainDlg->m_bInComSms = TRUE;
             ::WaitForSingleObject(g_BGPassEvt, INFINITE);
 
-            while (true)
-            {
+            while (true) {
                 g_BGSmsStrNum = 0;
                 memset(g_BGSmsStrArr, 0x00, sizeof(g_BGSmsStrArr));
 
                 ::EnterCriticalSection(&g_BGSmsQueue.cs);
-                if (g_BGSmsQueue.wRxCount > 0)
-                {
+                if (g_BGSmsQueue.wRxCount > 0) {
                     g_BGSmsStrNum = g_BGSmsQueue.StrNum[g_BGSmsQueue.nReadIndex];
                     for (WORD cnt = 0; cnt < g_BGSmsStrNum; cnt++)
                         strncpy((char*)g_BGSmsStrArr[cnt], (char*)g_BGSmsQueue.StrArr[g_BGSmsQueue.nReadIndex][cnt], DSAT_STRING_COL);
@@ -804,9 +796,7 @@ UINT BGThreadProc(LPVOID pParam)
                     ::LeaveCriticalSection(&g_BGSmsQueue.cs);
                     //Sleep(100);
                     (BGSmsResp.m_AtRespFunc)(BGSmsResp.m_pWnd, g_BGSmsStrArr, g_BGSmsStrNum);
-                }
-                else
-                {
+                } else {
                     ::LeaveCriticalSection(&g_BGSmsQueue.cs);
                     break;
                 }
@@ -842,29 +832,22 @@ void RegisterAtRespFunc(EnAtRespFuncType type, AtRespFunc func, LPVOID pWnd)
     ASSERT(type >= ATRESP_RING && type < ATRESP_MAX);
     ASSERT(func != NULL && pWnd != NULL);
 
-    if (type == ATRESP_RING)
-    {
+    if (type == ATRESP_RING) {
         BGCallResp.m_AtRespFunc = func;
         BGCallResp.m_pWnd = pWnd;
         g_AtRespArr[type].m_AtRespFunc = BGEvtCall;
         g_AtRespArr[type].m_pWnd = NULL;
-    }
-    else if (type == ATRESP_CLIP)
-    {
+    } else if (type == ATRESP_CLIP) {
         BGClipResp.m_AtRespFunc = func;
         BGClipResp.m_pWnd = pWnd;
         g_AtRespArr[type].m_AtRespFunc = BGEvtClip;
         g_AtRespArr[type].m_pWnd = NULL;
-    }
-    else if (type == ATRESP_CMTI)
-    {
+    } else if (type == ATRESP_CMTI) {
         BGSmsResp.m_AtRespFunc = func;
         BGSmsResp.m_pWnd = pWnd;
         g_AtRespArr[type].m_AtRespFunc = BGEvtSms;
         g_AtRespArr[type].m_pWnd = NULL;
-    }
-    else
-    {
+    } else {
         g_AtRespArr[type].m_AtRespFunc = func;
         g_AtRespArr[type].m_pWnd = pWnd;
     }
@@ -901,10 +884,8 @@ static void CallAtRespFunc(EnAtRespFuncType type)
 {
     ASSERT(type >= ATRESP_RING && type < ATRESP_MAX);
 
-    if (type == ATRESP_GENERAL_AT)
-    {
-        if (WAIT_OBJECT_0 != ::WaitForSingleObject(g_AtRegEvt, 30000))
-        {
+    if (type == ATRESP_GENERAL_AT) {
+        if (WAIT_OBJECT_0 != ::WaitForSingleObject(g_AtRegEvt, 30000)) {
             ASSERT(FALSE);
         }
     }
@@ -916,15 +897,12 @@ static void CallAtRespFunc(EnAtRespFuncType type)
     if (g_AtRespArr[type].m_AtRespFunc == NULL)
         return;
 
-    if (type != ATRESP_GENERAL_AT)
-    {
+    if (type != ATRESP_GENERAL_AT) {
         //下位机在上位机初始化阶段不主动发送RSSI,NETWORK,ROAM变化通知
 #if 0
         if (type == ATRESP_RSSI || type == ATRESP_NWCHG || type == ATRESP_ROAMCHG
-                || type == ATRESP_RING || type == ATRESP_CMTI)
-        {
-            if (pDsMainDlg)
-            {
+                || type == ATRESP_RING || type == ATRESP_CMTI) {
+            if (pDsMainDlg) {
                 BOOL bSyncInitMask;
                 EnterCriticalSection(&pDsMainDlg->m_csSyncInitMask);
                 bSyncInitMask = pDsMainDlg->m_bSyncInitMask;
@@ -936,9 +914,7 @@ static void CallAtRespFunc(EnAtRespFuncType type)
 #endif
 
         (*g_AtRespArr[type].m_AtRespFunc)(g_AtRespArr[type].m_pWnd, g_DsatStrArr, g_DsatStrNum);
-    }
-    else
-    {
+    } else {
         StAtResp lastAtResp = g_AtRespArr[type];
         DeRegisterAtRespFunc(type);
         (*lastAtResp.m_AtRespFunc)(lastAtResp.m_pWnd, g_DsatStrArr, g_DsatStrNum);
@@ -958,13 +934,11 @@ static EnDsatResCode FindEndCode(const char *str)
     begCode = DSAT_OK;
     divCode = DSAT_CME_ERROR;
 
-    for (i = begCode; i < divCode; i++)
-    {
+    for (i = begCode; i < divCode; i++) {
         if (strcmp(str, gc_dsatResCodeTbl[i][gc_dsatmode]) == 0)
             return (EnDsatResCode)(i);
     }
-    for (; i < DSAT_MAX; i++)
-    {
+    for (; i < DSAT_MAX; i++) {
         if (memcmp(str, gc_dsatResCodeTbl[i][gc_dsatmode], strlen(gc_dsatResCodeTbl[i][gc_dsatmode])) == 0)
             return (EnDsatResCode)(i);
     }
@@ -990,8 +964,7 @@ static void AtRespParse(CSerialPort *pComm)
 #ifdef FEATURE_ATTEST_SUPPORT
     //输出，in
     CStdioFile file;
-    if (file.Open("AtDebug.log", CFile::modeReadWrite))
-    {
+    if (file.Open("AtDebug.log", CFile::modeReadWrite)) {
         CString str;
         str.Format("%s", (char *)&pComm->m_RxQueueCtrl.RxBuffer[0]);
         str.Insert(str.GetLength(), "\n");
@@ -1002,43 +975,35 @@ static void AtRespParse(CSerialPort *pComm)
 #endif
 
     BYTE ch = 0;
-    while (true)
-    {
+    while (true) {
         EnterCriticalSection(&pComm->m_csRxQueue);
-        if (pComm->m_RxQueueCtrl.wRxCount > 0)
-        {
+        if (pComm->m_RxQueueCtrl.wRxCount > 0) {
             ch = *pComm->m_RxQueueCtrl.pRead++;
             if (pComm->m_RxQueueCtrl.pRead >= &pComm->m_RxQueueCtrl.RxBuffer[SERIAL_RXBUFFERSIZE])
                 pComm->m_RxQueueCtrl.pRead = &pComm->m_RxQueueCtrl.RxBuffer[0];
             pComm->m_RxQueueCtrl.wRxCount--;
             LeaveCriticalSection(&pComm->m_csRxQueue);
-        }
-        else
-        {
+        } else {
             LeaveCriticalSection(&pComm->m_csRxQueue);
             break;
         }
 
         ASSERT(g_DsatStrNum <= DSAT_STRING_ROW);
 
-        switch (g_DsatState)
-        {
+        switch (g_DsatState) {
         case STATE_START:
-            if (ch == AT_FLAG_S3)
-            {
-                if ((g_DsatResCode == DSAT_CMT) 
-                    #ifndef FEATURE_SMS_PDUMODE
-                    //becase spreadtrum send double 0d0a before sms pdu which 
+            if (ch == AT_FLAG_S3) {
+                if ((g_DsatResCode == DSAT_CMT)
+#ifndef FEATURE_SMS_PDUMODE
+                        //becase spreadtrum send double 0d0a before sms pdu which
 // followed  by +CMT: 24, remove the expression for check  the 0d0a again
-                    || (g_DsatResCode == DSAT_CDS)
-                    #endif
-                    )
+                        || (g_DsatResCode == DSAT_CDS)
+#endif
+                   )
                     g_DsatState = STATE_RESCODE_S3;
                 else
                     g_DsatState = STATE_HEAD_S3;
-            }
-            else if (g_DsatStrNum > 0)
-            {
+            } else if (g_DsatStrNum > 0) {
                 *g_DsatPtr++ = ch;
                 g_DsatState = STATE_FIND_CONTENT;
             }
@@ -1050,59 +1015,44 @@ static void AtRespParse(CSerialPort *pComm)
                 g_DsatState = STATE_START;
             break;
         case STATE_HEAD_S4:
-            if (ch == AT_FLAG_MR)
-            {
+            if (ch == AT_FLAG_MR) {
                 *g_DsatPtr++ = ch;
                 g_DsatStrNum++;
                 g_DsatState = STATE_FIND_MR;
-            }
-            else if (ch != AT_FLAG_S3)
-            {
+            } else if (ch != AT_FLAG_S3) {
                 *g_DsatPtr++ = ch;
                 g_DsatState = STATE_FIND_CONTENT;
-            }
-            else
-            {
+            } else {
                 //g_DsatState = STATE_TAIL_S3;
                 g_DsatState = STATE_HEAD_S3;
             }
             break;
         case STATE_FIND_CONTENT:
-            if (ch != AT_FLAG_S3)
-            {
+            if (ch != AT_FLAG_S3) {
                 *g_DsatPtr++ = ch;
-            }
-            else
-            {
-                if ((g_DsatResCode != DSAT_CMT) && (g_DsatResCode != DSAT_CDS))
-                {
+            } else {
+                if ((g_DsatResCode != DSAT_CMT) && (g_DsatResCode != DSAT_CDS)) {
                     g_DsatResCode = FindEndCode((char *)g_DsatStrArr[g_DsatStrNum++]);
-                    if (g_DsatResCode == DSAT_MAX || g_DsatResCode == DSAT_CMT  || g_DsatResCode == DSAT_CDS)
-                    {
+                    if (g_DsatResCode == DSAT_MAX || g_DsatResCode == DSAT_CMT  || g_DsatResCode == DSAT_CDS) {
                         g_DsatState = STATE_TAIL_S3;
-                    }else
+                    } else
                         g_DsatState = STATE_RESCODE_S3;
                     g_DsatPtr = &g_DsatStrArr[g_DsatStrNum][0];
-                }
-                else
-                {
+                } else {
                     g_DsatStrNum++;
                     g_DsatState = STATE_RESCODE_S3;
                 }
             }
             break;
         case STATE_TAIL_S3:
-            if (ch == AT_FLAG_S4)
-            {
+            if (ch == AT_FLAG_S4) {
                 g_DsatState = STATE_START;
                 /*if (g_DsatResCode == DSAT_MAX) {
                     //ignore unsupported AT command response ,espally unsolicated at command
                     memset(&g_DsatStrArr[--g_DsatStrNum][0], 0, (DSAT_STRING_COL));
                     g_DsatPtr = &g_DsatStrArr[g_DsatStrNum][0];
                 }*/
-            }
-            else if (ch != AT_FLAG_S3)     //error
-            {
+            } else if (ch != AT_FLAG_S3) { //error
                 memset(&g_DsatStrArr[--g_DsatStrNum][0], 0, (DSAT_STRING_COL));
                 g_DsatPtr = &g_DsatStrArr[g_DsatStrNum][0];
                 g_DsatResCode = DSAT_MAX;
@@ -1110,12 +1060,9 @@ static void AtRespParse(CSerialPort *pComm)
             }
             break;
         case STATE_RESCODE_S3:
-            if (ch == AT_FLAG_S4)
-            {
+            if (ch == AT_FLAG_S4) {
                 g_DsatState = STATE_END;
-            }
-            else if (ch != AT_FLAG_S3)     //error
-            {
+            } else if (ch != AT_FLAG_S3) { //error
                 memset(&g_DsatStrArr[--g_DsatStrNum][0], 0, (DSAT_STRING_COL));
                 g_DsatPtr = &g_DsatStrArr[g_DsatStrNum][0];
                 g_DsatResCode = DSAT_MAX;
@@ -1123,14 +1070,11 @@ static void AtRespParse(CSerialPort *pComm)
             }
             break;
         case STATE_FIND_MR:
-            if (ch == AT_FLAG_SP)
-            {
+            if (ch == AT_FLAG_SP) {
                 *g_DsatPtr++ = ch;
                 g_DsatResCode = DSAT_OK;
                 g_DsatState = STATE_END;
-            }
-            else if (ch != AT_FLAG_MR)     //error
-            {
+            } else if (ch != AT_FLAG_MR) { //error
                 memset(&g_DsatStrArr[--g_DsatStrNum][0], 0, (DSAT_STRING_COL));
                 g_DsatPtr = &g_DsatStrArr[g_DsatStrNum][0];
                 g_DsatResCode = DSAT_MAX;
@@ -1140,124 +1084,69 @@ static void AtRespParse(CSerialPort *pComm)
         }
 
         //解析到一条完整的AT命令响应，调用AT处理回调函数
-        if (g_DsatState == STATE_END && g_DsatResCode != DSAT_MAX)
-        {
-            if (g_DsatResCode == DSAT_RING)
-            {
+        if (g_DsatState == STATE_END && g_DsatResCode != DSAT_MAX) {
+            if (g_DsatResCode == DSAT_RING) {
                 if (g_SetData.Main_nCall)
                     CallAtRespFunc(ATRESP_RING);
-            }
-            else if (g_DsatResCode == DSAT_NO_CARRIER)
-            {
+            } else if (g_DsatResCode == DSAT_NO_CARRIER) {
                 CallAtRespFunc(ATRESP_NO_CARRIER);
-            }
-            else if (g_DsatResCode == DSAT_DIALTONE)
-            {
+            } else if (g_DsatResCode == DSAT_DIALTONE) {
                 if (g_SetData.Main_nCall)
                     CallAtRespFunc(ATRESP_DIALTONE);
-            }
-            else if (g_DsatResCode == DSAT_CMTI)
-            {
+            } else if (g_DsatResCode == DSAT_CMTI) {
                 CallAtRespFunc(ATRESP_CMTI);
-            }
-            else if (g_DsatResCode == DSAT_CMT)
-            {
+            } else if (g_DsatResCode == DSAT_CMT) {
                 CallAtRespFunc(ATRESP_CMT);
-            }
-            else if (g_DsatResCode == DSAT_RVMFB)     //TATA 需求 add by liub
-            {
+            } else if (g_DsatResCode == DSAT_RVMFB) { //TATA 需求 add by liub
                 CallAtRespFunc(ATRESP_RVMFB);
-            }
-            else if (g_DsatResCode == DSAT_RVMFBUPDATE)     //TATA 需求 add by liub
-            {
+            } else if (g_DsatResCode == DSAT_RVMFBUPDATE) { //TATA 需求 add by liub
                 CallAtRespFunc(ATRESP_RVMFBUPDATA);
-            }
-            else if (g_DsatResCode == DSAT_RSSI)
-            {
+            } else if (g_DsatResCode == DSAT_RSSI) {
                 CallAtRespFunc(ATRESP_RSSI);
-            }
-            else if (g_DsatResCode == DSAT_SPREADY)
-            {
+            } else if (g_DsatResCode == DSAT_SPREADY) {
                 CallAtRespFunc(ATRESP_SPREADY);
-            }
-            else if (g_DsatResCode == DSAT_CLIP)
-            {
+            } else if (g_DsatResCode == DSAT_CLIP) {
                 if (g_SetData.Main_nCall)
                     CallAtRespFunc(ATRESP_CLIP);
-            }
-            else if (g_DsatResCode == DSAT_NWCHG)
-            {
+            } else if (g_DsatResCode == DSAT_NWCHG) {
                 CallAtRespFunc(ATRESP_NWCHG);
-            }
-            else if (g_DsatResCode == DSAT_NWSRVCHG)
-            {
+            } else if (g_DsatResCode == DSAT_NWSRVCHG) {
                 CallAtRespFunc(ATRESP_NWSRVCHG);
-            }
-            else if (g_DsatResCode == DSAT_ROAMCHG)
-            {
+            } else if (g_DsatResCode == DSAT_ROAMCHG) {
                 CallAtRespFunc(ATRESP_ROAMCHG);
-            }
-            else if (g_DsatResCode == DSAT_HANDSET)
-            {
+            } else if (g_DsatResCode == DSAT_HANDSET) {
                 CallAtRespFunc(ATRESP_HANDSETCHG);
-            }
-            else if (g_DsatResCode == DSAT_SIMREADY)
-            {
+            } else if (g_DsatResCode == DSAT_SIMREADY) {
                 CallAtRespFunc(ATRESP_SIMREADY);
-            }
-            else if (g_DsatResCode == DSAT_PLMNCHG)
-            {
+            } else if (g_DsatResCode == DSAT_PLMNCHG) {
                 CallAtRespFunc(ATRESP_PLMNCHG);
-            }
-            else if (g_DsatResCode == DSAT_SRVSTATUSCHG)
-            {
+            } else if (g_DsatResCode == DSAT_SRVSTATUSCHG) {
                 CallAtRespFunc(ATRESP_SRVSTATUSCHG);
-            }
-            else if (g_DsatResCode == DSAT_CDS)
-            {
+            } else if (g_DsatResCode == DSAT_CDS) {
                 CallAtRespFunc(ATRESP_CDS);
-            }
-            else if (g_DsatResCode == DSAT_CUSD)
-            {
+            } else if (g_DsatResCode == DSAT_CUSD) {
                 CallAtRespFunc(ATRESP_CUSD);
-            }
-            else if (g_DsatResCode == DSAT_PS)
-            {
+            } else if (g_DsatResCode == DSAT_PS) {
                 CallAtRespFunc(ATRESP_PS);
-            }
-            else if (g_DsatResCode == DSAT_HVPRIV)
-            {
+            } else if (g_DsatResCode == DSAT_HVPRIV) {
                 CallAtRespFunc(ATRESP_HVPRIV);
-            }
-            else if (g_DsatResCode == DSAT_SIDLOCK)
-            {
+            } else if (g_DsatResCode == DSAT_SIDLOCK) {
                 CallAtRespFunc(ATRESP_SIDLOCK);
-            }
-            else if (g_DsatResCode == DSAT_SIND)
-            {
+            } else if (g_DsatResCode == DSAT_SIND) {
                 CallAtRespFunc(ATRESP_SIND);
-            }
-            else if (g_DsatResCode == DSAT_MODE)
-            {
+            } else if (g_DsatResCode == DSAT_MODE) {
                 CallAtRespFunc(ATRESP_MODE);
-            }
-            else if (g_DsatResCode == DSAT_SYSINFO)
-            {
+            } else if (g_DsatResCode == DSAT_SYSINFO) {
                 CallAtRespFunc(ATRESP_SYSINFO);
-            }
-            else if (g_DsatResCode == DSAT_CREG || g_DsatResCode ==
-                     DSAT_CGREG)
-            {
+            } else if (g_DsatResCode == DSAT_CREG || g_DsatResCode ==
+                       DSAT_CGREG) {
                 CallAtRespFunc(ATRESP_CREG);
-            }
-            else if(g_DsatResCode == DSAT_ECIND)
-            {
+            } else if(g_DsatResCode == DSAT_ECIND) {
                 CallAtRespFunc(ATRESP_ECIND);
             }
 
             else if (g_DsatResCode == DSAT_OK || g_DsatResCode == DSAT_ERROR
-                     || g_DsatResCode == DSAT_CME_ERROR || g_DsatResCode == DSAT_CMS_ERROR)
-            {
+                     || g_DsatResCode == DSAT_CME_ERROR || g_DsatResCode == DSAT_CMS_ERROR) {
 
                 pComm->SetSerialState(SERIAL_STATE_CMD);
                 CallAtRespFunc(ATRESP_GENERAL_AT);
@@ -1323,13 +1212,11 @@ UINT DsThreadProc(LPVOID pParam)
     ::WaitForSingleObject(g_AppRegEvt, INFINITE);
 
     DWORD dwEvent = 0;
-    while (true)
-    {
+    while (true) {
         dwEvent = ::WaitForMultipleObjects(DSEVENT_ARRNUM, g_DsEventArr, FALSE, INFINITE);
         dwEvent -= WAIT_OBJECT_0;
 
-        switch (dwEvent)
-        {
+        switch (dwEvent) {
         case DSEVENT_ATRESP:
             AtRespParse(pComm);
             break;
@@ -1350,8 +1237,7 @@ UINT DsThreadProc(LPVOID pParam)
 EnSmsState GetSmsStateFromStr(LPCSTR str)
 {
     BYTE cnt;
-    for (cnt = 0; cnt < SMS_STATE_MAX; cnt++)
-    {
+    for (cnt = 0; cnt < SMS_STATE_MAX; cnt++) {
         if (strcmp(str, gcstrSmsState[cnt][gSmsMode]) == 0)
             break;
     }
@@ -1382,16 +1268,12 @@ BOOL GetTimeFromStr(LPCSTR str, COleDateTime &time)
     pTime = NULL;
     p = WorkStr;
 
-    while (*p)
-    {
-        if (*p == ',')
-        {
+    while (*p) {
+        if (*p == ',') {
             *p++ = 0;
             pTime = p;
             break;
-        }
-        else if (*p == '+')
-        {
+        } else if (*p == '+') {
             *p++ = 0;
             pZone = p;
             Zone = atoi(pZone);
@@ -1405,20 +1287,15 @@ BOOL GetTimeFromStr(LPCSTR str, COleDateTime &time)
 
     int cnt = 0;
     p1 = p2 = pDate;
-    while (cnt < 3)
-    {
-        if (*p2 == '/')
-        {
+    while (cnt < 3) {
+        if (*p2 == '/') {
             *p2++ = 0;
             Date[cnt++] = atoi(p1);
             p1 = p2;
-        }
-        else if (*p2 == 0)
-        {
+        } else if (*p2 == 0) {
             Date[cnt++] = atoi(p1);
             break;
-        }
-        else
+        } else
             p2++;
     }
 
@@ -1429,20 +1306,15 @@ BOOL GetTimeFromStr(LPCSTR str, COleDateTime &time)
 
     cnt = 0;
     p1 = p2 = pTime;
-    while (cnt < 3)
-    {
-        if (*p2 == ':')
-        {
+    while (cnt < 3) {
+        if (*p2 == ':') {
             *p2++ = 0;
             Time[cnt++] = atoi(p1);
             p1 = p2;
-        }
-        else if (*p2 == 0)
-        {
+        } else if (*p2 == 0) {
             Time[cnt++] = atoi(p1);
             break;
-        }
-        else
+        } else
             p2++;
     }
 
@@ -1450,12 +1322,10 @@ BOOL GetTimeFromStr(LPCSTR str, COleDateTime &time)
         return FALSE;
 
     if ((Date[1] >= 1 && Date[1] <= 12) && (Date[2] >= 1 && Date[2] <= 31)
-            && (Time[0] >= 0 && Time[0] <= 23) && (Time[1] >= 0 && Time[1] <= 59) && (Time[2] >= 0 && Time[2] <= 59))
-    {
+            && (Time[0] >= 0 && Time[0] <= 23) && (Time[1] >= 0 && Time[1] <= 59) && (Time[2] >= 0 && Time[2] <= 59)) {
         time = COleDateTime(Date[0], Date[1], Date[2], Time[0], Time[1], Time[2]);
         return TRUE;
-    }
-    else
+    } else
         return FALSE;
 }
 
@@ -1500,8 +1370,7 @@ CString GBToUCS2(const char *strGb)
     //转换Big5码到Unicode码，使用了API函数MultiByteToWideChar
     MultiByteToWideChar(CP_ACP, 0, strGb, -1, wszUnicode, iLen);
 
-    for (int i = 0; i < iLen - 1; i++)
-    {
+    for (int i = 0; i < iLen - 1; i++) {
         strTmp.Format(_T("%04X"), wszUnicode[i]);
         strUcs2 += strTmp;
     }
@@ -1535,8 +1404,7 @@ CString BTToUCS2(const TCHAR *strGb)
     //转换Big5码到Unicode码，使用了API函数MultiByteToWideChar
     // MultiByteToWideChar(CP_ACP, 0, strGb, -1, wszUnicode, iLen);
 
-    for (int i = 0; i < iLen; i++)
-    {
+    for (int i = 0; i < iLen; i++) {
         strTmp.Format(_T("%04X"), strGb[i]);
         strUcs2 += strTmp;
     }
@@ -1567,8 +1435,7 @@ int  UCS2ToUCS2(CString strGb, CString strUcs2)
     //转换Big5码到Unicode码，使用了API函数MultiByteToWideChar
     // MultiByteToWideChar(CP_ACP, 0, strGb, -1, wszUnicode, iLen);
     int j = 0;
-    for (int i = 0; i < iLen ;)
-    {
+    for (int i = 0; i < iLen ;) {
         wszUnicode[j] = (strGb[i] >> 8) & 0x00FF;
         wszUnicode[j + 1] = strGb[i] & 0x00FF;
         j += 2;
@@ -1576,8 +1443,7 @@ int  UCS2ToUCS2(CString strGb, CString strUcs2)
 
     }
 
-    for (int num = 0 ; num < j ; num++)
-    {
+    for (int num = 0 ; num < j ; num++) {
 
         strTmp.Format(_T("%x"), wszUnicode[num]);
         strUcs2 += strTmp;
@@ -1600,8 +1466,7 @@ CString UCS2ToGB(const CString &strUcs2)
     CString str;
     wchar_t wData;
 
-    for (int i = 0; i < iLen; i++)
-    {
+    for (int i = 0; i < iLen; i++) {
         str = strUcs2.Mid(i * 4, 4);
         swscanf(str, _T("%x"), &wData);
         wszUnicode[i] = wData;
@@ -1632,8 +1497,7 @@ void ASCToUCS2(const char* unicode, TCHAR* WChar)
 
     int len = strlen(unicode);
     int j = 0;
-    for (int i = 0; i < len;)
-    {
+    for (int i = 0; i < len;) {
         WChar[j] = unicode[i];
         WChar[j] = WChar[j] << 8;
         WChar[j] = WChar[j] | (unicode[i + 1] & 0x00FF);
@@ -1649,10 +1513,8 @@ BOOL ASCHEXToWchar(const char* ascii, TCHAR* WChar)
 {
     int len = strlen(ascii);
     int j = 0;
-    for (int i = 0; i < len; i++)
-    {
-        if (i % 2 == 0)
-        {
+    for (int i = 0; i < len; i++) {
+        if (i % 2 == 0) {
             WChar[j++] = '0';
             WChar[j++] = '0';
         }
@@ -1665,14 +1527,12 @@ BOOL ASCHEXToWchar(const char* ascii, TCHAR* WChar)
 int WCharToUnicode(const TCHAR *WChar, char* unicode)
 {
     int j = 0;
-    if (WChar == NULL)
-    {
+    if (WChar == NULL) {
         unicode[0] = '\0';
         return j;
     }
     int len = _tcslen(WChar);
-    for (int i = 0; i < len; i ++)
-    {
+    for (int i = 0; i < len; i ++) {
         unicode[j] = (char)(WChar[i] >> 8);
         unicode[j + 1] = (char)(WChar[i] & 0x00FF);
         if (unicode[j] == 0x00 && unicode[j + 1] == 0x00)
@@ -1685,18 +1545,15 @@ int WCharToUnicode(const TCHAR *WChar, char* unicode)
 int WCharToChar(const TCHAR *wchar, char* cstr)
 {
     char unicode[2];
-    if (wchar == NULL)
-    {
+    if (wchar == NULL) {
         memset(cstr, 0, strlen(cstr));
         return 0;
     }
     int len = _tcslen(wchar);
-    for (int i = 0; i < len; i ++)
-    {
+    for (int i = 0; i < len; i ++) {
         unicode[0] = (char)(wchar[i] & 0x00FF);
         unicode[1] = (char)(wchar[i] >> 8);
-        if (unicode[0] == 0x00 && unicode[1] == 0x00)
-        {
+        if (unicode[0] == 0x00 && unicode[1] == 0x00) {
             cstr[i] = 0x00;
             break;
         }
@@ -1710,8 +1567,7 @@ BOOL IsGsm7bitChar(const wchar_t uc)
     int i, j;
 
     for (i = 0; i < GSM0338_EXTENSIONS; i++)
-        for (j = 0; j < GSM0338_ALPHABET_SIZE; j++)
-        {
+        for (j = 0; j < GSM0338_ALPHABET_SIZE; j++) {
             if (uc == GSM0338ToUCS2Array[i][j])
                 return TRUE;
         }
@@ -1723,12 +1579,10 @@ BOOL UnicodeIsHighStr(TCHAR *wchar)
     TCHAR wstr;
     char str;
     INT len = _tcslen(wchar);
-    for (int i = 0; i < len; i ++)
-    {
+    for (int i = 0; i < len; i ++) {
         wstr = wchar[i];
         str = (char)(wstr >> 8);
-        if (str != 0x00)
-        {
+        if (str != 0x00) {
             result = TRUE;
             break;
         }
@@ -1747,25 +1601,20 @@ BOOL CStringisHighStr(CString str)
 char * strtrim(char *p)
 {
     int len = 0;
-    if (*p == NULL)
-    {
+    if (*p == NULL) {
         return NULL;
     }
 
-    while (*p != '\0')
-    {
-        if (*p != ' ' && *p != '\t')
-        {
+    while (*p != '\0') {
+        if (*p != ' ' && *p != '\t') {
             break;
         }
         p++;
     }
 
     len = strlen(p);
-    while (len--)
-    {
-        if (*(p + len) != ' ' && *(p + len) != '\t')
-        {
+    while (len--) {
+        if (*(p + len) != ' ' && *(p + len) != '\t') {
             break;
         }
         *(p + len) = '\0';
@@ -1796,10 +1645,8 @@ BOOL IsAlphabetUnicode(const TCHAR *str)
     //转换Big5码到Unicode码，使用了API函数MultiByteToWideChar
     //MultiByteToWideChar(CP_ACP, 0, str, -1, wszUnicode, iLen);
 
-    for (i = 0; i < iLen; i++)
-    {
-        if (!IsGsm7bitChar(wszUnicode[i]))
-        {
+    for (i = 0; i < iLen; i++) {
+        if (!IsGsm7bitChar(wszUnicode[i])) {
             delete []wszUnicode;               //wyw_0326 add
 
             return FALSE;
@@ -1830,8 +1677,7 @@ BOOL IsAlphabet(const char *str)
     //转换Big5码到Unicode码，使用了API函数MultiByteToWideChar
     MultiByteToWideChar(CP_ACP, 0, str, -1, wszUnicode, iLen);
 
-    for (i = 0; i < iLen - 1; i++)
-    {
+    for (i = 0; i < iLen - 1; i++) {
         if (!IsGsm7bitChar(wszUnicode[i]))
             return FALSE;
     }
@@ -1871,8 +1717,7 @@ USHORT GetACSIICharNum(const TCHAR *str)
     char * strTemp;
     strTemp = new char[len];
     WCharToChar(str, strTemp);
-    for (i = 0; i < len; i++)
-    {
+    for (i = 0; i < len; i++) {
         num++;
         if (IsDBCSLeadByte((BYTE)strTemp[i]))
             i++;
@@ -1909,8 +1754,7 @@ void DecodeFOFormSmsPDU(StSmsRecord *pRecord,  char *fo)
 
     ifo = strtol(fo, NULL, 16);
 
-    if(ifo & SMS_MASK_UDHI)
-    {
+    if(ifo & SMS_MASK_UDHI) {
         pRecord->flag |= SMS_RECORD_FLAG_CONCATENATE_SEGE;
     }
     pRecord->tp_mti = ifo & SMS_MASK_MTI;
@@ -1928,18 +1772,14 @@ int gsmEncode7bit(const char* pSrc, unsigned char* pDst, int nSrcLength)
     // 将源串每8个字节分为一组，压缩成7个字节
     // 循环该处理过程，直至源串被处理完
     // 如果分组不到8字节，也能正确处理
-    while (nSrc <= nSrcLength)
-    {
+    while (nSrc <= nSrcLength) {
         // 取源字符串的计数值的最低3位
         nChar = nSrc & 7;
         // 处理源串的每个字节
-        if (nChar == 0)
-        {
+        if (nChar == 0) {
             // 组内第一个字节，只是保存起来，待处理下一个字节时使用
             nLeft = *pSrc;
-        }
-        else
-        {
+        } else {
             unsigned char cChar[3] = {0};
             unsigned char iChar;
             // 组内其它字节，将其右边部分与残余数据相加，得到一个目标编码字节
@@ -1981,8 +1821,7 @@ int gsmDecode7bit(const char* pSrc, char* pDst, int nSrcLength)
     // 组内字节序号和残余数据初始化
     nByte = 0;
     nLeft = 0;
-    for(cnt = 0; cnt < nSrcLength/2; cnt++)
-    {
+    for(cnt = 0; cnt < nSrcLength/2; cnt++) {
         strncpy(str, pSrc+2*cnt, 2);
         sscanf(str, "%x", &Data);
         ascSrc[cnt] = Data;
@@ -1991,8 +1830,7 @@ int gsmDecode7bit(const char* pSrc, char* pDst, int nSrcLength)
     // 将源数据每7个字节分为一组，解压缩成8个字节
     // 循环该处理过程，直至源数据被处理完
     // 如果分组不到7字节，也能正确处理
-    while (nSrc < cnt)
-    {
+    while (nSrc < cnt) {
         // 将源字节右边部分与残余数据相加，去掉最高位，得到一个目标解码字节
         *pDst = ((*ascSrc << nByte) | nLeft) & 0x7f;
         // 将该字节剩下的左边部分，作为残余数据保存起来
@@ -2003,8 +1841,7 @@ int gsmDecode7bit(const char* pSrc, char* pDst, int nSrcLength)
         // 修改字节计数值
         nByte++;
         // 到了一组的最后一个字节
-        if (nByte == 7)
-        {
+        if (nByte == 7) {
             // 额外得到一个目标解码字节
             *pDst = nLeft;
             // 修改目标串的指针和计数值
@@ -2072,15 +1909,13 @@ void DecodeDeliverySms(const char *pdu,   StSmsRecord *pRecord)
     contentlen = strtol(buf, NULL, 16);
 
     p += 2;         //skip content len
-    if(pRecord->flag & SMS_RECORD_FLAG_CONCATENATE_SEGE)
-    {
+    if(pRecord->flag & SMS_RECORD_FLAG_CONCATENATE_SEGE) {
         memset(buf, 0x00, sizeof(buf));
         strncpy(buf, p, 14);
         int udhl = DecodeUDHFormSmsPDU(pRecord, buf);
         p += udhl * 2;
 
-        if(udhl == 0)
-        {
+        if(udhl == 0) {
             pRecord->flag &= ~SMS_RECORD_FLAG_CONCATENATE_SEGE;
         }
     }
@@ -2136,15 +1971,13 @@ void DecodeSubmitSms(const char *pdu,   StSmsRecord *pRecord)
     contentlen = strtol(buf, NULL, 16);
 
     p += 2;         //skip content len
-    if(pRecord->flag & SMS_RECORD_FLAG_CONCATENATE_SEGE)
-    {
+    if(pRecord->flag & SMS_RECORD_FLAG_CONCATENATE_SEGE) {
         memset(buf, 0x00, sizeof(buf));
         strncpy(buf, p, 14);
         int udhl = DecodeUDHFormSmsPDU(pRecord, buf);
         p += udhl * 2;
 
-        if(udhl == 0)
-        {
+        if(udhl == 0) {
             pRecord->flag &= ~SMS_RECORD_FLAG_CONCATENATE_SEGE;
         }
     }
@@ -2191,12 +2024,12 @@ void DecodeSReportSms(const char *pdu,   StSmsRecord *pRecord)
     memset(buf, 0x00, sizeof(buf));
     strncpy(buf, p, 2);
     status = strtol(buf, NULL, 16);
-    
-    switch(status){
-        case 0x00:
+
+    switch(status) {
+    case 0x00:
         strcpy(pRecord->szContent, "Message received on handset");
         break;
-        default:
+    default:
         break;
     }
 }
@@ -2209,8 +2042,7 @@ int DecodeUDHFormSmsPDU(StSmsRecord *pRecord,  char *para)
     char* udh1 = "050003";
     char* udh2 = "060804";
 
-    if(strncmp(udh1, para, strlen(udh1)) == 0)
-    {
+    if(strncmp(udh1, para, strlen(udh1)) == 0) {
         ptr = para + strlen(udh1);
         udhl = 6;
         strncpy(p, ptr, 2);
@@ -2225,9 +2057,7 @@ int DecodeUDHFormSmsPDU(StSmsRecord *pRecord,  char *para)
         memset(p, 0x00, 5);
         strncpy(p, ptr, 2);
         pRecord->nSeqCnt = strtol(p, NULL, 16);;
-    }
-    else if(strncmp(udh2, para, strlen(udh2)) == 0)
-    {
+    } else if(strncmp(udh2, para, strlen(udh2)) == 0) {
         ptr = para + strlen(udh2);
         udhl = 7;
         strncpy(p, ptr, 4);
@@ -2262,29 +2092,23 @@ void DecodeNumFormSmsPDU(const char *pdunum, char *pOutNum)
     strncpy(buf, p, 2);
     numtype = strtol(buf, NULL, 16);
 
-    switch (numtype)
-    {
+    switch (numtype) {
     case 0x91:
         pOutNum[0] = '+';
         break;
     }
 
     p += 2;
-    while (*p)
-    {
+    while (*p) {
         q = p + 1;
-        if (*q)
-        {
+        if (*q) {
             pOutNum[strlen(pOutNum)] = *q;
         }
 
-        if (UPCASE(*p) != 'F')
-        {
+        if (UPCASE(*p) != 'F') {
             pOutNum[strlen(pOutNum)] = *p;
             p += 2;
-        }
-        else
-        {
+        } else {
             pOutNum[strlen(pOutNum)] = '\0';
             break;
         }
@@ -2307,8 +2131,7 @@ void DecodeTimeFormSmsPDU(const char *pdutime, COleDateTime *pOutTime)
     p = q = pdutime;
     cnt = 0;
 
-    while (*p && cnt < 7)
-    {
+    while (*p && cnt < 7) {
         q = p + 1;
         time[cnt] = (*q - 48) * 10 + (*p - 48);
         cnt++;
@@ -2325,18 +2148,14 @@ void DecodeContentFromSmsPDU(const char *pduContent, const BYTE codeType, char *
     ASSERT(pduContent && pContent);
 
     //ASCII
-    if(codeType == 0x00)
-    {
+    if(codeType == 0x00) {
         gsmDecode7bit(pduContent, pContent, strlen(pduContent));
-    }
-    else if (codeType == 0x04)
-    {
+    } else if (codeType == 0x04) {
         const char *p = pduContent;
         char buf[10];
         char c;
 
-        while (*p)
-        {
+        while (*p) {
             memset(buf, 0x00, sizeof(buf));
             strncpy(buf, p, 2);
             c = strtol(buf, NULL, 16);
@@ -2345,13 +2164,11 @@ void DecodeContentFromSmsPDU(const char *pduContent, const BYTE codeType, char *
         }
     }
     //UCS2
-    else if (codeType == 0x08)
-    {
+    else if (codeType == 0x08) {
         CString strGb = UCS2ToGB((CString)pduContent);
         USES_CONVERSION;
         strncpy(pContent, W2A((LPCTSTR)strGb), SMS_CHAR_MAX * 2);
-    }
-    else
+    } else
         ASSERT(false);
 }
 
@@ -2375,15 +2192,13 @@ void DecodeSmsPDU(const char *pdu, const USHORT len, StSmsRecord *pRecord)
     //skip SC Number
     p = p + 2 * (numlen + 1);
 
-    if (*p)
-    {
+    if (*p) {
         memset(buf, 0x00, sizeof(buf));
         strncpy(buf, p, 2);
         DecodeFOFormSmsPDU(pRecord, buf);
 
         p+=2;
-        switch(pRecord->tp_mti)
-        {
+        switch(pRecord->tp_mti) {
         case 0X00:  //SMS_DELIVERY or SMS DELIVERY REPORT
             DecodeDeliverySms(p, pRecord);
             break;
@@ -2408,21 +2223,16 @@ int EncodeNumForSmsPDU(const char *pnum, char *pOutNum)
     const char *p = pnum;
     const char *q = p;
 
-    while (*p)
-    {
+    while (*p) {
         q = p + 1;
-        if (*q)
-        {
+        if (*q) {
             pOutNum[strlen(pOutNum)] = *q;
-        }
-        else
-        {
+        } else {
             pOutNum[strlen(pOutNum)] = 'F';
         }
         pOutNum[strlen(pOutNum)] = *p;
 
-        if(*q == '\0')
-        {
+        if(*q == '\0') {
             break;
         }
         p+=2;
@@ -2446,13 +2256,10 @@ int EncodeSCNumberForSmsPDU(char *sbuffer)
     pDes += 2;
 
     //TON of SMS Center number
-    if(pSCNumber[0] == '+')
-    {
+    if(pSCNumber[0] == '+') {
         strcat(pDeScn, "91");       //145
         pSCNumber++;
-    }
-    else
-    {
+    } else {
         strcat(pDeScn, "A1");       //161
     }
     pDes += 2;
@@ -2462,8 +2269,7 @@ int EncodeSCNumberForSmsPDU(char *sbuffer)
     sprintf(pTemp, "%02X", iscLen/2);
     strncpy(pDeScn, pTemp, 2);
 
-    if(sbuffer != NULL)
-    {
+    if(sbuffer != NULL) {
         strcpy(sbuffer, pDeScn);
     }
     return strlen(pDeScn);
@@ -2480,14 +2286,12 @@ int EnCodeFOForSmsPDU()
     fo |= SMS_MASK_MTI_MO;
 
     //set tp-udhi
-    if(gSmsIsConcatenate)
-    {
+    if(gSmsIsConcatenate) {
         fo |= SMS_MASK_UDHI;
     }
 
     //set tp-srr
-    if(g_SetData.Messages_nDeliReport == 1)
-    {
+    if(g_SetData.Messages_nDeliReport == 1) {
         fo |= SMS_MASK_SRR;
     }
 
@@ -2521,13 +2325,10 @@ int  EncodeSmsPDU(char *pduOut, CString da, CString context)
     strcat(pduOut, temp);
 
     memset(temp, 0x00, sizeof(temp));
-    if(da.Left(1).Compare(_T("+")) == 0)
-    {
+    if(da.Left(1).Compare(_T("+")) == 0) {
         strcat(temp, "91");
         pDA = da.Mid(1);
-    }
-    else
-    {
+    } else {
         strcat(temp, "A1");
     }
     pOA = W2A(pDA);
@@ -2540,36 +2341,28 @@ int  EncodeSmsPDU(char *pduOut, CString da, CString context)
     strcat(pduOut, "00");
     //TP-PID
 
-    if(IsAlphabetUnicode(context))
-    {
+    if(IsAlphabetUnicode(context)) {
         strcat(pduOut, "00");    //TP-DCS
         contextLen = context.GetLength();
         gsmEncode7bit(W2A(context), (unsigned char *)szAscBuf, contextLen);
-    }
-    else
-    {
+    } else {
         strcat(pduOut, "08");    //TP-DCS
         CString strUC = BTToUCS2((CString)context);
         contextLen =  WCharToChar(strUC, szAscBuf)/2;
     }
 
-    if((ifo & SMS_MASK_VP) == SMS_MASK_VP_RF)
-    {
+    if((ifo & SMS_MASK_VP) == SMS_MASK_VP_RF) {
         int vp = gc_sms_validity_period[g_SetData.Messages_nValPeriod];
         memset(temp, 0x00, sizeof(temp));
         sprintf(temp, "%02X", vp);
         strcat(pduOut, temp);
-    }
-    else if((ifo & SMS_MASK_VP) == SMS_MASK_VP_NP)
-    {
+    } else if((ifo & SMS_MASK_VP) == SMS_MASK_VP_NP) {
         //not present vp
     }/*TP-VP*/
 
-    if(ifo & SMS_MASK_UDHI)
-    {
+    if(ifo & SMS_MASK_UDHI) {
         if(SetConcatenateSmsPara((TCHAR *)wudh,  gSmsRefCnt, gSmsCurSege+1,
-                                 gSmsTotalSege))
-        {
+                                 gSmsTotalSege)) {
             WCharToChar(wudh, udh);
             udhl = strlen(udh)/2;
         }
@@ -2600,10 +2393,8 @@ BOOL ExtractConcatenateSmsPara(char *Para, USHORT *nRefCnt, BYTE *nSeqCnt, BYTE 
     ptr[0] = p;
     ptr[1] = ptr[2] = 0;
 
-    while (*p && cnt < 3)
-    {
-        if (*p == '/')
-        {
+    while (*p && cnt < 3) {
+        if (*p == '/') {
             ptr[cnt++] = p + 1;
             *p = 0;
         }
@@ -2612,8 +2403,7 @@ BOOL ExtractConcatenateSmsPara(char *Para, USHORT *nRefCnt, BYTE *nSeqCnt, BYTE 
 
     if (cnt < 3 || ptr[1] == 0 || ptr[2] == 0)
         ret = FALSE;
-    else
-    {
+    else {
         *nRefCnt = atoi(ptr[0]);
         *nSeqCnt = atoi(ptr[1]);
         *nTotalCnt = atoi(ptr[2]);
@@ -2731,8 +2521,7 @@ BOOL DspConcatenateSmsPara(char *DspBuf, USHORT nRefCnt, BYTE nSeqCnt, BYTE nTot
 
     if (nSeqCnt == 0 || nTotalCnt == 0 || nSeqCnt > nTotalCnt)
         return FALSE;
-    else
-    {
+    else {
 #if 0
         //Modified by Zhou Bin 2008.12.30
         //swprintf(DspBuf, _T("(%d/%d/%d)"), nRefCnt, nSeqCnt, nTotalCnt);
@@ -2755,8 +2544,7 @@ BOOL SetConcatenateSmsPara(TCHAR *DspBuf, USHORT nRefCnt, BYTE nSeqCnt, BYTE nTo
 
     if (nSeqCnt == 0 || nTotalCnt == 0 || nSeqCnt > nTotalCnt)
         return FALSE;
-    else
-    {
+    else {
         if (nRefCnt <= 0x00FF)
             swprintf(DspBuf, _T("050003%02X%02X%02X"), nRefCnt, nTotalCnt, nSeqCnt);
         else
@@ -2771,46 +2559,29 @@ BOOL SetConcatenateSmsParaA(char *DspBuf, USHORT nRefCnt, BYTE nSeqCnt, BYTE nTo
 
     if (nSeqCnt == 0 || nTotalCnt == 0 || nSeqCnt > nTotalCnt)
         return FALSE;
-    else
-    {
-        if (nRefCnt <= 0x00FF)
-        {
-            if (nSeqCnt < 10 && nTotalCnt < 10)
-            {
+    else {
+        if (nRefCnt <= 0x00FF) {
+            if (nSeqCnt < 10 && nTotalCnt < 10) {
                 //sprintf(DspBuf, "050003%02X%02X%02X", nRefCnt, nTotalCnt, nSeqCnt);
                 sprintf(DspBuf, "(0%d%c0%d)", nSeqCnt, MinMaxChar, nTotalCnt); //FLEXI modify by liub
-            }
-            else if (nSeqCnt < 10)
-            {
+            } else if (nSeqCnt < 10) {
                 sprintf(DspBuf, "(0%d%c%d)", nSeqCnt, MinMaxChar, nTotalCnt); //FLEXI modify by liub
-            }
-            else if (nTotalCnt < 10)
-            {
+            } else if (nTotalCnt < 10) {
                 sprintf(DspBuf, "(%d%c0%d)", nSeqCnt, MinMaxChar, nTotalCnt); //FLEXI modify by liub
-            }
-            else
-            {
+            } else {
                 sprintf(DspBuf, "(%d%c%d)", nSeqCnt, MinMaxChar, nTotalCnt); //FLEXI modify by liub
             }
         }
 
-        else
-        {
-            if (nSeqCnt < 10 && nTotalCnt < 10)
-            {
+        else {
+            if (nSeqCnt < 10 && nTotalCnt < 10) {
                 //sprintf(DspBuf, "050003%02X%02X%02X", nRefCnt, nTotalCnt, nSeqCnt);
                 sprintf(DspBuf, "(0%d%c0%d)", nSeqCnt, MinMaxChar, nTotalCnt); //FLEXI modify by liub
-            }
-            else if (nSeqCnt < 10)
-            {
+            } else if (nSeqCnt < 10) {
                 sprintf(DspBuf, "(0%d%c%d)", nSeqCnt, MinMaxChar, nTotalCnt); //FLEXI modify by liub
-            }
-            else if (nTotalCnt < 10)
-            {
+            } else if (nTotalCnt < 10) {
                 sprintf(DspBuf, "(%d%c0%d)", nSeqCnt, MinMaxChar, nTotalCnt); //FLEXI modify by liub
-            }
-            else
-            {
+            } else {
                 sprintf(DspBuf, "(%d%c%d)", nSeqCnt, MinMaxChar, nTotalCnt); //FLEXI modify by liub
             }
         }
@@ -2825,8 +2596,7 @@ BOOL IsConcatenateSms(StSmsRecord *pSmsRecord)
 
     BOOL ret = FALSE;
 
-    if (pSmsRecord->flag & SMS_RECORD_FLAG_CONCATENATE_SEGE)
-    {
+    if (pSmsRecord->flag & SMS_RECORD_FLAG_CONCATENATE_SEGE) {
         if (pSmsRecord->nSeqCnt == 0 || pSmsRecord->nTotalCnt == 0
                 || pSmsRecord->nSeqCnt > pSmsRecord->nTotalCnt)
             ret = FALSE;
@@ -2834,8 +2604,7 @@ BOOL IsConcatenateSms(StSmsRecord *pSmsRecord)
             ret = TRUE;
     }
 
-    if (!ret)
-    {
+    if (!ret) {
         pSmsRecord->flag &= (BYTE)~SMS_RECORD_FLAG_CONCATENATE_SEGE;
         pSmsRecord->nRefCnt = pSmsRecord->nSeqCnt = pSmsRecord->nTotalCnt = 0;
     }
@@ -2875,31 +2644,25 @@ BOOL DivideSmsConcatenate(const TCHAR *szRawContent)
 
     gSmsIsAsciiCode = IsAlphabetUnicode(szRawContent);
 
-    if (gSmsIsAsciiCode)
-    {
+    if (gSmsIsAsciiCode) {
         if (GetACSIICharNum(szRawContent) > SMS_CHAR_MAX)
             gSmsIsConcatenate = TRUE;
-    }
-    else
-    {
+    } else {
         if (GetUnicodeCharNum(szRawContent) > SMS_CHINESE_CHAR_MAX)
             gSmsIsConcatenate = TRUE;
     }
 
-    if (gSmsIsConcatenate)
-    {
+    if (gSmsIsConcatenate) {
         gSmsRefCnt++;
 
-        if (gSmsIsAsciiCode)
-        {
+        if (gSmsIsAsciiCode) {
             USHORT i, j;
             USHORT GbNum = 0;
             USHORT len = wcslen(szRawContent);
 
             gSmsTotalSege = 0;
 
-            for (i = 0, j = 0; i < SMS_CONCAT_ASCII_MAX && j < len;)
-            {
+            for (i = 0, j = 0; i < SMS_CONCAT_ASCII_MAX && j < len;) {
                 // gszSmsSege[gSmsTotalSege][i++] = szRawContent[j];
 
                 //     if((IsDBCSLeadByte((BYTE)(char)(szRawContent[j]  & 0x00FF))) && (j < len))
@@ -2910,24 +2673,20 @@ BOOL DivideSmsConcatenate(const TCHAR *szRawContent)
                 j++;
                 GbNum++;
 
-                if (GbNum == SMS_CONCAT_ASCII_MAX && j < len && gSmsTotalSege < SMS_CONCAT_SEGMENT_MAX - 1)
-                {
+                if (GbNum == SMS_CONCAT_ASCII_MAX && j < len && gSmsTotalSege < SMS_CONCAT_SEGMENT_MAX - 1) {
                     i = 0;
                     GbNum = 0;
                     gSmsTotalSege++;
                 }
             }
             gSmsTotalSege++;
-        }
-        else
-        {
+        } else {
             USHORT i, j;
             USHORT GbNum = 0;
             USHORT len = wcslen(szRawContent);
 
             gSmsTotalSege = 0;
-            for (i = 0, j = 0; i < SMS_CONCAT_GB_MAX && j < len;)
-            {
+            for (i = 0, j = 0; i < SMS_CONCAT_GB_MAX && j < len;) {
                 //  gszSmsSege[gSmsTotalSege][i++] = szRawContent[j];
 
                 //  if((IsDBCSLeadByte((BYTE)(char)(szRawContent[j] >> 8))) && (j < len))
@@ -2938,8 +2697,7 @@ BOOL DivideSmsConcatenate(const TCHAR *szRawContent)
                 j++;
                 GbNum++;
 
-                if (GbNum == SMS_CONCAT_GB_MAX && j < len && gSmsTotalSege < SMS_CONCAT_SEGMENT_MAX - 1)
-                {
+                if (GbNum == SMS_CONCAT_GB_MAX && j < len && gSmsTotalSege < SMS_CONCAT_SEGMENT_MAX - 1) {
                     i = 0;
                     GbNum = 0;
                     gSmsTotalSege++;
@@ -2954,8 +2712,7 @@ BOOL DivideSmsConcatenate(const TCHAR *szRawContent)
 #endif //FEATURE_SMS_CONCATENATE
 
 //国家码列表
-const char szCountryCodeArr[][10] =
-{
+const char szCountryCodeArr[][10] = {
     "+65",
     "+852",
     "+86",
@@ -2995,36 +2752,28 @@ BOOL SmsAtCMGRRspProc(BYTE(*strArr)[DSAT_STRING_COL], WORD wStrNum, StSmsRecord 
     memset(buf, 0x00, sizeof(buf));
     strncpy(buf, p, 1);
     record.state = (EnSmsState)atoi(buf);
-    if (record.state > SMS_STATE_ALL || record.state < SMS_STATE_MT_NOT_READ)
-    {
+    if (record.state > SMS_STATE_ALL || record.state < SMS_STATE_MT_NOT_READ) {
         return FALSE;
     }
 
     //state test begin
-    if (kind == SMS_KIND_MT)
-    {
+    if (kind == SMS_KIND_MT) {
         if (record.state != SMS_STATE_MT_NOT_READ
-                && record.state != SMS_STATE_MT_READ)
-        {
+                && record.state != SMS_STATE_MT_READ) {
             return FALSE;
         }
-    }
-    else if (kind == SMS_KIND_MO)
-    {
+    } else if (kind == SMS_KIND_MO) {
         if (record.state != SMS_STATE_MO_NOT_SENT
-                && record.state != SMS_STATE_MO_SENT)
-        {
+                && record.state != SMS_STATE_MO_SENT) {
             return FALSE;
         }
     }
 
-    if (record.state == SMS_STATE_MO_NOT_SENT || record.state == SMS_STATE_MO_SENT)
-    {
+    if (record.state == SMS_STATE_MO_NOT_SENT || record.state == SMS_STATE_MO_SENT) {
         record.state = SMS_STATE_MT_READ;
     }
 
-    if(wStrNum == 3)
-    {
+    if(wStrNum == 3) {
         p = (char *)&strArr[1];
         DecodeSmsPDU(p, strlen(p), &record);
     }
@@ -3039,8 +2788,7 @@ BOOL SmsAtCMGRRspProc(BYTE(*strArr)[DSAT_STRING_COL], WORD wStrNum, StSmsRecord 
     p = (char *)&strArr[0][strlen(gcstrResSms[AT_SMS_QCMGR])];
 #ifdef FEATURE_ATTEST_SUPPORT
     CStdioFile file;
-    if (file.Open("Sms.log", CFile::modeReadWrite))
-    {
+    if (file.Open("Sms.log", CFile::modeReadWrite)) {
         CString str;
         str.Format("%s", p);
         str.Insert(str.GetLength(), "\n");
@@ -3054,10 +2802,8 @@ BOOL SmsAtCMGRRspProc(BYTE(*strArr)[DSAT_STRING_COL], WORD wStrNum, StSmsRecord 
     BOOL bOutQuot = TRUE;//判断是否在双引号内
     BOOL bNo_See_Comma = TRUE;//判断是否遇到逗号
 
-    while (*p != '\0')
-    {
-        if (bNo_See_Comma)
-        {
+    while (*p != '\0') {
+        if (bNo_See_Comma) {
             ptr[cnt++] = p;
             bNo_See_Comma = FALSE;
 
@@ -3065,26 +2811,20 @@ BOOL SmsAtCMGRRspProc(BYTE(*strArr)[DSAT_STRING_COL], WORD wStrNum, StSmsRecord 
         }
 
 
-        if (*p == ',' && bOutQuot == TRUE && cnt < 9)
-        {
+        if (*p == ',' && bOutQuot == TRUE && cnt < 9) {
 
             *p++ = '\0';
             bNo_See_Comma = TRUE;
-        }
-        else if (*p == '\"')
-        {
+        } else if (*p == '\"') {
             bOutQuot = !bOutQuot;
             p++;
-        }
-        else
+        } else
             p++;
     }
 
 
-    for (int i = 0; i < 9; i++)
-    {
-        if (ptr[i] != 0)
-        {
+    for (int i = 0; i < 9; i++) {
+        if (ptr[i] != 0) {
             if (*(ptr[i] + strlen(ptr[i]) - 1) == '\"')
                 *(ptr[i] + strlen(ptr[i]) - 1) = '\0';
             if (*ptr[i] == '\"')
@@ -3092,35 +2832,26 @@ BOOL SmsAtCMGRRspProc(BYTE(*strArr)[DSAT_STRING_COL], WORD wStrNum, StSmsRecord 
         }
     }
 
-    if ((record.state = GetSmsStateFromStr(ptr[0])) == SMS_STATE_MAX)
-    {
+    if ((record.state = GetSmsStateFromStr(ptr[0])) == SMS_STATE_MAX) {
         return FALSE;
     }
 
     //state test begin
-    if (kind == SMS_KIND_MT)
-    {
+    if (kind == SMS_KIND_MT) {
         if (record.state != SMS_STATE_MT_NOT_READ
-                && record.state != SMS_STATE_MT_READ)
-        {
+                && record.state != SMS_STATE_MT_READ) {
             return FALSE;
         }
-    }
-    else if (kind == SMS_KIND_MO)
-    {
+    } else if (kind == SMS_KIND_MO) {
         if (record.state != SMS_STATE_MO_NOT_SENT
-                && record.state != SMS_STATE_MO_SENT)
-        {
+                && record.state != SMS_STATE_MO_SENT) {
             return FALSE;
         }
     }
     //state test end
-    if (!(ptr[1] && *ptr[1]))
-    {
+    if (!(ptr[1] && *ptr[1])) {
         memset(record.szNumber, 0x00, PB_NUM_MAX);
-    }
-    else
-    {
+    } else {
         CString szNumTemp = (char *)ptr[1];
         wcscpy((TCHAR *)record.szNumber, szNumTemp);
     }
@@ -3128,34 +2859,25 @@ BOOL SmsAtCMGRRspProc(BYTE(*strArr)[DSAT_STRING_COL], WORD wStrNum, StSmsRecord 
     int time, scnum, concatenate, ascii_or_unicode;
     time = scnum = concatenate = ascii_or_unicode = -1;
 
-    if (record.state == SMS_STATE_MT_NOT_READ || record.state == SMS_STATE_MT_READ)
-    {
-        if (!wcsicmp(g_SetData.Setup_sz3GType, _T("CDMA2000")))
-        {
+    if (record.state == SMS_STATE_MT_NOT_READ || record.state == SMS_STATE_MT_READ) {
+        if (!wcsicmp(g_SetData.Setup_sz3GType, _T("CDMA2000"))) {
             time = 3;
             scnum = 2;
             concatenate = -1;
             ascii_or_unicode = 5;
-        }
-        else
-        {
+        } else {
             time = 3;
             scnum = 2;
             concatenate = -1;
             ascii_or_unicode = 7;
         }
-    }
-    else if (record.state == SMS_STATE_MO_NOT_SENT || record.state == SMS_STATE_MO_SENT)
-    {
-        if (!wcsicmp(g_SetData.Setup_sz3GType, _T("CDMA2000")))
-        {
+    } else if (record.state == SMS_STATE_MO_NOT_SENT || record.state == SMS_STATE_MO_SENT) {
+        if (!wcsicmp(g_SetData.Setup_sz3GType, _T("CDMA2000"))) {
             time = 3;
             scnum = 2;
             concatenate = -1;
             ascii_or_unicode = 4;
-        }
-        else
-        {
+        } else {
             time = 3;
             scnum = 2;
             concatenate = -1;
@@ -3166,49 +2888,39 @@ BOOL SmsAtCMGRRspProc(BYTE(*strArr)[DSAT_STRING_COL], WORD wStrNum, StSmsRecord 
 
     if (time == -1 || !(ptr[time] && *ptr[time]))
         record.timestamp = COleDateTime::GetCurrentTime();
-    else
-    {
+    else {
         if (!GetTimeFromStr((LPCSTR)ptr[time], record.timestamp))
             record.timestamp = COleDateTime::GetCurrentTime();
     }
     CString szSCNumTemp = (char*)ptr[scnum];
     if (scnum == -1 || !(ptr[scnum] && *ptr[scnum]))
         memset(record.szSCNumber, 0x00, SMS_SC_NUM_MAX);
-    else
-    {
+    else {
         wcsncpy((TCHAR*)record.szSCNumber, szSCNumTemp, SMS_SC_NUM_MAX);
     }
 
-    if (concatenate != -1 && ptr[concatenate] && *ptr[concatenate])
-    {
+    if (concatenate != -1 && ptr[concatenate] && *ptr[concatenate]) {
         if (ExtractConcatenateSmsPara(ptr[concatenate], &record.nRefCnt, &record.nSeqCnt, &record.nTotalCnt))
             record.flag |= SMS_RECORD_FLAG_CONCATENATE_SEGE;
     }
     //modified by wk end on 2006-8-22
 
     USES_CONVERSION;
-    if (wStrNum == 3)
-    {
+    if (wStrNum == 3) {
         //modify by lijl 2009.4.13 以ascii码形式存储短信内容
-        if(ptr[ascii_or_unicode] != NULL)
-        {
-            if (*ptr[ascii_or_unicode] == '0')
-            {
+        if(ptr[ascii_or_unicode] != NULL) {
+            if (*ptr[ascii_or_unicode] == '0') {
                 strncpy(record.szContent, (char*)strArr[1], SMS_CHAR_MAX);
 
-            }
-            else
-            {
+            } else {
                 CString strGb = UCS2ToGB((CString)((char*)strArr[1]));
                 strncpy(record.szContent, W2A((LPCTSTR)strGb), SMS_CHAR_MAX * 2);
             }
         }
-    }
-    else
+    } else
         memset((TCHAR *)record.szContent, 0, SMS_CHAR_MAX * 2);
 #ifdef FEATURE_ATTEST_SUPPORT
-    if (file.Open("Sms.log", CFile::modeReadWrite))
-    {
+    if (file.Open("Sms.log", CFile::modeReadWrite)) {
         CString str;
         str.Format("%s", (CString)((char*)strArr[1]));
         str.Insert(str.GetLength(), "\n");
@@ -3222,8 +2934,7 @@ BOOL SmsAtCMGRRspProc(BYTE(*strArr)[DSAT_STRING_COL], WORD wStrNum, StSmsRecord 
 }
 #endif
 
-const wchar_t GSM0338ToUCS2Array[GSM0338_EXTENSIONS][GSM0338_ALPHABET_SIZE] =
-{
+const wchar_t GSM0338ToUCS2Array[GSM0338_EXTENSIONS][GSM0338_ALPHABET_SIZE] = {
     /* GSM 7 bit default alphabet */
     {
         0x0040,     /* 00 */
@@ -3518,16 +3229,12 @@ void ResetSmsRcvConcBuf(BYTE nIndex)
     ASSERT(nIndex <= SMS_RCVCONCBUF_MAX);
 
     BYTE cnt;
-    if (nIndex == SMS_RCVCONCBUF_MAX)
-    {
-        for (cnt = 0; cnt < SMS_RCVCONCBUF_MAX; cnt++)
-        {
+    if (nIndex == SMS_RCVCONCBUF_MAX) {
+        for (cnt = 0; cnt < SMS_RCVCONCBUF_MAX; cnt++) {
             memset(&gSmsRcvConcBUf[cnt], 0x00, sizeof(StRcvConcSmsRecord));
             gSmsRcvConcBUf[cnt].nTimerID = IDT_RCVCONCSMS_TIMEOUT_BEGIN + cnt;
         }
-    }
-    else
-    {
+    } else {
         memset(&gSmsRcvConcBUf[nIndex], 0x00, sizeof(StRcvConcSmsRecord));
         gSmsRcvConcBUf[nIndex].nTimerID = IDT_RCVCONCSMS_TIMEOUT_BEGIN + nIndex;
     }
@@ -3553,24 +3260,19 @@ int SaveSmsSegeToRcvConcBuf(const StSmsRecord &sege)
             || sege.nSeqCnt > SMS_CONCAT_SEGMENT_MAX || sege.nTotalCnt > SMS_CONCAT_SEGMENT_MAX)
         return -1;
 
-    for (cnt = 0; cnt < SMS_RCVCONCBUF_MAX; cnt++)
-    {
+    for (cnt = 0; cnt < SMS_RCVCONCBUF_MAX; cnt++) {
         if (gSmsRcvConcBUf[cnt].bInuse && gSmsRcvConcBUf[cnt].nRefCnt == sege.nRefCnt
                 && gSmsRcvConcBUf[cnt].nTotalCnt == sege.nTotalCnt
-                && !gSmsRcvConcBUf[cnt].nSeqFlag[sege.nSeqCnt-1])
-        {
-            if (wcscmp((const TCHAR*)gSmsRcvConcBUf[cnt].szNumber, (const TCHAR*)sege.szNumber) == 0)
-            {
+                && !gSmsRcvConcBUf[cnt].nSeqFlag[sege.nSeqCnt-1]) {
+            if (wcscmp((const TCHAR*)gSmsRcvConcBUf[cnt].szNumber, (const TCHAR*)sege.szNumber) == 0) {
                 SaveSmsSegeToRcvConcBuf(sege, cnt);
                 return cnt;
             }
         }
     }
 
-    for (cnt = 0; cnt < SMS_RCVCONCBUF_MAX; cnt++)
-    {
-        if (!gSmsRcvConcBUf[cnt].bInuse)
-        {
+    for (cnt = 0; cnt < SMS_RCVCONCBUF_MAX; cnt++) {
+        if (!gSmsRcvConcBUf[cnt].bInuse) {
             SaveSmsSegeToRcvConcBuf(sege, cnt);
             return cnt;
         }
@@ -3586,19 +3288,15 @@ int MergeConcSmsSegeTogether(StSmsRecord &record)
 
     memset(&record, 0x00, sizeof(StSmsRecord));
 
-    for (cnt = 0; cnt < SMS_RCVCONCBUF_MAX; cnt++)
-    {
-        if (gSmsRcvConcBUf[cnt].bInuse && gSmsRcvConcBUf[cnt].nTotalCnt > 0)
-        {
-            for (i = 0; i < gSmsRcvConcBUf[cnt].nTotalCnt; i++)
-            {
+    for (cnt = 0; cnt < SMS_RCVCONCBUF_MAX; cnt++) {
+        if (gSmsRcvConcBUf[cnt].bInuse && gSmsRcvConcBUf[cnt].nTotalCnt > 0) {
+            for (i = 0; i < gSmsRcvConcBUf[cnt].nTotalCnt; i++) {
                 if (!gSmsRcvConcBUf[cnt].nSeqFlag[i])
                     break;
             }
 
             //Ready to merge
-            if (i == gSmsRcvConcBUf[cnt].nTotalCnt)
-            {
+            if (i == gSmsRcvConcBUf[cnt].nTotalCnt) {
                 record.flag = SMS_RECORD_FLAG_NEW | SMS_RECORD_FLAG_CONCATENATE_FULL;
                 record.state = SMS_STATE_MT_NOT_READ;
                 record.nRefCnt = gSmsRcvConcBUf[cnt].nRefCnt;
@@ -3647,31 +3345,25 @@ BOOL DivideSmsTranConcatenate(const TCHAR *szRawContent)
 
     gSmsTranIsAsciiCode = IsAlphabetUnicode(szRawContent);
 
-    if (gSmsTranIsAsciiCode)
-    {
+    if (gSmsTranIsAsciiCode) {
         if (GetACSIICharNum(szRawContent) > SMS_CHAR_MAX)
             gSmsTranIsConcatenate = TRUE;
-    }
-    else
-    {
+    } else {
         if (GetUnicodeCharNum(szRawContent) > SMS_CHINESE_CHAR_MAX)
             gSmsTranIsConcatenate = TRUE;
     }
 
-    if (gSmsTranIsConcatenate)
-    {
+    if (gSmsTranIsConcatenate) {
         gSmsTranRefCnt++;
 
-        if (gSmsTranIsAsciiCode)
-        {
+        if (gSmsTranIsAsciiCode) {
             USHORT i, j;
             USHORT GbNum = 0;
             USHORT len = wcslen(szRawContent);
 
             gSmsTranTotalSege = 0;
 
-            for (i = 0, j = 0; i < SMS_CONCAT_ASCII_MAX && j < len;)
-            {
+            for (i = 0, j = 0; i < SMS_CONCAT_ASCII_MAX && j < len;) {
                 //gszSmsTranSege[gSmsTranTotalSege][i++] = szRawContent[j];
 
                 //if((IsDBCSLeadByte((BYTE)szRawContent[j++])) && (j < len))
@@ -3681,24 +3373,20 @@ BOOL DivideSmsTranConcatenate(const TCHAR *szRawContent)
 
                 GbNum++;
 
-                if (GbNum == SMS_CONCAT_ASCII_MAX && j < len && gSmsTranTotalSege < SMS_CONCAT_SEGMENT_MAX - 1)
-                {
+                if (GbNum == SMS_CONCAT_ASCII_MAX && j < len && gSmsTranTotalSege < SMS_CONCAT_SEGMENT_MAX - 1) {
                     i = 0;
                     GbNum = 0;
                     gSmsTranTotalSege++;
                 }
             }
             gSmsTranTotalSege++;
-        }
-        else
-        {
+        } else {
             USHORT i, j;
             USHORT GbNum = 0;
             USHORT len = wcslen(szRawContent);
 
             gSmsTranTotalSege = 0;
-            for (i = 0, j = 0; i < SMS_CONCAT_GB_MAX && j < len;)
-            {
+            for (i = 0, j = 0; i < SMS_CONCAT_GB_MAX && j < len;) {
                 // gszSmsTranSege[gSmsTranTotalSege][i++] = szRawContent[j];
 
                 //  if((IsDBCSLeadByte((BYTE)szRawContent[j++])) && (j < len))
@@ -3708,8 +3396,7 @@ BOOL DivideSmsTranConcatenate(const TCHAR *szRawContent)
 
                 GbNum++;
 
-                if (GbNum == SMS_CONCAT_GB_MAX && j < len && gSmsTranTotalSege < SMS_CONCAT_SEGMENT_MAX - 1)
-                {
+                if (GbNum == SMS_CONCAT_GB_MAX && j < len && gSmsTranTotalSege < SMS_CONCAT_SEGMENT_MAX - 1) {
                     i = 0;
                     GbNum = 0;
                     gSmsTranTotalSege++;
@@ -3722,8 +3409,7 @@ BOOL DivideSmsTranConcatenate(const TCHAR *szRawContent)
     return TRUE;
 }
 
-const BYTE gc_sms_validity_period[] =
-{
+const BYTE gc_sms_validity_period[] = {
     11, 71, 167, 169, 173, 244
 };
 
@@ -3741,22 +3427,17 @@ BYTE ExtractNumFromSmsContent(const char *szRawContent)
     gSmsExtractNumCnt = 0;
     memset(gSmsExtractNumBuf, 0x00, sizeof(gSmsExtractNumBuf));
 
-    if (szRawContent != NULL && strlen(szRawContent) > 0)
-    {
+    if (szRawContent != NULL && strlen(szRawContent) > 0) {
         BOOL bFound = FALSE;
         USHORT i, j, k, l, m;
         USHORT len = strlen(szRawContent);
 
-        for (i = 0, j = 0, k = 0; k < len && gSmsExtractNumCnt < SMS_EXTRACTNUM_MAX; k++)
-        {
-            if (IsDBCSLeadByte((BYTE)szRawContent[k]))
-            {
-                if (bFound)
-                {
+        for (i = 0, j = 0, k = 0; k < len && gSmsExtractNumCnt < SMS_EXTRACTNUM_MAX; k++) {
+            if (IsDBCSLeadByte((BYTE)szRawContent[k])) {
+                if (bFound) {
                     j = k;
 
-                    if ((j - i) >= SMS_EXTRACTNUM_FROM && (j - i) <= SMS_EXTRACTNUM_TO)
-                    {
+                    if ((j - i) >= SMS_EXTRACTNUM_FROM && (j - i) <= SMS_EXTRACTNUM_TO) {
                         for (l = 0, m = i; m < j; l++, m++)
                             gSmsExtractNumBuf[gSmsExtractNumCnt][l] = szRawContent[m];
                         gSmsExtractNumCnt++;
@@ -3766,37 +3447,26 @@ BYTE ExtractNumFromSmsContent(const char *szRawContent)
                     i = j = 0;
                 }
                 k++;
-            }
-            else if (szRawContent[k] >= '0' && szRawContent[k] <= '9')
-            {
-                if (!bFound)
-                {
+            } else if (szRawContent[k] >= '0' && szRawContent[k] <= '9') {
+                if (!bFound) {
                     i = k;
                     bFound = TRUE;
-                }
-                else
-                {
-                    if (k == len - 1)
-                    {
+                } else {
+                    if (k == len - 1) {
                         j = k + 1;
 
-                        if ((j - i) >= SMS_EXTRACTNUM_FROM && (j - i) <= SMS_EXTRACTNUM_TO)
-                        {
+                        if ((j - i) >= SMS_EXTRACTNUM_FROM && (j - i) <= SMS_EXTRACTNUM_TO) {
                             for (l = 0, m = i; m < j; l++, m++)
                                 gSmsExtractNumBuf[gSmsExtractNumCnt][l] = szRawContent[m];
                             gSmsExtractNumCnt++;
                         }
                     }
                 }
-            }
-            else
-            {
-                if (bFound)
-                {
+            } else {
+                if (bFound) {
                     j = k;
 
-                    if ((j - i) >= SMS_EXTRACTNUM_FROM && (j - i) <= SMS_EXTRACTNUM_TO)
-                    {
+                    if ((j - i) >= SMS_EXTRACTNUM_FROM && (j - i) <= SMS_EXTRACTNUM_TO) {
                         for (l = 0, m = i; m < j; l++, m++)
                             gSmsExtractNumBuf[gSmsExtractNumCnt][l] = szRawContent[m];
                         gSmsExtractNumCnt++;
@@ -3936,13 +3606,10 @@ StSmsCardRecord UE_ReadSmsCardRecord(EnLocType type, WORD nIndex)
     StSmsCardRecord *pSmsRecord = NULL;
     USHORT *pSmsNum = NULL;
 
-    if (type == LOC_ME)
-    {
+    if (type == LOC_ME) {
         pSmsRecord = g_ME_SmsRecord;
         pSmsNum = &g_ME_SmsNum;
-    }
-    else
-    {
+    } else {
         pSmsRecord = g_SM_SmsRecord;
         pSmsNum = &g_SM_SmsNum;
     }
@@ -3959,13 +3626,10 @@ void UE_EditSmsCardRecord(EnLocType type, WORD nIndex, const StSmsRecord &record
     StSmsCardRecord *pSmsRecord = NULL;
     USHORT *pSmsNum = NULL;
 
-    if (type == LOC_ME)
-    {
+    if (type == LOC_ME) {
         pSmsRecord = g_ME_SmsRecord;
         pSmsNum = &g_ME_SmsNum;
-    }
-    else
-    {
+    } else {
         pSmsRecord = g_SM_SmsRecord;
         pSmsNum = &g_SM_SmsNum;
     }
@@ -3982,29 +3646,24 @@ BOOL UE_DeleteSmsCardRecord(EnLocType type, WORD nIndex)
     StSmsCardRecord *pSmsRecord = NULL;
     USHORT *pSmsNum = NULL;
 
-    if (type == LOC_ME)
-    {
+    if (type == LOC_ME) {
         pSmsRecord = g_ME_SmsRecord;
         pSmsNum = &g_ME_SmsNum;
-    }
-    else
-    {
+    } else {
         pSmsRecord = g_SM_SmsRecord;
         pSmsNum = &g_SM_SmsNum;
     }
 
     ASSERT(pSmsRecord && pSmsNum);
 
-    if (nIndex < *pSmsNum)
-    {
+    if (nIndex < *pSmsNum) {
         for (WORD i = nIndex; i < *pSmsNum - 1; i++)
             pSmsRecord[i] = pSmsRecord[i+1];
 
         memset(&pSmsRecord[i], 0x00, sizeof(StSmsCardRecord));
         (*pSmsNum)--;
         return TRUE;
-    }
-    else
+    } else
         return FALSE;
 }
 
@@ -4016,14 +3675,11 @@ BOOL UE_AddSmsCardRecord(EnLocType type, const StSmsCardRecord &record)
     USHORT *pSmsNum = NULL;
     USHORT *pSmsMax = NULL;
 
-    if (type == LOC_ME)
-    {
+    if (type == LOC_ME) {
         pSmsRecord = g_ME_SmsRecord;
         pSmsNum = &g_ME_SmsNum;
         pSmsMax = &g_ME_SmsMax;
-    }
-    else
-    {
+    } else {
         pSmsRecord = g_SM_SmsRecord;
         pSmsNum = &g_SM_SmsNum;
         pSmsMax = &g_SM_SmsMax;
@@ -4031,13 +3687,11 @@ BOOL UE_AddSmsCardRecord(EnLocType type, const StSmsCardRecord &record)
 
     ASSERT(pSmsRecord && pSmsNum && pSmsMax);
 
-    if (*pSmsNum < *pSmsMax)
-    {
+    if (*pSmsNum < *pSmsMax) {
         pSmsRecord[*pSmsNum] = record;
         (*pSmsNum)++;
         return TRUE;
-    }
-    else
+    } else
         return FALSE;
 }
 
@@ -4062,19 +3716,15 @@ WORD UE_GetUnreadSmsNum(EnLocType loctype)
     WORD i;
     WORD nUnreadNum = 0;
 
-    if (loctype == LOC_ME || loctype == LOC_MAX)
-    {
-        for (i = 0; i < g_ME_SmsNum; i++)
-        {
+    if (loctype == LOC_ME || loctype == LOC_MAX) {
+        for (i = 0; i < g_ME_SmsNum; i++) {
             if (g_ME_SmsRecord[i].record.state == SMS_STATE_MT_NOT_READ)
                 nUnreadNum++;
         }
     }
 
-    if (loctype == LOC_UIM || loctype == LOC_MAX)
-    {
-        for (i = 0; i < g_SM_SmsNum; i++)
-        {
+    if (loctype == LOC_UIM || loctype == LOC_MAX) {
+        for (i = 0; i < g_SM_SmsNum; i++) {
             if (g_SM_SmsRecord[i].record.state == SMS_STATE_MT_NOT_READ)
                 nUnreadNum++;
         }
@@ -4093,12 +3743,9 @@ BOOL UE_ClearSmsFlag(EnLocType loctype, BYTE Clearflag, BOOL bAll)
     BOOL ret = FALSE;
     WORD i;
 
-    if (loctype == LOC_ME || loctype == LOC_MAX)
-    {
-        for (i = 0; i < g_ME_SmsNum; i++)
-        {
-            if (g_ME_SmsRecord[i].record.flag & Clearflag)
-            {
+    if (loctype == LOC_ME || loctype == LOC_MAX) {
+        for (i = 0; i < g_ME_SmsNum; i++) {
+            if (g_ME_SmsRecord[i].record.flag & Clearflag) {
                 ret = TRUE;
                 g_ME_SmsRecord[i].record.flag &= (BYTE)~Clearflag;
                 if (!bAll)
@@ -4107,12 +3754,9 @@ BOOL UE_ClearSmsFlag(EnLocType loctype, BYTE Clearflag, BOOL bAll)
         }
     }
 
-    if (loctype == LOC_UIM || loctype == LOC_MAX)
-    {
-        for (i = 0; i < g_SM_SmsNum; i++)
-        {
-            if (g_SM_SmsRecord[i].record.flag & Clearflag)
-            {
+    if (loctype == LOC_UIM || loctype == LOC_MAX) {
+        for (i = 0; i < g_SM_SmsNum; i++) {
+            if (g_SM_SmsRecord[i].record.flag & Clearflag) {
                 ret = TRUE;
                 g_SM_SmsRecord[i].record.flag &= (BYTE)~Clearflag;
                 if (!bAll)
@@ -4148,14 +3792,11 @@ int UE_SmsFindCardRecord(EnLocType loctype, WORD nIndex)
     USHORT *pSmsMax = NULL;
     WORD cnt = 0;
 
-    if (loctype == LOC_ME)
-    {
+    if (loctype == LOC_ME) {
         pSmsRecord = g_ME_SmsRecord;
         pSmsNum = &g_ME_SmsNum;
         pSmsMax = &g_ME_SmsMax;
-    }
-    else
-    {
+    } else {
         pSmsRecord = g_SM_SmsRecord;
         pSmsNum = &g_SM_SmsNum;
         pSmsMax = &g_SM_SmsMax;
@@ -4163,8 +3804,7 @@ int UE_SmsFindCardRecord(EnLocType loctype, WORD nIndex)
 
     ASSERT(pSmsRecord && pSmsNum && pSmsMax && nIndex < *pSmsMax);
 
-    for (cnt = 0; cnt < *pSmsNum; cnt++)
-    {
+    for (cnt = 0; cnt < *pSmsNum; cnt++) {
         if (pSmsRecord[cnt].index == nIndex)
             return cnt;
     }
@@ -4194,20 +3834,15 @@ BOOL get_network_info
     ** is performed.  Future enhancements may want to incorporate more
     ** sophisticated algorithms.
     */
-    while ((continue_search == TRUE) && (i < number_of_entries))
-    {
-        if (mcc == uinetwk_network_table[ i ].mcc)
-        {
-            if (mnc == uinetwk_network_table[ i ].mnc)
-            {
+    while ((continue_search == TRUE) && (i < number_of_entries)) {
+        if (mcc == uinetwk_network_table[ i ].mcc) {
+            if (mnc == uinetwk_network_table[ i ].mnc) {
                 info_ptr->full_name_ptr    = uinetwk_network_table[ i ].full_name_ptr;
                 info_ptr->short_name_ptr   = uinetwk_network_table[ i ].short_name_ptr;
                 info_ptr->network_type     = uinetwk_network_table[ i ].network_type;
                 found                      = TRUE;
                 continue_search            = FALSE;
-            }
-            else if (mnc < uinetwk_network_table[ i ].mnc)
-            {
+            } else if (mnc < uinetwk_network_table[ i ].mnc) {
                 /*
                 ** Terminate the search because the MNCs are stored in ascending
                 ** order in the table and the MNC being searched is less than the
@@ -4216,8 +3851,7 @@ BOOL get_network_info
                 continue_search = FALSE;
             }
         } /* if ( mcc == uinetwk_network_table[ i ].mcc ) */
-        else if (mcc < uinetwk_network_table[ i ].mcc)
-        {
+        else if (mcc < uinetwk_network_table[ i ].mcc) {
             /*
             ** Terminate the search because the MCCs are stored in ascending
             ** order in the table and the MCC being searched is less than the
@@ -4230,8 +3864,7 @@ BOOL get_network_info
 
     } /* while ( continue_search == TRUE ) */
 
-    if (found == FALSE)
-    {
+    if (found == FALSE) {
         info_ptr->full_name_ptr    = NULL;
         info_ptr->short_name_ptr   = NULL;
         info_ptr->network_type     = UI_NETWK_TYPE_UNKNOWN_TYPE;
