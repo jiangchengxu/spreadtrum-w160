@@ -3561,12 +3561,12 @@ BYTE ExtractNumFromSmsContent(const char *szRawContent)
 // }
 
 BOOL g_bSmsSyncComm;
-USHORT g_ME_SmsCnt;
-USHORT g_ME_SmsNum;
-USHORT g_ME_SmsMax;
-USHORT g_SM_SmsCnt;
-USHORT g_SM_SmsNum;
-USHORT g_SM_SmsMax;
+USHORT g_ME_SmsCnt; //me cached sms in pc count
+USHORT g_ME_SmsNum; //me used count
+USHORT g_ME_SmsMax; //me total count
+USHORT g_SM_SmsCnt; //sm cached sms in pc count
+USHORT g_SM_SmsNum; //sm used count
+USHORT g_SM_SmsMax; //sm total count
 StSmsCardRecord *g_ME_SmsRecord;
 StSmsCardRecord *g_SM_SmsRecord;
 StSmsRecord g_RcvSmsRecord;

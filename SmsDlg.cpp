@@ -41,6 +41,8 @@ CSmsDlg::CSmsDlg(CWnd* pParent /*=NULL*/)
 
     //wyw
     m_imagelistSMSTree = NULL;
+    //init voicemail count
+    VoiceMailCountSMSDlg = _T("-1");
     voicesmscount = _T("0");//add by liub for voicemail
 }
 
@@ -2168,9 +2170,9 @@ BOOL CSmsDlg::SndAtSmsQCMGR(USHORT index)
 {
     int i=0;
     if(m_locType1 == LOC_ME)
-        ASSERT(index < g_ME_SmsMax);
+        ASSERT(index <= g_ME_SmsMax);
     else
-        ASSERT(index < g_SM_SmsMax);
+        ASSERT(index <= g_SM_SmsMax);
 
     char szAtBuf[50] = {0};
     sprintf(szAtBuf, "%s%d\r", gcstrAtSms[AT_SMS_QCMGR], index);
@@ -2460,7 +2462,7 @@ LRESULT CSmsDlg::OnSmsOperateProc(WPARAM wParam, LPARAM lParam)
     switch(m_ProcType) {
     case PROC_TYPE_INIT:
         m_ProcType = PROC_TYPE_READ;
-        nReadIndex = -1;
+        nReadIndex = 0;
         g_ME_SmsCnt = 0;
         bSndRes = SndAtSmsQCPMS(LOC_ME, LOC_UIM);
         if(bSndRes) {
@@ -2519,7 +2521,7 @@ LRESULT CSmsDlg::OnSmsOperateProc(WPARAM wParam, LPARAM lParam)
                             InitSMSRecord = 1;//for new sms tag display error
                         }
 
-                        nReadIndex = -1;
+                        nReadIndex = 0;
                         g_SM_SmsCnt = 0;
 #ifndef FEATURE_VERSION_NOSIM
                         bSndRes = SndAtSmsQCPMS(LOC_UIM, LOC_ME);
@@ -2541,7 +2543,7 @@ LRESULT CSmsDlg::OnSmsOperateProc(WPARAM wParam, LPARAM lParam)
             } else {
 
                 ProgressPos(g_ME_SmsCnt+g_SM_SmsCnt);
-                if(g_SM_SmsCnt < g_SM_SmsNum && nReadIndex < g_SM_SmsMax) {
+                if(g_SM_SmsCnt < g_SM_SmsNum && nReadIndex <= g_SM_SmsMax) {
                     bSndRes = SndAtSmsQCMGR(nReadIndex);
                     // for new sms tag display error
 

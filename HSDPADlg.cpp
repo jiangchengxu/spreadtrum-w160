@@ -155,7 +155,7 @@ CHSDPADlg::CHSDPADlg(CWnd* pParent /*=NULL*/)
     SMS_type_CPTCMTCFTCDS_VOICEMAIL = 1;
     tempvoicemailASCUS = _T("");
     SMS_Priority = 0;
-    VoiceMailCount = _T("0");//add by liub for voicemail
+    VoiceMailCount = _T("-1");//add by liub for voicemail
 
     UE_InitSmsBuf();
 
