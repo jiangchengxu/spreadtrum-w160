@@ -277,10 +277,10 @@ void CSmsWriteDlg::OnButtonSmsSend()
                     //in pdu mode, not need send csmp and csca, because
                     // all these info will include in sms pdu
                     if(gSmsIsConcatenate && 0 == gSmsCurSege  && 0 != gSmsTotalSege) {
-                        PostMessage(WM_SMS_SEND_PROC, (WPARAM)AT_SMS_QCMGP, (LPARAM)TRUE);
+                        PostMessage(WM_SMS_SEND_PROC, (WPARAM)AT_SMS_QCMGP, (LPARAM)(TRUE|0X10));
                         //Lms
                     } else {
-                        PostMessage(WM_SMS_SEND_PROC, (WPARAM)AT_SMS_QCMGP, (LPARAM)FALSE);
+                        PostMessage(WM_SMS_SEND_PROC, (WPARAM)AT_SMS_QCMGP, (LPARAM)TRUE);
                         //sms
                     }
 
@@ -847,9 +847,9 @@ BOOL CSmsWriteDlg::SndAtSmsQCMGS(int nStep)
         pNumType = gcstrNumType[1];
 
     if(gSmsIsConcatenate) {
-        buffsize = EncodeSmsPDU(szAtAscBuf, m_szGroupNumSendNum, (CString)gszSmsSege[gSmsCurSege]);
+        buffsize = EncodeSmsPDU(szAtAscBuf, m_szGroupNumSendNum, (CString)gszSmsSege[gSmsCurSege], thelastone);
     } else {
-        buffsize = EncodeSmsPDU(szAtAscBuf, m_szGroupNumSendNum, m_strSmsDetails);
+        buffsize = EncodeSmsPDU(szAtAscBuf, m_szGroupNumSendNum, m_strSmsDetails, false);
     }
     if(nStep == 1) {
         int scLen = EncodeSCNumberForSmsPDU(NULL);
@@ -1105,11 +1105,12 @@ LRESULT CSmsWriteDlg::OnSmsSendPorc(WPARAM wParam, LPARAM lParam)
         } else if(AtType == AT_SMS_QCMGP) {
             if(pMainWnd->m_bInComSms || pMainWnd->m_bInComCall)
                 goto STOPSEND;
-            if((BOOL)lParam) {
+            if(lParam & 0X10) {
                 bSndRes = SndAtSmsQCMMS(1);
             } else {
                 bSndRes = SndAtSmsQCMGS(1);
             }
+
             ProgressOpen(m_nNumCount, 1);
             PostMessage(WM_UPDATA_SENDSMS_LMS,0,0);//flexi 发长短信刷新进度条
         } else if(AtType == AT_SMS_QCMMS) {

@@ -2275,7 +2275,7 @@ int EncodeSCNumberForSmsPDU(char *sbuffer)
     return strlen(pDeScn);
 }
 
-int EnCodeFOForSmsPDU()
+int EnCodeFOForSmsPDU(boolean bNDR)
 {
     int fo = 0;
     //MO FO Format
@@ -2291,7 +2291,7 @@ int EnCodeFOForSmsPDU()
     }
 
     //set tp-srr
-    if(g_SetData.Messages_nDeliReport == 1) {
+    if(g_SetData.Messages_nDeliReport == 1 && bNDR) {
         fo |= SMS_MASK_SRR;
     }
 
@@ -2301,7 +2301,8 @@ int EnCodeFOForSmsPDU()
     return fo;
 }
 
-int  EncodeSmsPDU(char *pduOut, CString da, CString context)
+//NDR used to indicate if need send delivery report when send long sms
+int  EncodeSmsPDU(char *pduOut, CString da, CString context, boolean bNDR)
 {
     int ifo = 0;
     char *pOA = NULL;
@@ -2320,7 +2321,7 @@ int  EncodeSmsPDU(char *pduOut, CString da, CString context)
 
     USES_CONVERSION;
     //encode fo
-    ifo = EnCodeFOForSmsPDU();
+    ifo = EnCodeFOForSmsPDU(bNDR);
     sprintf(temp, "%02XFF", ifo);
     strcat(pduOut, temp);
 

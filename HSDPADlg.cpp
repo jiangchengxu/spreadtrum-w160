@@ -3084,7 +3084,7 @@ BOOL CHSDPADlg::SyncInitFunc(int nStatus)
 #ifdef FEATURE_VERSION_NOSIM
 #else
     //发送PIN校验的AT命令
-    int bSimlock = 1;
+  int bSimlock = 1;
     while (bSimlock) {
         bSimlock--;
         if (res && SYNCINITFUNCRET_DONE == (InitType = AtSndCPINQ())) {
