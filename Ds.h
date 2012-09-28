@@ -359,7 +359,7 @@ extern void DecodeFOFormSmsPDU(StSmsRecord *pRecord, char *fo);
 extern int DecodeUDHFormSmsPDU(StSmsRecord *pRecord, char *fo);
 extern void DecodeNumFormSmsPDU(const char *pdunum, char *pOutNum);
 extern void DecodeTimeFormSmsPDU(const char *pdutime, COleDateTime *pOutTime);
-extern void DecodeContentFromSmsPDU(const char *pduContent, const BYTE codeType, char *pContent);
+extern void DecodeContentFromSmsPDU(const char *pduContent, const BYTE codeType, char *pContent, boolean bLMS);
 extern void DecodeSmsPDU(const char *pdu, const USHORT len, StSmsRecord *pRecord);
 extern int EncodeSmsPDU(char *pduOut, CString da, CString context, boolean bNDR);
 extern int EncodeSCNumberForSmsPDU(char *sbuffer);

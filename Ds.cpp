@@ -1893,6 +1893,7 @@ void DecodeDeliverySms(const char *pdu,   StSmsRecord *pRecord)
     ASSERT(pdu != NULL && strlen(pdu) > 0);
     ASSERT(pRecord != NULL);
 
+    boolean bLMS = false;
     USHORT numlen = 0;
     USHORT contentlen = 0;
     BYTE pid = 0;
@@ -1946,8 +1947,9 @@ void DecodeDeliverySms(const char *pdu,   StSmsRecord *pRecord)
         }
     }
 
+    bLMS =  pRecord->flag & SMS_RECORD_FLAG_CONCATENATE_SEGE;
     strncpy(pduContent, p, contentlen * 2);
-    DecodeContentFromSmsPDU(pduContent, code, (char*)pRecord->szContent);
+    DecodeContentFromSmsPDU(pduContent, code, (char*)pRecord->szContent, bLMS);
 }
 
 //对fo后的pdu进行解析
@@ -1956,6 +1958,7 @@ void DecodeSubmitSms(const char *pdu,   StSmsRecord *pRecord)
     ASSERT(pdu != NULL && strlen(pdu) > 0);
     ASSERT(pRecord != NULL);
 
+    boolean bLMS = false;
     USHORT numlen = 0;
     USHORT contentlen = 0;
     BYTE pid = 0;
@@ -2008,8 +2011,9 @@ void DecodeSubmitSms(const char *pdu,   StSmsRecord *pRecord)
         }
     }
 
+    bLMS =  pRecord->flag & SMS_RECORD_FLAG_CONCATENATE_SEGE;
     strncpy(pduContent, p, contentlen * 2);
-    DecodeContentFromSmsPDU(pduContent, code, (char*)pRecord->szContent);
+    DecodeContentFromSmsPDU(pduContent, code, (char*)pRecord->szContent, bLMS);
 }
 
 //对fo后的pdu进行解析
@@ -2169,13 +2173,17 @@ void DecodeTimeFormSmsPDU(const char *pdutime, COleDateTime *pOutTime)
 
 //内容
 /*963F62C9*/
-void DecodeContentFromSmsPDU(const char *pduContent, const BYTE codeType, char *pContent)
+void DecodeContentFromSmsPDU(const char *pduContent, const BYTE codeType, char *pContent, boolean bLMS)
 {
     ASSERT(pduContent && pContent);
 
     //ASCII
     if(codeType == 0x00) {
-        gsmDecode7bit(pduContent, pContent, strlen(pduContent));
+        if(bLMS){
+            gsmLMSDecode7bit(pduContent, pContent, strlen(pduContent));
+        }else{
+            gsmDecode7bit(pduContent, pContent, strlen(pduContent));
+        }
     } else if (codeType == 0x04) {
         const char *p = pduContent;
         char buf[10];
