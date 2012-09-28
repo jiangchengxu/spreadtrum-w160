@@ -1796,6 +1796,13 @@ int gsmEncode7bit(const char* pSrc, unsigned char* pDst, int nSrcLength)
         pSrc++;
         nSrc++;
     }
+
+    if(nLeft != 0){
+        unsigned char cChar[3] = {0};
+        sprintf((char *)cChar,"%02X", nLeft);
+        strcat((char *)pDst, (char *)cChar);
+        nDst+=2;
+    }
     // 返回目标串长度
     return nDst;
 }
@@ -1859,6 +1866,25 @@ int gsmDecode7bit(const char* pSrc, char* pDst, int nSrcLength)
     // 返回目标串长度
     //delete [] ascSrc;         //release ascSrc will occur fatal error!
     return nDst;
+}
+
+void gsmLMSEncode7bit(const char* pSrc, unsigned char* pDst, int nSrcLength){
+	char fc = pSrc[0];
+	char cChar[3] = {0};
+	sprintf((char *)cChar,"%02X", fc << 1);
+    strcat((char *)pDst, (char *)cChar);
+
+	gsmEncode7bit(pSrc+1, pDst+1, nSrcLength-1);
+}
+
+void gsmLMSDecode7bit(const char* pSrc, char* pDst, int nSrcLength){
+	int Data = 0;
+	char str[3] = {0};
+    strncpy(str, pSrc, 2);
+    sscanf(str, "%x", &Data);
+    pDst[0] = Data >> 1;
+
+	gsmDecode7bit(pSrc+2, pDst+1, nSrcLength-2);
 }
 
 //对fo后的pdu进行解析
@@ -2345,7 +2371,12 @@ int  EncodeSmsPDU(char *pduOut, CString da, CString context, boolean bNDR)
     if(IsAlphabetUnicode(context)) {
         strcat(pduOut, "00");    //TP-DCS
         contextLen = context.GetLength();
-        gsmEncode7bit(W2A(context), (unsigned char *)szAscBuf, contextLen);
+        if(ifo & SMS_MASK_UDHI){
+            gsmLMSEncode7bit(W2A(context), (unsigned char *)szAscBuf, contextLen);
+            contextLen++;   //add 1 filling bit just for ascii lms
+        }else{
+            gsmEncode7bit(W2A(context), (unsigned char *)szAscBuf, contextLen);
+        }
     } else {
         strcat(pduOut, "08");    //TP-DCS
         CString strUC = BTToUCS2((CString)context);
