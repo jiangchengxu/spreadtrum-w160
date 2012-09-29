@@ -121,13 +121,8 @@ BOOL CSmsTransferDlg::OnInitDialog()
 
     //SetSkin(g_SetData.Setup_nSkinStyle);
     //added by lijiali
-    if(!SndAtSmsQHMSGP()) {
-        bSetHmsgp =false;
-    }
-    if(!bSetHmsgp) {
-        OnCancel();
-        return FALSE;
-    }
+    SndAtSmsQCPMSQ();
+
     TransUpToDownBtn.SetIcon(IDI_ICON_DOWNLOAD,IDI_ICON_DOWNLOAD,IDI_ICON_DOWNLOAD);
     TransUpToDownBtn.SetAlign(CButtonST::ST_ALIGN_HORIZ);
     TransUpToDownBtn.DrawBorder(TRUE);
@@ -1876,43 +1871,66 @@ void CSmsTransferDlg::UpTreeSMSCount()
     m_pSmsDlg->OnSmsUpdataNumforSmsTree(hRoot);
 }
 
-//功能：发送AT$QHMSGP(设置短信其他参数<发送报告>,<短消息类型>,<消息头>,<优先级>)
-//输入：无
-//输出：TRUE/FALSE
-BOOL CSmsTransferDlg::SndAtSmsQHMSGP()
+BOOL CSmsTransferDlg::SndAtSmsQCPMSQ()
 {
     ResetEvent(m_Event);
-    char szAtBuf[50] = {0};
-    //CString strHMSGP;
-    //strHMSGP.Format(_T("AT+HMSGP=,,0"));
-    //wcscpy(szAtBuf,strHMSGP);
-    sprintf(szAtBuf, "%s,,%d\r", gcstrAtSms[AT_SMS_QHMSGP],0);
+    char szAtBuf[50] = "AT+CPMS?\r";
 
     CSerialPort* pComm = ((CHSDPAApp*)AfxGetApp())->m_pSerialPort;
     ASSERT(pComm);
 
     if(pComm->WriteToPort(szAtBuf, strlen(szAtBuf), FALSE)) {
-        RegisterAtRespFunc(ATRESP_GENERAL_AT, RspAtSmsQHMSGP, (LPVOID)this);
-        SetTimer(IDT_QHMSGP_TIMEOUT, 60000, NULL);
+        RegisterAtRespFunc(ATRESP_GENERAL_AT, RspAtSmsQCPMSQ, (LPVOID)this);
+        SetTimer(IDT_QCPMS_TIMEOUT, 60000, NULL);
         ::WaitForSingleObject(m_Event,INFINITE);
         return TRUE;
     } else
         return FALSE;
 }
 
-//功能：响应AT$QHMSGP
-//输入：pWnd:窗口指针，strArr:结果行，wStrNum:行数
-//输出：无
-void CSmsTransferDlg::RspAtSmsQHMSGP(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL], WORD wStrNum)
+void CSmsTransferDlg::RspAtSmsQCPMSQ(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL], WORD wStrNum)
 {
+    boolean bOutQuat = TRUE;
     CSmsTransferDlg* pDlg = (CSmsTransferDlg*)pWnd;
-    pDlg->KillTimer(IDT_QHMSGP_TIMEOUT);
+    pDlg->KillTimer(IDT_QCPMS_TIMEOUT);
 
-    if(strcmp((const char*)strArr[0], gc_dsatResCodeTbl[DSAT_OK][gc_dsatmode]) == 0) {
-        pDlg->bSetHmsgp = true;
-    } else {
-        pDlg->bSetHmsgp = false;
+    ASSERT(wStrNum == 2);
+
+    if(strcmp((const char*)strArr[1], gc_dsatResCodeTbl[DSAT_OK][gc_dsatmode])
+            || memcmp((const char*)strArr[0], gcstrResSms[AT_SMS_QCPMS], strlen(gcstrResSms[AT_SMS_QCPMS]))) {
+        pDlg->PostMessage(WM_SMS_TRANSFER_PROC, (WPARAM)AT_SMS_QCPMS, (LPARAM)FALSE);
+        return;
     }
+
+    int cnt = 0;
+    char *ptr[4], *p;
+    ptr[0] = p = (char *)&strArr[0][strlen(gcstrResSms[AT_SMS_QCPMS])];
+
+    while(*p != '\0' && cnt < 3) {
+        if(*p == '"') {
+            if(bOutQuat){
+                ptr[cnt++] = ++p;
+            }else{
+                *p++ = '\0';
+            }
+            bOutQuat = !bOutQuat;
+        } else {
+            p++;
+        }
+    }
+
+    if(stricmp(ptr[0], "ME") == 0){
+        pDlg->m_locType1 = LOC_ME;
+    }else if(stricmp(ptr[0], "SM") == 0){
+        pDlg->m_locType1 = LOC_UIM;
+    }
+
+    if(stricmp(ptr[1], "ME") == 0){
+        pDlg->m_locType2 = LOC_ME;
+    }else if(stricmp(ptr[1], "SM") == 0){
+        pDlg->m_locType2 = LOC_UIM;
+    }
+
     SetEvent(pDlg->m_Event);
     return;
 }

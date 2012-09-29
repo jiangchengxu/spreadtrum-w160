@@ -39,7 +39,7 @@ public:
     static void RspAtSmsQCSMP(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL], WORD wStrNum);
     static void RspAtSmsQCSCA(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL], WORD wStrNum);
     static void RspAtSmsQHMSGL(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL], WORD wStrNum);
-    static void RspAtSmsQHMSGP(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL], WORD wStrNum);
+    static void RspAtSmsQCPMSQ(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL], WORD wStrNum);
     //·¢ËÍAt$HMSGL(CDMA2000 add by liub)
     BOOL SndAtSmsQHMSGL(BOOL bAscii = TRUE, BOOL bConcatenate = FALSE);
 
@@ -50,7 +50,7 @@ public:
     BOOL SndAtSmsQCPMS(EnLocType locType1, EnLocType locType2 = LOC_MAX);
     BOOL SndAtSmsQCSMP(EnSmsQcsmpType type, BOOL bAscii = TRUE, BOOL bConcatenate = FALSE);
     BOOL SndAtSmsQCSMP(StSmsRecord *pRecord);
-    BOOL SndAtSmsQHMSGP();
+    BOOL SndAtSmsQCPMSQ();
     CSmsTransferDlg(CWnd* pParent = NULL);   // standard constructor
 
 // Dialog Data
