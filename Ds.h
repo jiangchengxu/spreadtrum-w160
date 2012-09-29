@@ -362,7 +362,7 @@ extern void DecodeTimeFormSmsPDU(const char *pdutime, COleDateTime *pOutTime);
 extern void DecodeContentFromSmsPDU(const char *pduContent, const BYTE codeType, char *pContent, boolean bLMS);
 extern void DecodeSmsPDU(const char *pdu, const USHORT len, StSmsRecord *pRecord);
 extern int EncodeSmsPDU(char *pduOut, CString da, CString context, boolean bNDR);
-extern int EncodeSCNumberForSmsPDU(char *sbuffer);
+extern int EncodeSCNumberForSmsPDU(char *sbuffer, char *number);
 #endif
 
 extern BOOL ExtractConcatenateSmsPara(char *Para, USHORT *nRefCnt, BYTE *nSeqCnt, BYTE *nTotalCnt);

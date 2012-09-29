@@ -2276,14 +2276,13 @@ int EncodeNumForSmsPDU(const char *pnum, char *pOutNum)
 }
 
 //encode smscenter number, return the whole tpdu length
-int EncodeSCNumberForSmsPDU(char *sbuffer)
+int EncodeSCNumberForSmsPDU(char *sbuffer, char *number)
 {
     char pTemp[30] = {0};
     char pDeScn[50] = {0};
     char *pDes = pDeScn;
     int iscLen = 0;
-    USES_CONVERSION;
-    char *pSCNumber = W2A(gSmsCentreNum);
+    char *pSCNumber = number;
     int cnt = 0;
 
     strcpy(pDeScn, "00");
@@ -2351,9 +2350,9 @@ int  EncodeSmsPDU(char *pduOut, CString da, CString context, boolean bNDR)
     char szAscBuf[1600] = {0};
 
     ASSERT(pduOut);
-    EncodeSCNumberForSmsPDU(pduOut);
-
     USES_CONVERSION;
+    EncodeSCNumberForSmsPDU(pduOut, W2A(gSmsCentreNum));
+
     //encode fo
     ifo = EnCodeFOForSmsPDU(bNDR);
     sprintf(temp, "%02XFF", ifo);

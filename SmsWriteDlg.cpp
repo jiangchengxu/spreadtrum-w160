@@ -852,7 +852,7 @@ BOOL CSmsWriteDlg::SndAtSmsQCMGS(int nStep)
         buffsize = EncodeSmsPDU(szAtAscBuf, m_szGroupNumSendNum, m_strSmsDetails, false);
     }
     if(nStep == 1) {
-        int scLen = EncodeSCNumberForSmsPDU(NULL);
+        int scLen = EncodeSCNumberForSmsPDU(NULL, W2A(gSmsCentreNum));
         sprintf(szAtAscBuf, "%s%d\r",
                 gcstrAtSms[AT_SMS_QCMGS],
                 (buffsize - scLen)/2);
