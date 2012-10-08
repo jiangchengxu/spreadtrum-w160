@@ -1771,6 +1771,38 @@ void CHSDPADlg::AtRespECIND(LPVOID pWnd, BYTE(*strArr)[DSAT_STRING_COL], WORD wS
 
 
 }
+
+void CHSDPADlg::AtRespCONN(LPVOID pWnd, BYTE(*strArr)[DSAT_STRING_COL], WORD wStrNum)
+{
+    CHSDPADlg *pdlg = (CHSDPADlg *)pWnd;
+	
+	pdlg->PostMessage(WM_ICON_UPDATE, ICON_TYPE_HANDSET, 1);
+}
+
+void CHSDPADlg::AtRespCEND(LPVOID pWnd, BYTE(*strArr)[DSAT_STRING_COL], WORD wStrNum)
+{
+    CHSDPADlg *pdlg = (CHSDPADlg *)pWnd;
+	
+	if (pdlg->m_pCallDlg->m_bWaitingCall) 
+	{
+		pdlg->m_pCallDlg->KillTimer(IDT_ATD_TIMEOUT);
+		DeRegisterAtRespFunc(ATRESP_GENERAL_AT);
+		((CHSDPAApp*)AfxGetApp())->m_pSerialPort->SetSerialState(SERIAL_STATE_CMD);
+		::SetEvent(g_BGPassEvt);
+	}
+
+	::PostMessage(pdlg->m_pCallPopDlg->GetSafeHwnd(), WM_POPDLG_DESTROY, 0, 0);
+	::PostMessage(pdlg->m_pCallDlg->GetSafeHwnd(), WM_ATCDVRESULT, 0, 0);
+
+	#ifdef FEATURE_CALL_PRIVACY
+	pdlg->PostMessage(WM_ICON_UPDATE, ICON_TYPE_CALLPRIVACY, 0);
+	#endif
+
+	pdlg->m_bInComCall = FALSE;
+
+}
+
+
 /*监听到来电号码*/
 /*返回串格式：
 +CLIP:  Number type,Subaddress,Subaddress type,
@@ -2779,6 +2811,8 @@ void CHSDPADlg::RegisterDsAutoMsgRsp()
     RegisterAtRespFunc(ATRESP_SYSINFO, AtRespSYSINFO, (LPVOID)this);
     RegisterAtRespFunc(ATRESP_CREG, AtRespCREG, (LPVOID)this);
     RegisterAtRespFunc(ATRESP_ECIND, AtRespECIND, (LPVOID)this);
+    RegisterAtRespFunc(ATRESP_CONN, AtRespCONN, (LPVOID)this);
+    RegisterAtRespFunc(ATRESP_CEND, AtRespCEND, (LPVOID)this);
     ::SetEvent(g_AppRegEvt);
 }
 

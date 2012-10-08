@@ -44,6 +44,8 @@ const char gc_dsatResCodeTbl[DSAT_MAX][DSAT_MODE_MAX][30] = {
     "+CREG: ", "+CREG: ",
     "+CGREG: ", "+CGREG: ",
     "+ECIND: ", "+ECIND: ",
+	"^CONN: ", "^CONN: ",
+	"^CEND:	", "^CEND: ",
 };
 
 static StAtResp g_AtRespArr[ATRESP_MAX];
@@ -722,7 +724,7 @@ void BGEvtSms(LPVOID pWnd, BYTE(*strArr)[DSAT_STRING_COL], WORD wStrNum)
 
 void BGEvtCall(LPVOID pWnd, BYTE(*strArr)[DSAT_STRING_COL], WORD wStrNum)
 {
-    ASSERT(wStrNum <= BG_STRING_ROW);
+//    ASSERT(wStrNum <= BG_STRING_ROW);
 
     if (wStrNum > BG_STRING_ROW)
         return;
@@ -1143,7 +1145,12 @@ static void AtRespParse(CSerialPort *pComm)
                 CallAtRespFunc(ATRESP_CREG);
             } else if(g_DsatResCode == DSAT_ECIND) {
                 CallAtRespFunc(ATRESP_ECIND);
+            }else if(g_DsatResCode == DSAT_CONN){
+                CallAtRespFunc(ATRESP_CONN);
+            }else if(g_DsatResCode == DSAT_CEND){
+                CallAtRespFunc(ATRESP_CEND);
             }
+
 
             else if (g_DsatResCode == DSAT_OK || g_DsatResCode == DSAT_ERROR
                      || g_DsatResCode == DSAT_CME_ERROR || g_DsatResCode == DSAT_CMS_ERROR) {

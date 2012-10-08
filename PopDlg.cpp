@@ -158,8 +158,8 @@ void CPopDlg::OnButtonAnswer()
 {
     //$QCCAV
     char szAtBuf[512] = {0};
-//	const char ATA[]="ATA\x0d\x00";//9508 Answer
-    const char ATA[]="AT$QCCAV\x0d\x00";//CDMA CM200 Answer
+	const char ATA[]="ATA\x0d\x00";//9508 Answer
+//	const char ATA[]="AT$QCCAV\x0d\x00";//CDMA CM200 Answer
     strcpy(szAtBuf, ATA);
 
     CSerialPort* pComm = ((CHSDPAApp*)AfxGetApp())->m_pSerialPort;
@@ -182,7 +182,7 @@ void CPopDlg::OnButtonReject()
 {
     char szAtBuf[512] = {0};
 //	const char ATCHUP[]="AT+CHUP\x0d\x00";//9508 Reject
-    const char ATCHUP[]="AT+CHV0\x0d\x00";//CDMA CM200 Reject
+	const char ATCHUP[]="ATH0\x0d\x00";//CDMA CM200 Reject
     strcpy(szAtBuf, ATCHUP);
 
     CSerialPort* pComm = ((CHSDPAApp*)AfxGetApp())->m_pSerialPort;

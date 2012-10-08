@@ -185,6 +185,8 @@ public:
     static void AtRespCREG(LPVOID pWnd, BYTE(*strArr)[DSAT_STRING_COL], WORD wStrNum);
     static void AtRespCLIP(LPVOID pWnd, BYTE(*strArr)[DSAT_STRING_COL], WORD wStrNum);
     static void AtRespECIND(LPVOID pWnd, BYTE(*strArr)[DSAT_STRING_COL], WORD wStrNum);
+    static void AtRespCONN(LPVOID pWnd, BYTE(*strArr)[DSAT_STRING_COL], WORD wStrNum);
+    static void AtRespCEND(LPVOID pWnd, BYTE(*strArr)[DSAT_STRING_COL], WORD wStrNum);
     static void AtRespCOPS(LPVOID pWnd, BYTE(*strArr)[DSAT_STRING_COL], WORD wStrNum);
     static void AtRespCOPSFormat(LPVOID pWnd, BYTE(*strArr)[DSAT_STRING_COL], WORD wStrNum);
     static void AtRespNWRAT(LPVOID pWnd, BYTE(*strArr)[DSAT_STRING_COL], WORD wStrNum);

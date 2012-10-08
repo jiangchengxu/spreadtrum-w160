@@ -215,7 +215,7 @@ int CCallDlg::DealwithResponseProc(LPARAM lParam,WPARAM wParam)
 void CCallDlg::SendVTS(TCHAR* cvts)
 {
     const TCHAR ATVTS[]=_T("AT+VTS=");
-    const TCHAR DQuote[]=_T(";\x0d\x00");
+	const TCHAR DQuote[]=_T("\x0d\x00");
     TCHAR szAtBuf[512] = {0};
     char szAtAscBuf[512] = {0};
     CString strAtComm=ATVTS;
@@ -577,7 +577,7 @@ void CCallDlg::OnButtonNumHash()
 
 void CCallDlg::OnButtonCall()
 {
-    SetVolume();
+//	SetVolume();
     Sleep(80);
     if(m_strEditNum.IsEmpty())
         return;
@@ -608,18 +608,19 @@ void CCallDlg::OnButtonCall()
 
 // 	const TCHAR ATD[]=_T("ATD");//9508
 // 	const TCHAR DQuote[]=_T(";\x0d\x00");//9508
+
     const TCHAR ATD[]=_T("AT");//CDMA CM200
-    const TCHAR CDV[]=_T("+CDV");//CDMA CM200
+	const TCHAR CDV[]=_T("D");//CDMA CM200
     //const TCHAR CDV1[]=_T("^DDSETEX=2");//CDMA CM200
-    const TCHAR CDV2[]=_T("^CVOICE=0");//CDMA CM200
-    const TCHAR DQuote[]=_T("\x0d\x00");//CDMA CM200
+//	const TCHAR CDV2[]=_T("^CVOICE=0");//CDMA CM200
+	const TCHAR DQuote[]=_T(";\x0d\x00");//CDMA CM200
     TCHAR szAtBuf[512] = {0};
     //TCHAR szAtBuf1[512] = {0};
-    TCHAR szAtBuf2[512] = {0};
+//	TCHAR szAtBuf2[512] = {0};
     //TCHAR szAtBuf3[512] = {0};
     char szAtAscBuf[512] = {0};
     //char szAtAscBuf1[512] = {0};
-    char szAtAscBuf2[512] = {0};
+//	char szAtAscBuf2[512] = {0};
     CString strDialNum=ATD;
     //CString strDialNum1=ATD;
     CString strDialNum2=ATD;
@@ -628,8 +629,8 @@ void CCallDlg::OnButtonCall()
     strDialNum+= DQuote;
     //strDialNum1+=CDV1;
     //strDialNum1+=DQuote;
-    strDialNum2+=CDV2;
-    strDialNum2+=DQuote;
+//	strDialNum2+=CDV2;
+//	strDialNum2+=DQuote;
 
 
 
@@ -647,16 +648,16 @@ void CCallDlg::OnButtonCall()
 
     wcscpy(szAtBuf, strDialNum);
     //wcscpy(szAtBuf1, strDialNum1);
-    wcscpy(szAtBuf2, strDialNum2);
+//	wcscpy(szAtBuf2, strDialNum2);
 
     CSerialPort* pComm = ((CHSDPAApp*)AfxGetApp())->m_pSerialPort;
-    CSerialPort* pComm1 = ((CHSDPAApp*)AfxGetApp())->m_pSerialPort;
+//	CSerialPort* pComm1 = ((CHSDPAApp*)AfxGetApp())->m_pSerialPort;
     ASSERT(pComm);
     WCharToChar(szAtBuf, szAtAscBuf);
     //WCharToChar(szAtBuf1, szAtAscBuf1);
-    WCharToChar(szAtBuf2, szAtAscBuf2);
-    pComm1->WriteToPort(szAtAscBuf2, wcslen(szAtBuf2), FALSE);
-    Sleep(80);
+//	WCharToChar(szAtBuf2, szAtAscBuf2);
+//	pComm1->WriteToPort(szAtAscBuf2, wcslen(szAtBuf2), FALSE);
+//	Sleep(80);
 
     if(pComm->WriteToPort(szAtAscBuf, wcslen(szAtBuf), FALSE)) {
 
@@ -683,7 +684,7 @@ void CCallDlg::OnButtonHungup()
     }
 
     /*	const char ATCHUP[]="AT+CHUP\x0d\x00";//9508*/
-    const char ATCHUP[]="AT+CHV0\x0d\x00";//CDMA CM200
+    const char ATCHUP[]="ATH0\x0d\x00";//CDMA CM200
     char szAtBuf[512] = {0};
     strcpy(szAtBuf, ATCHUP);
 
