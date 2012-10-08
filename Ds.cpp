@@ -1732,20 +1732,6 @@ void AtRespDummy(LPVOID pWnd, BYTE(*strArr)[DSAT_STRING_COL], WORD wStrNum)
 }
 
 #ifdef FEATURE_SMS_PDUMODE
-#define SMS_MASK_MTI    0X03
-#define SMS_MASK_MTI_DT 0X00
-#define SMS_MASK_MTI_SP 0X02
-#define SMS_MASK_MTI_MO 0X01
-#define SMS_MASK_UDHI   0X40
-#define SMS_MASK_SRR    0X20
-#define SMS_MASK_SRI    0X20
-#define SMS_MASK_VP     0X18
-#define SMS_MASK_VP_NP  0X00    //VP not present
-#define SMS_MASK_VP_RF  0X10    //vp relative format
-#define SMS_MASK_VP_EF  0X08    //VP enhance format
-#define SMS_MASK_VP_AF  0X18    //VP absolute format
-
-
 void DecodeFOFormSmsPDU(StSmsRecord *pRecord,  char *fo)
 {
     USHORT ifo = 0;
@@ -2250,6 +2236,27 @@ void DecodeSmsPDU(const char *pdu, const USHORT len, StSmsRecord *pRecord)
     }
 }
 
+void EncodeDateForSmsPDU(char *pOutDate, COleDateTime &date){
+	ASSERT(pOutDate && date);
+	char *pDate = pOutDate;
+	int adate[6] = {0};
+	char ctemp[6] = {0};
+	adate[0] = date.GetYear();
+	adate[1] = date.GetMonth();
+	adate[2] = date.GetDay();
+	adate[3] = date.GetHour();
+	adate[4] = date.GetMinute();
+	adate[5] = date.GetSecond();
+
+	for(int i = 0; i < 6; i++){
+		memset(ctemp, 0x00, sizeof(ctemp));
+		sprintf(ctemp, "%02d", adate[i]);
+		*pDate++ = ctemp[strlen(ctemp) - 1];
+		*pDate++ = ctemp[strlen(ctemp) - 2];
+	}
+	strcat(pDate, "80");	//最后跟上时区
+}
+
 int EncodeNumForSmsPDU(const char *pnum, char *pOutNum)
 {
     ASSERT(pnum && pOutNum);
@@ -2276,13 +2283,14 @@ int EncodeNumForSmsPDU(const char *pnum, char *pOutNum)
 }
 
 //encode smscenter number, return the whole tpdu length
-int EncodeSCNumberForSmsPDU(char *sbuffer, char *number)
+int EncodeSCNumberForSmsPDU(char *sbuffer)
 {
     char pTemp[30] = {0};
     char pDeScn[50] = {0};
     char *pDes = pDeScn;
     int iscLen = 0;
-    char *pSCNumber = number;
+    USES_CONVERSION;
+    char *pSCNumber = W2A(gSmsCentreNum);
     int cnt = 0;
 
     strcpy(pDeScn, "00");
@@ -2351,7 +2359,7 @@ int  EncodeSmsPDU(char *pduOut, CString da, CString context, boolean bNDR)
 
     ASSERT(pduOut);
     USES_CONVERSION;
-    EncodeSCNumberForSmsPDU(pduOut, W2A(gSmsCentreNum));
+    EncodeSCNumberForSmsPDU(pduOut);
 
     //encode fo
     ifo = EnCodeFOForSmsPDU(bNDR);

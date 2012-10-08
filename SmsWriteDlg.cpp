@@ -821,7 +821,6 @@ BOOL CSmsWriteDlg::SndAtSmsQCMGS(int nStep)
     int buffsize;
 
     ASSERT(m_nCurNum < m_nNumCount);
-    const char *pNumType;
     char *q;
     q = m_szGroupNum[m_nCurNum];
 
@@ -841,18 +840,13 @@ BOOL CSmsWriteDlg::SndAtSmsQCMGS(int nStep)
         strcat(m_szGroupNumSendNum,m_szGroupNum[m_nCurNum]);
     }
 
-    if(m_szGroupNum[m_nCurNum][0] == '+')
-        pNumType = gcstrNumType[0];
-    else
-        pNumType = gcstrNumType[1];
-
     if(gSmsIsConcatenate) {
         buffsize = EncodeSmsPDU(szAtAscBuf, m_szGroupNumSendNum, (CString)gszSmsSege[gSmsCurSege], thelastone);
     } else {
         buffsize = EncodeSmsPDU(szAtAscBuf, m_szGroupNumSendNum, m_strSmsDetails, false);
     }
     if(nStep == 1) {
-        int scLen = EncodeSCNumberForSmsPDU(NULL, W2A(gSmsCentreNum));
+        int scLen = EncodeSCNumberForSmsPDU(NULL);
         sprintf(szAtAscBuf, "%s%d\r",
                 gcstrAtSms[AT_SMS_QCMGS],
                 (buffsize - scLen)/2);

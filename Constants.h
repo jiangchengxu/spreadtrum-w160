@@ -89,4 +89,19 @@ const int CONNECTION_APN_LEN = 100;
 //必须与各子项目和配置文件中的定义一致
 #define COMP_ONDA		    2
 #define COMP_ONDA_9508		3
+
+#ifdef FEATURE_SMS_PDUMODE
+#define SMS_MASK_MTI    0X03
+#define SMS_MASK_MTI_DT 0X00
+#define SMS_MASK_MTI_SP 0X02
+#define SMS_MASK_MTI_MO 0X01
+#define SMS_MASK_UDHI   0X40
+#define SMS_MASK_SRR    0X20
+#define SMS_MASK_SRI    0X20
+#define SMS_MASK_VP     0X18
+#define SMS_MASK_VP_NP  0X00    //VP not present
+#define SMS_MASK_VP_RF  0X10    //vp relative format
+#define SMS_MASK_VP_EF  0X08    //VP enhance format
+#define SMS_MASK_VP_AF  0X18    //VP absolute format
+#endif
 #endif

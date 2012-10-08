@@ -37,15 +37,12 @@ public:
     static void RspAtSmsQCMGR(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL], WORD wStrNum);
     static void RspAtSmsQCPMS(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL], WORD wStrNum);
     static void RspAtSmsQCSMP(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL], WORD wStrNum);
-    static void RspAtSmsQCSCA(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL], WORD wStrNum);
     static void RspAtSmsQHMSGL(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL], WORD wStrNum);
     static void RspAtSmsQCPMSQ(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL], WORD wStrNum);
-    //·¢ËÍAt$HMSGL(CDMA2000 add by liub)
     BOOL SndAtSmsQHMSGL(BOOL bAscii = TRUE, BOOL bConcatenate = FALSE);
 
-    BOOL SndAtSmsQCSCA(const StSmsRecord *pRecord);
     BOOL SndAtSmsQCMGD(USHORT index);
-    BOOL SndAtSmsQCMGW(StSmsRecord *pRecord = NULL);
+    BOOL SndAtSmsQCMGW(int setup);
     BOOL SndAtSmsQCMGR(USHORT index);
     BOOL SndAtSmsQCPMS(EnLocType locType1, EnLocType locType2 = LOC_MAX);
     BOOL SndAtSmsQCSMP(EnSmsQcsmpType type, BOOL bAscii = TRUE, BOOL bConcatenate = FALSE);

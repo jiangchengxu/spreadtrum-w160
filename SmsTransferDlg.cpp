@@ -508,9 +508,103 @@ BOOL CSmsTransferDlg::SndAtSmsQCMGR(USHORT index)
     return FALSE;
 }
 
+int Translate2PDU(StSmsRecord *pRecord, char *pduOut){
+    ASSERT(pRecord && pduOut);
+    int ifo = 0;
+    char temp[30] = {0};
+    char *p = NULL;
+    int numLen = 0;
+    char odtmp[20] = {0};
+    int udhl = 0;
+    char udh[20] = {0};
+    TCHAR wudh[20] = {0};
+    int contextLen = 0;
+    char szAscBuf[1600] = {0};
+    CString szContent;
+    USES_CONVERSION;
+    EncodeSCNumberForSmsPDU(pduOut);
+
+    //encode fo
+    memset(temp, 0x00, sizeof(temp));
+    //set tp-mti    set all transfered msg as delivery msg
+    ifo |= SMS_MASK_MTI_DT;
+
+    //set tp-udhi
+    if(gSmsIsConcatenate) {
+        ifo |= SMS_MASK_UDHI;
+    }
+    sprintf(temp, "%02X", ifo);
+    strcat(pduOut, temp);
+
+    if(pRecord->szNumber != NULL){
+        p = pRecord->szNumber;
+        memset(temp, 0x00, sizeof(temp));
+        if(p[0] == '+') {
+            strcat(temp, "91");
+            p++;
+        } else {
+            strcat(temp, "A1");
+        }
+        numLen = strlen(p);
+        sprintf(odtmp, "%02X", numLen);
+        EncodeNumForSmsPDU(p,&temp[strlen(temp)]);
+        strcat(pduOut, odtmp);
+        strcat(pduOut, temp);
+    }
+
+    strcat(pduOut, "00");
+    //TP-PID
+
+    if(gSmsIsConcatenate){
+        szContent = (CString)gszSmsTranSege[gSmsTranCurSege++];
+    }else{
+        szContent = (CString)pRecord->szContent;
+    }
+
+    if(IsAlphabetUnicode((CString)pRecord->szContent)) {
+        strcat(pduOut, "00");    //TP-DCS
+        contextLen = ((CString)pRecord->szContent).GetLength();
+        if(ifo & SMS_MASK_UDHI){
+            gsmLMSEncode7bit(W2A(szContent), (unsigned char *)szAscBuf, contextLen);
+            contextLen++;   //add 1 filling bit just for ascii lms
+        }else{
+            gsmEncode7bit(W2A(szContent), (unsigned char *)szAscBuf, contextLen);
+        }
+    } else {
+        strcat(pduOut, "08");    //TP-DCS
+        CString strUC = BTToUCS2(szContent);
+        contextLen =  WCharToChar(strUC, szAscBuf)/2;
+    }
+
+    //datetime
+    if(pRecord->timestamp == NULL){
+        pRecord->timestamp = COleDateTime::GetCurrentTime();
+    }
+    memset(temp, 0x00, sizeof(temp));
+    EncodeDateForSmsPDU(temp, pRecord->timestamp);
+    strcat(pduOut, temp);
+
+    if(ifo & SMS_MASK_UDHI) {
+        if(SetConcatenateSmsPara((TCHAR *)wudh,  gSmsTranRefCnt, gSmsTranCurSege+1,
+                                 gSmsTranTotalSege)) {
+            WCharToChar(wudh, udh);
+            udhl = strlen(udh)/2;
+        }
+    }/*TP-UDH*/
+    memset(temp, 0x00, sizeof(temp));
+    contextLen += udhl;
+    sprintf(temp,"%02X",contextLen);
+    strcat(pduOut, temp);
+    strcat(pduOut, udh);
+
+    strcat(pduOut, szAscBuf);
+
+    return strlen(pduOut);    
+}
+
 //写号码：pRecord != NULL
 //写内容：pRecord == NULL
-BOOL CSmsTransferDlg::SndAtSmsQCMGW(StSmsRecord *pRecord)
+BOOL CSmsTransferDlg::SndAtSmsQCMGW(int setup)
 {
     switch(m_locType2) {
     case LOC_ME:
@@ -529,141 +623,20 @@ BOOL CSmsTransferDlg::SndAtSmsQCMGW(StSmsRecord *pRecord)
     char szAtAscBuf[1600] = {0};
     CString strDateTime;
     int buffsize;
-
+    StSmsRecord *pRecord = &m_WriteRecord;
     memset(szAtBuf, 0x00, sizeof(szAtBuf));
+    buffsize = Translate2PDU(pRecord, szAtAscBuf);
 
-    if(pRecord != NULL) {
-        const char *pNumType;
-        if(pRecord->szNumber[0] == '+')
-            pNumType = gcstrNumType[0];
-        else
-            pNumType = gcstrNumType[1];
-        //////////////////////////////////////////////////////////////////////////
+    if(setup == 1) {
+        int scLen = EncodeSCNumberForSmsPDU(NULL);
+        sprintf(szAtAscBuf, "%s%d,1\r",	//1 means set transfered msg as read mt
+                gcstrAtSms[AT_SMS_QCMGW],
+                (buffsize - scLen)/2);
 
-
-        strDateTime = pRecord->timestamp.Format(_T("%y/%m/%d,%H:%M:%S+00"));
-        //Modified by Zhou Bin 2008.12.30
-// 	         char *szNumTemp = new char[_tcslen(pRecord->szNumber) + 1];
-//      	memset(szNumTemp, 0, _tcslen(pRecord->szNumber) + 1);
-//     	WCharToChar(pRecord->szNumber, szNumTemp);
-
-        USES_CONVERSION;
-        // char *szTimeTemp = new char[_tcslen(strDateTime) + 1];
-        char *szTimeTemp = W2A(strDateTime);
-
-//      	memset(szTimeTemp, 0, _tcslen(strDateTime) + 1);
-//     	WCharToChar(strDateTime, szTimeTemp);
-
-//         sprintf(szAtBuf, "%s\"%s\",%s,\"%s\",\"%s\"\r",
-//                 gcstrAtSms[AT_SMS_QCMGW],
-//                 szNumTemp,
-//                 pNumType,
-//                 GetSmsStrFromState(pRecord->state),
-//                 szTimeTemp);//"06/05/23,09:19:55+00" -gsm/wcdma
-//                 delete []szNumTemp;
-//                 delete []szTimeTemp;
-
-        if (m_SrcLoc == LOC_UIM || m_SrcLoc ==LOC_ME || m_SrcLoc ==LOC_PC) {
-            chr = *(pRecord->szNumber + 1);
-            if (chr == 0) {
-                DWORD dwNum = WideCharToMultiByte(CP_OEMCP,NULL,(TCHAR*)pRecord->szNumber,-1,NULL,0,NULL,FALSE);
-                char *psText;
-                psText = new char[dwNum+1];
-                if(!psText) {
-                    delete []psText;
-                }
-                WideCharToMultiByte (CP_OEMCP,NULL,(TCHAR*)pRecord->szNumber,-1,psText,dwNum,NULL,FALSE);
-
-                sprintf(szAtAscBuf, "%s\"%s\",%s,\"%s\",\"%s\"\r",
-                        gcstrAtSms[AT_SMS_QCMGW],
-                        psText,
-                        pNumType,
-                        GetSmsStrFromState(pRecord->state),
-                        szTimeTemp);//"06/05/23,09:19:55+00" -gsm/wcdma
-                delete []psText;
-            } else {
-                sprintf(szAtAscBuf, "%s\"%s\",%s,\"%s\",\"%s\"\r",
-                        gcstrAtSms[AT_SMS_QCMGW],
-                        pRecord->szNumber,
-                        pNumType,
-                        GetSmsStrFromState(pRecord->state),
-                        szTimeTemp);//"06/05/23,09:19:55+00" -gsm/wcdma
-            }
-        } else {
-
-            sprintf(szAtAscBuf, "%s\"%s\",%s,\"%s\",\"%s\"\r",
-                    gcstrAtSms[AT_SMS_QCMGW],
-                    pRecord->szNumber,
-                    pNumType,
-                    GetSmsStrFromState(pRecord->state),
-                    szTimeTemp);//"06/05/23,09:19:55+00" -gsm/wcdma
-        }
         buffsize = strlen(szAtAscBuf);
     } else { //写内容
-        char szHead[30];
-        memset(szHead, 0x00, sizeof(szHead));
-        CString strUc;
-
-        if(gSmsTranIsConcatenate) { //长短信
-#if 0
-            m_WriteRecord.nRefCnt = gSmsTranRefCnt;
-            if(SetConcatenateSmsParaA(szHead, m_WriteRecord.nRefCnt, gSmsTranCurSege+1, gSmsTranTotalSege, MinMaxChar)) {
-                TCHAR *unicodStr = new TCHAR[strlen(szHead) * 2 + 1];
-                ASCToUCS2((char*)szHead,(TCHAR *)unicodStr );
-                wcscpy(szAtBuf, unicodStr);
-                delete[] unicodStr;
-            }
-#endif
-            if (m_SrcLoc == LOC_UIM || m_SrcLoc ==LOC_ME /*|| m_SrcLoc ==LOC_PC*/) {
-                strUc = BTToUCS2((CString)gszSmsTranSege[gSmsTranCurSege]);
-
-            } else {
-
-                if (chr == 0) {
-
-                    strUc = BTToUCS2((TCHAR*)gszSmsTranSege[gSmsTranCurSege]);
-                } else {
-                    //////////////////////////////////////////////////////////////////////////liub_modify 长短消息拆分后的转换
-                    DWORD dwNum1 = WideCharToMultiByte(CP_OEMCP,NULL,(TCHAR*)gszSmsTranSege[gSmsTranCurSege],-1,NULL,0,NULL,FALSE);
-                    char *psText;
-                    psText = new char[dwNum1+1];
-                    if(!psText) {
-                        delete []psText;
-                    }
-                    WideCharToMultiByte (CP_OEMCP,NULL,(TCHAR*)gszSmsTranSege[gSmsTranCurSege],-1,psText,dwNum1,NULL,FALSE);
-
-                    strUc = GBToUCS2((const char *)psText);
-                    delete []psText;
-                }
-            }
-
-
-        } else {
-            if(IsConcatenateSms(&m_WriteRecord)
-                    && SetConcatenateSmsParaA(szHead, m_WriteRecord.nRefCnt, m_WriteRecord.nSeqCnt,
-                                              m_WriteRecord.nTotalCnt, MinMaxChar)) {
-                USES_CONVERSION;
-                TCHAR *unicodStr = new TCHAR[strlen(szHead) * 2 + 1];
-                ASCToUCS2((char*)szHead,(TCHAR *)unicodStr );
-                wcscpy(szAtBuf, unicodStr);
-                delete[] unicodStr;
-
-            }
-            if (m_SrcLoc == LOC_UIM || m_SrcLoc ==LOC_ME /*|| m_SrcLoc ==LOC_PC*/) {
-                strUc = BTToUCS2((CString)m_WriteRecord.szContent);
-            } else {
-                if (chr == 0) {
-                    strUc = BTToUCS2((CString)m_WriteRecord.szContent);
-
-                } else
-                    strUc = GBToUCS2((const char *)m_WriteRecord.szContent);
-
-            }
-        }
-        int len= WCharToUnicode(strUc, szAtAscBuf);
-        szAtAscBuf[len] = gccCtrl_Z;
-        buffsize=len+1;
-
+        szAtAscBuf[buffsize] = gccCtrl_Z;
+        buffsize = buffsize + 1;
     }
     CSerialPort* pComm = ((CHSDPAApp*)AfxGetApp())->m_pSerialPort;
     ASSERT(pComm);
@@ -709,42 +682,6 @@ BOOL CSmsTransferDlg::SndAtSmsQCMGD(USHORT index)
     }
     return FALSE;
 }
-
-BOOL CSmsTransferDlg::SndAtSmsQCSCA(const StSmsRecord *pRecord)
-{
-    ASSERT(pRecord);
-
-    char szAtBuf[50] = {0};
-    //Modified by Zhou Bin 2008.12.30
-//          char *szTemp = new char[_tcslen(pRecord->szSCNumber) + 1];
-//      	memset(szTemp, 0, _tcslen(pRecord->szSCNumber) + 1);
-//     	WCharToChar(pRecord->szSCNumber, szTemp);
-    //sprintf(szAtBuf, "%s\"%s\"\r", gcstrAtSms[AT_SMS_QCSCA], szTemp);
-    sprintf(szAtBuf, "%s\"%s\"\r", gcstrAtSms[AT_SMS_QCSCA], pRecord->szSCNumber);
-    //delete []szTemp;
-    CSerialPort* pComm = ((CHSDPAApp*)AfxGetApp())->m_pSerialPort;
-    ASSERT(pComm);
-
-    if(pComm->WriteToPort(szAtBuf, strlen(szAtBuf), FALSE)) {
-        RegisterAtRespFunc(ATRESP_GENERAL_AT, RspAtSmsQCSCA, (LPVOID)this);
-        SetTimer(IDT_QCSCA_TIMEOUT, 60000, NULL);
-        m_WriteRecord = *pRecord;
-        return TRUE;
-    } else
-        return FALSE;
-}
-
-void CSmsTransferDlg::RspAtSmsQCSCA(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL], WORD wStrNum)
-{
-    CSmsTransferDlg* pDlg = (CSmsTransferDlg*)pWnd;
-    pDlg->KillTimer(IDT_QCSCA_TIMEOUT);
-
-    if(strcmp((const char*)strArr[0], gc_dsatResCodeTbl[DSAT_OK][gc_dsatmode]) == 0)
-        pDlg->PostMessage(WM_SMS_TRANSFER_PROC, (WPARAM)AT_SMS_QCSCA, (LPARAM)TRUE);
-    else
-        pDlg->PostMessage(WM_SMS_TRANSFER_PROC, (WPARAM)AT_SMS_QCSCA, (LPARAM)TRUE);
-}
-
 
 //设置存储器
 void CSmsTransferDlg::RspAtSmsQCPMS(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL], WORD wStrNum)
@@ -1124,6 +1061,7 @@ LRESULT CSmsTransferDlg::OnSmsTransferProc(WPARAM wParam, LPARAM lParam)
             if(AtType == AT_SMS_QCPMS)
                 ProgressSet(0, m_nSelCount, 1);
 
+            //copy to pc
             if(m_DesLoc == LOC_PC) { //ME->PC SM->PC
                 ::SetEvent(g_BGPassEvt);
                 do {
@@ -1165,11 +1103,9 @@ LRESULT CSmsTransferDlg::OnSmsTransferProc(WPARAM wParam, LPARAM lParam)
             if(/*AtType == AT_SMS_QCSMP*/AtType == AT_SMS_QHMSGL) { //CSMP为WCDMA使用 modify by liub
                 //bSndRes = SndAtSmsQCSCA(&m_WriteRecord);
 
-                bSndRes = SndAtSmsQCMGW(&m_WriteRecord);
-            } else if(AtType == AT_SMS_QCSCA) {
-                bSndRes = SndAtSmsQCMGW(&m_WriteRecord);
-            } else if(AtType == AT_SMS_QCMGW) {
-                bSndRes = SndAtSmsQCMGW();
+                bSndRes = SndAtSmsQCMGW(1);
+            }  else if(AtType == AT_SMS_QCMGW) {
+                bSndRes = SndAtSmsQCMGW(2);
             } else {
                 if(AtType == AT_SMS_QCMGS) {
                     if(gSmsTranIsConcatenate) {
@@ -1194,14 +1130,6 @@ LRESULT CSmsTransferDlg::OnSmsTransferProc(WPARAM wParam, LPARAM lParam)
                         //Des room is full?
                         if((m_DesLoc == LOC_ME && g_ME_SmsNum == g_ME_SmsMax)
                                 || (m_DesLoc == LOC_UIM && g_SM_SmsNum == g_SM_SmsMax)) {
-                            //GL
-                            /* if(m_DesLoc == LOC_ME)
-                                 AfxMessageBox(IDS_SMS_ME_FULL, MB_OK | MB_ICONINFORMATION);
-                             else
-                                 AfxMessageBox(IDS_SMS_USIM_FULL, MB_OK | MB_ICONINFORMATION);
-                             ProgressClose();
-                            UpdateListCtrl(m_DesDirection);
-                            */
                             ProgressClose();
                             UpdateOwner();
                             UpTreeSMSCount();
@@ -1210,12 +1138,10 @@ LRESULT CSmsTransferDlg::OnSmsTransferProc(WPARAM wParam, LPARAM lParam)
                             else
                                 AfxMessageBox(IDS_SMS_USIM_FULL, MB_OK | MB_ICONINFORMATION);
                             UpdateListCtrl(m_DesDirection);
-
-                            // end
-
                             //UpdateOwner();
                             return 0;
                         }
+
                         switch(m_SrcLoc) {
                         case LOC_PC:
                             ASSERT(m_TransItem == m_SmsList[m_SrcDirection].GetItemData(m_TransItem));
@@ -1228,7 +1154,7 @@ LRESULT CSmsTransferDlg::OnSmsTransferProc(WPARAM wParam, LPARAM lParam)
                             record = g_SM_SmsRecord[m_SmsList[m_SrcDirection].GetItemData(m_TransItem)].record;
                             break;
                         }
-                        //////////////////////////////////////////////////////////////////////////
+
                         DWORD dwNum = MultiByteToWideChar (CP_ACP, 0, record.szContent, -1, NULL, 0);
                         wchar_t *pwText;
                         pwText = new wchar_t[dwNum];
@@ -1236,9 +1162,7 @@ LRESULT CSmsTransferDlg::OnSmsTransferProc(WPARAM wParam, LPARAM lParam)
                             delete []pwText;
                         }
                         MultiByteToWideChar (CP_ACP, 0, record.szContent, -1, pwText, dwNum);
-//////////////////////////////////////////////////////////////////////////
                         DivideSmsTranConcatenate((const TCHAR *)pwText);
-                        //DivideSmsTranConcatenate((const TCHAR *)record.szContent);
 
                         bSndRes = SndAtSmsQCSMP(&record);
                         delete []pwText;
@@ -1315,11 +1239,11 @@ LRESULT CSmsTransferDlg::OnSmsTransferProc(WPARAM wParam, LPARAM lParam)
             } else if(m_SrcLoc == LOC_PC) { //PC->ME PC->SM
                 if(/*AtType == AT_SMS_QCSMP*/AtType == AT_SMS_QHMSGL) {
                     // bSndRes = SndAtSmsQCSCA(&m_WriteRecord);
-                    bSndRes = SndAtSmsQCMGW(&m_WriteRecord);
+                    bSndRes = SndAtSmsQCMGW(1);
                 } else if(AtType == AT_SMS_QCSCA) {
-                    bSndRes = SndAtSmsQCMGW(&m_WriteRecord);
+                    bSndRes = SndAtSmsQCMGW(1);
                 } else if(AtType == AT_SMS_QCMGW) {
-                    bSndRes = SndAtSmsQCMGW();
+                    bSndRes = SndAtSmsQCMGW(2);
                 } else {
                     if(AtType == AT_SMS_QCMGS) {
                         if(gSmsTranIsConcatenate) {
@@ -1389,11 +1313,11 @@ LRESULT CSmsTransferDlg::OnSmsTransferProc(WPARAM wParam, LPARAM lParam)
                 if(/*AtType == AT_SMS_QCSMP*/AtType == AT_SMS_QHMSGL) {
                     //bSndRes = SndAtSmsQCSCA(&m_WriteRecord);
 
-                    bSndRes = SndAtSmsQCMGW(&m_WriteRecord);
+                    bSndRes = SndAtSmsQCMGW(1);
                 } else if(AtType == AT_SMS_QCSCA) {
-                    bSndRes = SndAtSmsQCMGW(&m_WriteRecord);
+                    bSndRes = SndAtSmsQCMGW(1);
                 } else if(AtType == AT_SMS_QCMGW) {
-                    bSndRes = SndAtSmsQCMGW();
+                    bSndRes = SndAtSmsQCMGW(2);
                 } else if(AtType == AT_SMS_QCMGS) {
                     bSndRes = SndAtSmsQCMGD(m_SmsList[m_SrcDirection].GetItemData(m_TransItem));
                 } else {
@@ -1717,43 +1641,9 @@ BOOL CSmsTransferDlg::SndAtSmsQCSMP(EnSmsQcsmpType type, BOOL bAscii, BOOL bConc
 BOOL CSmsTransferDlg::SndAtSmsQCSMP(StSmsRecord *pRecord)
 {
     ASSERT(pRecord);
-
-    EnSmsQcsmpType type;
-    BOOL bAscii = TRUE;
-    BOOL bConcatenate = FALSE;
-
-    if(pRecord->state == SMS_STATE_MT_NOT_READ || pRecord->state == SMS_STATE_MT_READ)
-        type = SMS_QCSMP_TYPE_MT;
-    else
-        type = SMS_QCSMP_TYPE_MO;
-
-    if(gSmsTranIsConcatenate) {
-        bAscii = gSmsTranIsAsciiCode;
-        bConcatenate = TRUE;
-    } else {
-        DWORD dwNum = MultiByteToWideChar (CP_ACP, 0, pRecord->szContent, -1, NULL, 0);
-        wchar_t *pwText;
-        pwText = new wchar_t[dwNum];
-        if(!pwText) {
-            delete []pwText;
-        }
-        MultiByteToWideChar (CP_ACP, 0, pRecord->szContent, -1, pwText, dwNum);
-
-        // if(IsAlphabetUnicode((const TCHAR *)pRecord->szContent))
-        if(IsAlphabetUnicode((const TCHAR *)pwText))
-            bAscii = TRUE;
-        else
-            bAscii = FALSE;
-        delete []pwText;
-        bConcatenate = IsConcatenateSms(pRecord);
-    }
-
-    BOOL res = SndAtSmsQHMSGL(bAscii, bConcatenate);
-
-    if(res)
-        m_WriteRecord = *pRecord;
-
-    return res;
+    m_WriteRecord = *pRecord;
+    PostMessage(WM_SMS_TRANSFER_PROC, (WPARAM)AT_SMS_QHMSGL, (LPARAM)TRUE);
+    return TRUE;
 }
 
 void CSmsTransferDlg::RspAtSmsQCSMP(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_COL], WORD wStrNum)
