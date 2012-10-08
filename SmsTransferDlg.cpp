@@ -530,7 +530,7 @@ int Translate2PDU(StSmsRecord *pRecord, char *pduOut){
     ifo |= SMS_MASK_MTI_DT;
 
     //set tp-udhi
-    if(gSmsIsConcatenate) {
+    if(gSmsTranIsConcatenate) {
         ifo |= SMS_MASK_UDHI;
     }
     sprintf(temp, "%02X", ifo);
@@ -555,15 +555,15 @@ int Translate2PDU(StSmsRecord *pRecord, char *pduOut){
     strcat(pduOut, "00");
     //TP-PID
 
-    if(gSmsIsConcatenate){
-        szContent = (CString)gszSmsTranSege[gSmsTranCurSege++];
+    if(gSmsTranIsConcatenate){
+        szContent = (CString)gszSmsTranSege[gSmsTranCurSege];
     }else{
         szContent = (CString)pRecord->szContent;
     }
 
     if(IsAlphabetUnicode((CString)pRecord->szContent)) {
         strcat(pduOut, "00");    //TP-DCS
-        contextLen = ((CString)pRecord->szContent).GetLength();
+        contextLen = szContent.GetLength();
         if(ifo & SMS_MASK_UDHI){
             gsmLMSEncode7bit(W2A(szContent), (unsigned char *)szAscBuf, contextLen);
             contextLen++;   //add 1 filling bit just for ascii lms
@@ -602,8 +602,8 @@ int Translate2PDU(StSmsRecord *pRecord, char *pduOut){
     return strlen(pduOut);    
 }
 
-//Ð´ºÅÂë£ºpRecord != NULL
-//Ð´ÄÚÈÝ£ºpRecord == NULL
+//Ð´ºÅÂë£ºsetup = 1
+//Ð´ÄÚÈÝ£ºsetup = 2
 BOOL CSmsTransferDlg::SndAtSmsQCMGW(int setup)
 {
     switch(m_locType2) {
@@ -629,7 +629,7 @@ BOOL CSmsTransferDlg::SndAtSmsQCMGW(int setup)
 
     if(setup == 1) {
         int scLen = EncodeSCNumberForSmsPDU(NULL);
-        sprintf(szAtAscBuf, "%s%d,1\r",	//1 means set transfered msg as read mt
+        sprintf(szAtAscBuf, "%s%d,1\r",	// 1 refers to the message status "received read".
                 gcstrAtSms[AT_SMS_QCMGW],
                 (buffsize - scLen)/2);
 
@@ -1101,8 +1101,6 @@ LRESULT CSmsTransferDlg::OnSmsTransferProc(WPARAM wParam, LPARAM lParam)
 
             //PC->ME PC->SM ME->SM SM->ME
             if(/*AtType == AT_SMS_QCSMP*/AtType == AT_SMS_QHMSGL) { //CSMPÎªWCDMAÊ¹ÓÃ modify by liub
-                //bSndRes = SndAtSmsQCSCA(&m_WriteRecord);
-
                 bSndRes = SndAtSmsQCMGW(1);
             }  else if(AtType == AT_SMS_QCMGW) {
                 bSndRes = SndAtSmsQCMGW(2);
