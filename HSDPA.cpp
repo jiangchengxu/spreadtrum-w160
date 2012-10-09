@@ -164,11 +164,6 @@ BOOL CHSDPAApp::InitResource()
                 if (GetLang() == g_SetData.Main_nLanguage) {
                     bFindDll = TRUE;
                     strDllName=strPath;
-                } else if(9 != g_SetData.Main_nLanguage) {
-                    if (9 == GetLang()) {
-                        bFindDll = TRUE;
-                        strDllName=strPath;
-                    }
                 }
                 m_lstLang.AddTail(strPath);
             }

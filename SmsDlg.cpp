@@ -2032,6 +2032,7 @@ void CSmsDlg::OnSelchangeCombolocfilter()
     else {
         //∑«PC∂À«“g_bSmsSyncCommŒ™flase
         m_ProcType = PROC_TYPE_INIT;
+        m_str_sms_Prompt.LoadString(IDS_WAIT_READ_SMS);
         ProgressOpen();
         PostMessage(WM_SMS_OPERATE_PROC,(WPARAM)AT_SMS_QCPMS,(LPARAM)TRUE);//AT_SMS_QCPMS, ¥Ê¥¢…Ë÷√
     }

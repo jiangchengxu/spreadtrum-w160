@@ -2807,16 +2807,7 @@ void CPhoneBookDlg::ReadDataFromLoc(int flag)
     }
     case 1: {
         StrSource = _T("AT+CPBS=\"SM\"");
-        CString StrPBTransferInfo;
-        StrPBTransferInfo.LoadString(IDS_PBTRANSFER_INITUSIMINFO);
-        if((wcscmp(g_SetData.Setup_sz3GType,_T("WCDMA"))==0)||
-                (wcscmp(g_SetData.Setup_sz3GType,_T("wcdma"))==0)) {
-            m_pWaitDlg->m_strPrompt=StrPBTransferInfo+_T("USIM...");
-        } else if((wcscmp(g_SetData.Setup_sz3GType,_T("CDMA2000"))==0)||
-                  (wcscmp(g_SetData.Setup_sz3GType,_T("cdma2000"))==0)) {
-            m_pWaitDlg->m_strPrompt=StrPBTransferInfo+_T("R-UIM...");
-        }
-
+        m_pWaitDlg->m_strPrompt.LoadString(IDS_PBTRANSFER_INITUSIMINFO);
         break;
     }
     default: {

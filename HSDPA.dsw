@@ -27,6 +27,18 @@ Package=<4>
 
 ###############################################################################
 
+Project: "DataCrad_Chinese"=".\DataCrad_Chinese\DataCrad_Chinese.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
 Project: "HSDPA"=".\HSDPA.dsp" - Package Owner=<4>
 
 Package=<5>
@@ -43,6 +55,9 @@ Package=<4>
     End Project Dependency
     Begin Project Dependency
     Project_Dep_Name DataCrad_Arabic
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name DataCrad_Chinese
     End Project Dependency
 }}}
 

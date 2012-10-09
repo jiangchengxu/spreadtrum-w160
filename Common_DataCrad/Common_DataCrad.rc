@@ -2581,7 +2581,7 @@ BEGIN
     IDS_MENU_LANGUAGE       "Language"
     IDS_LANG_ENG            "Eng"
     IDS_PBTRANSFER_INITCARDINFO "Reading PB information from datacard..."
-    IDS_PBTRANSFER_INITUSIMINFO "Reading PB information from "
+    IDS_PBTRANSFER_INITUSIMINFO "Reading PB information from USIM"
     IDS_PBTRANSFER_CARDFULL "DataCard store is full!"
     IDS_PBTRANSFER_USIMFULL "RUIM store is full!"
     IDS_TIPINFO_CALL        "Incoming Call\r\nFrom: "
@@ -2590,7 +2590,6 @@ END
 
 STRINGTABLE DISCARDABLE 
 BEGIN
-    IDS_APPNAME             ""
     IDS_PB_NULLPB           "Null PB record!"
     IDS_PB_READERR          "Error when read data!"
     IDS_FILEERR             "Invaild File!"
