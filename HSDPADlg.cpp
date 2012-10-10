@@ -4328,7 +4328,7 @@ void CHSDPADlg::OnClose()
     }
 #endif
 
-    if (g_bIsExist) {
+    /*if (g_bIsExist) {
         //结束发送AT命令0
         AtSndOPCONLINE();
         Sleep(200);
@@ -4337,7 +4337,7 @@ void CHSDPADlg::OnClose()
         SndAtPowerCFUN(POWER_OFF); //关机RF关  TATA需求（add by liub）
         Sleep(200);
 #endif
-    }
+    }*/
 
     if (m_hMonitorThread) {
         SetEvent(g_hExitEvent);
@@ -4368,24 +4368,7 @@ void CHSDPADlg::ForegroundWnd()
 BOOL CHSDPADlg::AtSndBeforeClose()
 {
     BYTE index = 0;
-    char szAtBuf[100];
-    memset(szAtBuf, 0x00, sizeof(szAtBuf));
-
-    char szAtCmdArr[][20] = {
-        /*"+CHUP",*/
-        "+CHV0",
-#ifdef FEATURE_AUTOSETRF
-//        "+PHMOD=4",
-#endif
-        ""
-    };
-
-    strcpy(szAtBuf, "AT");
-    for (index = 0; strlen(szAtCmdArr[index]) > 0; index++) {
-        strcat(szAtBuf, szAtCmdArr[index]);
-        strcat(szAtBuf, ";");
-    }
-    strcat(szAtBuf, "\r");
+    char szAtBuf[] = "ATH0\r";
 
     if (m_pComm->WriteToPort(szAtBuf, strlen(szAtBuf), FALSE)) {
         RegisterAtRespFunc(ATRESP_GENERAL_AT, AtResSndBeforeClose, this);
