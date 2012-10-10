@@ -383,105 +383,9 @@ void CDlgSetupPowerMng::OnButtonSetupMsgSet()
     UpdateData(TRUE);
 
     //设置消息有效期和发送状态报告、优先级
-
-    if(!wcsicmp(g_SetData.Setup_sz3GType,_T("CDMA2000"))) {
-        g_SetData.Messages_nPriority = m_Priority.GetCurSel();//当前选中的行。
-        if (1 == m_cmbDeliReport.GetCurSel()) {
-            g_SetData.Messages_nDeliReport = 2;
-
-        } else
-            g_SetData.Messages_nDeliReport = m_cmbDeliReport.GetCurSel();
-
-    } else
-        g_SetData.Messages_nDeliReport = m_cmbDeliReport.GetCurSel();
-
+    g_SetData.Messages_nDeliReport = m_cmbDeliReport.GetCurSel();
     g_SetData.Messages_nAlertWindow = m_bAlertWindowSmsSet;//for SMSSettings
     g_SetData.Messages_nAlertTone = m_bAlertToneSMSSet;//SMSSettings
-
-    //wcscpy(g_SetData.Messages_szSoundFile, m_strSmsSoundFileSMSTone);
-
-    if(!wcsicmp(g_SetData.Setup_sz3GType,_T("WCDMA"))) {
-        if(m_strSCA.IsEmpty()) {
-            AfxMessageBox(IDS_SCA_TIP);
-            m_strSCA.Format(_T("%s"), gSmsCentreNum);
-            UpdateData(FALSE);
-            return;
-        }
-        g_SetData.Messages_nValPeriod = m_cmbValPeriod.GetCurSel();
-        //设置消息中心
-        SndAtSmsQCSCA();
-    } else {
-        int iPos = m_cmbValPeriod.GetCurSel();
-        switch (iPos) {
-        case 0:
-            g_SetData.Messages_nValPeriod = 5;
-            break;
-        case 1:
-            g_SetData.Messages_nValPeriod = 11;
-            break;
-        case 2:
-            g_SetData.Messages_nValPeriod = 23;
-            break;
-        case 3:
-            g_SetData.Messages_nValPeriod = 71;
-            break;
-        case 4:
-            g_SetData.Messages_nValPeriod = 144;
-            break;
-        case 5:
-            g_SetData.Messages_nValPeriod = 167;
-            break;
-        case 6:
-            g_SetData.Messages_nValPeriod = 173;
-            break;
-        case 7:
-            g_SetData.Messages_nValPeriod = 245;
-            break;
-        case 8:
-            g_SetData.Messages_nValPeriod = 246;
-            break;
-        default:
-            break;
-        }
-
-        iPos = m_cmbDefDelivery.GetCurSel();
-        switch (iPos) {
-        case 0:
-            g_SetData.Messages_nDefDelivery = 5;
-            break;
-        case 1:
-            g_SetData.Messages_nDefDelivery = 11;
-            break;
-        case 2:
-            g_SetData.Messages_nDefDelivery = 23;
-            break;
-        case 3:
-            g_SetData.Messages_nDefDelivery = 71;
-            break;
-        case 4:
-            g_SetData.Messages_nDefDelivery = 144;
-            break;
-        case 5:
-            g_SetData.Messages_nDefDelivery = 167;
-            break;
-        case 6:
-            g_SetData.Messages_nDefDelivery = 173;
-            break;
-        case 7:
-            g_SetData.Messages_nDefDelivery = 245;
-            break;
-        case 8:
-            g_SetData.Messages_nDefDelivery = 246;
-            break;
-        default:
-            break;
-        }
-        SndAtSmsQHMSGP();
-        SndAtSmsQCSMP();
-
-    }
-    wcscpy(g_SetData.Messages_szVoiceMailNumber, m_strVoicemailNumber); //add by liub
-    SaveIniFile();
 
     //设置消息优先保存位置
     if (0)
@@ -495,8 +399,21 @@ void CDlgSetupPowerMng::OnButtonSetupMsgSet()
         m_PreLocType = LOC_UIM;
     else
         m_PreLocType = LOC_PC;
-
     ASSERT(m_PreLocType >= LOC_PC && m_PreLocType < LOC_MAX);
+
+    //设置消息中心
+    if(m_strSCA.IsEmpty()) {
+        AfxMessageBox(IDS_SCA_TIP);
+        m_strSCA.Format(_T("%s"), gSmsCentreNum);
+        UpdateData(FALSE);
+        return;
+    }
+    g_SetData.Messages_nValPeriod = m_cmbValPeriod.GetCurSel();
+    SndAtSmsQCSCA();
+
+    wcscpy(g_SetData.Messages_szVoiceMailNumber, m_strVoicemailNumber); //add by liub
+    SaveIniFile();
+
     if (g_bIsExist == FALSE) { //无卡时
         SetOK = TRUE;
     }
@@ -589,11 +506,11 @@ void CDlgSetupPowerMng::RspAtSmsQCSCA(LPVOID pWnd, BYTE (*strArr)[DSAT_STRING_CO
     }
 
     if(pDlg->m_PreLocType == LOC_PC) {
-        if(pDlg->SndAtCNMI(1,2))
+        if(pDlg->SndAtCNMI(2,g_SetData.Messages_nDeliReport))
             pDlg->GetDlgItem(IDC_BUTTON_SETUP_MSGSET)->EnableWindow(FALSE);
     } else {
         CString strCPMS;
-        strCPMS = gcstrLoc[pDlg->m_PreLocType];
+        strCPMS = (CString)gcstrLoc[pDlg->m_PreLocType];
 
         if(pDlg->SndAtCPMS(strCPMS))
             pDlg->GetDlgItem(IDC_BUTTON_SETUP_MSGSET)->EnableWindow(FALSE);
@@ -640,7 +557,7 @@ BOOL CDlgSetupPowerMng::SndAtCNMI(int para1, int para2)
 {
     char szAtBuf[30] = {0};
 
-    sprintf(szAtBuf, "%s%d,%d\r", gcstrAtSms[AT_SMS_QCNMI], para1, para2);
+    sprintf(szAtBuf, "%s3,%d,0,%d\r", gcstrAtSms[AT_SMS_QCNMI], para1, para2);
 
     CSerialPort* pComm = ((CHSDPAApp*)AfxGetApp())->m_pSerialPort;
     ASSERT(pComm);
