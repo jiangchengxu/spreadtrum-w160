@@ -2807,7 +2807,9 @@ void CPhoneBookDlg::ReadDataFromLoc(int flag)
     }
     case 1: {
         StrSource = _T("AT+CPBS=\"SM\"");
-        m_pWaitDlg->m_strPrompt.LoadString(IDS_PBTRANSFER_INITUSIMINFO);
+        CString temp;
+        temp.LoadString(IDS_PBTRANSFER_INITUSIMINFO);
+        m_pWaitDlg->m_strPrompt = temp;
         break;
     }
     default: {
