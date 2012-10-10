@@ -1596,12 +1596,12 @@ void CPhoneBookDlg::ImportFromCsv(char **pPara, DWORD nLen,LPVOID pHandle)
 
     //strName.LoadString(IDS_NAME);
     strName=_T("Name");
-    strMobile.LoadString(IDS_MOBILE);
-    strHome.LoadString(IDS_HOME);
-    strGroup.LoadString(IDS_PBGROUP);
-    strCompany.LoadString(IDS_COMPANY);
-    strEmail.LoadString(IDS_EMAIL);
-    strRemark.LoadString(IDS_REMARK);
+    strMobile=_T("Mobile");;
+    strHome=_T("Home");
+    strGroup=_T("Group");
+    strCompany=_T("Company");
+    strEmail=_T("Email");
+    strRemark=_T("Remark");
 
     psrcBuf = *pPara;
     pstrCurrPos = psrcBuf;

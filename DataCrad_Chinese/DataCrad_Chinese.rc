@@ -1261,16 +1261,16 @@ END
 
 IDD_DIALOG_PBIMPORT DIALOG DISCARDABLE  0, 0, 169, 90
 STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION "Import Contacts"
+CAPTION "导入联系人"
 FONT 10, "System"
 BEGIN
-    CONTROL         "Import from local file",IDC_RADIO1,"Button",
-                    BS_AUTORADIOBUTTON | WS_GROUP,15,24,126,10
-    CONTROL         "Import from MS Outlook contact",IDC_RADIO2,"Button",
+    CONTROL         "从本地文件导入",IDC_RADIO1,"Button",BS_AUTORADIOBUTTON | 
+                    WS_GROUP,15,24,126,10
+    CONTROL         "从MS Outlook联系人导入",IDC_RADIO2,"Button",
                     BS_AUTORADIOBUTTON,15,39,130,10
-    DEFPUSHBUTTON   "OK",IDOK,16,69,50,14
-    PUSHBUTTON      "Cancel",IDCANCEL,103,68,50,14
-    GROUPBOX        "Please select a import model:",IDC_STATIC,10,9,149,50
+    DEFPUSHBUTTON   "确定",IDOK,16,69,50,14
+    PUSHBUTTON      "取消",IDCANCEL,103,68,50,14
+    GROUPBOX        "请选择导入方式:",IDC_STATIC,10,9,149,50
 END
 
 IDD_DIALOG_PBGROUP_NEW DIALOG DISCARDABLE  0, 0, 187, 161
@@ -2844,9 +2844,9 @@ BEGIN
     IDS_WARNING_INPUTGROUP  "请输入群组名称!"
     IDS_WARNING_GROUPEXISTED "已存在相同的群组!"
     IDS_DEFAULT             "(默认)"
-    IDS_SMSTREE_ARCHIVE     "压缩"
+    IDS_SMSTREE_ARCHIVE     "打包"
     IDS_SMSTREE_LOCAL       "本地"
-    IDS_SMSTREE_USIM        "USIM"
+    IDS_SMSTREE_USIM        "USIM卡"
     IDS_SMSTREE_INBOX       "收件箱"
     IDS_SMSTREE_OUTBOX      "发件箱"
     IDS_SMSTREE_DRAFT       "草稿箱"
@@ -2864,9 +2864,9 @@ END
 
 STRINGTABLE DISCARDABLE 
 BEGIN
-    IDS_SMS_ARCHIVE         "压缩"
-    IDS_SMS_ARCHIVESUCC     "压缩短信成功!"
-    IDS_SMS_ARCHIVEFAIL     "压缩短信失败!"
+    IDS_SMS_ARCHIVE         "打包"
+    IDS_SMS_ARCHIVESUCC     "短信打包成功!"
+    IDS_SMS_ARCHIVEFAIL     "短信打包失败!"
     IDS_SMS_RESUMESUCC      "恢复短信成功!"
     IDS_SMS_RESUMEFAIL      "恢复短信失败!"
     IDS_SMS_RESUME          "恢复"
