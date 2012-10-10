@@ -1810,11 +1810,12 @@ int gsmDecode7bit(const char* pSrc, char* pDst, int nSrcLength)
 {
     int Data, cnt;
     char str[3] = {0};
-    unsigned char *ascSrc = new unsigned char[nSrcLength];
+    unsigned char aSrc[1600] = {0};
     int nSrc;        // 源字符串的计数值
     int nDst;        // 目标解码串的计数值
     int nByte;       // 当前正在处理的组内字节的序号，范围是0-6
     unsigned char nLeft;    // 上一字节残余的数据
+	unsigned char *ascSrc = aSrc;
     // 计数值初始化
     nSrc = 0;
     nDst = 0;
@@ -1857,7 +1858,6 @@ int gsmDecode7bit(const char* pSrc, char* pDst, int nSrcLength)
     }
     *pDst = 0;
     // 返回目标串长度
-    //delete [] ascSrc;         //release ascSrc will occur fatal error!
     return nDst;
 }
 
