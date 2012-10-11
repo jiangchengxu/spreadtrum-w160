@@ -421,7 +421,7 @@ BOOL CSerialPort::StartPort(LPCTSTR lpszCommName, BOOL bCreateThread, BOOL bOver
 #endif
 #endif
 
-    if(Open(lpszCommName, bOverlapped) && Config()) {
+    if(!IsOpen() && Open(lpszCommName, bOverlapped) && Config()) { 
         m_bIsConnect = TRUE;
 
         if(bCreateThread) {
