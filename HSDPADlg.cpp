@@ -2192,7 +2192,11 @@ void CHSDPADlg::AtRespCOPSEx(LPVOID pWnd, BYTE(*strArr)[DSAT_STRING_COL], WORD w
             memcpy(temp, ptr + 3, 2);
             mnc = atoi(temp);
             get_network_info(mcc, mnc, &ninfo);
-            strPLMN = ninfo.short_name_ptr;
+            if(ninfo.res_id == -1){
+                strPLMN = ninfo.short_name_ptr;
+            }else{
+                strPLMN.LoadString(ninfo.res_id);
+            }
         }
 
         if (cnt == 0)

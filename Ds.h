@@ -330,7 +330,7 @@ typedef struct uinetwk_network_info_s {
     char                         *full_name_ptr;
     /* Pointer to a null terminated string containing the */
     /* network's full name.                               */
-
+    int res_id;
 } uinetwk_network_info_s_type;
 
 extern BOOL UnicodeIsHighStr(TCHAR *wchar);

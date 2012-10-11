@@ -1356,6 +1356,9 @@
 #define IDS_STR_CONNECTION_ERROR        25440
 #define IDS_STR_VOICEMAIL               25444
 #define IDS_STR_VOICELISTEN             25445
+#define IDS_NETN_CHNUN                  25446
+#define IDS_NETN_CHNMB                  25447
+#define IDS_NETN_CHNTE                  25448
 #define ID_ITEM_1                       32771
 #define ID_APP_OPEN                     32771
 #define ID_MHIST_RECALL                 32771
@@ -1400,7 +1403,7 @@
 #define IDC_UI_ICON_PRIVACY_CALL        51272
 
 // Next default values for new objects
-//
+// 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        374

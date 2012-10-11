@@ -2955,6 +2955,9 @@ BEGIN
                             "Connection error, please reinsert modem and check the phone number!"
     IDS_STR_VOICEMAIL       "VoiceMail"
     IDS_STR_VOICELISTEN     "Listen"
+    IDS_NETN_CHNUN          "China Unicom"
+    IDS_NETN_CHNMB          "China Mobile"
+    IDS_NETN_CHNTE          "China Telecom"
 END
 
 STRINGTABLE DISCARDABLE 

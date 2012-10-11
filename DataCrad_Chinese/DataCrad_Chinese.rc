@@ -2924,6 +2924,9 @@ BEGIN
     IDS_STR_CONNECTION_ERROR "连接失败，请重新拔插设备并检查号码!"
     IDS_STR_VOICEMAIL       "语音邮件"
     IDS_STR_VOICELISTEN     "接听"
+    IDS_NETN_CHNUN          "中国联通"
+    IDS_NETN_CHNMB          "中国移动"
+    IDS_NETN_CHNTE          "中国电信"
 END
 
 STRINGTABLE DISCARDABLE 
