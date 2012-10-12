@@ -719,8 +719,9 @@ void CSkinWin::OnNcPaint(HRGN rgn1)
     }
 #endif
 
-    //wyw
+    pNewDC->SelectObject(ofont);
     font.DeleteObject();
+    //memDC.SelectObject(obmp);
     bmp.DeleteObject();
     newrgn.DeleteObject();
     memDC.DeleteDC();
