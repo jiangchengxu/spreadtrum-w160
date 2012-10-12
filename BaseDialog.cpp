@@ -290,6 +290,8 @@ BOOL CBaseDialog::OnInitDialog()
         dcMem.BitBlt(g_TabDlgRect.Width() - 130,1,bitMap.bmWidth,bitMap.bmHeight,&dctemp,0,0,SRCCOPY);
         //dcMem.BitBlt(g_TabDlgRect.Width() - 130,1,bitMap.bmWidth,bitMap.bmHeight,&dctemp,0,0,SRCCOPY);
 #endif
+		dctemp.SelectObject(pbmpOld1);
+		dcMem.SelectObject(pbmpOld);
     }
     //m_bmpBackground.LoadBitmap(IDB_BACK_MAIN+m_nBkTag);
     //m_bmpBackground.LoadBitmap(IDB_BACK_MAIN);
