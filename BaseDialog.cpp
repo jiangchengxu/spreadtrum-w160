@@ -576,7 +576,7 @@ void CBaseDialog::OnPaint()
             dc.BitBlt  (0,0,rect.Width(),rect.Height(),&dcMem,0,0,SRCCOPY);
         }
 
-        //wyw_0103
+        dcMem.SelectObject(pbmpOld);
         dcMem.DeleteDC();
     }
 
