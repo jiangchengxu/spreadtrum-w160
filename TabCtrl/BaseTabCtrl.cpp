@@ -166,7 +166,8 @@ void CBaseTabCtrl::OnPaint()
         CPaintDC dc(this); // device context for painting
 
         // prepare dc
-        dc.SelectObject(GetFont());
+        CFont *ofont;
+        ofont = dc.SelectObject(GetFont());
 
         DRAWITEMSTRUCT dis;
         dis.CtlType = ODT_TAB;
@@ -209,7 +210,7 @@ void CBaseTabCtrl::OnPaint()
         dis.itemState = ODS_SELECTED;
 
         VERIFY(GetItemRect(nSel, &dis.rcItem));
-
+        dc.SelectObject(ofont);
         dis.rcItem.bottom += 2;
         dis.rcItem.top -= 2;
         DrawItem(&dis);
