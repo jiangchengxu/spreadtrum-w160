@@ -2495,7 +2495,7 @@ BEGIN
     IDS_USB_PORT_TIMEOUT    "设备超时！"
     IDS_USB_PORT_DATA       "正在进行数据连接！"
     IDS_USB_PORT_CALL       "正在通话！"
-    IDS_PC                  "电脑"
+    IDS_PC                  "本地"
     IDS_USIM                "USIM"
 END
 
@@ -2551,9 +2551,9 @@ BEGIN
     IDS_SELCONNECT_NULLNUM  "号码为空或未知！"
     IDS_MENU_LANGUAGE       "语言"
     IDS_LANG_ENG            "英语"
-    IDS_PBTRANSFER_INITCARDINFO "从设备中读取电话本记录......"
+    IDS_PBTRANSFER_INITCARDINFO "从设备中读取联系人信息......"
     IDS_PBTRANSFER_INITUSIMINFO "从USIM卡中读取联系人信息......"
-    IDS_PBTRANSFER_CARDFULL "设备已存满！"
+    IDS_PBTRANSFER_CARDFULL "设备联系人已存满！"
     IDS_PBTRANSFER_USIMFULL "USIM卡联系人已满!"
     IDS_TIPINFO_CALL        "Incoming Call\r\nFrom: "
     IDS_LANG_ITA            "Ita"
@@ -2561,8 +2561,8 @@ END
 
 STRINGTABLE DISCARDABLE 
 BEGIN
-    IDS_PB_NULLPB           "通讯录记录为空!"
-    IDS_PB_READERR          "读取记录时失败!"
+    IDS_PB_NULLPB           "联系人为空!"
+    IDS_PB_READERR          "读取联系人失败!"
     IDS_FILEERR             "无效文件!"
     IDS_PB_INPORTERR        "The document Contain invalid record,has been rejected!"
     IDS_PB_NAMEMAX          "姓名超长!"
@@ -2582,18 +2582,18 @@ STRINGTABLE DISCARDABLE
 BEGIN
     IDS_PB_ADDPICERR        "加载照片失败！"
     IDS_PB_NAMELENMAX       "姓名长度超过14个字符. \n当该记录保存到RUIM卡上时姓名会被截断. \n是否继续?"
-    IDS_PB_DELPCERR         "删除电脑中的记录失败!"
-    IDS_PB_DELPCCARDERR     "删除USB终端中的记录失败!"
+    IDS_PB_DELPCERR         "删除本地中的联系人失败!"
+    IDS_PB_DELPCCARDERR     "删除设备中的联系人失败!"
     IDS_TRAY_TOTRAY         "To Tray"
     IDS_TRAY_OPENDLG        "Open %s USB Modem"
-    IDS_CARD_DISCONN        "USB终端未连接!"
+    IDS_CARD_DISCONN        "设备未连接!"
     IDS_RF_SETERROR         "射频设置失败!"
     IDS_INTERNET_TOOMANYENTRY "连接文件过多! "
     IDS_ERROR_NOT_ENOUGH_MEMORY "内存不足!"
     IDS_ERR_SMS_GROUPNUMBEROVER "群组发送选择联系人过多!"
-    IDS_SMS_ME_FULL         "USB终端短信已满!\n请转移部分短信到本地!"
-    IDS_SMS_USIM_FULL       "USIM卡已满\n请转移部分短信到本地!"
-    IDS_SMS_MEUSIM_FULL     "USB终端和USIM卡短信已满!\n请转移部分短信到本地!"
+    IDS_SMS_ME_FULL         "设备中的短信已满!\n请转移部分短信到本地!"
+    IDS_SMS_USIM_FULL       "USIM卡短信已满\n请转移部分短信到本地!"
+    IDS_SMS_MEUSIM_FULL     "USB设备和USIM卡短信已满!\n请转移部分短信到本地!"
     IDS_INT_ERR_INPUTNULL   "请输入名称和号码."
     IDS_INT_ERR_SAMENAME    "已存在相同名称的配置文件."
 END
