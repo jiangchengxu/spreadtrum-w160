@@ -116,7 +116,7 @@ HRGN PreMsg::CreateRgnFromBitmap(HBITMAP hBmp, COLORREF color)
 
     CDC dcBmp;
     dcBmp.CreateCompatibleDC(GetDC());    //Creates a memory device context for the bitmap
-    dcBmp.SelectObject(hBmp);            //selects the bitmap in the device context
+    HBITMAP pOldBmp = (HBITMAP)dcBmp.SelectObject(hBmp);            //selects the bitmap in the device context
 
     const DWORD RDHDR = sizeof(RGNDATAHEADER);
     const DWORD MAXBUF = 40;        // size of one block in RECTs
@@ -161,6 +161,7 @@ HRGN PreMsg::CreateRgnFromBitmap(HBITMAP hBmp, COLORREF color)
                 wasfirst = true;
             }
         }
+    dcBmp.SelectObject(pOldBmp);
     dcBmp.DeleteDC();    //release the bitmap
     // create region
     /*  Under WinNT the ExtCreateRegion returns NULL (by Fable@aramszu.net) */
