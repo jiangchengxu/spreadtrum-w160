@@ -139,6 +139,7 @@ private:
     CString m_strCurSelGroup;
     CString m_strUSIM; //显示的sim卡标题  WCDMA: USIM, CDMA2000: R-UIM
     CString m_strPCCard; //USB Modem
+    CString m_strPC;
     typedef enum {
         PCLOC = 0,
         PCCardLOC,

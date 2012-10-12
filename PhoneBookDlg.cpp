@@ -111,7 +111,7 @@ CPhoneBookDlg::CPhoneBookDlg(CWnd* pParent /*=NULL*/)
         m_strUSIM.LoadString(IDS_STATIC_RUIM);
     }
     m_strPCCard.LoadString(IDS_ME);
-
+    m_strPC.LoadString(IDS_PC);
 }
 
 CPhoneBookDlg::~CPhoneBookDlg()
@@ -4030,7 +4030,7 @@ LRESULT CPhoneBookDlg::ReDrawTreeCtrl(WPARAM wParam, LPARAM lParam)
 
     }
 
-    m_ht_PC=m_TreePhoneBook.InsertItem(_T("PC"),0,0,NULL);
+    m_ht_PC=m_TreePhoneBook.InsertItem(m_strPC,0,0,NULL);
     for(int i = 0; i < PB_GROUP_MAX; i++) {
         if(-1 != m_pPbData->PbGroups[i].index) {
             m_TreePhoneBook.InsertItem(m_pPbData->PbGroups[i].strGroupName,3,3,m_ht_PC);
@@ -4065,7 +4065,7 @@ void CPhoneBookDlg::OnSelchangeTree(WPARAM wParam, LPARAM lParam)
 
     m_strCurSelGroup=m_TreePhoneBook.GetItemText(m_TreePhoneBook.GetSelectedItem());
     if(m_strCurSelGroup.Compare(_T(""))==0)
-        m_strCurSelGroup=_T("PC");
+        m_strCurSelGroup=m_strPC;
     CString StrExtractedText;
     int nLeftBracketPos=m_strCurSelGroup.ReverseFind('(');
     if(nLeftBracketPos>0) {
@@ -4080,7 +4080,7 @@ void CPhoneBookDlg::OnSelchangeTree(WPARAM wParam, LPARAM lParam)
 
     m_strCurSelGroup=StrExtractedText;
     int nIndex;
-    if(wcscmp(m_strCurSelGroup,_T("PC"))==0) {
+    if(wcscmp(m_strCurSelGroup,m_strPC)==0) {
         nIndex=PCLOC;
     } else if(wcscmp(m_strCurSelGroup,m_strPCCard)==0) {
         nIndex=PCCardLOC;
@@ -4196,7 +4196,7 @@ void CPhoneBookDlg::UpdateContactNumForTreeCtrl(HTREEITEM HtItem,int groupType)
     switch(groupType) {
     case PCLOC: {
         nItemCount=0;
-        if(StrItemText.Compare(_T("PC"))==0) {
+        if(StrItemText.Compare(m_strPC)==0) {
             for(int i = 0; i < PB_RECORD_MAX; i++) {
                 if(-1 != m_pPbData->PbDatas[i].index)
                     nItemCount++;
