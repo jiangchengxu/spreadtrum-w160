@@ -2524,7 +2524,7 @@ BEGIN
     IDS_USB_PORT_TIMEOUT    "USB Modem timeout!"
     IDS_USB_PORT_DATA       "USB Modem is used for data connection!"
     IDS_USB_PORT_CALL       "USB Modem is used for call connection!"
-    IDS_PC                  "PC"
+    IDS_PC                  "Local"
     IDS_USIM                "RUIM"
 END
 
