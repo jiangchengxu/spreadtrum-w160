@@ -2878,16 +2878,14 @@ BOOL CSmsDlg::InitSMSTree()
     m_treeSms.DeleteAllItems();
     //节点的图标
     int i = 0;
-    int i_count = 6;
+    int i_count = 5;
     //载入图标
-    HICON icon[6];
+    HICON icon[5];
     icon[0] = AfxGetApp()->LoadIcon(IDI_ICON_SMS_FILE);
     icon[1] = AfxGetApp()->LoadIcon(IDI_ICON_SMS_INBOX);
     icon[2] = AfxGetApp()->LoadIcon(IDI_ICON_SMS_OUTBOX);
     icon[3] = AfxGetApp()->LoadIcon(IDI_ICON_SMS_DRAFT);
     icon[4] = AfxGetApp()->LoadIcon(IDI_ICON_SMS_ARCHIVE);
-    icon[5] = AfxGetApp()->LoadIcon(IDI_ICON_VOICEMAIL);//add by liub for voicemail
-
 
     //创建图像列表
     m_imagelistSMSTree = new CImageList;
@@ -2919,22 +2917,8 @@ BOOL CSmsDlg::InitSMSTree()
             m_treeSms.SetItemImage(rootUSIM,0,0);
         }
 #endif
-        treenodtext.LoadString(IDS_STR_VOICEMAIL);//add by liub for voicemail
-        HTREEITEM rootVoiceMail = m_treeSms.InsertItem(treenodtext,0,1,TVI_ROOT,TVI_LAST);
 
-        m_treeSms.SetItemImage(rootVoiceMail,0,0);
         m_treeSms.SetItemImage(rootUSBModem,0,0);
-
-        //VoiceMail子节点
-        treenodtext.LoadString(IDS_STR_VOICELISTEN);
-        HTREEITEM rootVoicemail_Inbox = m_treeSms.InsertItem(treenodtext,0,1,rootVoiceMail,TVI_LAST);
-        treenodtext.LoadString(IDS_STR_LASTVOICEMAIL);
-        HTREEITEM rootVoicemail_listen_lastone = m_treeSms.InsertItem(treenodtext,0,1,rootVoiceMail,TVI_LAST);
-        treenodtext.LoadString(IDS_STR_CLEAR_VMAILICON);
-        HTREEITEM rootVoicemail_clearicon = m_treeSms.InsertItem(treenodtext,0,1,rootVoiceMail,TVI_LAST);
-
-        m_treeSms.SetItemImage(rootVoicemail_Inbox,5,5);
-
     }
 
 
