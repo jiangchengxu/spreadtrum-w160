@@ -1172,6 +1172,8 @@ LRESULT CTabDialog::WindowMax(WPARAM wParam, LPARAM lParam)
         nX +=  rectdown.right ;
         cWnd->MoveWindow(nX,rect1.bottom - 40,rectdownspeed.right,rectdownspeed.bottom,TRUE);
 
+        dctemp.SelectObject(pbmpOld1);
+        dcMem.SelectObject(pbmpOld);
         //cMainWnd->UpdateWindow();
         m_bWinSize = false;
         m_skinWin.m_winstate = 1;
