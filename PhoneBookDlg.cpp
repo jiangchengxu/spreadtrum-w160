@@ -112,6 +112,9 @@ CPhoneBookDlg::CPhoneBookDlg(CWnd* pParent /*=NULL*/)
     }
     m_strPCCard.LoadString(IDS_ME);
     m_strPC.LoadString(IDS_PC);
+    m_ht_PC = NULL;
+    m_ht_PCCard = NULL;
+    m_ht_USIM = NULL;
 }
 
 CPhoneBookDlg::~CPhoneBookDlg()
@@ -2347,9 +2350,12 @@ LRESULT CPhoneBookDlg::ReDrawListCtrl(WPARAM wParam, LPARAM lParam)
 {
     m_lstPhoneBook.DeleteAllItems();
     m_pPbData = ((CHSDPAApp *)AfxGetApp())->GetPbData();
-    UpdateContactNumForTreeCtrl(m_ht_PC,PCLOC);
-    UpdateContactNumForTreeCtrl(m_ht_USIM,USIMLOC);
-    UpdateContactNumForTreeCtrl(m_ht_PCCard,PCCardLOC);
+    if(m_ht_PC)
+        UpdateContactNumForTreeCtrl(m_ht_PC,PCLOC);
+    if(m_ht_USIM)
+        UpdateContactNumForTreeCtrl(m_ht_USIM,USIMLOC);
+    if(m_ht_PCCard)
+        UpdateContactNumForTreeCtrl(m_ht_PCCard,PCCardLOC);
     //ÃÓ»Î ˝æ›
     switch (nCurSelIndex) {
     case PCLOC: {
