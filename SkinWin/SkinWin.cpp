@@ -38,6 +38,9 @@ CSkinWin::CSkinWin()
 
     m_barcolor = RGB(207,207,207);
     m_menucolor = RGB(207,207,207);
+
+    m_downHitTest = 0;
+    m_moveHitTest = 0;
 }
 
 CSkinWin::~CSkinWin()
@@ -551,7 +554,7 @@ void CSkinWin::OnNcPaint(HRGN rgn1)
 //f ( (DWORD)rgn)
 //pDC->SelectClipRgn( CRgn::FromHandle(rgn) );
 
-    //m_bActive = GetActiveWindow() == m_hWnd;
+    m_bActive = GetActiveWindow() == m_hWnd;
     int state = 0;
     if ( m_bActive)
         state = 0;
