@@ -54,7 +54,7 @@ CTabDialog::CTabDialog(UINT nID, CWnd* pParent /*=NULL*/)
     m_nMoveDirection = TABDIALOG_MOVEDIRECTION_LEFTTORIGHT;
     m_nBkTag = 2;
     m_Currentbutton = -1;
-    InitMenuMap();
+    //InitMenuMap(); //not need anymore
 }
 
 CTabDialog::~CTabDialog()
